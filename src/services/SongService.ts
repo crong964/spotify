@@ -1,4 +1,5 @@
 import Mysql2 from "../config/Config";
+import { limit } from "../config/Helper";
 import SongDatabase from "../database/SongDatabase";
 
 import SongModel from "../model/SongModel";
@@ -24,7 +25,7 @@ export class SongService {
     async GetAll(user_id: string) {
         var check
         check = await this.songDatabase.GetAll(user_id) as []
-        var ls: SongModel[]  = this.SetLs(check)
+        var ls: SongModel[] = this.SetLs(check)
         return ls
     }
     async Delete(id: string) {
@@ -45,7 +46,13 @@ export class SongService {
         return this.SetLs(check)
     }
 
-
+    async GetSongByGenre(idGenre: string, p: limit) {
+        p.start = p.start | 0
+        p.end = p.end | 10
+        var check
+        check = await this.songDatabase.GetSongByGenre(idGenre, p) as []
+        return this.SetLs(check)
+    }
     SetLs(check: any) {
         if (check == undefined) {
             return []

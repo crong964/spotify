@@ -25,4 +25,7 @@ SongRoute.post("/newupload", songController.NewUpload)
 SongRoute.post("/upStatus", songController.UpStatus)
 SongRoute.get("/valisong/:idpage", songController.GetValidateAll)
 
+
+//admin
+SongRoute.post("/GetSongByGenre", songController.GetSongByGenre)
 export default SongRoute

@@ -5,7 +5,7 @@ module.exports = {
     entry: {
         app: `${process.cwd()}/page/home/App.tsx`,
         dashboard: `${process.cwd()}/page/dashboard/App.tsx`,
-        admin: path.join(process.cwd(), 'page/admin/App.tsx'),
+        admin: path.join(process.cwd(), 'admin/App.tsx'),
         auth: path.join(process.cwd(), "page/auth/App.tsx")
     },
     module: {

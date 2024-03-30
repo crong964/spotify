@@ -72,5 +72,20 @@ class SongDatabase {
             return check;
         });
     }
+    GetSongByGenre(idGenre, limit) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var sql = `SELECT * FROM song
+        WHERE song.genre_id in 
+        (SELECT g1.Id 
+            FROM genre g1, genre g2 
+            WHERE g2.Id=?
+            AND g1.LeftGenre >= g2.LeftGenre AND g1.RightGenre <= g2.RightGenre ) AND status=1 
+            LIMIT ?,?`;
+            var check;
+            check = yield Config_1.default.query(sql, [idGenre, limit.start, limit.end]);
+            return check;
+        });
+    }
 }
+//SELECT g1.* FROM genre g1, genre g2 WHERE g2.Id="0a57712c-1d83-4d65-8d35-e931fb0c4e11" AND g1.LeftGenre >= g2.LeftGenre AND g1.RightGenre <= g2.RightGenre
 exports.default = SongDatabase;

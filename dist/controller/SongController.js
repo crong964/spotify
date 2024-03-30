@@ -268,6 +268,21 @@ class SongController {
             });
         });
     }
+    GetSongByGenre(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var idGenre = req.body.idGenre;
+            var start = req.body.end | 0;
+            var l = {
+                start: start,
+                end: start + 10
+            };
+            var ls = yield SongController.song.GetSongByGenre(idGenre, l);
+            res.json({
+                err: false,
+                ls: ls
+            });
+        });
+    }
 }
 SongController.song = SongService_1.default;
 SongController.user = UserService_1.default;

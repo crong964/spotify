@@ -52,7 +52,6 @@ app.get("/", (req, res) => {
     }
     res.redirect("/auth");
 });
-app.use("/genre", GenreRoute_1.default);
 app.use("/user", UserRoute_1.default);
 app.use("/song", Song_Route_1.default);
 app.use("/lsong", LikedSongRoute_1.default);
@@ -133,6 +132,8 @@ app.get("/s", (req, res) => {
 app.get("/gg", (req, res) => {
     res.sendFile(path_1.default.join(process.cwd(), "web/gg.html"));
 });
+//admin
+app.use("/genre", GenreRoute_1.default);
 app.listen(8000, () => {
     console.log("http://localhost:8000/");
     console.log("http://localhost:8000/gg");

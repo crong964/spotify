@@ -6,6 +6,7 @@ import path, { join } from "path";
 import { v4 as uuidv4 } from 'uuid';
 import userService, { UserService } from "../services/UserService";
 import { createWriteStream } from "fs";
+import { limit } from "../config/Helper";
 
 
 class SongController {
@@ -235,6 +236,20 @@ class SongController {
         res.json({
             err: true,
             songs: ls
+        })
+    }
+
+    async GetSongByGenre(req: Request, res: Response) {
+        var idGenre = req.body.idGenre
+        var start = req.body.end | 0
+        var l: limit = {
+            start: start,
+            end: start + 10
+        }
+        var ls = await SongController.song.GetSongByGenre(idGenre, l)
+        res.json({
+            err: false,
+            ls: ls
         })
     }
 }

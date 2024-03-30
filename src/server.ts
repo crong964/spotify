@@ -31,7 +31,7 @@ app.get("/", (req, res) => {
     res.redirect("/auth")
 })
 
-app.use("/genre", GenreRoute)
+
 app.use("/user", UserRoute)
 app.use("/song", SongRoute)
 app.use("/lsong", LikedSongRoute)
@@ -124,6 +124,12 @@ app.get("/s", (req, res) => {
 app.get("/gg", (req, res) => {
     res.sendFile(path.join(process.cwd(), "web/gg.html"))
 })
+
+
+//admin
+app.use("/genre", GenreRoute)
+
+
 app.listen(8000, () => {
     console.log("http://localhost:8000/");
     console.log("http://localhost:8000/gg");

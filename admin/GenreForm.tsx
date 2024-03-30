@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { get, post } from "../config/req";
+import { get, post } from "../page/config/req";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState, SetLoad, SetFloor, addGenre } from "./Redux";
 
@@ -14,11 +14,14 @@ interface Genre {
   idParent: string;
   Floor: number;
 }
-export default function App() {
-  const floor = useSelector((state: RootState) => state.counter.floor);
+export default function GenreForm() {
+  const floor = useSelector((state: RootState) => state.navi.floor);
   const load = useSelector((state: RootState) => {
-    return state.counter.load;
+    return state.navi.load;
   });
+  const slectGenre = useSelector((s: RootState) => s.navi.slectGenre);
+  console.log(slectGenre);
+  
   const [genres, SetGenres] = useState<Genre[]>([]);
 
   useEffect(() => {
@@ -31,16 +34,16 @@ export default function App() {
     ls.push(<Genres Floor={i} key={i} Genre={genres}></Genres>);
   }
 
-  return <>{ls}</>;
+  return <div className="h-[600px]">{ls}</div>;
 }
 
 function Genres(d: Genres) {
   const dispatch: AppDispatch = useDispatch();
-  const slectGenre = useSelector((s: RootState) => s.counter.slectGenre);
+  const slectGenre = useSelector((s: RootState) => s.navi.slectGenre);
   const id = slectGenre[d.Floor];
   const [vu, SetVu] = useState("");
   var ls = d.Genre.filter((v) => {
-    return v.Floor == d.Floor && v.idParent == id + "";
+    return v.Floor == d.Floor && v.idParent == id;
   }).map((v) => {
     return (
       <Genre
@@ -58,7 +61,7 @@ function Genres(d: Genres) {
       style={{ left: 350 * d.Floor }}
       className="inline-block w-[300px] absolute h-full top-0 p-2"
     >
-      <div className="h-[60%] overflow-y-scroll ">{ls}</div>
+      <div className="h-[67%] overflow-y-scroll ">{ls}</div>
       <div className="mt-6">
         <div>
           <input type="hidden" name="floor" value={d.Floor} />
@@ -110,7 +113,7 @@ function Genre(params: Genre) {
   const dispatch = useDispatch();
   const [edit, SetEdit] = useState(false);
   const [name, SetName] = useState("");
-  const slectGenre = useSelector((s: RootState) => s.counter.slectGenre);
+  const slectGenre = useSelector((s: RootState) => s.navi.slectGenre);
   const id = slectGenre[params.Floor + 1 + ""];
 
   return (
@@ -198,7 +201,13 @@ function Genre(params: Genre) {
           <svg
             onClick={() => {
               dispatch(SetFloor(params.Floor));
-              dispatch(addGenre({ Floor: params.Floor + 1, Id: params.Id }));
+              dispatch(
+                addGenre({
+                  Floor: params.Floor ,
+                  Id: params.Id,
+                  name: params.Name,
+                })
+              );
             }}
             xmlns="http://www.w3.org/2000/svg"
             className={`size-[40px] cursor-pointer ${

@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { get } from "../config/req";
+import { get } from "../page/config/req";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  RootNaviRedux,
-  SetFloor,
-  addGenre,
-} from "./NaviRedux";
+import { RootState, SetFloor, addGenre } from "./Redux";
 
 interface Genre {
   Id: string;
@@ -24,9 +20,7 @@ function Genre(params: Genre) {
     return params.RightGenre - params.LeftGenre >= 2;
   }
   const dispatch = useDispatch();
-  const slectGenre = useSelector(
-    (state: RootNaviRedux) => state.navi.slectGenre
-  );
+  const slectGenre = useSelector((state: RootState) => state.navi.slectGenre);
   var id = slectGenre[params.Floor + 1];
   return (
     <div
@@ -63,14 +57,14 @@ function Genre(params: Genre) {
   );
 }
 
-function Genres(d: Genres) {
-  const slectGenre = useSelector((state: RootNaviRedux) => {
+function GenreLs(d: Genres) {
+  const slectGenre = useSelector((state: RootState) => {
     return state.navi.slectGenre;
   });
 
   var l: React.JSX.Element[] = d.ls
     .filter((v) => {
-      return v.Floor == d.floor && v.idParent + "" == slectGenre[d.floor + ""];
+      return v.Floor == d.floor && v.idParent + "" == slectGenre[d.floor];
     })
     .map((v) => {
       return (
@@ -97,7 +91,7 @@ function Genres(d: Genres) {
 
 export default function IndexGenres() {
   const [genre, SetGenres] = useState<Genre[]>([]);
-  const floor = useSelector((state: RootNaviRedux) => state.navi.floor);
+  const floor = useSelector((state: RootState) => state.navi.floor);
 
   useEffect(() => {
     get("genre/GetAll", (v: any) => {
@@ -107,8 +101,7 @@ export default function IndexGenres() {
   var ls: React.JSX.Element[] = [];
 
   for (let i = 0; i < floor + 1; i++) {
-    ls.push(<Genres floor={i} key={i} ls={genre}></Genres>);
+    ls.push(<GenreLs floor={i} key={i} ls={genre}></GenreLs>);
   }
-
-  return <div className="relative">{ls}</div>;
+  return <div className="relative h-[200px] ">{ls}</div>;
 }

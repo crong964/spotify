@@ -69,6 +69,15 @@ class SongService {
             return this.SetLs(check);
         });
     }
+    GetSongByGenre(idGenre, p) {
+        return __awaiter(this, void 0, void 0, function* () {
+            p.start = p.start | 0;
+            p.end = p.end | 10;
+            var check;
+            check = (yield this.songDatabase.GetSongByGenre(idGenre, p));
+            return this.SetLs(check);
+        });
+    }
     SetLs(check) {
         if (check == undefined) {
             return [];
