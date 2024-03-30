@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" style="height: 100%;">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<style>
+    input[type="range"]::-webkit-slider-thumb {
+        width: 15px;
+        -webkit-appearance: none;
+        appearance: none;
+        height: 15px;
+        cursor: ew-resize;
+        background: #FFF;
+        box-shadow: -405px 0 0 400px #605E5C;
+        border-radius: 50%;
+
+    }
+
+    /* width */
+    ::-webkit-scrollbar {
+        width: 15px;
+        background: rgb(0, 0, 0);
+    }
+
+
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        background: rgb(54, 54, 54);
+    }
+</style>
+
+<body style="height: 100%;">
+    <div id="root" style="height: 100%;">
+
+    </div>
+</body>
+<script src="./static/app.js"></script>
+<script src="./app.js"></script>
+</html>

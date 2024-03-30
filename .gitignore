@@ -1,0 +1,7 @@
+node_modules
+public/avatar/*
+public/banner/*
+public/image/*
+public/music/*
+sql.txt
+.env
