@@ -33,9 +33,11 @@ export class LikedSongService {
         return ls;
     }
     async SearchName(name: string, iduser: string) {
-        var ls =await this.likedSongDatabase.SearchName(name, iduser)
-        
-        
+        var ls = await this.likedSongDatabase.SearchName(name, iduser)
+        return this.SetLs(ls)
+    }
+    async GetAllByIdPlayList(id_user_liked: string, id_playlist: string) {
+        var ls = await this.likedSongDatabase.GetAllByIdPlayList(id_user_liked, id_playlist)
         return this.SetLs(ls)
     }
     SetLs(ls: any) {
@@ -46,6 +48,8 @@ export class LikedSongService {
         for (let i = 0; i < ls.length; i++) {
             const element = ls[i];
             var temp = new LikedSongModel()
+            console.log(__filename,element);
+            
             temp.setAll(element)
             check.push(temp)
         }

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import PlayButtom from "./PlayButtom";
+import PlayButtom from "../PlayButtom";
 import React from "react";
 
 interface RecentPlaylist {

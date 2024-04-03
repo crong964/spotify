@@ -76,7 +76,7 @@ function Genres(d: Genres) {
               }}
               type="text"
               id="first_name"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-[14px] font-mono rounded-lg  w-full p-2.5 "
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-[14px]  rounded-lg  w-full p-2.5 "
               placeholder={id + ""}
               value={vu}
               required
@@ -99,7 +99,7 @@ function Genres(d: Genres) {
               );
             }}
             type="button"
-            className=" mt-3 text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            className=" mt-3 text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300  rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
           >
             Thêm mới
           </button>

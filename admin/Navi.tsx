@@ -1,6 +1,7 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import { Page } from "./Redux";
+import Dropdown from "./componnt/Dropdow";
 
 export default function Navi() {
   const dispatch = useDispatch();
@@ -32,16 +33,31 @@ export default function Navi() {
           <i className="fas fa-tachometer-alt mr-3"></i>
           Danh sách nhạc
         </a>
+        <Dropdown>
+          <a className="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item cursor-pointer">
+            <i className="fas fa-align-left mr-3"></i>
+            Playlist
+          </a>
+          <a
+            onClick={() => {
+              dispatch(Page("playlists"));
+            }}
+            className="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item cursor-pointer"
+          >
+            <div className="mr-4"></div>
+            Danh sách Playlist
+          </a>
+          <a
+            onClick={() => {
+              dispatch(Page("playlist"));
+            }}
+            className="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item cursor-pointer"
+          >
+            <div className="mr-4"></div>
+            Thêm mới play list
+          </a>
+        </Dropdown>
 
-        <a
-          onClick={() => {
-            dispatch(Page("playlist"));
-          }}
-          className="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item cursor-pointer"
-        >
-          <i className="fas fa-align-left mr-3"></i>
-          Playlist
-        </a>
         <a
           href="tabs.html"
           className="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item cursor-pointer"

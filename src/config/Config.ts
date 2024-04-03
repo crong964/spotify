@@ -10,6 +10,7 @@ const pool = mysql2.createPool({
     queueLimit: 0,
     enableKeepAlive: true,
     keepAliveInitialDelay: 0,
+
 })
 
 class Mysql2 {
@@ -18,7 +19,6 @@ class Mysql2 {
         var rows, fields
         try {
             [rows, fields] = await Mysql2.pool.query(sql, val)
-
         } catch (error) {
             console.log(error);
         }

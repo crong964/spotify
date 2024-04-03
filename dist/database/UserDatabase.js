@@ -80,5 +80,21 @@ class UserDatabase {
             return check;
         });
     }
+    GetAccountByAccAndPass(acc, pass) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var sql = "SELECT * FROM user WHERE Account=? AND Password =? ";
+            var check;
+            check = yield Config_1.default.query(sql, [acc, pass]);
+            return check;
+        });
+    }
+    Update(d) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var sql = "UPDATE `user` SET `Name`=?,`Nationality`=?,`ChanalName`=?,`pathImage`=? WHERE id=? ";
+            var check;
+            check = yield Config_1.default.query(sql, [d.Name, d.Nationality, d.ChanalName, d.pathImage, d.id]);
+            return check;
+        });
+    }
 }
 exports.default = UserDatabase;

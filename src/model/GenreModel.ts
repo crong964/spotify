@@ -3,7 +3,6 @@ import BaseModel from "./BaseModel"
 export default class GenreModel extends BaseModel {
     Id: string
     Name: string
-
     RightGenre: number
     LeftGenre: number
     idParent: string

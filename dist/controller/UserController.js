@@ -12,8 +12,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const path_1 = require("path");
+const UserModel_1 = __importDefault(require("../model/UserModel"));
 const UserService_1 = __importDefault(require("../services/UserService"));
+const promises_1 = require("fs/promises");
 class UserController {
+    constructor(f) {
+        this.test = f;
+        this.g = "g";
+    }
     SignIn(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             var account = req.query.account;
@@ -60,6 +67,33 @@ class UserController {
             });
         });
     }
+    update(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var d = new UserModel_1.default();
+            var olduer = yield UserController.service.Get(req.cookies.id);
+            if (!olduer) {
+                res.json({
+                    err: true
+                });
+                return;
+            }
+            d.setAll(olduer);
+            d.setAll(req.body);
+            if (req.file) {
+                d.pathImage = (0, path_1.join)("/public/avatar", req.file.filename);
+                try {
+                    yield (0, promises_1.unlink)((0, path_1.join)(process.cwd(), olduer.pathImage));
+                }
+                catch (error) {
+                    console.log(error);
+                }
+            }
+            var check = yield UserController.service.Update(d);
+            res.json({
+                err: check == undefined
+            });
+        });
+    }
 }
 UserController.service = UserService_1.default;
-exports.default = new UserController;
+exports.default = new UserController(UserService_1.default);

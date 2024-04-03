@@ -56,7 +56,7 @@ export default function SetionData(params: SetionData) {
     <div
       className="w-full cursor-pointer"
       onClick={() => {
-        dispatch(NaviPage("playlist"));
+        dispatch(NaviPage("artise"));
         dispatch(IdPage(params.id));
       }}
       onMouseEnter={() => {

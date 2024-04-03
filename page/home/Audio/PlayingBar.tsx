@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import Song from "./Song";
+import Song from "../Song";
 import { useDispatch, useSelector } from "react-redux";
-import { RootHome, ShowRecentList } from "./RootRedux";
+import { RootHome, ShowRecentList } from "../RootRedux";
 import Audio from "./Audio";
-import { post } from "../config/req";
+import { post } from "../../config/req";
 
 interface SongI {
   Id: string;

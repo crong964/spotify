@@ -32,14 +32,19 @@ Account.get("/", (req, res) => {
     res.sendFile(path_1.default.join(process.cwd(), "/web/auth.html"));
 });
 Account.post("/signin", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(req.body);
     const account = req.body.account;
     const password = req.body.password;
-    var acc = yield UserService_1.default.GetByAccount(account);
-    if (!acc || acc.Password != password) {
-        res.redirect("/auth");
+    var acc = yield UserService_1.default.GetAccountByAccAndPass(account, password);
+    if (!acc) {
+        res.json({
+            err: true,
+            mess: "Tài khoản hoặc mật khẩu không đúng"
+        });
         return;
     }
     SetCookie(res, acc);
+    res.redirect("/");
 }));
 Account.get("/github", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var code = req.query.code;
@@ -99,6 +104,7 @@ Account.get("/github", (req, res) => __awaiter(void 0, void 0, void 0, function*
         return;
     }
     SetCookie(res, acc);
+    res.redirect("/");
 }));
 Account.get("/githubsu", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var code = req.query.code;
@@ -195,11 +201,13 @@ Account.post("/ggin", (req, res) => __awaiter(void 0, void 0, void 0, function* 
     //      jti: 'e17866e1397730421a8823d244726469f9ea63bd'
     //    }
     var acc = yield UserService_1.default.GetByAccount(profi.email);
+    console.log(acc);
     if (!acc) {
         res.redirect("/auth");
         return;
     }
     SetCookie(res, acc);
+    res.redirect("/");
 }));
 Account.post("/ggup", (req, res) => {
     var g_csrf_token1 = req.body.g_csrf_token;
@@ -236,7 +244,6 @@ Account.post("/ggup", (req, res) => {
         salt: undefined,
         a1: profi.email,
     });
-    console.log(profi);
     res.cookie("a1", hash.a1);
     res.cookie("a2", hash.a2);
     res.cookie("time", hash.time);
@@ -288,7 +295,6 @@ Account.post("/create", (req, res) => __awaiter(void 0, void 0, void 0, function
 }));
 Account.post("/sendcode", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var account = req.body.account;
-    console.log(account);
     var d = yield UserService_1.default.GetByAccount(account);
     if (d == undefined) {
         res.json({
@@ -350,23 +356,11 @@ Account.post("/vertifycode", (req, res) => __awaiter(void 0, void 0, void 0, fun
         mess: "Mã không chính xác"
     });
 }));
-Account.post("/updatePW", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var Password = req.body.Password;
-    var Account = req.body.Account;
-    var d = new UserModel_1.default();
-    d.Account = Account;
-    d.Password = Password;
-    var check = yield UserService_1.default.UpdatePassword(d);
-    res.json({
-        err: check == undefined
-    });
-}));
 function SetCookie(res, acc) {
     var hash = Hash_1.Hash.CreateHas({ a1: acc.id, outNumber: undefined, salt: undefined });
     res.cookie("id", acc.id, { maxAge: 1000 * 60 * 60 * 24 * 356, httpOnly: true });
     res.cookie("a2", hash.a2, { maxAge: 1000 * 60 * 60 * 24 * 356, httpOnly: true });
     res.cookie("timeSIN", hash.time, { maxAge: 1000 * 60 * 60 * 24 * 356, httpOnly: true });
-    res.redirect("/");
 }
 function clearCookie(res) {
     res.clearCookie("id");

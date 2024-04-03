@@ -6,6 +6,8 @@ import SongAndGenre from "./SongAndGenre";
 import { useSelector } from "react-redux";
 import { RootState } from "./Redux";
 import PlayListForm from "./PlayList/PlayListForn";
+import PlaylistAndGenre from "./PlayList/PlaylistAndGenre";
+import PlayListEdit from "./PlayList/PlayListEdit";
 
 export default function App() {
   var children: React.JSX.Element;
@@ -23,6 +25,20 @@ export default function App() {
       children = (
         <Main title="Form thêm danh sách nhạc">
           <PlayListForm />
+        </Main>
+      );
+      break;
+    case "playlists":
+      children = (
+        <Main title="Danh sách các danh sách nhạc">
+          <PlaylistAndGenre />
+        </Main>
+      );
+      break;
+    case "playlistedit":
+      children = (
+        <Main title="Chỉnh sửa danh sách">
+          <PlayListEdit />
         </Main>
       );
       break;

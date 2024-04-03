@@ -44,15 +44,9 @@ export class GenreService {
         return check
     }
     async GetAll() {
-        var l = await this.database.GetAll() as GenreModel[], ls: GenreModel[] = []
-        for (let i = 0; i < l.length; i++) {
-            const element = l[i];
-            var genre = new GenreModel()
-            genre.setAll(element)
-            ls.push(genre)
+        var l = await this.database.GetAll() as GenreModel[]
 
-        }
-        return ls
+        return this.Setls(l)
     }
     async GetAllLeftAndRight(Left: string, Right: string) {
         var l = await this.database.GetAllLeftAndRight(Left, Right) as GenreModel[], ls: GenreModel[] = []
@@ -126,6 +120,33 @@ export class GenreService {
         }
         var check1 = await this.database.Delete(id)
         return check1
+    }
+
+    async GetIdParentByIdplaylist(IdPlaylist: string) {
+        var ls = await this.database.GetIdParentByIdplaylist(IdPlaylist)
+        return this.Setls(ls)
+    }
+    async GetAllByLimitFloor(floor: number) {
+        var ls = await this.database.GetAllByLimitFloor(floor)
+        return this.Setls(ls)
+    }
+    async GetChildrenByIdParent(idParent: string) {
+        var ls = await this.database.GetChildrenByIdParent(idParent)
+        return this.Setls(ls)
+    }
+    Setls(ls: any) {
+        if (ls == undefined) {
+            return []
+        }
+        var list: GenreModel[] = []
+        for (let i = 0; i < ls.length; i++) {
+            const element = ls[i];
+            var genre = new GenreModel()
+            genre.setAll(element)
+            list.push(genre)
+
+        }
+        return list
     }
 }
 

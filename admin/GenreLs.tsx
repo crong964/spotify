@@ -21,11 +21,12 @@ function Genre(params: Genre) {
   }
   const dispatch = useDispatch();
   const slectGenre = useSelector((state: RootState) => state.navi.slectGenre);
+  const floor = useSelector((state: RootState) => state.navi.floor);
   var id = slectGenre[params.Floor + 1];
   return (
     <div
       className={`p-2 flex w-full items-center border cursor-pointer ${
-        id == params.Id ? "text-red-600" : ""
+        id == params.Id && floor > params.Floor ? "text-red-600" : ""
       }`}
       onClick={() => {
         dispatch(

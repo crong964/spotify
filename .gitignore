@@ -3,5 +3,6 @@ public/avatar/*
 public/banner/*
 public/image/*
 public/music/*
+public/playlist/*
 sql.txt
 .env

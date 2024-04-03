@@ -63,6 +63,12 @@ class LikedSongService {
             return this.SetLs(ls);
         });
     }
+    GetAllByIdPlayList(id_user_liked, id_playlist) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var ls = yield this.likedSongDatabase.GetAllByIdPlayList(id_user_liked, id_playlist);
+            return this.SetLs(ls);
+        });
+    }
     SetLs(ls) {
         if (ls == undefined) {
             return [];
@@ -71,6 +77,7 @@ class LikedSongService {
         for (let i = 0; i < ls.length; i++) {
             const element = ls[i];
             var temp = new LikedSongModel_1.default();
+            console.log(__filename, element);
             temp.setAll(element);
             check.push(temp);
         }

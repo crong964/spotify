@@ -53,6 +53,18 @@ class UserDatabase {
         check = await Mysql2.query(sql, [`%${name}%`])
         return check
     }
+    async GetAccountByAccAndPass(acc: string, pass: string) {
+        var sql = "SELECT * FROM user WHERE Account=? AND Password =? "
+        var check
+        check = await Mysql2.query(sql, [acc, pass])
+        return check
+    }
+    async Update(d: UserModel) {
+        var sql = "UPDATE `user` SET `Name`=?,`Nationality`=?,`ChanalName`=?,`pathImage`=? WHERE id=? "
+        var check
+        check = await Mysql2.query(sql, [d.Name, d.Nationality, d.ChanalName, d.pathImage, d.id])
+        return check
+    }
 }
 
 

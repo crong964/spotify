@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { IsLogin, NaviPage, RootHome, Search } from "./RootRedux";
-import { get, post } from "../config/req";
+import { Check, IsLogin, NaviPage, RootHome, Search } from "../RootRedux";
+import { get, post } from "../../config/req";
 
 interface Infor {
   pathImage: string;
@@ -12,6 +12,7 @@ export default function Header() {
   const [show, SetShow] = useState(false);
   const [name, SetName] = useState("");
   const page = useSelector((state: RootHome) => state.rootHome.page);
+  const update = useSelector((state: RootHome) => state.rootHome.update);
   const dispatch = useDispatch();
   const [infor, SetInfor] = useState<Infor>({
     Name: "",
@@ -25,12 +26,15 @@ export default function Header() {
         SetInfor(v.u);
       }
     });
-  }, []);
+  }, [update]);
+
   return (
-    <div className="sticky top-0 left-0 px-5 py-4 bg-[#121212] space-y-2">
+    <div
+      className={`sticky w-full z-30  top-0 left-0 px-5 py-4 space-y-2`}
+    >
       <div className="flex items-center justify-between space-x-2">
-        <div className="flex space-x-3 bg-[#121212] items-center">
-          <button className="bg-[#121212] rounded-full size-[28px] flex justify-center items-center">
+        <div className="flex space-x-3  items-center">
+          <button className=" rounded-full size-[28px] flex justify-center items-center">
             <svg
               data-encore-id="icon"
               role="img"
@@ -41,7 +45,7 @@ export default function Header() {
               <path d="M11.03.47a.75.75 0 0 1 0 1.06L4.56 8l6.47 6.47a.75.75 0 1 1-1.06 1.06L2.44 8 9.97.47a.75.75 0 0 1 1.06 0z"></path>
             </svg>
           </button>
-          <button className="bg-[#121212] rounded-full size-[28px] flex justify-center items-center">
+          <button className=" rounded-full size-[28px] flex justify-center items-center">
             <svg
               data-encore-id="icon"
               role="img"
@@ -83,8 +87,7 @@ export default function Header() {
             />
           </div>
         </div>
-
-        <div className="flex bg-[#121212] items-center">
+        <div className="flex  items-center">
           <div className="text-sm font-bold bg-white text-black rounded-3xl px-2 py-1">
             Khám phá Premium
           </div>
@@ -108,8 +111,17 @@ export default function Header() {
             {show ? (
               <div className="bg-[#000000] z-[1000] p-1 rounded-lg min-w-[200px] text-[16px] absolute top-full right-0">
                 <div className="text-white  cursor-pointer hover:bg-[#3E3E3E]">
-                  <div className="p-2">Tài khoản </div>
+                  <div
+                    onClick={() => {
+                      dispatch(NaviPage("profile"));
+                      SetShow(!show);
+                    }}
+                    className="p-2"
+                  >
+                    Tài khoản{" "}
+                  </div>
                 </div>
+
                 <div
                   onClick={() => {
                     post("/auth/logout", {}, (e: any) => {
@@ -127,15 +139,15 @@ export default function Header() {
           </div>
         </div>
       </div>
-      {page != "playlist" ? (
-        <div className="w-full bg-[#121212]  flex items-center space-x-2">
+      {page == "home" || page == "genre" ? (
+        <div className="w-full flex items-center space-x-2">
           <div className="bg-white text-[14px]  rounded-full px-2 py-1 w-max font-bold">
             Tất cả
           </div>
-          <div className="bg-[#121212] text-[14px] rounded-full  text-white p-2 w-max font-bold">
+          <div className=" text-[14px] rounded-full  text-white p-2 w-max font-bold">
             Nhạc
           </div>
-          <div className="bg-[#121212] text-[14px] rounded-full text-white p-2 w-max font-bold">
+          <div className="text-[14px] rounded-full text-white p-2 w-max font-bold">
             Podcasts
           </div>
         </div>

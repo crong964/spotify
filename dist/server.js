@@ -27,7 +27,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const path_1 = __importDefault(require("path"));
+const path_1 = __importStar(require("path"));
 const fs_1 = __importDefault(require("fs"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const GenreRoute_1 = __importDefault(require("./route/GenreRoute"));
@@ -39,6 +39,10 @@ const LikedSongRoute_1 = __importDefault(require("./route/LikedSongRoute"));
 const RecentSongService_1 = __importDefault(require("./services/RecentSongService"));
 const RecentSongRoute_1 = __importDefault(require("./route/RecentSongRoute"));
 const SearchRoute_1 = __importDefault(require("./route/SearchRoute"));
+const PlayListRoute_1 = __importDefault(require("./route/PlayListRoute"));
+const GenreRouteAdmin_1 = __importDefault(require("./admin/GenreRouteAdmin"));
+const PlayListRouteAdmin_1 = __importDefault(require("./admin/PlayListRouteAdmin"));
+const ContainRouteAdmin_1 = __importDefault(require("./admin/ContainRouteAdmin"));
 const app = (0, express_1.default)();
 app.use("/static", express_1.default.static(path_1.default.join(process.cwd(), "web")));
 app.use("/public", express_1.default.static(path_1.default.join(process.cwd(), "public")));
@@ -132,13 +136,20 @@ app.get("/s", (req, res) => {
 app.get("/gg", (req, res) => {
     res.sendFile(path_1.default.join(process.cwd(), "web/gg.html"));
 });
-//admin
 app.use("/genre", GenreRoute_1.default);
+app.use("/playlist", PlayListRoute_1.default);
+//admin
+app.use("/genre", GenreRouteAdmin_1.default);
+app.use("/playlist", PlayListRouteAdmin_1.default);
+app.use("/contain", ContainRouteAdmin_1.default);
+app.get("/admin", (req, res) => {
+    res.sendFile((0, path_1.join)(process.cwd(), "web/admin.html"));
+});
 app.listen(8000, () => {
     console.log("http://localhost:8000/");
     console.log("http://localhost:8000/gg");
     console.log("http://localhost:8000/auth");
-    console.log("http://localhost:8000/genre");
+    console.log("http://localhost:8000/admin");
     console.log("http://localhost:8000/dashboard");
     console.log("http://localhost:8000/user/signin?account=sontungmtp@enter.com");
     console.log("http://localhost:8000/user/signin?account=PhanManhQuynh@pmq.com");

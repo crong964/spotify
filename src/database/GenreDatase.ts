@@ -68,9 +68,26 @@ export default class GenreDatase {
         return check
     }
     async UpdateName(name: string, id: string) {
-        var sql1 = "UPDATE genre SET Name = ? WHERE Id =? "
-        var check = await Mysql2.query(sql1, [name, id])
+        var sql = "UPDATE genre SET Name = ? WHERE Id =? "
+        var check = await Mysql2.query(sql, [name, id])
         return check
     }
-
+    async GetIdParentByIdplaylist(Idplaylist: string) {
+        var sql = ` SELECT g2.* FROM genre g1,playlist pl, genre g2
+        WHERE pl.Genre_ID=g1.Id AND pl.id= ? AND g1.LeftGenre >= g2.LeftGenre AND g2.RightGenre >= g1.RightGenre`
+        var check = await Mysql2.query(sql, [Idplaylist])
+        return check
+    }
+    async GetAllByLimitFloor(floor: number) {
+        var sql = "SELECT * FROM genre where Floor < ? ORDER BY Floor ASC "
+        var check
+        check = await Mysql2.query(sql, [floor])
+        return check
+    }
+    async GetChildrenByIdParent(idParent:string){
+        var sql = "SELECT g2.* FROM genre g1,genre g2 WHERE g1.id =? AND g1.RightGenre > g2.RightGenre AND g1.LeftGenre < g2.LeftGenre "
+        var check
+        check = await Mysql2.query(sql, [idParent])
+        return check
+    }
 }

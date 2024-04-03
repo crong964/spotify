@@ -1,17 +1,19 @@
 import React, { useState } from "react";
 
 import { SetionList } from "./Setion";
-import RecentList, { RecentPlaylist } from "./RecentPlaylist";
+import RecentList, { RecentPlaylist } from "./Left/RecentPlaylist";
 import Genre, { GenreButtom } from "./Genre";
-import Queue from "./Queue";
+import Queue from "./Left/Queue";
 
-import PlayList, { LikedSongList } from "./PlayList";
+import Playlist, { Artise, LikedSongList } from "./PlayList";
 
 import { useDispatch, useSelector } from "react-redux";
-import PlayingBar from "./PlayingBar";
-import Header from "./Header";
+import PlayingBar from "./Audio/PlayingBar";
+import Header from "./Header/Header";
 import { NaviPage, RootHome } from "./RootRedux";
 import Search from "./Search";
+import Profile from "./Profile";
+import IdGenre from "./IdGenre";
 
 function useIndex() {
   const [queue, SetQueue] = useState(false);
@@ -37,16 +39,22 @@ export default function Index() {
       children = <Genre></Genre>;
       break;
     case "playlist":
-      children = <PlayList></PlayList>;
+      children = <Playlist></Playlist>;
       break;
     case "likedsongs":
       children = <LikedSongList></LikedSongList>;
       break;
     case "artise":
-      children = <PlayList></PlayList>;
+      children = <Artise></Artise>;
       break;
     case "search":
       children = <Search></Search>;
+      break;
+    case "profile":
+      children = <Profile></Profile>;
+      break;
+    case "idgenre":
+      children = <IdGenre></IdGenre>;
       break;
     default:
       children = (
@@ -86,13 +94,14 @@ export default function Index() {
             </div>
           </div>
         </div>
-        <div className="flex-1 w-[80%] bg-[#121212] space-y-1">
-          <div className="relative">
+        <div className="flex-1 w-[100%]  space-y-1">
+          <div className="relative ">
             <Header></Header>
           </div>
 
-          <div className=" overflow-y-scroll h-[82%] scroll-pr-1 relative">
+          <div className=" overflow-y-scroll h-[80%] scroll-pr-1 relative">
             {children}
+            <footer className="h-[200px]"></footer>
           </div>
         </div>
 

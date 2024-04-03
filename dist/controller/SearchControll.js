@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const LikedSongService_1 = __importDefault(require("../services/LikedSongService"));
 const UserService_1 = __importDefault(require("../services/UserService"));
+const LikedSongModel_1 = __importDefault(require("../model/LikedSongModel"));
 class SearchControll {
     constructor() {
     }
@@ -22,9 +23,18 @@ class SearchControll {
             var name = req.body.name;
             var id = req.cookies.id;
             var ls = yield Promise.all([SearchControll.likedSong.SearchName(name, id), SearchControll.user.SearchName(name)]);
+            var songls = [];
+            if (ls[1].length > 0) {
+                var liked = new LikedSongModel_1.default();
+                liked.id_user_liked = req.cookies.id;
+                liked.user_id = ls[1][0].id;
+                songls = yield SearchControll.likedSong.GetAll(liked);
+            }
+            console.log(ls[0]);
             res.json({
                 ls: ls[0],
-                artise: ls[1]
+                artise: ls[1],
+                songls: songls
             });
         });
     }

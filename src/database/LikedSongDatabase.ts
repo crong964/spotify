@@ -44,4 +44,14 @@ export default class LikedSongDatabase {
     check = await Mysql2.query(sql, [iduser, `%${name}%`])
     return check
   }
+  async GetAllByIdPlayList(id_user_liked: string, id_playlist: string) {
+    var sql = `
+     SELECT song.Id, song.SongName,song.imagePath, song.Singer,song.Viewer,song.Duration,likedsong.liked 
+    FROM 
+    song LEFT JOIN likedsong ON song.Id = likedsong.Id and likedsong.id_user_liked=?      
+    LEFT JOIN contain on contain.Song_ID=song.Id
+    WHERE contain.PlayList_id=? And song.status = 1;`;
+    var check = await Mysql2.query(sql, [id_user_liked, id_playlist]);
+    return check;
+  }
 }

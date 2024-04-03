@@ -19,6 +19,8 @@ export function get(url: string, cb: any) {
       cb(v.data);
     })
     .catch((v) => {
+      console.log(v);
+
       cb(null);
     });
 }

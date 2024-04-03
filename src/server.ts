@@ -1,5 +1,5 @@
 import express from "express"
-import path from "path"
+import path, { join } from "path"
 import fs, { createWriteStream, writeFile } from "fs"
 import bodyParser from "body-parser"
 import { v4 as uuidv4 } from 'uuid';
@@ -13,11 +13,17 @@ import LikedSongRoute from "./route/LikedSongRoute";
 import recentSongService, { RecentSongService } from "./services/RecentSongService";
 import RecentSongRoute from "./route/RecentSongRoute";
 import SearchRoute from "./route/SearchRoute";
-
+import PlayListRoute from "./route/PlayListRoute";
+import GenreRouteAdmin from "./admin/GenreRouteAdmin";
+import PlayListRouteAdmin from "./admin/PlayListRouteAdmin";
+import ContainRouteAdmin from "./admin/ContainRouteAdmin";
 
 const app = express()
+
 app.use("/static", express.static(path.join(process.cwd(), "web")))
 app.use("/public", express.static(path.join(process.cwd(), "public")))
+
+
 app.use(cookieParser())
 
 app.use(bodyParser.urlencoded({ extended: false, limit: "500mb" }))
@@ -124,17 +130,22 @@ app.get("/s", (req, res) => {
 app.get("/gg", (req, res) => {
     res.sendFile(path.join(process.cwd(), "web/gg.html"))
 })
+app.use("/genre", GenreRoute)
+app.use("/playlist", PlayListRoute)
 
 
 //admin
-app.use("/genre", GenreRoute)
-
-
+app.use("/genre", GenreRouteAdmin)
+app.use("/playlist", PlayListRouteAdmin)
+app.use("/contain", ContainRouteAdmin)
+app.get("/admin", (req, res) => {
+    res.sendFile(join(process.cwd(), "web/admin.html"))
+})
 app.listen(8000, () => {
     console.log("http://localhost:8000/");
     console.log("http://localhost:8000/gg");
     console.log("http://localhost:8000/auth");
-    console.log("http://localhost:8000/genre");
+    console.log("http://localhost:8000/admin");
     console.log("http://localhost:8000/dashboard");
     console.log("http://localhost:8000/user/signin?account=sontungmtp@enter.com");
     console.log("http://localhost:8000/user/signin?account=PhanManhQuynh@pmq.com");

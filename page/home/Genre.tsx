@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { NaviPage, RootHome } from "./RootRedux";
+import { SetIdGenre, NaviPage, RootHome } from "./RootRedux";
 import { get } from "../config/req";
 interface Genre {
   Id: string;
@@ -27,13 +27,13 @@ export default function Genre() {
   );
   const [genre, SetGenre] = useState<Genre[]>([]);
   useEffect(() => {
-    get("genre/GetAll", (v: any) => {
+    get("genre/GetLimitFloor", (v: any) => {
       SetGenre(v.ls);
     });
   }, []);
   return (
     <div>
-      <div className="text-base font-bold text-white">Duyệt tìm tất cả</div>
+      <div className="text-[24px] font-bold text-white">Duyệt tìm tất cả</div>
       <div
         className={`grid mt-2 ${
           recentList ? "grid-cols-8" : "grid-cols-6 gap-2"
@@ -60,8 +60,13 @@ interface GenreData {
   id: string;
 }
 function GenreData(d: GenreData) {
+  const dispatch = useDispatch();
   return (
     <div
+      onClick={() => {
+        dispatch(NaviPage("idgenre"));
+        dispatch(SetIdGenre(d.id));
+      }}
       className={`bg-[${d.color}] cursor-pointer mb-3 size-[160px] rounded-lg p-2`}
     >
       <div className="text-[24px] font-bold text-white ">{d.name}</div>

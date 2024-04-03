@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { post } from "../config/req";
 import { Page, RootAuth } from "./RootAuth";
 export default function SignIn() {
+  const [account, SetAccount] = useState("");
+  const [password, SetPassword] = useState("");
   const [on, SetOn] = useState(false);
   const dispatch = useDispatch();
   const page = useSelector((state: RootAuth) => state.rootauth.page);
@@ -35,12 +37,19 @@ export default function SignIn() {
             </div>
             <input
               type="text"
+              value={account}
+              onChange={(v) => {
+                SetAccount(v.currentTarget.value);
+              }}
               placeholder="name@domain.com"
               className="border-2 text-white  bg-black border-white p-3 w-full"
             />
             <div className="text-[14px] font-bold text-white">Mật khẩu</div>
             <input
               type="password"
+              onChange={(v) => {
+                SetPassword(v.currentTarget.value);
+              }}
               className="border-2 text-white bg-black border-white p-3 w-full"
             />
             <div className="flex items-center space-x-2">
@@ -60,12 +69,37 @@ export default function SignIn() {
               </div>
               <div className="text-white text-[14px]">nhớ mật khẩu</div>
             </div>
-            <div className="cursor-pointer bg-[#1FDF64] mt-5 p-3 font-bold text-center rounded-full">
+            <div
+              onClick={() => {
+                if (account.length <= 0 || password.length <= 0) {
+                  alert("chưa điền đủ");
+                  return;
+                }
+                post(
+                  "/auth/signin",
+                  {
+                    account: account,
+                    password: password,
+                  },
+                  (v: any) => {
+                    if (v.err) {
+                      alert(v.mess);
+                    } else {
+                      window.location.replace("/");
+                    }
+                  }
+                );
+              }}
+              className="cursor-pointer bg-[#1FDF64] mt-5 p-3 font-bold text-center rounded-full"
+            >
               Đăng nhập
             </div>
-            <div onClick={()=>{
-              dispatch(Page("fotgot"))
-            }} className="text-white hover:text-[#1FDF64] text-center cursor-pointer">
+            <div
+              onClick={() => {
+                dispatch(Page("fotgot"));
+              }}
+              className="text-white hover:text-[#1FDF64] text-center cursor-pointer"
+            >
               Quên mật khẩu của bạn?
             </div>
           </div>

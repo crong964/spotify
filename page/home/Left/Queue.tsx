@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import Song from "./Song";
+import Song from "../Song";
 import { useDispatch, useSelector } from "react-redux";
 import RecentList from "./RecentPlaylist";
-import { RootHome, ShowRecentList } from "./RootRedux";
-import { get } from "../config/req";
+import { RootHome, ShowRecentList } from "../RootRedux";
+import { get } from "../../config/req";
 interface RecentSong {
   Id: string;
   user_id: string;
@@ -24,8 +24,6 @@ export default function Queue() {
   const [recentSongs, SetRecentSongs] = useState<RecentSong[]>([]);
   useEffect(() => {
     get("/rs/", (v: any) => {
-      console.log(v);
-      
       SetRecentSongs(v.ls);
     });
   }, []);
@@ -34,10 +32,10 @@ export default function Queue() {
   ) : (
     <div className="w-[300px] h-full bg-[#121212] rounded-lg  overflow-y-scroll">
       <div className="sticky bg-[#121212] top-0 left-0 flex space-x-3 h-min w-full px-3 rounded-lg py-4 ">
-        <div className=" cursor-pointer font-bold w-max border-b-4 border-green-800 text-white  text-[14px]">
+        <div className=" cursor-pointer font-bold w-max  text-white  text-[14px]">
           Danh sách chờ
         </div>
-        <div className=" cursor-pointer font-bold w-max text-white  text-[14px]">
+        <div className=" cursor-pointer border-b-4 border-green-800 font-bold w-max text-white  text-[14px]">
           Đã phát gần đây
         </div>
         <div

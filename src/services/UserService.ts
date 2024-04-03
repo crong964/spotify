@@ -40,7 +40,15 @@ export class UserService {
         var ls = this.SetList(check)
         return ls
     }
-
+    async GetAccountByAccAndPass(acc: string, pass: string) {
+        var user: UserModel | undefined
+        var check = await this.userDatabae.GetAccountByAccAndPass(acc, pass) as UserModel[]
+        if (check && check.length > 0) {
+            user = new UserModel()
+            user.setAll(check[0])
+        }
+        return user
+    }
     SetList(ls: any) {
         if (ls == undefined) {
             return []
@@ -68,6 +76,11 @@ export class UserService {
     async SearchName(name: string) {
         var ls = await this.userDatabae.SearchName(name)
         return this.SetList(ls)
+    }
+    async Update(d: UserModel) {
+        var check
+        check = await this.userDatabae.Update(d)
+        return check
     }
 }
 

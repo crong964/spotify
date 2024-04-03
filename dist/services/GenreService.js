@@ -62,14 +62,8 @@ class GenreService {
     }
     GetAll() {
         return __awaiter(this, void 0, void 0, function* () {
-            var l = yield this.database.GetAll(), ls = [];
-            for (let i = 0; i < l.length; i++) {
-                const element = l[i];
-                var genre = new GenreModel_1.default();
-                genre.setAll(element);
-                ls.push(genre);
-            }
-            return ls;
+            var l = yield this.database.GetAll();
+            return this.Setls(l);
         });
     }
     GetAllLeftAndRight(Left, Right) {
@@ -153,6 +147,37 @@ class GenreService {
             var check1 = yield this.database.Delete(id);
             return check1;
         });
+    }
+    GetIdParentByIdplaylist(IdPlaylist) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var ls = yield this.database.GetIdParentByIdplaylist(IdPlaylist);
+            return this.Setls(ls);
+        });
+    }
+    GetAllByLimitFloor(floor) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var ls = yield this.database.GetAllByLimitFloor(floor);
+            return this.Setls(ls);
+        });
+    }
+    GetChildrenByIdParent(idParent) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var ls = yield this.database.GetChildrenByIdParent(idParent);
+            return this.Setls(ls);
+        });
+    }
+    Setls(ls) {
+        if (ls == undefined) {
+            return [];
+        }
+        var list = [];
+        for (let i = 0; i < ls.length; i++) {
+            const element = ls[i];
+            var genre = new GenreModel_1.default();
+            genre.setAll(element);
+            list.push(genre);
+        }
+        return list;
     }
 }
 exports.GenreService = GenreService;

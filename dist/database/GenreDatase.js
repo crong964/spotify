@@ -97,8 +97,32 @@ class GenreDatase {
     }
     UpdateName(name, id) {
         return __awaiter(this, void 0, void 0, function* () {
-            var sql1 = "UPDATE genre SET Name = ? WHERE Id =? ";
-            var check = yield Config_1.default.query(sql1, [name, id]);
+            var sql = "UPDATE genre SET Name = ? WHERE Id =? ";
+            var check = yield Config_1.default.query(sql, [name, id]);
+            return check;
+        });
+    }
+    GetIdParentByIdplaylist(Idplaylist) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var sql = ` SELECT g2.* FROM genre g1,playlist pl, genre g2
+        WHERE pl.Genre_ID=g1.Id AND pl.id= ? AND g1.LeftGenre >= g2.LeftGenre AND g2.RightGenre >= g1.RightGenre`;
+            var check = yield Config_1.default.query(sql, [Idplaylist]);
+            return check;
+        });
+    }
+    GetAllByLimitFloor(floor) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var sql = "SELECT * FROM genre where Floor < ? ORDER BY Floor ASC ";
+            var check;
+            check = yield Config_1.default.query(sql, [floor]);
+            return check;
+        });
+    }
+    GetChildrenByIdParent(idParent) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var sql = "SELECT g2.* FROM genre g1,genre g2 WHERE g1.id =? AND g1.RightGenre > g2.RightGenre AND g1.LeftGenre < g2.LeftGenre ";
+            var check;
+            check = yield Config_1.default.query(sql, [idParent]);
             return check;
         });
     }

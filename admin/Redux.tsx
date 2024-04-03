@@ -7,6 +7,7 @@ export interface CounterState {
   load: boolean;
   page: string;
   SelectList: any;
+  idPlaylistEdit: string;
 }
 interface FloorAndID {
   Floor: number;
@@ -25,6 +26,7 @@ var initialState: CounterState = {
   load: false,
   page: "",
   SelectList: {},
+  idPlaylistEdit: "",
 };
 
 export const counterSlice = createSlice({
@@ -40,24 +42,46 @@ export const counterSlice = createSlice({
     SetLoad: (state) => {
       state.load = !state.load;
     },
-    Page: (state, action: PayloadAction<"genre" | "songlist"|"playlist">) => {
+    Page: (
+      state,
+      action: PayloadAction<
+        "genre" | "songlist" | "playlist" | "playlists" | "playlistedit"
+      >
+    ) => {
       state.page = action.payload;
     },
     SelectSong: (state, action: PayloadAction<Song>) => {
-      console.log("das");
-
       if (!state.SelectList[action.payload.Id]) {
         state.SelectList[action.payload.Id] = action.payload;
       } else {
-        state.SelectList[action.payload.Id] = undefined;
+        delete state.SelectList[action.payload.Id];
       }
+    },
+    ReSetSelectSong: (state) => {
+      state.SelectList = {};
+    },
+    RemoveSelectSong: (state, action) => {
+      if (state.SelectList[action.payload]) {
+        delete state.SelectList[action.payload];
+      }
+    },
+    EditPlayList: (state, action) => {
+      state.idPlaylistEdit = action.payload;
     },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { addGenre, SetFloor, SetLoad, SelectSong, Page } =
-  counterSlice.actions;
+export const {
+  addGenre,
+  SetFloor,
+  SetLoad,
+  SelectSong,
+  Page,
+  ReSetSelectSong,
+  EditPlayList,
+  RemoveSelectSong,
+} = counterSlice.actions;
 
 const store = configureStore({
   reducer: {

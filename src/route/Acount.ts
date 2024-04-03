@@ -14,7 +14,7 @@ interface google {
 }
 const client_secret_si = process.env.CLIENT_SECRET_SI;
 const client_id_si = process.env.CLIENT_ID_SI;
-console.log("npm i dotenv",client_id_si);
+console.log("npm i dotenv", client_id_si);
 
 const client_secret_su = process.env.CLIENT_SECRET_SU;
 const client_id_su = process.env.CLIENT_ID_SU;
@@ -24,15 +24,19 @@ Account.get("/", (req, res) => {
   res.sendFile(path.join(process.cwd(), "/web/auth.html"));
 });
 Account.post("/signin", async (req, res) => {
+  console.log(req.body);
   const account = req.body.account
   const password = req.body.password
-  var acc = await userService.GetByAccount(account)
-
-  if (!acc || acc.Password != password) {
-    res.redirect("/auth")
+  var acc = await userService.GetAccountByAccAndPass(account, password)
+  if (!acc) {
+    res.json({
+      err: true,
+      mess: "Tài khoản hoặc mật khẩu không đúng"
+    })
     return
   }
   SetCookie(res, acc)
+  res.redirect("/")
 });
 Account.get("/github", async (req, res) => {
   var code = req.query.code;
@@ -99,7 +103,7 @@ Account.get("/github", async (req, res) => {
   }
 
   SetCookie(res, acc)
-
+  res.redirect("/")
 });
 Account.get("/githubsu", async (req, res) => {
   var code = req.query.code;
@@ -213,12 +217,15 @@ Account.post("/ggin", async (req, res) => {
   //    }
 
   var acc = await userService.GetByAccount(profi.email)
+  console.log(acc);
+
   if (!acc) {
     res.redirect("/auth")
     return
   }
 
   SetCookie(res, acc)
+  res.redirect("/")
 });
 Account.post("/ggup", (req, res) => {
   var g_csrf_token1 = req.body.g_csrf_token;
@@ -257,7 +264,7 @@ Account.post("/ggup", (req, res) => {
     salt: undefined,
     a1: profi.email,
   });
-  console.log(profi);
+
 
   res.cookie("a1", hash.a1);
   res.cookie("a2", hash.a2);
@@ -319,8 +326,6 @@ Account.post("/create", async (req, res) => {
 });
 Account.post("/sendcode", async (req, res) => {
   var account = req.body.account
-  console.log(account);
-
   var d = await userService.GetByAccount(account)
 
   if (d == undefined) {
@@ -391,30 +396,12 @@ Account.post("/vertifycode", async (req, res) => {
   })
 })
 
-
-Account.post("/updatePW", async (req, res) => {
-  var Password = req.body.Password
-  var Account = req.body.Account
-  var d = new UserModel()
-  d.Account = Account
-  d.Password = Password
-
-  var check = await userService.UpdatePassword(d)
-
-  res.json({
-    err: check == undefined
-  })
-
-
-})
-
-
 function SetCookie(res: Response, acc: UserModel) {
   var hash = Hash.CreateHas({ a1: acc.id, outNumber: undefined, salt: undefined })
   res.cookie("id", acc.id, { maxAge: 1000 * 60 * 60 * 24 * 356, httpOnly: true })
   res.cookie("a2", hash.a2, { maxAge: 1000 * 60 * 60 * 24 * 356, httpOnly: true })
   res.cookie("timeSIN", hash.time, { maxAge: 1000 * 60 * 60 * 24 * 356, httpOnly: true })
-  res.redirect("/")
+
 }
 function clearCookie(res: Response) {
   res.clearCookie("id")

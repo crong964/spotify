@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import InforUser from "./InforUser";
+import InforUser from "./Header/InforUser";
 import PlayButtom from "./PlayButtom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootHome, PlaySong } from "./RootRedux";
@@ -24,13 +24,22 @@ export interface Song {
   user_id: string;
   SongName: string;
   Singer: string;
-  Duration: string;
+  Duration: number;
   Viewer: number;
   imagePath: string;
   filePath: string;
   liked: string;
 }
-export default function PlayList() {
+
+interface PlayList {
+  id: string;
+  ImagePath: string;
+  PlayListName: string;
+  Likes: number;
+  Songs: number;
+  Duration: string;
+}
+export function Artise() {
   const idpage = useSelector((state: RootHome) => state.rootHome.idpage);
   const [artise, SetaAtist] = useState<artise>();
   const [songs, SetSongS] = useState<Song[]>([]);
@@ -39,7 +48,6 @@ export default function PlayList() {
   useEffect(() => {
     get(`/user/artisepage/${idpage}`, (v: any) => {
       SetaAtist(v.ls);
-      console.log(v.ls.Banner);
     });
     get(`lsong/getall/${idpage}`, (v: any) => {
       SetSongS(v.ls);
@@ -114,7 +122,7 @@ export function SongList(d: SongList) {
         stt += 1;
         return (
           <SongInPlayList
-            Duration={v.Duration}
+            Duration={v.Duration + ""}
             Id={v.Id}
             Singer={v.Singer}
             SongName={v.SongName}
@@ -129,7 +137,11 @@ export function SongList(d: SongList) {
         );
       })}
 
-      <div className="text-white font-bold">Xem thêm</div>
+      {d.data.length > 0 ? (
+        <div className="text-white font-bold">Xem thêm</div>
+      ) : (
+        <></>
+      )}
     </div>
   );
 }
@@ -177,6 +189,97 @@ export function LikedSongList() {
           Các bài hát
         </div>
         <SongList data={songs} key={"F"} />
+        <footer className="h-5"></footer>
+      </div>
+    </div>
+  );
+}
+
+export default function Playlist() {
+  const idPlayList = useSelector(
+    (state: RootHome) => state.rootHome.idPlayList
+  );
+  const [songs, SetSongS] = useState<Song[]>([]);
+  const [playlist, SetPlayList] = useState<PlayList>({
+    Duration: "",
+    id: "",
+    ImagePath: "",
+    Likes: 0,
+    PlayListName: "",
+    Songs: 0,
+  });
+  useEffect(() => {
+    get(`/playlist/${idPlayList}`, (v: any) => {
+      console.log(v);
+      if (v && !v.err) {
+        SetSongS(v.songs);
+        var time = 0;
+        var song = 0;
+        for (let i = 0; i < v.songs.length; i++) {
+          const element: Song = v.songs[i];
+          time += element.Duration;
+          song += 1;
+        }
+        v.playlist.Duration = time;
+        v.playlist.Songs = song;
+        SetPlayList(v.playlist);
+      }
+    });
+  }, [idPlayList]);
+
+  return (
+    <div className="relative">
+      <div className="bg-gradient-to-r from-green-400 to-blue-500 rounded-t-lg absolute top-0 left-0 w-full h-[320px] flex  flex-col justify-end ">
+        <div className="flex items-end justify-start">
+          <div className="flex z-10 p-4 justify-center items-end space-x-4">
+            <img
+              className="size-[250px] rounded-2xl"
+              src={playlist.ImagePath}
+              alt=""
+              srcSet=""
+            />
+            <div className="flex flex-col">
+              <div className="flex items-center">
+                <span className="font-normal text-[16px] text-white">
+                  playlist
+                </span>
+              </div>
+              <h1>
+                <span className="text-white font-bol text-[50px] font-black">
+                  {playlist.PlayListName}
+                </span>
+              </h1>
+              <div className="flex space-x-4">
+                <span className="text-[16px] font-bold text-white">
+                  {playlist.Songs} bài hát
+                </span>
+                <span className="text-[16px] font-bold text-white">
+                  Khoảng thời gian: {playlist.Duration}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="h-[320px]"></div>
+      <div className="px-4">
+        <div className="flex items-center py-4 space-x-4">
+          <PlayButtom></PlayButtom>
+          <div className="cursor-pointer">
+            <svg
+              className="fill-[#C7C7C7] hover:fill-white size-[45px] "
+              aria-hidden="true"
+              viewBox="0 0 24 24"
+            >
+              <path d="M4.5 13.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm15 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm-7.5 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"></path>
+            </svg>
+          </div>
+        </div>
+        <div className="py-3 font-bold text-[24px]  text-white">
+          Các bài hát
+        </div>
+        <SongList data={songs} />
         <footer className="h-5"></footer>
       </div>
     </div>

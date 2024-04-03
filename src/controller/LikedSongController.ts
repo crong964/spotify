@@ -57,7 +57,6 @@ class LikedSongController {
         temp.id_user_liked = id_user_liked
         var check = await LikedSongController.likedSongService.GetAll(temp)
 
-
         res.json({
             err: check.length == 0,
             ls: check
@@ -73,7 +72,7 @@ class LikedSongController {
             ls: ls
         })
     }
-    
+
 }
 
 var likedSongController = new LikedSongController()

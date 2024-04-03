@@ -62,6 +62,17 @@ class UserService {
             return ls;
         });
     }
+    GetAccountByAccAndPass(acc, pass) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var user;
+            var check = yield this.userDatabae.GetAccountByAccAndPass(acc, pass);
+            if (check && check.length > 0) {
+                user = new UserModel_1.default();
+                user.setAll(check[0]);
+            }
+            return user;
+        });
+    }
     SetList(ls) {
         if (ls == undefined) {
             return [];
@@ -93,6 +104,13 @@ class UserService {
         return __awaiter(this, void 0, void 0, function* () {
             var ls = yield this.userDatabae.SearchName(name);
             return this.SetList(ls);
+        });
+    }
+    Update(d) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var check;
+            check = yield this.userDatabae.Update(d);
+            return check;
         });
     }
 }
