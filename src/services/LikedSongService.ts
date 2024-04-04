@@ -48,8 +48,6 @@ export class LikedSongService {
         for (let i = 0; i < ls.length; i++) {
             const element = ls[i];
             var temp = new LikedSongModel()
-            console.log(__filename,element);
-            
             temp.setAll(element)
             check.push(temp)
         }

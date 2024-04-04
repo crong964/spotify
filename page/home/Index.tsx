@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 
 import { SetionList } from "./Setion";
-import RecentList, { RecentPlaylist } from "./Left/RecentPlaylist";
+import RecentList, { RecentPlaylist } from "./Right/RecentPlaylist";
 import Genre, { GenreButtom } from "./Genre";
-import Queue from "./Left/Queue";
+import Queue from "./Right/Queue";
 
 import Playlist, { Artise, LikedSongList } from "./PlayList";
 
@@ -14,6 +14,7 @@ import { NaviPage, RootHome } from "./RootRedux";
 import Search from "./Search";
 import Profile from "./Profile";
 import IdGenre from "./IdGenre";
+import Discuss from "./Right/Discuss";
 
 function useIndex() {
   const [queue, SetQueue] = useState(false);
@@ -105,6 +106,7 @@ export default function Index() {
           </div>
         </div>
 
+        <Discuss />
         <Queue />
       </div>
       <PlayingBar></PlayingBar>

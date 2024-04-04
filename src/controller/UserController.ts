@@ -34,7 +34,7 @@ class UserController {
             return
         }
         res.json({
-            err: false,
+            err: true,
             u: use
         })
     }

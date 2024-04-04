@@ -63,7 +63,7 @@ function PlayListByGenre(d: PlayListByGenre) {
           <div className="text-[24px] font-bold">{d.genre.Name}</div>
           <div
             className={`grid gap-2 ${
-              !recentList ? "grid-cols-6" : "grid-cols-7 "
+              !recentList ? "grid-cols-7" : "grid-cols-5 "
             }`}
           >
             {ls}

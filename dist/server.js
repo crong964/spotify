@@ -43,6 +43,7 @@ const PlayListRoute_1 = __importDefault(require("./route/PlayListRoute"));
 const GenreRouteAdmin_1 = __importDefault(require("./admin/GenreRouteAdmin"));
 const PlayListRouteAdmin_1 = __importDefault(require("./admin/PlayListRouteAdmin"));
 const ContainRouteAdmin_1 = __importDefault(require("./admin/ContainRouteAdmin"));
+const DiscussRoute_1 = __importDefault(require("./route/DiscussRoute"));
 const app = (0, express_1.default)();
 app.use("/static", express_1.default.static(path_1.default.join(process.cwd(), "web")));
 app.use("/public", express_1.default.static(path_1.default.join(process.cwd(), "public")));
@@ -61,6 +62,7 @@ app.use("/song", Song_Route_1.default);
 app.use("/lsong", LikedSongRoute_1.default);
 app.use("/rs", RecentSongRoute_1.default);
 app.use("/search", SearchRoute_1.default);
+app.use("/discuss", DiscussRoute_1.default);
 app.get("/dashboard", (req, res) => {
     res.sendFile(path_1.default.join(process.cwd(), "web/dashboard.html"));
 });

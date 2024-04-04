@@ -23,7 +23,7 @@ export function SetionList(params: SetionList) {
     <div className="mt-8">
       <div className="text-white text-[24px] font-bold">{params.name}</div>
       <div
-        className={`grid gap-3 ${!recentList ? "grid-cols-6" : "grid-cols-7 "}`}
+        className={`grid gap-3 ${!recentList ? "grid-cols-7" : "grid-cols-5 "}`}
       >
         {artist.map((v) => {
           return (

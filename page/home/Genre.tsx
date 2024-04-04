@@ -36,7 +36,7 @@ export default function Genre() {
       <div className="text-[24px] font-bold text-white">Duyệt tìm tất cả</div>
       <div
         className={`grid mt-2 ${
-          recentList ? "grid-cols-8" : "grid-cols-6 gap-2"
+          recentList ? "grid-cols-6 gap-2" : "grid-cols-8 "
         }`}
       >
         {genre.map((v) => {

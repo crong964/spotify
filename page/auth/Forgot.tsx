@@ -58,6 +58,14 @@ export default function Forgot() {
             >
               Xác nhận
             </div>
+            <div
+              className="text-white hover:text-[#1FDF64] cursor-pointer"
+              onClick={() => {
+                dispatch(Page("signin"));
+              }}
+            >
+              Đăng nhập
+            </div>
           </div>
         </div>
       </div>

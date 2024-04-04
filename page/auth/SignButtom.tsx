@@ -23,7 +23,7 @@ export function SignInGoogleButtom() {
     }
     load();
     return document.getElementById("js")?.remove();
-  });
+  },[]);
   return (
     <SignButtom>
       <div id="loadjs" className="flex justify-center items-center ">
