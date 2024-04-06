@@ -13,7 +13,7 @@ interface Genre {
 interface Song {
   Id: string;
   SongName: string;
-  imagePath: string;
+  SongImage: string;
   status: number;
   Duration: number;
   description: string;
@@ -31,7 +31,7 @@ export default function SongForm() {
 
   const [song, SetSong] = useState<Song>({
     Id: "",
-    imagePath: "",
+    SongImage: "",
     SongName: "",
     status: 0,
     description: "",
@@ -173,7 +173,7 @@ export default function SongForm() {
             className=" px-4 py-2 rounded-full w-full"
           >
             {PreviewNewImage == "" ? (
-              <img src={song.imagePath} alt="" srcSet="" />
+              <img src={song.SongImage} alt="" srcSet="" />
             ) : (
               <img src={PreviewNewImage} alt="" srcSet="" />
             )}
@@ -188,7 +188,7 @@ export default function SongForm() {
                   SetPreviewNewImage(file);
                   SetSong({
                     ...song,
-                    imagePath: file,
+                    SongImage: file,
                   });
                 }
               }}

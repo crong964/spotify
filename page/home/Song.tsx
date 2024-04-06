@@ -34,7 +34,7 @@ interface SongInPlayList {
   Singer: string;
   Duration: string;
   Viewer: number;
-  imagePath: string;
+  SongImage: string;
   filePath: string;
   liked: string;
   stt: number;
@@ -51,7 +51,7 @@ export function SongInPlayList(v: SongInPlayList) {
         className="col-span-1 flex items-center space-x-2"
       >
         <div className="">{v.stt}</div>
-        <img className="size-9" src={v.imagePath} alt="" srcSet="" />
+        <img className="size-9" src={v.SongImage} alt="" srcSet="" />
       </div>
       <div className="col-span-2">{v.SongName}</div>
       <div className="col-span-2 text-[14px] text-stone-500">{v.Viewer}</div>

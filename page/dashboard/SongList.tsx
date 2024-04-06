@@ -24,7 +24,7 @@ export default function SongList() {
         Duration={v.Duration}
         Id={v.Id}
         Viewer={v.Viewer}
-        imagePath={v.imagePath}
+        SongImage={v.SongImage}
       />
     );
   });
@@ -46,7 +46,7 @@ export default function SongList() {
   );
 }
 interface Song {
-  imagePath: string;
+  SongImage: string;
   SongName: string;
   status: string;
   type: string;
@@ -64,7 +64,7 @@ interface Song {
 // [2]     SongName: '',
 // [2]     Viewer: 0,
 // [2]     User_id: undefined
-//imagePath
+//SongImage
 function Song(d: Song) {
   const idSong = useSelector((state: RootNaviRedux) => state.navi.idSong);
   const dispatch = useDispatch();
@@ -72,7 +72,7 @@ function Song(d: Song) {
     <div className="relative text-[14px] text-[#6C6C6C] w-full font-bold p-4 hover:bg-[#F2F2F2]">
       <div className="grid grid-cols-10 items-center cursor-pointer">
         <img
-          src={d.imagePath}
+          src={d.SongImage}
           alt=""
           srcSet=""
           className="size-[50px] rounded-lg "

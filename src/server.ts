@@ -18,6 +18,7 @@ import GenreRouteAdmin from "./admin/GenreRouteAdmin";
 import PlayListRouteAdmin from "./admin/PlayListRouteAdmin";
 import ContainRouteAdmin from "./admin/ContainRouteAdmin";
 import DiscussRoute from "./route/DiscussRoute";
+import NotificationRoute from "./route/NotificationRoute";
 
 const app = express()
 
@@ -45,6 +46,7 @@ app.use("/lsong", LikedSongRoute)
 app.use("/rs", RecentSongRoute)
 app.use("/search", SearchRoute)
 app.use("/discuss", DiscussRoute)
+app.use("/notification", NotificationRoute)
 app.get("/dashboard", (req, res) => {
     res.sendFile(path.join(process.cwd(), "web/dashboard.html"))
 })

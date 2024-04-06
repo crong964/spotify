@@ -10,4 +10,6 @@ DiscussRoute.post("/", DiscussController_1.default.GetMainDiscuss);
 DiscussRoute.post("/ReplayList", DiscussController_1.default.GetReplayDiscuss);
 DiscussRoute.post("/add", DiscussController_1.default.PostDisscus);
 DiscussRoute.post("/replay", DiscussController_1.default.PostReplay);
+DiscussRoute.post("/delete", DiscussController_1.default.Delete);
+DiscussRoute.post;
 exports.default = DiscussRoute;

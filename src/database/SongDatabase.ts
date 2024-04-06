@@ -4,9 +4,9 @@ import Mysql2 from "../config/Config"
 class SongDatabase {
 
     async Add(d: SongModel) {
-        var sql = " INSERT INTO song(Id, user_id, genre_id, Singer, Duration, PublicDate,imagePath,filePath) VALUES(?, ?, ?, ?, ?, ?,?,?)"
+        var sql = " INSERT INTO song(Id, user_id, genre_id, Singer, Duration, PublicDate,SongImage,filePath) VALUES(?, ?, ?, ?, ?, ?,?,?)"
         var check
-        check = await Mysql2.query(sql, [d.Id, d.user_id, d.Genre_id, d.Singer, d.Duration, d.publicDate, d.imagePath, d.filePath])
+        check = await Mysql2.query(sql, [d.Id, d.user_id, d.Genre_id, d.Singer, d.Duration, d.publicDate, d.SongImage, d.filePath])
         return check
     }
     async Get(id: string) {
@@ -28,11 +28,11 @@ class SongDatabase {
         return check
     }
     async Update(d: SongModel) {
-        var sql = `UPDATE song Set genre_id =?, SongName=?, Duration=?, publicDate=?, description=?,imagePath=?,filePath=?, Singer=?
+        var sql = `UPDATE song Set genre_id =?, SongName=?, Duration=?, publicDate=?, description=?,SongImage=?,filePath=?, Singer=?
         WHERE Id =?`
 
         var check
-        check = await Mysql2.query(sql, [d.Genre_id, d.SongName, d.Duration, d.publicDate, d.description, d.imagePath, d.filePath, d.Singer, d.Id])
+        check = await Mysql2.query(sql, [d.Genre_id, d.SongName, d.Duration, d.publicDate, d.description, d.SongImage, d.filePath, d.Singer, d.Id])
         return check
     }
     async UpStatus(d: SongModel) {
@@ -59,6 +59,18 @@ class SongDatabase {
             LIMIT ?,?`
         var check
         check = await Mysql2.query(sql, [idGenre, limit.start, limit.end])
+        return check
+    }
+    async IncreaseNumberDiscuss(SongId: string,n:number) {
+        var sql = `UPDATE song SET dicussquality=dicussquality + ? WHERE id=?`
+        var check
+        check = await Mysql2.query(sql, [n,SongId])
+        return check
+    }
+    async DeincreaseNumberDiscuss(SongId: string,n:number) {
+        var sql = `UPDATE song SET dicussquality=dicussquality - ? WHERE id=?`
+        var check
+        check = await Mysql2.query(sql, [n,SongId])
         return check
     }
 }

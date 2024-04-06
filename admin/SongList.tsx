@@ -9,7 +9,7 @@ interface Song {
   Singer: string;
   Duration: string;
   Viewer: number;
-  imagePath: string;
+  SongImage: string;
   filePath: string;
   stt: number;
 }
@@ -35,7 +35,7 @@ export default function SongList() {
             SongName={v.SongName}
             Viewer={v.Viewer}
             filePath={v.filePath}
-            imagePath={v.imagePath}
+            SongImage={v.SongImage}
             stt={stt}
             user_id={v.user_id}
             key={v.Id}
@@ -53,14 +53,14 @@ export function Song(d: Song) {
     <div
       onClick={() => {
         dispatch(
-          SelectSong({ Id: d.Id, imagePath: d.imagePath, SongName: d.SongName })
+          SelectSong({ Id: d.Id, SongImage: d.SongImage, SongName: d.SongName })
         );
       }}
       className="grid hover:bg-slate-300 grid-cols-6 cursor-pointer space-x-2 font-bold p-4 rounded-lg items-center"
     >
       <div className="col-span-3 flex items-center space-x-2">
         <div className="">{d.stt}</div>
-        <img className="size-9" src={d.imagePath} alt="" srcSet="" />
+        <img className="size-9" src={d.SongImage} alt="" srcSet="" />
       </div>
       <div className="col-span-2">{d.SongName}</div>
       <div className="col-span-1 flex items-center space-x-4">

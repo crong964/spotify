@@ -18,7 +18,7 @@ interface SongForm {
   Singer: string;
   Duration: string;
   Viewer: number;
-  imagePath: string;
+  SongImage: string;
   filePath: string;
   stt: number;
 }
@@ -28,7 +28,7 @@ interface OldSong extends SongForm {
 interface PlayListFormData {
   id: string;
   Genre_ID: string;
-  ImagePath: string;
+  SongImage: string;
   PlayListName: string;
   Discripition: string;
 }
@@ -52,13 +52,13 @@ function PlayListFormData() {
     (state: RootState) => state.navi.idPlaylistEdit
   );
   const [file, SetFile] = useState<File>();
-  const [newImagePath, SetNewImagePath] = useState("");
+  const [newSongImage, SetNewSongImage] = useState("");
 
   const [playlist, SetPlayList] = useState<PlayListFormData>({
     Discripition: "",
     Genre_ID: "",
     id: "",
-    ImagePath: "",
+    SongImage: "",
     PlayListName: "",
   });
   useEffect(() => {
@@ -94,7 +94,7 @@ function PlayListFormData() {
         SongName={element.SongName}
         Viewer={element.Viewer}
         filePath={element.filePath}
-        imagePath={element.imagePath}
+        SongImage={element.SongImage}
         stt={stt}
         user_id={element.user_id}
         key={element.Id}
@@ -124,23 +124,23 @@ function PlayListFormData() {
         <div className="anh w-1/2">
           <div className="mb-2">Ảnh đại diên</div>
           <label
-            htmlFor={playlist.ImagePath == "" ? "gdas" : "avatar"}
+            htmlFor={playlist.SongImage == "" ? "gdas" : "avatar"}
             className=" px-4 py-2 rounded-full w-full"
           >
             <div className="w-full">
-              {newImagePath == "" ? (
-                <img className="size-[200px]" src={playlist.ImagePath} />
+              {newSongImage == "" ? (
+                <img className="size-[200px]" src={playlist.SongImage} />
               ) : (
                 <div>
                   <div
                     className="px-4 py-2 w-max bg-blue-600 rounded-full my-2"
                     onClick={() => {
-                      SetNewImagePath("");
+                      SetNewSongImage("");
                     }}
                   >
                     xóa
                   </div>
-                  <img className="size-[200px]" src={newImagePath} />
+                  <img className="size-[200px]" src={newSongImage} />
                 </div>
               )}
             </div>
@@ -154,7 +154,7 @@ function PlayListFormData() {
                 if (files != null && files.length > 0) {
                   var file = URL.createObjectURL(files[0]);
                   SetFile(files[0]);
-                  SetNewImagePath(file);
+                  SetNewSongImage(file);
                 }
               }}
             />
@@ -211,7 +211,7 @@ function AdditionalPlayList(d: AdditionalPlayList) {
         SongName={element.SongName}
         Viewer={element.Viewer}
         filePath={element.filePath}
-        imagePath={element.imagePath}
+        SongImage={element.SongImage}
         stt={stt}
         user_id={element.user_id}
         key={element.Id}
@@ -241,7 +241,7 @@ function OldSong(d: OldSong) {
     >
       <div className="col-span-3 flex items-center space-x-2">
         <div className="">{d.stt}</div>
-        <img className="size-9" src={d.imagePath} alt="" srcSet="" />
+        <img className="size-9" src={d.SongImage} alt="" srcSet="" />
       </div>
       <div className="col-span-2">{d.SongName}</div>
       <div className="col-span-1 flex items-center space-x-4">

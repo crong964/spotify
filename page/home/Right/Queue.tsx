@@ -13,7 +13,7 @@ interface RecentSong {
   Duration: string;
   Viewer: number;
   description: string;
-  imagePath: string;
+  SongImage: string;
   status: number;
   publicDate: string;
   filePath: string;
@@ -28,7 +28,7 @@ export default function Queue() {
       SetRecentSongs(v.ls);
     });
   }, []);
-  return recentList && Right == "Queue" ? (
+  return (
     <div className="w-[400px] h-full bg-[#121212] rounded-lg  overflow-y-scroll">
       <div className="sticky bg-[#121212] top-0 left-0 flex space-x-3 h-min w-full px-3 rounded-lg py-4 ">
         <div className=" cursor-pointer font-bold w-max  text-white  text-[14px]">
@@ -58,7 +58,7 @@ export default function Queue() {
         {recentSongs.map((v) => {
           return (
             <Song
-              image={v.imagePath}
+              image={v.SongImage}
               name={v.SongName}
               singer={v.Singer}
               Id={v.Id}
@@ -68,7 +68,5 @@ export default function Queue() {
         })}
       </div>
     </div>
-  ) : (
-    <></>
   );
 }

@@ -1,6 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class BaseModel {
+    constructor() {
+        this.createtime = "";
+    }
     setAll(d) {
         for (const key in this) {
             if (d[key] != undefined) {

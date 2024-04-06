@@ -13,40 +13,32 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const Config_1 = __importDefault(require("../config/Config"));
-class ContainDatabse {
-    constructor() {
-    }
+class NotificationDatase {
     Add(d) {
         return __awaiter(this, void 0, void 0, function* () {
-            var sql = " INSERT INTO contain(Song_id, PlayList_id) VALUES (?,?) ";
-            var check;
-            check = yield Config_1.default.query(sql, [d.Song_id, d.PlayList_id]);
+            var sql = "INSERT INTO notification(receiver_id, Discuss_Id, Song_Id, replay_user_id) VALUES (?,?,?,?)";
+            var check = yield Config_1.default.query(sql, [d.receiver_id, d.Discuss_Id, d.Song_Id, d.replay_user_id]);
             return check;
         });
     }
-    Get(d) {
+    GetAllByUserid(receiver_id) {
         return __awaiter(this, void 0, void 0, function* () {
-            var sql = ` SELECT * FROM contain WHERE Song_id=? AND PlayList_id=? `;
-            var check;
-            check = yield Config_1.default.query(sql, [d.Song_id, d.PlayList_id]);
+            var sql = `SELECT notification.*,song.SongImage,song.SongName,discuss.User_Id,discuss.Parent_discuss_Id, discuss.Replay_Discuss_Id,discuss.Content,discuss.Song_Id,discuss.Parent_discuss_Id ,user.pathImage,user.Name 
+        FROM notification 
+        LEFT JOIN discuss ON notification.Discuss_Id=discuss.Discuss_Id
+        LEFT JOIN song ON notification.Song_Id=song.Id
+        LEFT JOIN user ON notification.replay_user_id=user.id
+        WHERE notification.receiver_id=? `;
+            var check = yield Config_1.default.query(sql, [receiver_id]);
             return check;
         });
     }
-    Delete(d) {
+    Delete(discuss_id, receiver_id) {
         return __awaiter(this, void 0, void 0, function* () {
-            var sql = `DELETE FROM contain WHERE Song_id=? AND PlayList_id=? `;
-            var check;
-            check = yield Config_1.default.query(sql, [d.Song_id, d.PlayList_id]);
-            return check;
-        });
-    }
-    GetAllByPlayList(PlayList_id) {
-        return __awaiter(this, void 0, void 0, function* () {
-            var sql = "SELECT song.Id,song.SongName,song.Viewer,song.Singer,song.Duration,song.filePath,song.SongImage, contain.TimeCreate FROM contain,song WHERE contain.Song_ID=song.Id AND contain.PlayList_id=?";
-            var check;
-            check = yield Config_1.default.query(sql, [PlayList_id]);
+            var sql = "DELETE FROM notification WHERE discuss_id=? AND receiver_id=?";
+            var check = yield Config_1.default.query(sql, [discuss_id, receiver_id]);
             return check;
         });
     }
 }
-exports.default = ContainDatabse;
+exports.default = NotificationDatase;

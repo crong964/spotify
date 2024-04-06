@@ -16,9 +16,9 @@ const Config_1 = __importDefault(require("../config/Config"));
 class SongDatabase {
     Add(d) {
         return __awaiter(this, void 0, void 0, function* () {
-            var sql = " INSERT INTO song(Id, user_id, genre_id, Singer, Duration, PublicDate,imagePath,filePath) VALUES(?, ?, ?, ?, ?, ?,?,?)";
+            var sql = " INSERT INTO song(Id, user_id, genre_id, Singer, Duration, PublicDate,SongImage,filePath) VALUES(?, ?, ?, ?, ?, ?,?,?)";
             var check;
-            check = yield Config_1.default.query(sql, [d.Id, d.user_id, d.Genre_id, d.Singer, d.Duration, d.publicDate, d.imagePath, d.filePath]);
+            check = yield Config_1.default.query(sql, [d.Id, d.user_id, d.Genre_id, d.Singer, d.Duration, d.publicDate, d.SongImage, d.filePath]);
             return check;
         });
     }
@@ -48,10 +48,10 @@ class SongDatabase {
     }
     Update(d) {
         return __awaiter(this, void 0, void 0, function* () {
-            var sql = `UPDATE song Set genre_id =?, SongName=?, Duration=?, publicDate=?, description=?,imagePath=?,filePath=?, Singer=?
+            var sql = `UPDATE song Set genre_id =?, SongName=?, Duration=?, publicDate=?, description=?,SongImage=?,filePath=?, Singer=?
         WHERE Id =?`;
             var check;
-            check = yield Config_1.default.query(sql, [d.Genre_id, d.SongName, d.Duration, d.publicDate, d.description, d.imagePath, d.filePath, d.Singer, d.Id]);
+            check = yield Config_1.default.query(sql, [d.Genre_id, d.SongName, d.Duration, d.publicDate, d.description, d.SongImage, d.filePath, d.Singer, d.Id]);
             return check;
         });
     }
@@ -83,6 +83,22 @@ class SongDatabase {
             LIMIT ?,?`;
             var check;
             check = yield Config_1.default.query(sql, [idGenre, limit.start, limit.end]);
+            return check;
+        });
+    }
+    IncreaseNumberDiscuss(SongId, n) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var sql = `UPDATE song SET dicussquality=dicussquality + ? WHERE id=?`;
+            var check;
+            check = yield Config_1.default.query(sql, [n, SongId]);
+            return check;
+        });
+    }
+    DeincreaseNumberDiscuss(SongId, n) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var sql = `UPDATE song SET dicussquality=dicussquality - ? WHERE id=?`;
+            var check;
+            check = yield Config_1.default.query(sql, [n, SongId]);
             return check;
         });
     }

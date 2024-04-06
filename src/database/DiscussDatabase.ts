@@ -9,10 +9,16 @@ export default class DiscussDatabase {
         check = await Mysql2.query(sql, [d.User_Id, d.Discuss_Id, d.Parent_discuss_Id, d.Replay_Discuss_Id, d.Content, d.Song_Id, d.Type])
         return check
     }
-    async Increase(Parent_discuss_Id: string) {
-        var sql = "UPDATE discuss SET Replay_quality = Replay_quality + 1  WHERE Discuss_Id= ?"
+    async Increase(Parent_discuss_Id: string, n: number) {
+        var sql = "UPDATE discuss SET Replay_quality = Replay_quality + ? WHERE Discuss_Id= ?"
         var check
-        check = await Mysql2.query(sql, [Parent_discuss_Id])
+        check = await Mysql2.query(sql, [n, Parent_discuss_Id])
+        return check
+    }
+    async DeIncrease(Parent_discuss_Id: string, n: number) {
+        var sql = "UPDATE discuss SET Replay_quality = Replay_quality + ?  WHERE Discuss_Id= ?"
+        var check
+        check = await Mysql2.query(sql, [n, Parent_discuss_Id])
         return check
     }
     async GetMainDiscussBySong_Id(Song_Id: string) {
@@ -31,6 +37,19 @@ export default class DiscussDatabase {
         var sql = "SELECT * FROM discuss  WHERE Discuss_Id=?"
         var check
         check = await Mysql2.query(sql, [Discuss_Id])
+        return check
+    }
+
+    async Delete(Discuss_Id: string) {
+        var sql = "DELETE FROM discuss WHERE Discuss_Id=?"
+        var check
+        check = await Mysql2.query(sql, [Discuss_Id])
+        return check
+    }
+    async DeleteChildren(Parent_discuss_Id: string) {
+        var sql = "DELETE FROM discuss WHERE Parent_discuss_Id=?"
+        var check
+        check = await Mysql2.query(sql, [Parent_discuss_Id])
         return check
     }
 }

@@ -22,11 +22,19 @@ class DiscussDatabase {
             return check;
         });
     }
-    Increase(Parent_discuss_Id) {
+    Increase(Parent_discuss_Id, n) {
         return __awaiter(this, void 0, void 0, function* () {
-            var sql = "UPDATE discuss SET Replay_quality = Replay_quality + 1  WHERE Discuss_Id= ?";
+            var sql = "UPDATE discuss SET Replay_quality = Replay_quality + ? WHERE Discuss_Id= ?";
             var check;
-            check = yield Config_1.default.query(sql, [Parent_discuss_Id]);
+            check = yield Config_1.default.query(sql, [n, Parent_discuss_Id]);
+            return check;
+        });
+    }
+    DeIncrease(Parent_discuss_Id, n) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var sql = "UPDATE discuss SET Replay_quality = Replay_quality + ?  WHERE Discuss_Id= ?";
+            var check;
+            check = yield Config_1.default.query(sql, [n, Parent_discuss_Id]);
             return check;
         });
     }
@@ -51,6 +59,22 @@ class DiscussDatabase {
             var sql = "SELECT * FROM discuss  WHERE Discuss_Id=?";
             var check;
             check = yield Config_1.default.query(sql, [Discuss_Id]);
+            return check;
+        });
+    }
+    Delete(Discuss_Id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var sql = "DELETE FROM discuss WHERE Discuss_Id=?";
+            var check;
+            check = yield Config_1.default.query(sql, [Discuss_Id]);
+            return check;
+        });
+    }
+    DeleteChildren(Parent_discuss_Id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var sql = "DELETE FROM discuss WHERE Parent_discuss_Id=?";
+            var check;
+            check = yield Config_1.default.query(sql, [Parent_discuss_Id]);
             return check;
         });
     }

@@ -27,7 +27,6 @@ export default function Profile() {
     get("/user", (v: any) => {
       if (!v.err) {
         SetProFile(v.u);
-        console.log(v);
       }
     });
   }, []);

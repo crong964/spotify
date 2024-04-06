@@ -9,13 +9,15 @@ export default class SongModel extends BaseModel {
     Duration: string
     Viewer: number
     description: string
-    imagePath: string
+    SongImage: string
     status: number
     publicDate: string
     filePath: string
+    dicussquality: number
     constructor() {
         super()
-        this.imagePath = ""
+        this.dicussquality = 0
+        this.SongImage = ""
         this.description = ""
         this.Id = ""
         this.Duration = ""

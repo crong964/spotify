@@ -53,6 +53,18 @@ export class SongService {
         check = await this.songDatabase.GetSongByGenre(idGenre, p) as []
         return this.SetLs(check)
     }
+    async IncreaseNumberDiscuss(SongId: string, n?: number) {
+        n = n || 1
+        var check
+        check = await this.songDatabase.IncreaseNumberDiscuss(SongId, n)
+        return check
+    }
+    async DeincreaseNumberDiscuss(SongId: string, n?: number) {
+        n = n || 1
+        var check
+        check = await this.songDatabase.DeincreaseNumberDiscuss(SongId, n)
+        return check
+    }
     SetLs(check: any) {
         if (check == undefined) {
             return []

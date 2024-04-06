@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
-import { RootHome, ShowRecentList } from "../RootRedux";
+import { RootHome, SetdeleteDiscuss, ShowRecentList } from "../RootRedux";
 import { useDispatch, useSelector } from "react-redux";
 import { post } from "../../config/req";
+import Time from "../../config/hepler";
 
 interface MainDiscuss {
   Discuss_Id: string;
@@ -9,6 +10,8 @@ interface MainDiscuss {
   Content: string;
   Name: string;
   pathImage: string;
+  User_Id: string;
+  createtime: string;
 }
 interface Replay {
   Parent_discuss_Id: string;
@@ -16,71 +19,95 @@ interface Replay {
   Discuss_Id: string;
   Name: string;
   pathImage: string;
+  User_Id: string;
+  createtime: string;
+  SetReplay(d: any): void;
 }
-export default function Discuss() {
-  const recentList = useSelector((s: RootHome) => s.rootHome.recentList);
-  const Right = useSelector((state: RootHome) => state.rootHome.Right);
+
+interface Discuss {
+  idsong: string;
+}
+export default function Discuss(data: Discuss) {
+  const delateDiscuss = useSelector(
+    (state: RootHome) => state.rootHome.DeleteDiscuss
+  );
+
   const [mainDiscussList, SetMainDiscussList] = useState<MainDiscuss[]>([]);
   const idsong = useSelector((state: RootHome) => state.rootHome.idSong);
+  const [dicussquality, SetDicussQuality] = useState(0);
   const [content, SetContent] = useState("");
 
   useEffect(() => {
     post("/discuss/", { SongId: idsong }, (v: any) => {
       SetMainDiscussList(v.ls);
-      console.log(v);
+      SetDicussQuality(v.song.dicussquality);
+      localStorage.setItem("id", v.id);
     });
   }, [idsong]);
+
+  useEffect(() => {
+    if (delateDiscuss != "") {
+    }
+    SetMainDiscussList([
+      ...mainDiscussList.filter((v) => {
+        return v.Discuss_Id != delateDiscuss;
+      }),
+    ]);
+  }, [delateDiscuss]);
+
   return (
-    <div className="">
-      {recentList && Right == "Discuss" ? (
-        <div className="bg-[#121212] space-y-4 h-full w-[400px]">
-          <div className="text-white rounded-lg h-[90%] overflow-y-scroll">
-            <HeaderDiscuss num={mainDiscussList.length}></HeaderDiscuss>
-            <MainDiscussList list={mainDiscussList} />
-          </div>
-          <div className=" bg-white py-2 px-1 w-full flex justify-between">
-            <div className="overflow-y-hidden w-[70%]">
-              <textarea
-                onChange={(v) => {
-                  SetContent(v.currentTarget.value);
-                }}
-                className="w-full over p-3 focus:outline-none border-b border-black"
-                id=""
-                cols={30}
-                rows={1}
-              ></textarea>
-            </div>
-            <button
-              onClick={() => {
-                var song = localStorage.getItem("song");
-                if (!song) {
-                  return;
-                }
-                if (content.length <= 0) {
-                  alert("chưa nhập ");
-                  return;
-                }
-                post(
-                  "/discuss/add",
-                  { Song_Id: JSON.parse(song).Id, Content: content },
-                  (v: any) => {}
-                );
-              }}
-              className={`${
-                content.length <= 0 ? "bg-black" : "bg-[#1FDF64]"
-              } text-white px-2 py-1 rounded-3xl`}
-            >
-              Bình luận
-            </button>
-          </div>
+    <div className="bg-[#121212] space-y-4 h-full w-[400px]">
+      <div className="text-white rounded-lg h-[90%] overflow-y-scroll">
+        <HeaderDiscuss num={dicussquality}></HeaderDiscuss>
+        <MainDiscussList list={mainDiscussList} />
+      </div>
+      <div className=" bg-black py-2 px-1 w-full flex justify-between">
+        <div className="overflow-y-hidden w-[70%]">
+          <textarea
+            onChange={(v) => {
+              if (v.currentTarget.value.length > 200) {
+                return;
+              }
+              SetContent(v.currentTarget.value);
+            }}
+            className="w-full text-white over bg-black p-3 focus:outline-none border-b border-white"
+            id=""
+            cols={30}
+            rows={1}
+            value={content}
+          ></textarea>
         </div>
-      ) : (
-        <></>
-      )}
+        <button
+          onClick={() => {
+            var song = localStorage.getItem("song");
+            if (!song) {
+              return;
+            }
+            if (content.length <= 0) {
+              alert("chưa nhập ");
+              return;
+            }
+            post(
+              "/discuss/add",
+              { Song_Id: idsong, Content: content },
+              (v: any) => {
+                if (!v.err) {
+                  SetMainDiscussList([...mainDiscussList, v.discuss]);
+                  SetContent("");
+                }
+              }
+            );
+          }}
+          className={`${
+            content.length <= 0 ? "bg-black" : "bg-[#1FDF64]"
+          }  px-2  rounded-3xl`}
+        >
+          Bình luận
+        </button>
+      </div>
     </div>
   );
 }
-
 function MainDiscuss(d: MainDiscuss) {
   const contentRef = useRef<HTMLDivElement>(null);
   const [clamped, SetClamped] = useState(false);
@@ -89,33 +116,54 @@ function MainDiscuss(d: MainDiscuss) {
   const [showReplay, SetShowReplay] = useState(false);
   const [content, SetContent] = useState("");
   const [replaylist, SetReplayList] = useState<Replay[]>([]);
+  const [avatar, SetAvatar] = useState("");
+  const idsong = useSelector((state: RootHome) => state.rootHome.idSong);
+  const delateDiscuss = useSelector(
+    (state: RootHome) => state.rootHome.DeleteDiscuss
+  );
   async function handle() {
     if (contentRef && contentRef.current) {
-      console.log(contentRef);
       SetClamped(
         contentRef.current.scrollHeight > contentRef.current.clientHeight
       );
+      SetAvatar(JSON.parse(localStorage.getItem("userinfor") as any).pathImage);
     }
+  }
+
+  useEffect(() => {
+    SetReplayList([
+      ...replaylist.filter((v) => {
+        return v.Discuss_Id != delateDiscuss;
+      }),
+    ]);
+  }, [delateDiscuss]);
+  function Set(v: any) {
+    SetReplayList([...replaylist, v]);
   }
 
   function HandleSetShowOrtherDiscuss() {
     SetShowReplay(!showReplay);
   }
   useEffect(() => {
-    window.addEventListener("resize", handle);
-    return () => window.removeEventListener("resize", handle);
+    handle();
   }, []);
   return (
-    <div className="grid grid-cols-7  text-[16px] mt-1">
+    <div className="grid grid-cols-10  text-[16px] mt-1">
       <img
         src={d.pathImage}
         alt=""
-        className="col-span-1 size-[50px] rounded-full"
+        className="col-span-2 size-[50px] rounded-full"
         srcSet=""
       />
-      <div className=" space-y-2 col-span-6">
-        <div>{d.Name}</div>
-        <div ref={contentRef} className={`${clamped ? "line-clamp-3" : ""}`}>
+      <div className=" space-y-2 col-span-7">
+        <div className=" flex p-2">
+          <div className="text-[13px] mr-2 font-bold">{d.Name}</div>{" "}
+          <Time time={d.createtime} />
+        </div>
+        <div
+          ref={contentRef}
+          className={`${!isExpand ? "line-clamp-2" : ""} text-[14px]`}
+        >
           {d.Content}
         </div>
         <div className="xem them neu cos">
@@ -125,19 +173,19 @@ function MainDiscuss(d: MainDiscuss) {
                 <strong
                   className="cursor-pointer"
                   onClick={() => {
-                    SetIsExpand(!clamped);
+                    SetIsExpand(!isExpand);
                   }}
                 >
-                  xem thêm
+                  ẩn bớt
                 </strong>
               ) : (
                 <strong
                   className="cursor-pointer"
                   onClick={() => {
-                    SetIsExpand(!clamped);
+                    SetIsExpand(!isExpand);
                   }}
                 >
-                  ẩn bớt
+                  xem thêm
                 </strong>
               )}
             </>
@@ -160,12 +208,16 @@ function MainDiscuss(d: MainDiscuss) {
         )}
       </div>
 
+      <div className="col-span-1 relative self-start">
+        <Action Discuss_id={d.Discuss_Id} User_id={d.User_Id} />
+      </div>
+
       {!replay ? (
         <div className="input replay col-span-full my-1">
           <div className="grid grid-cols-8 text-[16px] mt-1">
             <div className="col-span-1"></div>
             <img
-              src="https://yt3.ggpht.com/EkVoaVZHZczMS4hz6NFPI1xdzmdFwh9PT8canS92TvtmZp3tHUEdNVem55RQIeFQsYUlextLzw=s88-c-k-c0x00ffffff-no-rj"
+              src={avatar}
               alt=""
               className="col-span-1 size-[25px] rounded-full"
               srcSet=""
@@ -182,6 +234,7 @@ function MainDiscuss(d: MainDiscuss) {
                 }}
                 name=""
                 id=""
+                value={content}
                 cols={30}
                 rows={1}
                 className="bg-[#121212] focus:outline-none w-full py-2 text-white border-b border-white"
@@ -205,8 +258,18 @@ function MainDiscuss(d: MainDiscuss) {
                     Replay_Discuss_Id: d.Discuss_Id,
                     Parent_discuss_Id: d.Discuss_Id,
                     Content: content,
+                    Song_Id: idsong,
                   },
-                  (v: any) => {}
+                  (v: any) => {
+                    if (!v.err) {
+                      alert("thanh cong ");
+                      Set(v.discuss);
+                      SetContent("");
+                      d.Replay_quality += 1;
+                    } else {
+                      alert("tb");
+                    }
+                  }
                 );
               }}
               className="text-[#1FDF64] cursor-pointer hover:text-white"
@@ -219,23 +282,22 @@ function MainDiscuss(d: MainDiscuss) {
         <></>
       )}
 
-      {d.Replay_quality == 0 ? (
+      {replaylist.length == 0 && d.Replay_quality == 0 ? (
         <></>
       ) : (
-        <div>
-          {showReplay ? (
-            <div className="grid grid-cols-8 my-1">
+        <div className="col-span-full">
+          <div className="grid grid-cols-8">
+            <div className="col-span-2"></div>
+            {showReplay ? (
               <div
                 onClick={() => {
                   HandleSetShowOrtherDiscuss();
                 }}
-                className="text-[#1FDF64]  hover:text-white col-end-7 w-max cursor-pointer"
+                className="text-[#1FDF64]  hover:text-white col-span-2 w-max cursor-pointer"
               >
                 ẩn phản hồi
               </div>
-            </div>
-          ) : (
-            <div className="grid grid-cols-8 my-1">
+            ) : (
               <div
                 onClick={() => {
                   HandleSetShowOrtherDiscuss();
@@ -244,34 +306,33 @@ function MainDiscuss(d: MainDiscuss) {
                     { ParentId: d.Discuss_Id },
                     (v: any) => {
                       SetReplayList(v.ls);
-                      console.log(v);
                     }
                   );
                 }}
-                className="text-[#1FDF64]  hover:text-white col-end-7 w-max cursor-pointer"
+                className="text-[#1FDF64]  hover:text-white col-span-2 w-max cursor-pointer"
               >
                 {d.Replay_quality} phản hồi
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       )}
 
-      {showReplay ? <ReplayList list={replaylist} /> : <></>}
+      {showReplay ? <ReplayList SetReplay={Set} list={replaylist} /> : <></>}
     </div>
   );
 }
-
 interface MainDiscussList {
   list: MainDiscuss[];
 }
-
-function MainDiscussList(d: MainDiscussList) {
+export function MainDiscussList(d: MainDiscussList) {
   return (
-    <div className="">
+    <>
       {d.list.map((v) => {
         return (
           <MainDiscuss
+            createtime={v.createtime}
+            User_Id={v.User_Id}
             Content={v.Content}
             Discuss_Id={v.Discuss_Id}
             Name={v.Name}
@@ -281,10 +342,9 @@ function MainDiscussList(d: MainDiscussList) {
           />
         );
       })}
-    </div>
+    </>
   );
 }
-
 interface HeaderDiscuss {
   num: number;
 }
@@ -311,29 +371,31 @@ function HeaderDiscuss(d: HeaderDiscuss) {
     </div>
   );
 }
-
 interface ReplayList {
   list: Replay[];
+  SetReplay(d: any): void;
 }
 function Replay(d: Replay) {
   const contentRef = useRef<HTMLDivElement>(null);
   const [replay, SetReplay] = useState(false);
   const [clamped, SetClamped] = useState(false);
+  const [avatar, SetAvatar] = useState("");
   const [content, SetContent] = useState("");
   const [isExpand, SetIsExpand] = useState(false);
+  const idsong = useSelector((state: RootHome) => state.rootHome.idSong);
   async function handle() {
     if (contentRef && contentRef.current) {
       SetClamped(
         contentRef.current.scrollHeight > contentRef.current.clientHeight
       );
+      SetAvatar(JSON.parse(localStorage.getItem("userinfor") as any).pathImage);
     }
   }
   useEffect(() => {
-    window.addEventListener("resize", handle);
-    return () => window.removeEventListener("resize", handle);
+    handle();
   }, []);
   return (
-    <div className="grid grid-cols-8 text-[16px] mt-1">
+    <div className="grid grid-cols-10 text-[14px] mt-1">
       <div className="col-span-1"></div>
       <img
         src={d.pathImage}
@@ -341,9 +403,12 @@ function Replay(d: Replay) {
         className="col-span-1 size-[25px] rounded-full"
         srcSet=""
       />
-      <div className=" space-y-2 col-span-6">
-        <div>{d.Name}</div>
-        <div ref={contentRef} className={`${clamped ? "line-clamp-3" : ""}`}>
+      <div className=" space-y-2 col-span-7">
+        <div className=" flex p-2">
+          <div className="text-[13px] mr-2 font-bold">{d.Name}</div>{" "}
+          <Time time={d.createtime} />
+        </div>
+        <div ref={contentRef} className={`${!isExpand ? "line-clamp-2" : ""}`}>
           {d.Content}
         </div>
 
@@ -356,7 +421,7 @@ function Replay(d: Replay) {
                   SetIsExpand(!isExpand);
                 }}
               >
-                xem thêm
+                ẩn bớt
               </strong>
             ) : (
               <strong
@@ -365,7 +430,7 @@ function Replay(d: Replay) {
                   SetIsExpand(!isExpand);
                 }}
               >
-                ẩn bớt
+                xem thêm
               </strong>
             )}
           </div>
@@ -389,7 +454,7 @@ function Replay(d: Replay) {
           <div className="input replay col-span-full my-1">
             <div className="grid grid-cols-8 text-[16px] mt-1">
               <img
-                src={d.pathImage}
+                src={avatar}
                 alt=""
                 className="col-span-1 size-[25px] rounded-full"
                 srcSet=""
@@ -435,12 +500,14 @@ function Replay(d: Replay) {
                       Replay_Discuss_Id: d.Discuss_Id,
                       Parent_discuss_Id: d.Parent_discuss_Id,
                       Content: content,
+                      Song_Id: idsong,
                     },
                     (v: any) => {
                       if (v.err) {
                         alert("thaats baij");
                       } else {
                         alert("thanh cong");
+                        d.SetReplay(v.discuss);
                         SetContent("");
                       }
                     }
@@ -458,16 +525,95 @@ function Replay(d: Replay) {
           <></>
         )}
       </div>
+      <div className="col-span-1 relative self-start">
+        <Action Discuss_id={d.Discuss_Id} User_id={d.User_Id} />
+      </div>
     </div>
   );
 }
-
+interface Action {
+  Discuss_id: string;
+  User_id: String;
+}
+function Action(d: Action) {
+  const [show, Setshow] = useState(false);
+  const [id, SetId] = useState(localStorage.getItem("id"));
+  var dispatch = useDispatch();
+  return (
+    <>
+      <svg
+        onClick={() => {
+          Setshow(!show);
+        }}
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        fill="white"
+        className="fill-white hover:fill-[#1FDF64]"
+        viewBox="0 0 16 16"
+      >
+        <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0" />
+      </svg>
+      {show ? (
+        <>
+          {id != d.User_id ? (
+            <div className="absolute cursor-pointer top-full right-full bg-[#2A2A2A] px-3 py-2 rounded-2xl">
+              <div className="flex justify-center items-center space-x-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  className="bi bi-flag"
+                  viewBox="0 0 16 16"
+                >
+                  <path d="M14.778.085A.5.5 0 0 1 15 .5V8a.5.5 0 0 1-.314.464L14.5 8l.186.464-.003.001-.006.003-.023.009a12 12 0 0 1-.397.15c-.264.095-.631.223-1.047.35-.816.252-1.879.523-2.71.523-.847 0-1.548-.28-2.158-.525l-.028-.01C7.68 8.71 7.14 8.5 6.5 8.5c-.7 0-1.638.23-2.437.477A20 20 0 0 0 3 9.342V15.5a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 1 0v.282c.226-.079.496-.17.79-.26C4.606.272 5.67 0 6.5 0c.84 0 1.524.277 2.121.519l.043.018C9.286.788 9.828 1 10.5 1c.7 0 1.638-.23 2.437-.477a20 20 0 0 0 1.349-.476l.019-.007.004-.002h.001M14 1.221c-.22.078-.48.167-.766.255-.81.252-1.872.523-2.734.523-.886 0-1.592-.286-2.203-.534l-.008-.003C7.662 1.21 7.139 1 6.5 1c-.669 0-1.606.229-2.415.478A21 21 0 0 0 3 1.845v6.433c.22-.078.48-.167.766-.255C4.576 7.77 5.638 7.5 6.5 7.5c.847 0 1.548.28 2.158.525l.028.01C9.32 8.29 9.86 8.5 10.5 8.5c.668 0 1.606-.229 2.415-.478A21 21 0 0 0 14 7.655V1.222z" />
+                </svg>
+                <div className="text-[14px] w-max">Báo vi phạm</div>
+              </div>
+            </div>
+          ) : (
+            <div className="absolute cursor-pointer top-full right-full bg-[#2A2A2A] px-3 py-2 rounded-2xl">
+              <div
+                onClick={() => {
+                  post("discuss/delete", { id: d.Discuss_id }, (v: any) => {
+                    if (!v.err) {
+                      dispatch(SetdeleteDiscuss(d.Discuss_id));
+                    }
+                  });
+                }}
+                className="flex justify-center items-center space-x-2"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="14"
+                  height="14"
+                  fill="white"
+                  viewBox="0 0 16 16"
+                >
+                  <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                  <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                </svg>
+                <span>xóa</span>
+              </div>
+            </div>
+          )}
+        </>
+      ) : (
+        <></>
+      )}
+    </>
+  );
+}
 function ReplayList(d: ReplayList) {
   return (
     <div className="col-span-full">
       {d.list.map((v) => {
         return (
           <Replay
+            createtime={v.createtime}
+            User_Id={v.User_Id}
+            SetReplay={d.SetReplay}
             Content={v.Content}
             Discuss_Id={v.Discuss_Id}
             Name={v.Name}

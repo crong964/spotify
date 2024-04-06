@@ -33,7 +33,7 @@ class PlayListController {
             playlistmodel.User_id = req.cookies.id;
             playlistmodel.Type = 1;
             playlistmodel.Songs = req.body.ls.length;
-            playlistmodel.ImagePath = (0, path_1.join)("public/playlist", file);
+            playlistmodel.SongImage = (0, path_1.join)("public/playlist", file);
             var check = yield PlayListService_1.default.Add(playlistmodel);
             var ls = req.body.ls;
             var list = ls.map((Song_id) => __awaiter(this, void 0, void 0, function* () {
@@ -83,9 +83,9 @@ class PlayListController {
             var playlistmodel = new PlayListModel_1.PlayListModel();
             playlistmodel.setAll(req.body);
             if (req.file) {
-                playlistmodel.ImagePath = (0, path_1.join)("public/playlist", req.file.filename);
+                playlistmodel.SongImage = (0, path_1.join)("public/playlist", req.file.filename);
                 try {
-                    yield (0, promises_1.unlink)((0, path_1.join)(process.cwd(), oldplaylist.ImagePath));
+                    yield (0, promises_1.unlink)((0, path_1.join)(process.cwd(), oldplaylist.SongImage));
                 }
                 catch (error) {
                     console.log(error);

@@ -10,7 +10,7 @@ interface SongI {
   SongName: string;
   Singer: string;
   Duration: string;
-  imagePath: string;
+  SongImage: string;
   filePath: string;
 }
 export default function PlayingBar() {
@@ -25,7 +25,7 @@ export default function PlayingBar() {
     Duration: temp?.Duration ? temp.Duration : "",
     filePath: temp?.filePath ? temp.filePath : "",
     Id: temp?.Id ? temp.Id : "",
-    imagePath: temp?.imagePath ? temp.imagePath : "",
+    SongImage: temp?.SongImage ? temp.SongImage : "",
     Singer: temp?.Singer ? temp.Singer : "",
     SongName: temp?.SongName ? temp.SongName : "",
   });
@@ -47,7 +47,7 @@ export default function PlayingBar() {
     <div className="w-full bg-[#121212] h-[12%] grid items-center grid-cols-4 mt-2">
       <Song
         Id={song.Id}
-        image={song.imagePath}
+        image={song.SongImage}
         name={song.SongName}
         singer={song.Singer}
       />

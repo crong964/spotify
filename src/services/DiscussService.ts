@@ -1,3 +1,4 @@
+import { ResultSetHeader } from "mysql2";
 import DiscussDatabase from "../database/DiscussDatabase";
 import DiscussModel from "../model/DiscussModel";
 
@@ -24,8 +25,22 @@ export class DiscussService {
         return list.length > 0 ? list[0] : undefined
     }
 
-    async Increase(Parent_discuss_Id: string) {
-        var check = await this.data.Increase(Parent_discuss_Id)
+    async Increase(Parent_discuss_Id: string, n?: number) {
+        n = n || 1
+        var check = await this.data.Increase(Parent_discuss_Id, n)
+        return check
+    }
+    async DeIncrease(Parent_discuss_Id: string, n?: number) {
+        n = n || 1
+        var check = await this.data.DeIncrease(Parent_discuss_Id, n)
+        return check
+    }
+    async Delete(Discuss_Id: string) {
+        var check = await this.data.Delete(Discuss_Id)
+        return check
+    }
+    async DeleteChildren(Parent_discuss_Id: string) {
+        var check = await this.data.DeleteChildren(Parent_discuss_Id) as ResultSetHeader
         return check
     }
     Setls(ls: any) {

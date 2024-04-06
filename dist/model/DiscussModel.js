@@ -3,11 +3,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const UserModel_1 = __importDefault(require("./UserModel"));
-class DiscussModel extends UserModel_1.default {
+const BaseModel_1 = __importDefault(require("./BaseModel"));
+class DiscussModel extends BaseModel_1.default {
     constructor() {
         super();
         this.User_Id = "";
+        this.Name = "";
+        this.pathImage = "";
         this.Discuss_Id = "";
         this.Parent_discuss_Id = "";
         this.Replay_Discuss_Id = "";

@@ -7,7 +7,8 @@ const BaseModel_1 = __importDefault(require("./BaseModel"));
 class SongModel extends BaseModel_1.default {
     constructor() {
         super();
-        this.imagePath = "";
+        this.dicussquality = 0;
+        this.SongImage = "";
         this.description = "";
         this.Id = "";
         this.Duration = "";

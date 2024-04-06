@@ -7,7 +7,7 @@ import PlayButtom from "./PlayButtom";
 interface PlayList {
   id: string;
   Genre_ID: string;
-  ImagePath: string;
+  SongImage: string;
   PlayListName: string;
 }
 interface Genre {
@@ -49,7 +49,7 @@ function PlayListByGenre(d: PlayListByGenre) {
       return (
         <PlayList
           Genre_ID={v.Genre_ID}
-          ImagePath={v.ImagePath}
+          SongImage={v.SongImage}
           PlayListName={v.PlayListName}
           id={v.id}
           key={v.id}
@@ -94,7 +94,7 @@ function PlayList(d: PlayList) {
           dispatch(SetIdPlayList(d.id));
         }}
       >
-        <img src={d.ImagePath} className="rounded-2xl" alt="" srcSet="" />
+        <img src={d.SongImage} className="rounded-2xl" alt="" srcSet="" />
         {show ? (
           <div className="absolute bottom-0 right-0">
             <PlayButtom />

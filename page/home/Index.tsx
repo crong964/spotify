@@ -14,7 +14,8 @@ import { NaviPage, RootHome } from "./RootRedux";
 import Search from "./Search";
 import Profile from "./Profile";
 import IdGenre from "./IdGenre";
-import Discuss from "./Right/Discuss";
+
+import Right from "./Right/Right";
 
 function useIndex() {
   const [queue, SetQueue] = useState(false);
@@ -106,8 +107,7 @@ export default function Index() {
           </div>
         </div>
 
-        <Discuss />
-        <Queue />
+        <Right />
       </div>
       <PlayingBar></PlayingBar>
     </div>

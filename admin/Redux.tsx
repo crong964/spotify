@@ -17,7 +17,7 @@ interface FloorAndID {
 interface Song {
   SongName: string;
   Id: string;
-  imagePath: string;
+  SongImage: string;
 }
 var initialState: CounterState = {
   floor: 1,

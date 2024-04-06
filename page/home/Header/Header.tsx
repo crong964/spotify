@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Check, IsLogin, NaviPage, RootHome, Search } from "../RootRedux";
+import { Check, IsLogin, NaviPage, RootHome, Search, SetNotificationPage, SetNotificationPageIdSong } from "../RootRedux";
 import { get, post } from "../../config/req";
+import NotificationPage, { NotificationList } from "./NotificationList";
 
 interface Infor {
   pathImage: string;
@@ -10,6 +11,8 @@ interface Infor {
 }
 export default function Header() {
   const [show, SetShow] = useState(false);
+  const dispathch = useDispatch();
+  const [showNotification, SetShowNotification] = useState(false);
   const [name, SetName] = useState("");
   const page = useSelector((state: RootHome) => state.rootHome.page);
   const update = useSelector((state: RootHome) => state.rootHome.update);
@@ -24,14 +27,13 @@ export default function Header() {
       dispatch(IsLogin(v.err));
       if (!v.err) {
         SetInfor(v.u);
+        localStorage.setItem("userinfor", JSON.stringify(v.u));
       }
     });
   }, [update]);
 
   return (
-    <div
-      className={`sticky w-full z-30  top-0 left-0 px-5 py-4 space-y-2`}
-    >
+    <div className={`sticky w-full z-30  top-0 left-0 px-5 py-4 space-y-2`}>
       <div className="flex items-center justify-between space-x-2">
         <div className="flex space-x-3  items-center">
           <button className=" rounded-full size-[28px] flex justify-center items-center">
@@ -87,14 +89,33 @@ export default function Header() {
             />
           </div>
         </div>
-        <div className="flex  items-center">
-          <div className="text-sm font-bold bg-white text-black rounded-3xl px-2 py-1">
+        <div className="flex  items-center space-x-3">
+          <div className="cursor-pointer text-sm font-bold bg-white text-black rounded-3xl px-2 py-1">
             Khám phá Premium
           </div>
-          <div className="text-sm font-bold bg-black text-white rounded-3xl px-2 py-1">
+          <div className="cursor-pointer text-sm font-bold bg-black text-white rounded-3xl px-2 py-1">
             Cài đặt ứng dụng
           </div>
-          <div className="relative">
+          <div className="bg-[#2A2A2A] p-2 rounded-full relative cursor-pointer">
+            <svg
+              onClick={() => {
+                SetShowNotification(!showNotification);
+                if (showNotification == false) {
+                  dispathch(SetNotificationPage("list"));
+                  dispathch(SetNotificationPageIdSong(""));
+                }
+              }}
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              className="fill-white hover:fill-[#1FDF64]"
+              viewBox="0 0 16 16"
+            >
+              <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2M8 1.918l-.797.161A4 4 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4 4 0 0 0-3.203-3.92zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5 5 0 0 1 13 6c0 .88.32 4.2 1.22 6" />
+            </svg>
+            {showNotification ? <NotificationPage /> : <></>}
+          </div>
+          <div className="relative cursor-pointer">
             <div
               onClick={() => {
                 SetShow(!show);
@@ -109,8 +130,8 @@ export default function Header() {
               />
             </div>
             {show ? (
-              <div className="bg-[#000000] z-[1000] p-1 rounded-lg min-w-[200px] text-[16px] absolute top-full right-0">
-                <div className="text-white  cursor-pointer hover:bg-[#3E3E3E]">
+              <div className="bg-[#3E3E3E] z-[20] rounded-lg min-w-[200px] text-[16px] absolute top-full right-0">
+                <div className="text-white  cursor-pointer hover:bg-black">
                   <div
                     onClick={() => {
                       dispatch(NaviPage("profile"));
@@ -118,7 +139,7 @@ export default function Header() {
                     }}
                     className="p-2"
                   >
-                    Tài khoản{" "}
+                    Tài khoản
                   </div>
                 </div>
 
@@ -128,7 +149,7 @@ export default function Header() {
                       window.location.replace("/auth");
                     });
                   }}
-                  className="text-white cursor-pointer hover:bg-[#3E3E3E]"
+                  className="text-white cursor-pointer hover:bg-black"
                 >
                   <div className="p-2">Đăng xuất </div>
                 </div>

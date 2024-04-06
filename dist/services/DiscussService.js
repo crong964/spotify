@@ -44,9 +44,29 @@ class DiscussService {
             return list.length > 0 ? list[0] : undefined;
         });
     }
-    Increase(Parent_discuss_Id) {
+    Increase(Parent_discuss_Id, n) {
         return __awaiter(this, void 0, void 0, function* () {
-            var check = yield this.data.Increase(Parent_discuss_Id);
+            n = n || 1;
+            var check = yield this.data.Increase(Parent_discuss_Id, n);
+            return check;
+        });
+    }
+    DeIncrease(Parent_discuss_Id, n) {
+        return __awaiter(this, void 0, void 0, function* () {
+            n = n || 1;
+            var check = yield this.data.DeIncrease(Parent_discuss_Id, n);
+            return check;
+        });
+    }
+    Delete(Discuss_Id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var check = yield this.data.Delete(Discuss_Id);
+            return check;
+        });
+    }
+    DeleteChildren(Parent_discuss_Id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var check = yield this.data.DeleteChildren(Parent_discuss_Id);
             return check;
         });
     }

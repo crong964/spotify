@@ -78,6 +78,22 @@ class SongService {
             return this.SetLs(check);
         });
     }
+    IncreaseNumberDiscuss(SongId, n) {
+        return __awaiter(this, void 0, void 0, function* () {
+            n = n || 1;
+            var check;
+            check = yield this.songDatabase.IncreaseNumberDiscuss(SongId, n);
+            return check;
+        });
+    }
+    DeincreaseNumberDiscuss(SongId, n) {
+        return __awaiter(this, void 0, void 0, function* () {
+            n = n || 1;
+            var check;
+            check = yield this.songDatabase.DeincreaseNumberDiscuss(SongId, n);
+            return check;
+        });
+    }
     SetLs(check) {
         if (check == undefined) {
             return [];

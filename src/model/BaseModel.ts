@@ -1,10 +1,14 @@
 export default class BaseModel {
+    createtime: string
+    constructor() {
+        this.createtime = ""
+    }
     setAll(d: any) {
         for (const key in this) {
             if (d[key] != undefined) {
                 this[key] = d[key];
             }
-           
+
         }
     }
     json() {

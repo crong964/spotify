@@ -24,7 +24,7 @@ export class PlayListController {
         playlistmodel.User_id = req.cookies.id
         playlistmodel.Type = 1
         playlistmodel.Songs = req.body.ls.length
-        playlistmodel.ImagePath = join("public/playlist", file)
+        playlistmodel.SongImage = join("public/playlist", file)
 
 
 
@@ -78,9 +78,9 @@ export class PlayListController {
         var playlistmodel = new PlayListModel()
         playlistmodel.setAll(req.body)
         if (req.file) {
-            playlistmodel.ImagePath = join("public/playlist", req.file.filename)
+            playlistmodel.SongImage = join("public/playlist", req.file.filename)
             try {
-                await unlink(join(process.cwd(), oldplaylist.ImagePath))
+                await unlink(join(process.cwd(), oldplaylist.SongImage))
             } catch (error) {
                 console.log(error);
 

@@ -14,7 +14,7 @@ interface Song {
   Id: string;
   Singer: string;
   SongName: string;
-  imagePath: string;
+  SongImage: string;
   Duration: number;
   description: string;
   PublicTime: string;
@@ -28,7 +28,7 @@ export default function SongForm() {
 
   const [song, SetSong] = useState<Song>({
     Id: "",
-    imagePath: "",
+    SongImage: "",
     SongName: "",
     description: "",
     Duration: 0,
@@ -152,11 +152,11 @@ export default function SongForm() {
         <div className="anh w-1/2">
           <div className="mb-2">Ảnh đại diên</div>
           <label
-            htmlFor={song.imagePath == "" ? "avatar" : "gdas"}
+            htmlFor={song.SongImage == "" ? "avatar" : "gdas"}
             className=" px-4 py-2 rounded-full w-full"
           >
             <div className="w-full">
-              {song.imagePath == "" ? (
+              {song.SongImage == "" ? (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="white"
@@ -178,13 +178,13 @@ export default function SongForm() {
                     onClick={() => {
                       SetSong({
                         ...song,
-                        imagePath: "",
+                        SongImage: "",
                       });
                     }}
                   >
                     xóa
                   </div>
-                  <img src={song.imagePath} />
+                  <img src={song.SongImage} />
                 </div>
               )}
             </div>
@@ -200,7 +200,7 @@ export default function SongForm() {
                   SetFile(files[0]);
                   SetSong({
                     ...song,
-                    imagePath: file,
+                    SongImage: file,
                   });
                 }
               }}

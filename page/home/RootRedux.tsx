@@ -12,8 +12,13 @@ interface Root {
   idGenre: string;
   idPlayList: string;
   Right: string;
+  DeleteDiscuss: string;
+  NotificationPage: string;
+  NotificationPageIdSong: string;
 }
 const initialState: Root = {
+  NotificationPageIdSong: "",
+  NotificationPage: "list",
   idSong: JSON.parse(localStorage.getItem("song") as any).Id || "",
   recentList: false,
   page: "home",
@@ -24,6 +29,7 @@ const initialState: Root = {
   idGenre: "",
   idPlayList: "",
   Right: "Discuss",
+  DeleteDiscuss: "",
 };
 var rootslice = createSlice({
   name: "rootHome",
@@ -72,6 +78,15 @@ var rootslice = createSlice({
       state.Right = action.payload;
       state.recentList = !state.recentList;
     },
+    SetdeleteDiscuss: (state, action) => {
+      state.DeleteDiscuss = action.payload;
+    },
+    SetNotificationPage: (state, action: PayloadAction<"list" | "discuss">) => {
+      state.NotificationPage = action.payload;
+    },
+    SetNotificationPageIdSong: (state, action) => {
+      state.NotificationPageIdSong = action.payload;
+    },
   },
 });
 
@@ -94,6 +109,9 @@ export const {
   Update,
   SetIdPlayList,
   NaviRight,
+  SetdeleteDiscuss,
+  SetNotificationPage,
+  SetNotificationPageIdSong,
 } = rootslice.actions;
 
 export default rootHome;

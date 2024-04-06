@@ -26,14 +26,14 @@ export interface Song {
   Singer: string;
   Duration: number;
   Viewer: number;
-  imagePath: string;
+  SongImage: string;
   filePath: string;
   liked: string;
 }
 
 interface PlayList {
   id: string;
-  ImagePath: string;
+  SongImage: string;
   PlayListName: string;
   Likes: number;
   Songs: number;
@@ -128,7 +128,7 @@ export function SongList(d: SongList) {
             SongName={v.SongName}
             Viewer={v.Viewer}
             filePath={v.filePath}
-            imagePath={v.imagePath}
+            SongImage={v.SongImage}
             liked={v.liked}
             stt={stt}
             user_id=""
@@ -203,7 +203,7 @@ export default function Playlist() {
   const [playlist, SetPlayList] = useState<PlayList>({
     Duration: "",
     id: "",
-    ImagePath: "",
+    SongImage: "",
     Likes: 0,
     PlayListName: "",
     Songs: 0,
@@ -234,7 +234,7 @@ export default function Playlist() {
           <div className="flex z-10 p-4 justify-center items-end space-x-4">
             <img
               className="size-[250px] rounded-2xl"
-              src={playlist.ImagePath}
+              src={playlist.SongImage}
               alt=""
               srcSet=""
             />

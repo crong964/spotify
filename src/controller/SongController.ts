@@ -27,10 +27,10 @@ class SongController {
             song.Singer = u.ChanalName
         }
         if (req.file != undefined) {
-            song.imagePath = "public/image/" + req.file.filename
+            song.SongImage = "public/image/" + req.file.filename
         }
         else {
-            song.imagePath = u.pathImage
+            song.SongImage = u.pathImage
         }
         var c = await SongController.song.Update(song)
         if (c) {
@@ -63,7 +63,7 @@ class SongController {
             song.Id = f
             song.Singer = check.ChanalName
             song.user_id = check.id
-            song.imagePath = check.pathImage
+            song.SongImage = check.pathImage
             song.filePath = f
             var fcheck = await SongController.song.Add(song)
 
@@ -135,12 +135,12 @@ class SongController {
 
 
         if (req.file != undefined) {
-            song.imagePath = "public/image/" + req.file.filename
+            song.SongImage = "public/image/" + req.file.filename
 
-            oldsong.imagePath.indexOf
-            if (oldsong.imagePath.indexOf("public/image/") > -1) {
+            oldsong.SongImage.indexOf
+            if (oldsong.SongImage.indexOf("public/image/") > -1) {
                 try {
-                    await unlink(join(process.cwd(), oldsong.imagePath))
+                    await unlink(join(process.cwd(), oldsong.SongImage))
                 } catch (error) {
                     console.log(error);
 
