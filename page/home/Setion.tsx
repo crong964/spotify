@@ -3,7 +3,7 @@ import PlayButtom from "./PlayButtom";
 import React from "react";
 import { get } from "../config/req";
 import { useDispatch, useSelector } from "react-redux";
-import { IdPage, NaviPage, RootHome } from "./RootRedux";
+import { NaviPage, RootHome } from "./RootRedux";
 
 interface SetionList {
   name: string;
@@ -56,8 +56,7 @@ export default function SetionData(params: SetionData) {
     <div
       className="w-full cursor-pointer"
       onClick={() => {
-        dispatch(NaviPage("artise"));
-        dispatch(IdPage(params.id));
+        dispatch(NaviPage({ page: "artise", param: params.id }));
       }}
       onMouseEnter={() => {
         SetHidden(false);

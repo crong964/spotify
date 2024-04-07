@@ -33,14 +33,14 @@ export interface Song {
 
 interface PlayList {
   id: string;
-  SongImage: string;
+  ImagePath: string;
   PlayListName: string;
   Likes: number;
   Songs: number;
   Duration: string;
 }
 export function Artise() {
-  const idpage = useSelector((state: RootHome) => state.rootHome.idpage);
+  const idpage = useSelector((state: RootHome) => state.rootHome.command.param);
   const [artise, SetaAtist] = useState<artise>();
   const [songs, SetSongS] = useState<Song[]>([]);
   const dispatch = useDispatch();
@@ -197,20 +197,19 @@ export function LikedSongList() {
 
 export default function Playlist() {
   const idPlayList = useSelector(
-    (state: RootHome) => state.rootHome.idPlayList
+    (state: RootHome) => state.rootHome.command.param
   );
   const [songs, SetSongS] = useState<Song[]>([]);
   const [playlist, SetPlayList] = useState<PlayList>({
     Duration: "",
     id: "",
-    SongImage: "",
+    ImagePath: "",
     Likes: 0,
     PlayListName: "",
     Songs: 0,
   });
   useEffect(() => {
     get(`/playlist/${idPlayList}`, (v: any) => {
-      console.log(v);
       if (v && !v.err) {
         SetSongS(v.songs);
         var time = 0;
@@ -234,7 +233,7 @@ export default function Playlist() {
           <div className="flex z-10 p-4 justify-center items-end space-x-4">
             <img
               className="size-[250px] rounded-2xl"
-              src={playlist.SongImage}
+              src={playlist.ImagePath}
               alt=""
               srcSet=""
             />

@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import rootHome, { NaviPage, RootHome, SetIdPlayList } from "./RootRedux";
+import rootHome, { NaviPage, RootHome } from "./RootRedux";
 import { useEffect, useState } from "react";
 import React from "react";
 import { get } from "../config/req";
@@ -7,7 +7,7 @@ import PlayButtom from "./PlayButtom";
 interface PlayList {
   id: string;
   Genre_ID: string;
-  SongImage: string;
+  ImagePath: string;
   PlayListName: string;
 }
 interface Genre {
@@ -19,12 +19,16 @@ interface Genre {
   Floor: number;
 }
 export default function IdGenre() {
-  const idgenre = useSelector((state: RootHome) => state.rootHome.idGenre);
+  const idgenre = useSelector(
+    (state: RootHome) => state.rootHome.command.param
+  );
   const [playlists, SetPlayLists] = useState<PlayList[]>([]);
   const [genres, SetGernes] = useState<Genre[]>([]);
 
   useEffect(() => {
     get(`genre/${idgenre}`, (v: any) => {
+      console.log(v);
+      
       SetPlayLists(v.playlist);
       SetGernes(v.genre);
     });
@@ -49,7 +53,7 @@ function PlayListByGenre(d: PlayListByGenre) {
       return (
         <PlayList
           Genre_ID={v.Genre_ID}
-          SongImage={v.SongImage}
+          ImagePath={v.ImagePath}
           PlayListName={v.PlayListName}
           id={v.id}
           key={v.id}
@@ -90,11 +94,16 @@ function PlayList(d: PlayList) {
           SetShow(false);
         }}
         onClick={() => {
-          dispatch(NaviPage("playlist"));
-          dispatch(SetIdPlayList(d.id));
+          dispatch(
+            NaviPage({
+              page: "playlist",
+              param: d.id,
+            })
+          );
+          
         }}
       >
-        <img src={d.SongImage} className="rounded-2xl" alt="" srcSet="" />
+        <img src={d.ImagePath} className="rounded-2xl" alt="" srcSet="" />
         {show ? (
           <div className="absolute bottom-0 right-0">
             <PlayButtom />

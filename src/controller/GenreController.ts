@@ -85,7 +85,8 @@ class GenreController {
     }
     async GetByGenre(req: Request, res: Response) {
         var idParent = req.params.idParent
-        var ls = await Promise.all([GenreController.playlist.GetByGenre(idParent, 0, 10), GenreController.service.GetChildrenByIdParent(idParent)])
+        var ls = await Promise.all([GenreController.playlist.GetByGenre(idParent, 0, 10), 
+            GenreController.service.GetChildrenByIdParent(idParent)])
         res.json({
             playlist: ls[0],
             genre: ls[1],

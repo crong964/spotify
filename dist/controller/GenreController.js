@@ -100,7 +100,8 @@ class GenreController {
     GetByGenre(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             var idParent = req.params.idParent;
-            var ls = yield Promise.all([GenreController.playlist.GetByGenre(idParent, 0, 10), GenreController.service.GetChildrenByIdParent(idParent)]);
+            var ls = yield Promise.all([GenreController.playlist.GetByGenre(idParent, 0, 10),
+                GenreController.service.GetChildrenByIdParent(idParent)]);
             res.json({
                 playlist: ls[0],
                 genre: ls[1],

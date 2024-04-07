@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { SongList } from "./PlayList";
 import { Song } from "./PlayList";
 import { useDispatch, useSelector } from "react-redux";
-import { IdPage, NaviPage, RootHome } from "./RootRedux";
+import { NaviPage, RootHome } from "./RootRedux";
 import { post } from "../config/req";
 import PlayButtom from "./PlayButtom";
 interface artist {
@@ -18,7 +18,7 @@ interface Artists {
 export default function Search() {
   const [songname, SetSongName] = useState<Song[]>([]);
   const [songs, SetSongS] = useState<Song[]>([]);
-  const search = useSelector((state: RootHome) => state.rootHome.search);
+  const search = useSelector((state: RootHome) => state.rootHome.command.param);
   const [artist, SetArtis] = useState<artist[]>([]);
 
   useEffect(() => {
@@ -76,8 +76,7 @@ function Artist(params: artist) {
     <div
       className="w-full cursor-pointer"
       onClick={() => {
-        dispatch(NaviPage("playlist"));
-        dispatch(IdPage(params.id));
+        dispatch(NaviPage({ page: "playlist", param: params.id }));
       }}
       onMouseEnter={() => {
         SetHidden(false);

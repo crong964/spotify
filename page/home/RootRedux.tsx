@@ -1,35 +1,46 @@
 import { PayloadAction, configureStore, createSlice } from "@reduxjs/toolkit";
 import { useSelector } from "react-redux";
 
+interface Commamd {
+  page:
+    | "genre"
+    | "playlist"
+    | "artise"
+    | "likedsongs"
+    | "home"
+    | "search"
+    | "profile"
+    | "idgenre";
+  param: string;
+}
 interface Root {
+  command: Commamd;
   idSong: string;
   recentList: boolean;
-  page: string;
-  idpage: string;
   isLogin: boolean;
-  search: string;
   update: boolean;
-  idGenre: string;
-  idPlayList: string;
   Right: string;
   DeleteDiscuss: string;
   NotificationPage: string;
   NotificationPageIdSong: string;
+  stack: Commamd[];
+  position: number;
 }
 const initialState: Root = {
+  command: {
+    page: "home",
+    param: "",
+  },
   NotificationPageIdSong: "",
   NotificationPage: "list",
   idSong: JSON.parse(localStorage.getItem("song") as any).Id || "",
   recentList: false,
-  page: "home",
-  idpage: "",
   isLogin: false,
-  search: "",
   update: true,
-  idGenre: "",
-  idPlayList: "",
   Right: "Discuss",
   DeleteDiscuss: "",
+  stack: [{ page: "home", param: "" }],
+  position: 0,
 };
 var rootslice = createSlice({
   name: "rootHome",
@@ -41,38 +52,17 @@ var rootslice = createSlice({
     PlaySong: (state, action: PayloadAction<string>) => {
       state.idSong = action.payload;
     },
-    NaviPage: (
-      state,
-      action: PayloadAction<
-        | "genre"
-        | "playlist"
-        | "artise"
-        | "likedsongs"
-        | "home"
-        | "search"
-        | "profile"
-        | "idgenre"
-      >
-    ) => {
-      state.page = action.payload;
-    },
-    IdPage: (state, action: PayloadAction<string>) => {
-      state.idpage = action.payload;
+    NaviPage: (state, action: PayloadAction<Commamd>) => {
+      state.command.page = action.payload.page;
+      state.command.param = action.payload.param;
+      state.stack = [...state.stack, action.payload];
+      state.position = state.stack.length - 1;
     },
     IsLogin: (state, action: PayloadAction<boolean>) => {
       state.isLogin = action.payload;
     },
-    Search: (state, action: PayloadAction<string>) => {
-      state.search = action.payload;
-    },
     Update: (state) => {
       state.update = !state.update;
-    },
-    SetIdGenre: (state, action) => {
-      state.idGenre = action.payload;
-    },
-    SetIdPlayList: (state, action) => {
-      state.idPlayList = action.payload;
     },
     NaviRight: (state, action: PayloadAction<"Discuss" | "Queue">) => {
       state.Right = action.payload;
@@ -87,6 +77,16 @@ var rootslice = createSlice({
     SetNotificationPageIdSong: (state, action) => {
       state.NotificationPageIdSong = action.payload;
     },
+    SetPosition: (state, action: PayloadAction<number>) => {
+      state.position += action.payload;
+      if (state.position < 0) {
+        state.position = 0;
+      }
+      if (state.position >= state.stack.length) {
+        state.position = state.stack.length - 1;
+      }
+      state.command = state.stack[state.position];
+    },
   },
 });
 
@@ -99,24 +99,21 @@ const rootHome = configureStore({
 export type RootHome = ReturnType<typeof rootHome.getState>;
 
 export const {
-  SetIdGenre,
   ShowRecentList,
   PlaySong,
   NaviPage,
-  IdPage,
   IsLogin,
-  Search,
   Update,
-  SetIdPlayList,
   NaviRight,
   SetdeleteDiscuss,
   SetNotificationPage,
   SetNotificationPageIdSong,
+  SetPosition,
 } = rootslice.actions;
 
 export default rootHome;
 
 export function Check() {
-  const page = useSelector((state: RootHome) => state.rootHome.page);
+  const page = useSelector((state: RootHome) => state.rootHome.command.page);
   return page == "artise" || page == "playlist";
 }

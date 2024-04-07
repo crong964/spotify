@@ -12,7 +12,7 @@ class PlayListModel extends BaseModel_1.default {
         this.User_id = "";
         this.Genre_ID = "";
         this.Type = 0;
-        this.SongImage = "";
+        this.ImagePath = "";
         this.PlayListName = "";
         this.Likes = 0;
         this.Songs = 0;

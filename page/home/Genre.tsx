@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { SetIdGenre, NaviPage, RootHome } from "./RootRedux";
+import { NaviPage, RootHome } from "./RootRedux";
 import { get } from "../config/req";
 interface Genre {
   Id: string;
@@ -64,8 +64,7 @@ function GenreData(d: GenreData) {
   return (
     <div
       onClick={() => {
-        dispatch(NaviPage("idgenre"));
-        dispatch(SetIdGenre(d.id));
+        dispatch(NaviPage({ page: "idgenre", param: d.id }));
       }}
       className={`bg-[${d.color}] cursor-pointer mb-3 size-[160px] rounded-lg p-2`}
     >
@@ -76,11 +75,11 @@ function GenreData(d: GenreData) {
 
 export function GenreButtom() {
   const dispatch = useDispatch();
-  const page = useSelector((state: RootHome) => state.rootHome.page);
+  const page = useSelector((state: RootHome) => state.rootHome.command.page);
   return (
     <div
       onClick={() => {
-        dispatch(NaviPage("genre"));
+        dispatch(NaviPage({ page: "genre", param: "" }));
       }}
       className="w-full h-1/2  flex justify-center items-center"
     >

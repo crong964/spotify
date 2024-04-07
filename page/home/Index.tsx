@@ -32,7 +32,7 @@ function useIndex() {
 }
 export default function Index() {
   const { Set, queue, SetQueue, scroll } = useIndex();
-  const page = useSelector((state: RootHome) => state.rootHome.page);
+  const page = useSelector((state: RootHome) => state.rootHome.command.page);
 
   const dispatch = useDispatch();
   var children: React.JSX.Element;
@@ -86,7 +86,7 @@ export default function Index() {
             <div className="w-2/3 ">
               <img
                 onClick={() => {
-                  dispatch(NaviPage("likedsongs"));
+                  dispatch(NaviPage({ page: "likedsongs", param: "" }));
                 }}
                 src="../public/liked-songs-640.png"
                 className="rounded-lg"
@@ -116,11 +116,11 @@ export default function Index() {
 
 function Home() {
   const dispatch = useDispatch();
-  const page = useSelector((state: RootHome) => state.rootHome.page);
+  const page = useSelector((state: RootHome) => state.rootHome.command.page);
   return (
     <div
       onClick={() => {
-        dispatch(NaviPage("home"));
+        dispatch(NaviPage({ page: "home", param: "" }));
       }}
       className="w-full h-1/2 flex justify-center items-center"
     >

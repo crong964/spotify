@@ -1,6 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Check, IsLogin, NaviPage, RootHome, Search, SetNotificationPage, SetNotificationPageIdSong } from "../RootRedux";
+import {
+  Check,
+  IsLogin,
+  NaviPage,
+  RootHome,
+  SetNotificationPage,
+  SetNotificationPageIdSong,
+  SetPosition,
+} from "../RootRedux";
 import { get, post } from "../../config/req";
 import NotificationPage, { NotificationList } from "./NotificationList";
 
@@ -14,7 +22,7 @@ export default function Header() {
   const dispathch = useDispatch();
   const [showNotification, SetShowNotification] = useState(false);
   const [name, SetName] = useState("");
-  const page = useSelector((state: RootHome) => state.rootHome.page);
+  const page = useSelector((state: RootHome) => state.rootHome.command.page);
   const update = useSelector((state: RootHome) => state.rootHome.update);
   const dispatch = useDispatch();
   const [infor, SetInfor] = useState<Infor>({
@@ -36,31 +44,11 @@ export default function Header() {
     <div className={`sticky w-full z-30  top-0 left-0 px-5 py-4 space-y-2`}>
       <div className="flex items-center justify-between space-x-2">
         <div className="flex space-x-3  items-center">
-          <button className=" rounded-full size-[28px] flex justify-center items-center">
-            <svg
-              data-encore-id="icon"
-              role="img"
-              aria-hidden="true"
-              className="fill-white size-4"
-              viewBox="0 0 16 16"
-            >
-              <path d="M11.03.47a.75.75 0 0 1 0 1.06L4.56 8l6.47 6.47a.75.75 0 1 1-1.06 1.06L2.44 8 9.97.47a.75.75 0 0 1 1.06 0z"></path>
-            </svg>
-          </button>
-          <button className=" rounded-full size-[28px] flex justify-center items-center">
-            <svg
-              data-encore-id="icon"
-              role="img"
-              aria-hidden="true"
-              className="fill-white size-4"
-              viewBox="0 0 16 16"
-            >
-              <path d="M4.97.47a.75.75 0 0 0 0 1.06L11.44 8l-6.47 6.47a.75.75 0 1 0 1.06 1.06L13.56 8 6.03.47a.75.75 0 0 0-1.06 0z"></path>
-            </svg>
-          </button>
+          <Back />
+          <Forward />
           <div
             onClick={() => {
-              dispatch(NaviPage("genre"));
+              dispatch(NaviPage({ page: "genre", param: "" }));
             }}
             className="flex items-center border-white border-2 px-3 bg-[#2A2A2A] rounded-full"
           >
@@ -78,11 +66,10 @@ export default function Header() {
               onChange={(v) => {
                 var value = v.currentTarget.value;
                 if (value.length < 2) {
-                  dispatch(NaviPage("genre"));
+                  dispatch(NaviPage({ page: "genre", param: "" }));
                   return;
                 }
-                dispatch(NaviPage("search"));
-                dispatch(Search(value));
+                dispatch(NaviPage({ page: "search", param: value }));
               }}
               type="text"
               className="searchname p-3 text-white w-[300px] bg-[#2A2A2A] border-[#2A2A2A]  focus:outline-none border-2 rounded-full"
@@ -134,7 +121,7 @@ export default function Header() {
                 <div className="text-white  cursor-pointer hover:bg-black">
                   <div
                     onClick={() => {
-                      dispatch(NaviPage("profile"));
+                      dispatch(NaviPage({ page: "profile", param: "" }));
                       SetShow(!show);
                     }}
                     className="p-2"
@@ -176,5 +163,61 @@ export default function Header() {
         <></>
       )}
     </div>
+  );
+}
+
+function Forward() {
+  const stack = useSelector((state: RootHome) => state.rootHome.stack);
+  const position = useSelector((state: RootHome) => state.rootHome.position);
+  const dispatch = useDispatch();
+  return (
+    <button
+      title="forward"
+      className={`${
+        position < stack.length - 1 ? "bg-[#2A2A2A]" : "bg-black"
+      } rounded-full size-[28px] flex justify-center items-center`}
+      onClick={() => {
+        if (stack.length == 0) {
+          return;
+        }
+        dispatch(SetPosition(1));
+      }}
+    >
+      <svg
+        data-encore-id="icon"
+        role="img"
+        aria-hidden="true"
+        className="fill-white size-4"
+        viewBox="0 0 16 16"
+      >
+        <path d="M4.97.47a.75.75 0 0 0 0 1.06L11.44 8l-6.47 6.47a.75.75 0 1 0 1.06 1.06L13.56 8 6.03.47a.75.75 0 0 0-1.06 0z"></path>
+      </svg>
+    </button>
+  );
+}
+
+function Back() {
+  const stack = useSelector((state: RootHome) => state.rootHome.stack.length);
+  const position = useSelector((state: RootHome) => state.rootHome.position);
+  const dispatch = useDispatch();
+  return (
+    <button
+      onClick={() => {
+        dispatch(SetPosition(-1));
+      }}
+      className={`${
+        position > 0 ? "bg-[#2A2A2A]" : "bg-black"
+      } rounded-full size-[28px] flex justify-center items-center`}
+    >
+      <svg
+        data-encore-id="icon"
+        role="img"
+        aria-hidden="true"
+        className="fill-white size-4"
+        viewBox="0 0 16 16"
+      >
+        <path d="M11.03.47a.75.75 0 0 1 0 1.06L4.56 8l6.47 6.47a.75.75 0 1 1-1.06 1.06L2.44 8 9.97.47a.75.75 0 0 1 1.06 0z"></path>
+      </svg>
+    </button>
   );
 }
