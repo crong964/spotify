@@ -73,8 +73,12 @@ export class UserService {
         check = await this.userDatabae.UpdatePassword(d)
         return check
     }
-    async SearchName(name: string) {
-        var ls = await this.userDatabae.SearchName(name)
+    async SearchName(name: string, iduser: string) {
+        var ls = await this.userDatabae.SearchName(name, iduser)
+        return this.SetList(ls)
+    }
+    async SearchNameArtist(name: string) {
+        var ls = await this.userDatabae.SearchNameArtist(name)
         return this.SetList(ls)
     }
     async Update(d: UserModel) {

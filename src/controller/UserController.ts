@@ -3,13 +3,12 @@ import UserModel from "../model/UserModel";
 import userService, { UserService } from "../services/UserService";
 import { Request, Response } from "express";
 import { unlink } from "fs/promises";
+import haveListFriendsService, { HaveListFriendsService } from "../services/HaveListFriendsService";
 class UserController {
     static service: UserService = userService
-    test: UserService
-    g: string
-    constructor(f: UserService) {
-        this.test = f
-        this.g = "g"
+    static HaveListFriends: HaveListFriendsService = haveListFriendsService
+    constructor() {
+
 
     }
     async SignIn(req: Request, res: Response) {
@@ -46,11 +45,15 @@ class UserController {
         })
     }
     async getArtisePage(req: Request, res: Response) {
-
-        var ls = await UserController.service.Get(req.params.artisepage)
+        var idartise = req.params.artisepage
+        var id = req.cookies.id
+        var l = await Promise.all([UserController.service.Get(idartise),
+        UserController.HaveListFriends.Get(id, idartise)])
+        
         res.json({
             err: false,
-            ls: ls
+            ls: l[0],
+            isfriend: l[1] ? l[1].IsFriend : "-1"
         })
     }
     async update(req: Request, res: Response) {
@@ -83,5 +86,5 @@ class UserController {
 }
 
 
-export default new UserController(userService)
+export default new UserController()
 

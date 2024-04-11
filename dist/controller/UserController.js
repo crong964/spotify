@@ -16,10 +16,9 @@ const path_1 = require("path");
 const UserModel_1 = __importDefault(require("../model/UserModel"));
 const UserService_1 = __importDefault(require("../services/UserService"));
 const promises_1 = require("fs/promises");
+const HaveListFriendsService_1 = __importDefault(require("../services/HaveListFriendsService"));
 class UserController {
-    constructor(f) {
-        this.test = f;
-        this.g = "g";
+    constructor() {
     }
     SignIn(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -60,10 +59,14 @@ class UserController {
     }
     getArtisePage(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            var ls = yield UserController.service.Get(req.params.artisepage);
+            var idartise = req.params.artisepage;
+            var id = req.cookies.id;
+            var l = yield Promise.all([UserController.service.Get(idartise),
+                UserController.HaveListFriends.Get(id, idartise)]);
             res.json({
                 err: false,
-                ls: ls
+                ls: l[0],
+                isfriend: l[1] ? l[1].IsFriend : "-1"
             });
         });
     }
@@ -96,4 +99,5 @@ class UserController {
     }
 }
 UserController.service = UserService_1.default;
-exports.default = new UserController(UserService_1.default);
+UserController.HaveListFriends = HaveListFriendsService_1.default;
+exports.default = new UserController();

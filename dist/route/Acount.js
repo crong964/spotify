@@ -24,7 +24,6 @@ const nodemailer_1 = __importDefault(require("nodemailer"));
 require("dotenv/config");
 const client_secret_si = process.env.CLIENT_SECRET_SI;
 const client_id_si = process.env.CLIENT_ID_SI;
-console.log("npm i dotenv", client_id_si);
 const client_secret_su = process.env.CLIENT_SECRET_SU;
 const client_id_su = process.env.CLIENT_ID_SU;
 const Account = (0, express_1.Router)();
@@ -32,7 +31,6 @@ Account.get("/", (req, res) => {
     res.sendFile(path_1.default.join(process.cwd(), "/web/auth.html"));
 });
 Account.post("/signin", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(req.body);
     const account = req.body.account;
     const password = req.body.password;
     var acc = yield UserService_1.default.GetAccountByAccAndPass(account, password);
@@ -79,7 +77,7 @@ Account.get("/github", (req, res) => __awaiter(void 0, void 0, void 0, function*
         ]);
     }
     catch (error) {
-        console.log("loo");
+        console.log(error);
         res.redirect("/auth");
         return;
     }
@@ -97,6 +95,8 @@ Account.get("/github", (req, res) => __awaiter(void 0, void 0, void 0, function*
     //     visibility: null,
     //   },
     // ];
+    console.log(c[0].data);
+    console.log(c[1].data);
     //avatar_url: 'https://avatars.githubusercontent.com/u/71593544?v=4'
     var acc = yield UserService_1.default.GetByAccount(c[0].data[0].email);
     if (!acc) {
@@ -119,6 +119,40 @@ Account.get("/githubsu", (req, res) => __awaiter(void 0, void 0, void 0, functio
     //   "token_type": "",
     //   "scope": ""
     // }
+    // {
+    //      login: 'crong964',
+    //      id: 71593544,
+    //      node_id: 'MDQ6VXNlcjcxNTkzNTQ0',
+    //      avatar_url: 'https://avatars.githubusercontent.com/u/71593544?v=4',
+    //      gravatar_id: '',
+    //      url: 'https://api.github.com/users/crong964',
+    //      html_url: 'https://github.com/crong964',
+    //      followers_url: 'https://api.github.com/users/crong964/followers',
+    //      following_url: 'https://api.github.com/users/crong964/following{/other_user}',
+    //      gists_url: 'https://api.github.com/users/crong964/gists{/gist_id}',
+    //      starred_url: 'https://api.github.com/users/crong964/starred{/owner}{/repo}',
+    //      subscriptions_url: 'https://api.github.com/users/crong964/subscriptions',
+    //      organizations_url: 'https://api.github.com/users/crong964/orgs',
+    //      repos_url: 'https://api.github.com/users/crong964/repos',
+    //      events_url: 'https://api.github.com/users/crong964/events{/privacy}',
+    //      received_events_url: 'https://api.github.com/users/crong964/received_events',
+    //      type: 'User',
+    //      site_admin: false,
+    //      name: null,
+    //      company: null,
+    //      blog: '',
+    //      location: null,
+    //      email: null,
+    //      hireable: null,
+    //      bio: null,
+    //      twitter_username: null,
+    //      public_repos: 16,
+    //      public_gists: 0,
+    //      followers: 0,
+    //      following: 0,
+    //      created_at: '2020-09-20T12:19:07Z',
+    //      updated_at: '2024-03-30T02:12:41Z'
+    //    }
     var c;
     try {
         c = yield Promise.all([
@@ -168,6 +202,8 @@ Account.get("/githubsu", (req, res) => __awaiter(void 0, void 0, void 0, functio
     res.cookie("email", c[0].data[0].email);
     res.cookie("image", c[1].data.avatar_url);
     res.cookie("name", "");
+    res.cookie("idgithug", c[1].data.id);
+    res.cookie("type", "githug");
     res.redirect("/auth");
 }));
 Account.post("/ggin", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -201,7 +237,6 @@ Account.post("/ggin", (req, res) => __awaiter(void 0, void 0, void 0, function* 
     //      jti: 'e17866e1397730421a8823d244726469f9ea63bd'
     //    }
     var acc = yield UserService_1.default.GetByAccount(profi.email);
-    console.log(acc);
     if (!acc) {
         res.redirect("/auth");
         return;
@@ -280,6 +315,8 @@ Account.post("/getdata", (req, res) => {
         Name: req.cookies.name,
         pathImage: req.cookies.image,
         Account: req.cookies.email,
+        idgithug: req.cookies.idgithug,
+        type: req.cookies.githug
     });
 });
 Account.post("/create", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -327,8 +364,6 @@ Account.post("/sendcode", (req, res) => __awaiter(void 0, void 0, void 0, functi
     });
 }));
 Account.post("/vertifycode", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(req.cookies);
-    console.log(req.body);
     var code = req.body.code;
     var account = req.cookies.f1;
     var f2 = req.cookies.f2;

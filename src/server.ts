@@ -5,6 +5,7 @@ import bodyParser from "body-parser"
 import { v4 as uuidv4 } from 'uuid';
 import GenreRoute from "./route/GenreRoute";
 import cookieParser from "cookie-parser";
+import { Server, Socket } from "socket.io"
 
 import UserRoute from "./route/UserRoute";
 import SongRoute from "./route/Song.Route";
@@ -19,10 +20,19 @@ import PlayListRouteAdmin from "./admin/PlayListRouteAdmin";
 import ContainRouteAdmin from "./admin/ContainRouteAdmin";
 import DiscussRoute from "./route/DiscussRoute";
 import NotificationRoute from "./route/NotificationRoute";
+import BoxChatRoute from "./route/BoxChatRoute";
+import MessRoute from "./route/MessRoute";
+import { createServer } from "http";
+import { parse } from "cookie";
+import FriendRoute from "./route/Friend";
 
 const app = express()
+const httpServer = createServer(app);
+const io = new Server(httpServer, {
+    cookie: false
+})
 
-app.use("/static", express.static(path.join(process.cwd(), "web")))
+app.use("/static", express.static(path.join(process.cwd(), "web", "static")))
 app.use("/public", express.static(path.join(process.cwd(), "public")))
 
 
@@ -40,6 +50,10 @@ app.get("/", (req, res) => {
 })
 
 
+
+
+app.use("/mess", MessRoute)
+app.use("/box", BoxChatRoute)
 app.use("/user", UserRoute)
 app.use("/song", SongRoute)
 app.use("/lsong", LikedSongRoute)
@@ -47,6 +61,7 @@ app.use("/rs", RecentSongRoute)
 app.use("/search", SearchRoute)
 app.use("/discuss", DiscussRoute)
 app.use("/notification", NotificationRoute)
+app.use("/friend", FriendRoute)
 app.get("/dashboard", (req, res) => {
     res.sendFile(path.join(process.cwd(), "web/dashboard.html"))
 })
@@ -145,8 +160,14 @@ app.use("/contain", ContainRouteAdmin)
 app.get("/admin", (req, res) => {
     res.sendFile(join(process.cwd(), "web/admin.html"))
 })
-app.listen(8000, () => {
+
+app.get("/test", (req, res) => {
+    res.sendFile(join(process.cwd(), "web/client.html"))
+})
+
+httpServer.listen(8000, () => {
     console.log("http://localhost:8000/");
+    console.log("http://localhost:8000/test");
     console.log("http://localhost:8000/gg");
     console.log("http://localhost:8000/auth");
     console.log("http://localhost:8000/admin");
@@ -155,5 +176,16 @@ app.listen(8000, () => {
     console.log("http://localhost:8000/user/signin?account=PhanManhQuynh@pmq.com");
     console.log("http://localhost:8000/user/signin?account=DenVau@pmq.com");
     console.log("http://localhost:8000/auth/forgot");
-})
+});
 
+io.on("connection", (socket) => {
+    var cookie = parse(socket.handshake.headers.cookie || "")
+
+    socket.join(cookie.id)
+
+    socket.on("disconnect", () => {
+        io.socketsLeave("")
+    })
+
+});
+export default io

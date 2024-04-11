@@ -9,12 +9,21 @@ module.exports = {
         auth: path.join(process.cwd(), "page/auth/App.tsx")
     },
     module: {
-        rules: [ 
+        rules: [
             {
                 test: /\.tsx?$/,
                 use: 'ts-loader',
                 exclude: /node_modules/,
             },
+            {
+                test: /\.css$/i,
+                use: ['style-loader', 'css-loader'],
+            },
+            {
+                test: /\.(woff|woff2|svg|eot|ttf|otf)$/i,
+                type: 'asset/resource',
+              },
+
         ],
     },
     resolve: {
@@ -22,6 +31,6 @@ module.exports = {
     },
     output: {
         filename: '[name].js',
-        path: path.join(process.cwd(), 'web'),
+        path: path.join(process.cwd(),'web', 'static'),
     },
-};
+}; 

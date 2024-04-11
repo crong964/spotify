@@ -18,11 +18,11 @@ const LikedSongModel_1 = __importDefault(require("../model/LikedSongModel"));
 class SearchControll {
     constructor() {
     }
-    SearchName(req, res) {
+    SearchNameArtist(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             var name = req.body.name;
             var id = req.cookies.id;
-            var ls = yield Promise.all([SearchControll.likedSong.SearchName(name, id), SearchControll.user.SearchName(name)]);
+            var ls = yield Promise.all([SearchControll.likedSong.SearchName(name, id), SearchControll.user.SearchNameArtist(name)]);
             var songls = [];
             if (ls[1].length > 0) {
                 var liked = new LikedSongModel_1.default();
@@ -30,11 +30,21 @@ class SearchControll {
                 liked.user_id = ls[1][0].id;
                 songls = yield SearchControll.likedSong.GetAll(liked);
             }
-            console.log(ls[0]);
             res.json({
                 ls: ls[0],
                 artise: ls[1],
                 songls: songls
+            });
+        });
+    }
+    SearchName(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var name = req.body.name;
+            var id = req.cookies.id;
+            var ls = yield SearchControll.user.SearchName(name, id);
+            res.json({
+                err: false,
+                ls: ls,
             });
         });
     }

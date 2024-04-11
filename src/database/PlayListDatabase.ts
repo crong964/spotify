@@ -2,13 +2,10 @@ import Mysql2 from "../config/Config";
 import { PlayListModel } from "../model/PlayListModel";
 
 export default class PlayListDatabase {
-    add(d: PlayListModel) {
-        throw new Error("Method not implemented.");
-    }
     async Add(d: PlayListModel) {
-        var sql = "INSERT INTO playlist(id, User_id, Genre_ID, Type, SongImage, PlayListName, Likes, Songs, Duration, Status, Discripition) VALUES (?,?,?,?,?,?,?,?,?,?,?)"
+        var sql = "INSERT INTO playlist(id, User_id, Genre_ID, Type, ImagePath, PlayListName, Likes, Songs, Duration, Status, Discripition) VALUES (?,?,?,?,?,?,?,?,?,?,?)"
         var check
-        check = await Mysql2.query(sql, [d.id, d.User_id, d.Genre_ID, d.Type, d.SongImage, d.PlayListName, d.Likes, d.Songs, d.Duration, d.Status, d.Discripition])
+        check = await Mysql2.query(sql, [d.id, d.User_id, d.Genre_ID, d.Type, d.ImagePath, d.PlayListName, d.Likes, d.Songs, d.Duration, d.Status, d.Discripition])
         return check
     }
     async Get(d: string) {
@@ -32,9 +29,9 @@ export default class PlayListDatabase {
         return check
     }
     async Update(d: PlayListModel) {
-        var sql = "UPDATE playlist SET SongImage=?,PlayListName=?,Likes=?,Songs=?,Duration=?,Status=?,Discripition=? WHERE id =?"
+        var sql = "UPDATE playlist SET ImagePath=?,PlayListName=?,Likes=?,Songs=?,Duration=?,Status=?,Discripition=? WHERE id =?"
         var check
-        check = await Mysql2.query(sql, [d.SongImage, d.PlayListName, d.Likes, d.Songs, d.Duration, d.Status, d.Discripition, d.id])
+        check = await Mysql2.query(sql, [d.ImagePath, d.PlayListName, d.Likes, d.Songs, d.Duration, d.Status, d.Discripition, d.id])
         return check
     }
 }

@@ -6,6 +6,7 @@ import searchControll from "../controller/SearchControll";
 
 const SearchRoute = Router()
 
-SearchRoute.post("/", searchControll.SearchName)
+SearchRoute.post("/", searchControll.SearchNameArtist)
+SearchRoute.post("/user", searchControll.SearchName)
 
 export default SearchRoute

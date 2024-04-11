@@ -28,7 +28,7 @@ interface OldSong extends SongForm {
 interface PlayListFormData {
   id: string;
   Genre_ID: string;
-  SongImage: string;
+  ImagePath: string;
   PlayListName: string;
   Discripition: string;
 }
@@ -58,14 +58,13 @@ function PlayListFormData() {
     Discripition: "",
     Genre_ID: "",
     id: "",
-    SongImage: "",
+    ImagePath: "",
     PlayListName: "",
   });
   useEffect(() => {
-    get(`playlist/${idPlaylistEdit}`, (v: any) => {
-      console.log(v);
+    get(`playlist/playListDetailAdmin/${idPlaylistEdit}`, (v: any) => {
       if (!v.err) {
-        SetPlayList(v["playlist"]);
+        SetPlayList(v.playlist);
         for (let i = 0; i < v.genre.length; i++) {
           const element = v.genre[i];
           dispatch(
@@ -80,7 +79,7 @@ function PlayListFormData() {
         SetSongs(v.songs);
       }
     });
-  }, [idPlaylistEdit]);
+  }, []);
   var stt = 0;
   var ls = song.map((element) => {
     dispatch(RemoveSelectSong(element.Id));
@@ -124,12 +123,12 @@ function PlayListFormData() {
         <div className="anh w-1/2">
           <div className="mb-2">Ảnh đại diên</div>
           <label
-            htmlFor={playlist.SongImage == "" ? "gdas" : "avatar"}
+            htmlFor={playlist.ImagePath == "" ? "gdas" : "avatar"}
             className=" px-4 py-2 rounded-full w-full"
           >
             <div className="w-full">
               {newSongImage == "" ? (
-                <img className="size-[200px]" src={playlist.SongImage} />
+                <img className="size-[200px]" src={playlist.ImagePath} />
               ) : (
                 <div>
                   <div

@@ -100,9 +100,15 @@ class UserService {
             return check;
         });
     }
-    SearchName(name) {
+    SearchName(name, iduser) {
         return __awaiter(this, void 0, void 0, function* () {
-            var ls = yield this.userDatabae.SearchName(name);
+            var ls = yield this.userDatabae.SearchName(name, iduser);
+            return this.SetList(ls);
+        });
+    }
+    SearchNameArtist(name) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var ls = yield this.userDatabae.SearchNameArtist(name);
             return this.SetList(ls);
         });
     }

@@ -32,6 +32,7 @@ const fs_1 = __importDefault(require("fs"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const GenreRoute_1 = __importDefault(require("./route/GenreRoute"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
+const socket_io_1 = require("socket.io");
 const UserRoute_1 = __importDefault(require("./route/UserRoute"));
 const Song_Route_1 = __importDefault(require("./route/Song.Route"));
 const Acount_1 = __importStar(require("./route/Acount"));
@@ -45,8 +46,17 @@ const PlayListRouteAdmin_1 = __importDefault(require("./admin/PlayListRouteAdmin
 const ContainRouteAdmin_1 = __importDefault(require("./admin/ContainRouteAdmin"));
 const DiscussRoute_1 = __importDefault(require("./route/DiscussRoute"));
 const NotificationRoute_1 = __importDefault(require("./route/NotificationRoute"));
+const BoxChatRoute_1 = __importDefault(require("./route/BoxChatRoute"));
+const MessRoute_1 = __importDefault(require("./route/MessRoute"));
+const http_1 = require("http");
+const cookie_1 = require("cookie");
+const Friend_1 = __importDefault(require("./route/Friend"));
 const app = (0, express_1.default)();
-app.use("/static", express_1.default.static(path_1.default.join(process.cwd(), "web")));
+const httpServer = (0, http_1.createServer)(app);
+const io = new socket_io_1.Server(httpServer, {
+    cookie: false
+});
+app.use("/static", express_1.default.static(path_1.default.join(process.cwd(), "web", "static")));
 app.use("/public", express_1.default.static(path_1.default.join(process.cwd(), "public")));
 app.use((0, cookie_parser_1.default)());
 app.use(body_parser_1.default.urlencoded({ extended: false, limit: "500mb" }));
@@ -58,6 +68,8 @@ app.get("/", (req, res) => {
     }
     res.redirect("/auth");
 });
+app.use("/mess", MessRoute_1.default);
+app.use("/box", BoxChatRoute_1.default);
 app.use("/user", UserRoute_1.default);
 app.use("/song", Song_Route_1.default);
 app.use("/lsong", LikedSongRoute_1.default);
@@ -65,6 +77,7 @@ app.use("/rs", RecentSongRoute_1.default);
 app.use("/search", SearchRoute_1.default);
 app.use("/discuss", DiscussRoute_1.default);
 app.use("/notification", NotificationRoute_1.default);
+app.use("/friend", Friend_1.default);
 app.get("/dashboard", (req, res) => {
     res.sendFile(path_1.default.join(process.cwd(), "web/dashboard.html"));
 });
@@ -149,8 +162,12 @@ app.use("/contain", ContainRouteAdmin_1.default);
 app.get("/admin", (req, res) => {
     res.sendFile((0, path_1.join)(process.cwd(), "web/admin.html"));
 });
-app.listen(8000, () => {
+app.get("/test", (req, res) => {
+    res.sendFile((0, path_1.join)(process.cwd(), "web/client.html"));
+});
+httpServer.listen(8000, () => {
     console.log("http://localhost:8000/");
+    console.log("http://localhost:8000/test");
     console.log("http://localhost:8000/gg");
     console.log("http://localhost:8000/auth");
     console.log("http://localhost:8000/admin");
@@ -160,3 +177,11 @@ app.listen(8000, () => {
     console.log("http://localhost:8000/user/signin?account=DenVau@pmq.com");
     console.log("http://localhost:8000/auth/forgot");
 });
+io.on("connection", (socket) => {
+    var cookie = (0, cookie_1.parse)(socket.handshake.headers.cookie || "");
+    socket.join(cookie.id);
+    socket.on("disconnect", () => {
+        io.socketsLeave("");
+    });
+});
+exports.default = io;

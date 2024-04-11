@@ -72,11 +72,22 @@ class UserDatabase {
             return check;
         });
     }
-    SearchName(name) {
+    SearchNameArtist(name) {
         return __awaiter(this, void 0, void 0, function* () {
             var sql = "SELECT * FROM user WHERE Name like ? AND Vertify <> 0 ";
             var check;
             check = yield Config_1.default.query(sql, [`%${name}%`]);
+            return check;
+        });
+    }
+    SearchName(name, iduse) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var sql = `SELECT * FROM user 
+        LEFT JOIN havelistfriends ON user.id=havelistfriends.idFriends
+        AND havelistfriends.idUser=?
+        WHERE user.Name LIKE ?  `;
+            var check;
+            check = yield Config_1.default.query(sql, [iduse, `%${name}%`]);
             return check;
         });
     }

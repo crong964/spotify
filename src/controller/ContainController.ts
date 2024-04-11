@@ -4,8 +4,6 @@ import { Request, Response } from "express";
 class ContainController {
     static contain: ContainService = containService
 
-
-
     async Add(req: Request, res: Response) {
         var d = new ContainModel()
         d.setAll(req.body)

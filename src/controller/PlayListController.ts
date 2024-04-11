@@ -24,7 +24,7 @@ export class PlayListController {
         playlistmodel.User_id = req.cookies.id
         playlistmodel.Type = 1
         playlistmodel.Songs = req.body.ls.length
-        playlistmodel.SongImage = join("public/playlist", file)
+        playlistmodel.ImagePath = join("public/playlist", file)
 
 
 
@@ -60,6 +60,7 @@ export class PlayListController {
         PlayListController.contain.GetAllByPlayList(idplaylist), PlayListController.
             genre.GetIdParentByIdplaylist(idplaylist)])
 
+
         res.json({
             err: ls[0] == undefined,
             playlist: ls[0],
@@ -78,9 +79,9 @@ export class PlayListController {
         var playlistmodel = new PlayListModel()
         playlistmodel.setAll(req.body)
         if (req.file) {
-            playlistmodel.SongImage = join("public/playlist", req.file.filename)
+            playlistmodel.ImagePath = join("public/playlist", req.file.filename)
             try {
-                await unlink(join(process.cwd(), oldplaylist.SongImage))
+                await unlink(join(process.cwd(), oldplaylist.ImagePath))
             } catch (error) {
                 console.log(error);
 

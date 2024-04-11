@@ -47,10 +47,19 @@ class UserDatabase {
         check = await Mysql2.query(sql, [d.Password, d.Account])
         return check
     }
-    async SearchName(name: string) {
+    async SearchNameArtist(name: string) {
         var sql = "SELECT * FROM user WHERE Name like ? AND Vertify <> 0 "
         var check
         check = await Mysql2.query(sql, [`%${name}%`])
+        return check
+    }
+    async SearchName(name: string, iduse: string) {
+        var sql = `SELECT * FROM user 
+        LEFT JOIN havelistfriends ON user.id=havelistfriends.idFriends
+        AND havelistfriends.idUser=?
+        WHERE user.Name LIKE ?  `
+        var check
+        check = await Mysql2.query(sql, [iduse, `%${name}%`])
         return check
     }
     async GetAccountByAccAndPass(acc: string, pass: string) {

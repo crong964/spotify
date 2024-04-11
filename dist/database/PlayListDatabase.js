@@ -14,14 +14,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const Config_1 = __importDefault(require("../config/Config"));
 class PlayListDatabase {
-    add(d) {
-        throw new Error("Method not implemented.");
-    }
     Add(d) {
         return __awaiter(this, void 0, void 0, function* () {
-            var sql = "INSERT INTO playlist(id, User_id, Genre_ID, Type, SongImage, PlayListName, Likes, Songs, Duration, Status, Discripition) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+            var sql = "INSERT INTO playlist(id, User_id, Genre_ID, Type, ImagePath, PlayListName, Likes, Songs, Duration, Status, Discripition) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
             var check;
-            check = yield Config_1.default.query(sql, [d.id, d.User_id, d.Genre_ID, d.Type, d.SongImage, d.PlayListName, d.Likes, d.Songs, d.Duration, d.Status, d.Discripition]);
+            check = yield Config_1.default.query(sql, [d.id, d.User_id, d.Genre_ID, d.Type, d.ImagePath, d.PlayListName, d.Likes, d.Songs, d.Duration, d.Status, d.Discripition]);
             return check;
         });
     }
@@ -51,9 +48,9 @@ class PlayListDatabase {
     }
     Update(d) {
         return __awaiter(this, void 0, void 0, function* () {
-            var sql = "UPDATE playlist SET SongImage=?,PlayListName=?,Likes=?,Songs=?,Duration=?,Status=?,Discripition=? WHERE id =?";
+            var sql = "UPDATE playlist SET ImagePath=?,PlayListName=?,Likes=?,Songs=?,Duration=?,Status=?,Discripition=? WHERE id =?";
             var check;
-            check = yield Config_1.default.query(sql, [d.SongImage, d.PlayListName, d.Likes, d.Songs, d.Duration, d.Status, d.Discripition, d.id]);
+            check = yield Config_1.default.query(sql, [d.ImagePath, d.PlayListName, d.Likes, d.Songs, d.Duration, d.Status, d.Discripition, d.id]);
             return check;
         });
     }

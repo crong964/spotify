@@ -18,7 +18,7 @@ interface PlayList {
   //User_id: string;
   //Genre_ID: string;
   //Type: number;
-  SongImage: string;
+  ImagePath: string;
   PlayListName: string;
   //Likes: number;
   //Songs: number;
@@ -65,7 +65,7 @@ function PlayList(d: PlayList) {
         ) : (
           <></>
         )}
-        <img src={d.SongImage} className="rounded-2xl" alt="" srcSet="" />
+        <img src={d.ImagePath} className="rounded-2xl" alt="" srcSet="" />
       </div>
       <div className="text-[16px] ">{d.PlayListName}</div>
     </div>
@@ -91,7 +91,7 @@ function PlayLists() {
           <PlayList
             id={v.id}
             key={v.id}
-            SongImage={v.SongImage}
+            ImagePath={v.ImagePath}
             PlayListName={v.PlayListName}
           />
         );

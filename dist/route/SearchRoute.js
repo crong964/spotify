@@ -6,5 +6,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const SearchControll_1 = __importDefault(require("../controller/SearchControll"));
 const SearchRoute = (0, express_1.Router)();
-SearchRoute.post("/", SearchControll_1.default.SearchName);
+SearchRoute.post("/", SearchControll_1.default.SearchNameArtist);
+SearchRoute.post("/user", SearchControll_1.default.SearchName);
 exports.default = SearchRoute;

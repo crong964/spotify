@@ -1,5 +1,6 @@
 import { PayloadAction, configureStore, createSlice } from "@reduxjs/toolkit";
 import { useSelector } from "react-redux";
+import { Socket, io } from "socket.io-client";
 
 interface Commamd {
   page:
@@ -14,6 +15,8 @@ interface Commamd {
   param: string;
 }
 interface Root {
+  client: Socket | undefined;
+  BoxList: string[];
   command: Commamd;
   idSong: string;
   recentList: boolean;
@@ -25,8 +28,12 @@ interface Root {
   NotificationPageIdSong: string;
   stack: Commamd[];
   position: number;
+  SearchName: string;
 }
 const initialState: Root = {
+  client: undefined,
+  SearchName: "",
+  BoxList: [],
   command: {
     page: "home",
     param: "",
@@ -34,10 +41,10 @@ const initialState: Root = {
   NotificationPageIdSong: "",
   NotificationPage: "list",
   idSong: JSON.parse(localStorage.getItem("song") as any).Id || "",
-  recentList: false,
+  recentList: true,
   isLogin: false,
   update: true,
-  Right: "Discuss",
+  Right: "Mess",
   DeleteDiscuss: "",
   stack: [{ page: "home", param: "" }],
   position: 0,
@@ -64,9 +71,13 @@ var rootslice = createSlice({
     Update: (state) => {
       state.update = !state.update;
     },
-    NaviRight: (state, action: PayloadAction<"Discuss" | "Queue">) => {
+    NaviRight: (state, action: PayloadAction<"Discuss" | "Queue" | "Mess">) => {
+      if (state.Right==action.payload) {
+        state.recentList = !state.recentList;
+        return
+      }
       state.Right = action.payload;
-      state.recentList = !state.recentList;
+      state.recentList=true
     },
     SetdeleteDiscuss: (state, action) => {
       state.DeleteDiscuss = action.payload;
@@ -87,6 +98,15 @@ var rootslice = createSlice({
       }
       state.command = state.stack[state.position];
     },
+    SetBoxList: (state, action) => {
+      state.BoxList.push(action.payload);
+    },
+    RemoveBoxList: (state, action) => {
+      state.BoxList.shift();
+    },
+    SetSearchName: (state, action: PayloadAction<string>) => {
+      state.SearchName = action.payload;
+    }
   },
 });
 
@@ -109,6 +129,9 @@ export const {
   SetNotificationPage,
   SetNotificationPageIdSong,
   SetPosition,
+  SetBoxList,
+  RemoveBoxList,
+  SetSearchName,
 } = rootslice.actions;
 
 export default rootHome;

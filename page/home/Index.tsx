@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { SetionList } from "./Setion";
 import RecentList, { RecentPlaylist } from "./Right/RecentPlaylist";
@@ -16,6 +16,7 @@ import Profile from "./Profile";
 import IdGenre from "./IdGenre";
 
 import Right from "./Right/Right";
+import ChatBox from "./boxchat/SingleBox";
 
 function useIndex() {
   const [queue, SetQueue] = useState(false);
@@ -34,7 +35,9 @@ export default function Index() {
   const { Set, queue, SetQueue, scroll } = useIndex();
   const page = useSelector((state: RootHome) => state.rootHome.command.page);
 
+  const BoxList = useSelector((state: RootHome) => state.rootHome.BoxList);
   const dispatch = useDispatch();
+
   var children: React.JSX.Element;
   switch (page) {
     case "genre":
@@ -73,8 +76,8 @@ export default function Index() {
       break;
   }
   return (
-    <div className="h-full w-full bg-black">
-      <div className="flex h-[85%] space-x-1">
+    <div className="h-full w-full bg-black CircularSpUIv3T-Book">
+      <div className="flex h-[85%] space-x-1 relative">
         <div className="w-[80px] px-1 space-y-1">
           <div className="h-[20%] bg-[#121212] rounded-lg py-2">
             <div className="h-full">
@@ -108,8 +111,13 @@ export default function Index() {
         </div>
 
         <Right />
+        <div className="absolute right-[400px] z-40 space-x-2 flex bottom-0 ">
+          {BoxList.map((v) => {
+            return <ChatBox idbox={v}  key={1} />;
+          })}
+        </div>
       </div>
-      <PlayingBar></PlayingBar>
+      <PlayingBar />
     </div>
   );
 }

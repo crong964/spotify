@@ -8,7 +8,7 @@ import { get, post } from "../../page/config/req";
 interface PlayListFormData {
   id: string;
   Genre_ID: string;
-  SongImage: string;
+  ImagePath: string;
   PlayListName: string;
   Discripition: string;
 }
@@ -29,7 +29,7 @@ export default function PlayListForm() {
         SongName={element.SongName}
         Viewer={element.Viewer}
         filePath={element.filePath}
-        SongImage={element.SongImage}
+        SongImage={element.ImagePath}
         stt={stt}
         user_id={element.user_id}
         key={element.Id}
@@ -56,7 +56,7 @@ function PlayListFormData() {
     Discripition: "",
     Genre_ID: "",
     id: "",
-    SongImage: "",
+    ImagePath: "",
     PlayListName: "",
   });
 
@@ -79,11 +79,11 @@ function PlayListFormData() {
         <div className="anh w-1/2">
           <div className="mb-2">Ảnh đại diên</div>
           <label
-            htmlFor={playlist.SongImage == "" ? "avatar" : "gdas"}
+            htmlFor={playlist.ImagePath == "" ? "avatar" : "gdas"}
             className=" px-4 py-2 rounded-full w-full"
           >
             <div className="w-full">
-              {playlist.SongImage == "" ? (
+              {playlist.ImagePath == "" ? (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="white"
@@ -105,13 +105,13 @@ function PlayListFormData() {
                     onClick={() => {
                       SetPlayList({
                         ...playlist,
-                        SongImage: "",
+                        ImagePath: "",
                       });
                     }}
                   >
                     xóa
                   </div>
-                  <img className="size-[100px]" src={playlist.SongImage} />
+                  <img className="size-[100px]" src={playlist.ImagePath} />
                 </div>
               )}
             </div>
@@ -127,7 +127,7 @@ function PlayListFormData() {
                   SetFile(files[0]);
                   SetPlayList({
                     ...playlist,
-                    SongImage: file,
+                    ImagePath: file,
                   });
                 }
               }}

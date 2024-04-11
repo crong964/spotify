@@ -42,17 +42,19 @@ interface PlayList {
 export function Artise() {
   const idpage = useSelector((state: RootHome) => state.rootHome.command.param);
   const [artise, SetaAtist] = useState<artise>();
+  const [isfriend, SetIsfriend] = useState<"-1" | "0" | "1" | "2">("-1");
   const [songs, SetSongS] = useState<Song[]>([]);
   const dispatch = useDispatch();
 
   useEffect(() => {
     get(`/user/artisepage/${idpage}`, (v: any) => {
       SetaAtist(v.ls);
+      SetIsfriend(v.isfriend);
     });
     get(`lsong/getall/${idpage}`, (v: any) => {
       SetSongS(v.ls);
     });
-  }, []);
+  }, [idpage]);
   return (
     <div className="relative">
       <div
@@ -100,6 +102,7 @@ export function Artise() {
               <path d="M4.5 13.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm15 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm-7.5 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"></path>
             </svg>
           </div>
+          <TypeF idFriend={artise?.id} key={1} type={isfriend}></TypeF>
         </div>
         <div className="py-3 font-bold text-[24px]  text-white">
           Các bài hát
@@ -283,4 +286,72 @@ export default function Playlist() {
       </div>
     </div>
   );
+}
+
+interface TypeF {
+  type: "-1" | "0" | "1" | "2";
+  idFriend: string | undefined;
+}
+function TypeF(p: TypeF) {
+  console.log(p);
+  
+  var children: React.JSX.Element;
+  switch (p.type+"") {
+    case "-1":
+      children = (
+        <>
+          <div
+            onClick={() => {
+              post("friend/Request", { idFriend: p.idFriend }, (v: any) => {
+                alert(v.err)
+              });
+            }}
+            className="hover:bg-[#1FDD63] bg-[#2A2A2A] p-2 rounded-full w-max"
+          >
+            Thêm bạn
+          </div>
+        </>
+      );
+      break;
+    case "0":
+      children = (
+        <>
+          <div onClick={() => {
+              post("friend/Cancenl", { idFriend: p.idFriend }, (v: any) => {
+                alert(v.err)
+              });
+            }} className="hover:bg-[#1FDD63] bg-[#2A2A2A] p-2 rounded-full w-max">
+            Hủy yêu cầu kết bạn
+          </div>
+        </>
+      );
+      break;
+    case "1":
+      children = (
+        <>
+          <div onClick={() => {
+              post("friend/Accept", { idFriend: p.idFriend }, (v: any) => {
+                alert(v.err)
+              });
+            }} className="hover:bg-[#1FDD63] bg-[#2A2A2A] p-2 rounded-full w-max">
+            Chấp nhận kết bạn
+          </div>
+        </>
+      );
+      break;
+    default:
+      children = (
+        <>
+          <div onClick={() => {
+              post("friend/Cancenl", { idFriend: p.idFriend }, (v: any) => {
+                alert(v.err)
+              });
+            }} className="hover:bg-[#1FDD63] bg-[#2A2A2A] p-2 rounded-full w-max">
+            Hủy bạn bè
+          </div>
+        </>
+      );
+      break;
+  }
+  return <div className="cursor-pointer">{children}</div>;
 }
