@@ -2,7 +2,12 @@ import Mysql2 from "../config/Config";
 import MessModel from "../model/MessModel";
 export default class MessDatabase {
     async GetAllContentByidBox(idBox: string, idUser: string, now: string) {
-        let sql = ` SELECT *  FROM messenge m WHERE m.idBox= ? AND m.ngay > (SELECT h.ngay FROM havelistboxchat h WHERE h.idBox = ? AND h.idUser = ? ) AND   m.idMess NOT IN (SELECT hd.idMess FROM hiddenmesslist hd WHERE hd.idUser = ? ) AND m.ngay < ? ORDER BY ngay DESC LIMIT 12`
+        let sql = ` SELECT *  
+        FROM messenge m 
+        WHERE m.idBox= ? AND m.ngay > 
+        (SELECT h.ngay FROM havelistboxchat h WHERE h.idBox = ? AND h.idUser = ? ) 
+        AND  m.idMess NOT IN (SELECT hd.idMess FROM hiddenmesslist hd WHERE hd.idUser = ? ) 
+        AND m.ngay < ? ORDER BY ngay DESC LIMIT 12`
         var check = await Mysql2.query(sql, [idBox, idBox, idUser, idUser, now]);
         return check;
     }

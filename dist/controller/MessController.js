@@ -34,7 +34,8 @@ class MessController {
                 err: false,
                 mess: ls[0],
                 infor: ls[1],
-                myid: id
+                myid: id,
+                now: ls[0][ls[0].length - 1].ngay
             });
         });
     }
@@ -55,11 +56,18 @@ class MessController {
                 MessController.haveListBoxChat.visualBoxChat(mess.idUser, mess.idBox),
                 MessController.haveListBoxChat.SetNotSeenInBox(mess.idUser, mess.idBox),
                 MessController.mess.InsertContentIn(mess),
-                MessController.box.UpdateLastMessBox(mess.idUser, mess.content, mess.idBox, "mess"),
+                MessController.box.UpdateLastMessBox(mess.idUser, mess.content, mess.idBox, "Mess"),
                 MessController.haveListBoxChat.GetIdUserInBox(mess.idUser, mess.idBox)
             ]);
             v[4].map((v) => {
-                server_1.default.to(v.idUser).emit(mess.idBox, { idMess: mess.idMess, content: mess.content, idBox: mess.idBox, idUser: mess.idUser, ngay: new Date() });
+                server_1.default.to(v.idUser).emit("mess", {
+                    idMess: mess.idMess,
+                    content: mess.content,
+                    idBox: mess.idBox,
+                    idUser: mess.idUser,
+                    ngay: new Date(),
+                    type: "Mess"
+                });
             });
             res.json({
                 err: v[2] == undefined
@@ -106,6 +114,55 @@ class MessController {
             MessController.hiddenMess.InsertHiddenmess(idmess, iduser);
             res.json({
                 err: false,
+            });
+        });
+    }
+    Image(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var files = req.files;
+            files[0].fieldname;
+            var messfile = files.reduce((a, b) => {
+                a += `i/${b.filename}@`;
+                return a;
+            }, "");
+            var mess = new MessModel_1.default();
+            mess.content = messfile;
+            mess.idBox = req.body.idbox;
+            mess.idMess = `Mess-${(0, uuid_1.v4)()}`;
+            mess.idUser = req.cookies.id;
+            mess.type = "image";
+            let inbox = yield MessController.haveListBoxChat.IsIdUserInBox(mess.idUser, mess.idBox);
+            if (inbox == undefined) {
+                res.json({
+                    err: true
+                });
+                return;
+            }
+            let v = yield Promise.all([
+                MessController.haveListBoxChat.visualBoxChat(mess.idUser, mess.idBox),
+                MessController.haveListBoxChat.SetNotSeenInBox(mess.idUser, mess.idBox),
+                MessController.mess.InsertContentIn(mess),
+                MessController.box.UpdateLastMessBox(mess.idUser, mess.content, mess.idBox, "Image"),
+                MessController.haveListBoxChat.GetIdUserInBox(mess.idUser, mess.idBox)
+            ]);
+            v[4].map((v) => {
+                server_1.default.to(v.idUser).emit("mess", { idMess: mess.idMess, content: mess.content, idBox: mess.idBox, type: "Image", idUser: mess.idUser, ngay: new Date() });
+            });
+            res.json({
+                err: v[2] == undefined
+            });
+        });
+    }
+    NextMessList(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var id = req.cookies.id;
+            var idBox = req.body.idBox;
+            var now = req.body.now;
+            var ls = yield MessController.mess.GetAllContentByidBox(idBox, id, now);
+            res.json({
+                err: false,
+                ls: ls,
+                now: ls.length == 0 ? "-1" : ls[ls.length - 1].ngay
             });
         });
     }

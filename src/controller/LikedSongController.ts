@@ -15,7 +15,7 @@ class LikedSongController {
         temp.id_user_liked = id_user_liked
         var check
         var get = await LikedSongController.likedSongService.Get(temp)
-        console.log(get?.liked);
+        
 
         if (get == undefined) {
             get = temp

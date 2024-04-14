@@ -4,6 +4,13 @@ interface Time {
   time: string;
 }
 export default function Time(d: Time) {
+  if (d.time.length <= 0) {
+    return (
+      <div className="text-[12px] ">
+        1 giây trước
+      </div>
+    );
+  }
   var now = Date.now();
   var time = new Date(d.time).getTime();
   var t = now - time;

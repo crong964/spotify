@@ -2,10 +2,12 @@ import { Request, Response } from "express"
 import likedSongService, { LikedSongService } from "../services/LikedSongService"
 import userService, { UserService } from "../services/UserService"
 import LikedSongModel from "../model/LikedSongModel"
+import haveListFriendsService from "../services/HaveListFriendsService"
 
 class SearchControll {
     static user: UserService = userService
     static likedSong: LikedSongService = likedSongService
+    static haveListFriends = haveListFriendsService
     constructor() {
 
     }
@@ -29,11 +31,13 @@ class SearchControll {
     async SearchName(req: Request, res: Response) {
         var name = req.body.name
         var id = req.cookies.id
-        var ls = await SearchControll.user.SearchName(name, id)
-
+        var ls = await
+            Promise.all([SearchControll.haveListFriends.SearchName(name, id, "2"),
+            SearchControll.haveListFriends.SearchOther(name, id)])
         res.json({
             err: false,
-            ls: ls,
+            friend: ls[0],
+            orther: ls[1]
         })
     }
 }

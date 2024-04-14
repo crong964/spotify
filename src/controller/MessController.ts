@@ -20,14 +20,14 @@ export class MessController {
         var id = req.cookies.id;
         var idBox = req.body.idBox;
         MessController.haveListBoxChat.visualBoxChat(id, idBox)
-
         var ls = await Promise.all([MessController.mess.GetAllContentByidBox(idBox, id),
         MessController.haveListBoxChat.GetInforBoxByidUserAndIdBox(id, idBox)])
         res.json({
             err: false,
             mess: ls[0],
             infor: ls[1],
-            myid: id
+            myid: id,
+            now: ls[0][ls[0].length - 1].ngay
         })
     }
     async SendMess(req: Request, res: Response) {
@@ -48,12 +48,20 @@ export class MessController {
             MessController.haveListBoxChat.visualBoxChat(mess.idUser, mess.idBox),
             MessController.haveListBoxChat.SetNotSeenInBox(mess.idUser, mess.idBox),
             MessController.mess.InsertContentIn(mess),
-            MessController.box.UpdateLastMessBox(mess.idUser, mess.content, mess.idBox, "mess"),
+            MessController.box.UpdateLastMessBox(mess.idUser, mess.content, mess.idBox, "Mess"),
             MessController.haveListBoxChat.GetIdUserInBox(mess.idUser, mess.idBox)
         ]);
 
         v[4].map((v) => {
-            io.to(v.idUser).emit(mess.idBox, { idMess: mess.idMess, content: mess.content, idBox: mess.idBox, idUser: mess.idUser, ngay: new Date() })
+            io.to(v.idUser).emit("mess",
+                {
+                    idMess: mess.idMess,
+                    content: mess.content,
+                    idBox: mess.idBox,
+                    idUser: mess.idUser,
+                    ngay: new Date(),
+                    type: "Mess"
+                })
         })
 
         res.json({
@@ -99,6 +107,59 @@ export class MessController {
         MessController.hiddenMess.InsertHiddenmess(idmess, iduser)
         res.json({
             err: false,
+        })
+    }
+    async Image(req: Request, res: Response) {
+        var files = req.files as Express.Multer.File[]
+        files[0].fieldname
+        var messfile = files.reduce((a, b) => {
+            a += `i/${b.filename}@`
+            return a
+        }, "")
+
+        var mess = new MessModel()
+
+        mess.content = messfile
+        mess.idBox = req.body.idbox
+        mess.idMess = `Mess-${v4()}`
+        mess.idUser = req.cookies.id
+        mess.type = "image"
+
+        let inbox = await MessController.haveListBoxChat.IsIdUserInBox(mess.idUser, mess.idBox);
+
+        if (inbox == undefined) {
+            res.json({
+                err: true
+            })
+            return
+        }
+        let v = await Promise.all([
+            MessController.haveListBoxChat.visualBoxChat(mess.idUser, mess.idBox),
+            MessController.haveListBoxChat.SetNotSeenInBox(mess.idUser, mess.idBox),
+            MessController.mess.InsertContentIn(mess),
+            MessController.box.UpdateLastMessBox(mess.idUser, mess.content, mess.idBox, "Image"),
+            MessController.haveListBoxChat.GetIdUserInBox(mess.idUser, mess.idBox)
+        ]);
+
+        v[4].map((v) => {
+            io.to(v.idUser).emit("mess", { idMess: mess.idMess, content: mess.content, idBox: mess.idBox, type: "Image", idUser: mess.idUser, ngay: new Date() })
+        })
+
+        res.json({
+            err: v[2] == undefined
+        })
+    }
+    async NextMessList(req: Request, res: Response) {
+        var id = req.cookies.id;
+        var idBox = req.body.idBox;
+        var now = req.body.now
+        var ls = await MessController.mess.GetAllContentByidBox(idBox, id, now)
+
+
+        res.json({
+            err: false,
+            ls: ls,
+            now: ls.length == 0 ? "-1" : ls[ls.length - 1].ngay
         })
     }
 }

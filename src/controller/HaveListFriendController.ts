@@ -6,7 +6,6 @@ class HaveListFriendController {
     constructor() {
 
     }
-
     async AddFriendsRequset(req: Request, res: Response) {
         var id = req.cookies.id;
         var idFriend: string = req.body.idFriend;
@@ -36,7 +35,7 @@ class HaveListFriendController {
         var check1 = await HaveListFriendController.haveListFriend.InsertListFriends(id, idFriend, "Request");
         var check1 = await HaveListFriendController.haveListFriend.InsertListFriends(idFriend, id, "Responsd");
         if (check1) {
-            io.to(idFriend).emit("ReqAddFriends", "yêu cầu kết bạn");
+            io.to(idFriend).emit("tb", "yêu cầu kết bạn");
         }
         res.json({ err: false, mess: "bạn đã giử thành công" })
     };
@@ -69,8 +68,6 @@ class HaveListFriendController {
     async GetRespond(req: Request, res: Response) {
         var id = req.cookies.id
         var ls = await HaveListFriendController.haveListFriend.GetAllTypeFriend(id, "Responsd")
-        console.log(ls);
-
         res.json({
             err: false,
             ls: ls

@@ -10,13 +10,14 @@ import Playlist, { Artise, LikedSongList } from "./PlayList";
 import { useDispatch, useSelector } from "react-redux";
 import PlayingBar from "./Audio/PlayingBar";
 import Header from "./Header/Header";
-import { NaviPage, RootHome } from "./RootRedux";
+import { NaviPage, RootHome, SetMess } from "./RootRedux";
 import Search from "./Search";
 import Profile from "./Profile";
 import IdGenre from "./IdGenre";
 
 import Right from "./Right/Right";
 import ChatBox from "./boxchat/SingleBox";
+import { socket } from "../socket/Socket";
 
 function useIndex() {
   const [queue, SetQueue] = useState(false);
@@ -34,10 +35,20 @@ function useIndex() {
 export default function Index() {
   const { Set, queue, SetQueue, scroll } = useIndex();
   const page = useSelector((state: RootHome) => state.rootHome.command.page);
-
   const BoxList = useSelector((state: RootHome) => state.rootHome.BoxList);
+  const mess = useSelector((state: RootHome) => state.rootHome.mess);
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    function res(v: any) {
+      dispatch(SetMess(v));
+    }
+    socket.on("mess", res);
+    return () => {
+      socket.off("mess", res);
+    };
+  }, []);
+  
   var children: React.JSX.Element;
   switch (page) {
     case "genre":
@@ -113,7 +124,7 @@ export default function Index() {
         <Right />
         <div className="absolute right-[400px] z-40 space-x-2 flex bottom-0 ">
           {BoxList.map((v) => {
-            return <ChatBox idbox={v}  key={1} />;
+            return <ChatBox idbox={v} key={v} />;
           })}
         </div>
       </div>

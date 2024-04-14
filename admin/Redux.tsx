@@ -45,7 +45,8 @@ export const counterSlice = createSlice({
     Page: (
       state,
       action: PayloadAction<
-        "genre" | "songlist" | "playlist" | "playlists" | "playlistedit"
+        "genre" | "songlist" | "playlist" | "playlists" | "playlistedit"|
+        "userlist"
       >
     ) => {
       state.page = action.payload;

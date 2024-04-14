@@ -30,7 +30,7 @@ class UserModel extends BaseModel {
     setAll(d: any): void {
         super.setAll(d)
         this.Password = ""
-        this.Account=""
+        
     }
 }
 

@@ -25,7 +25,7 @@ class UserController {
             var account = req.query.account;
             if (!account) {
             }
-            var check = yield UserController.service.GetByAccount(account);
+            var check = yield UserController.user.GetByAccount(account);
             res.cookie("id", check === null || check === void 0 ? void 0 : check.id, { maxAge: 1000 * 60 * 60 * 24 * 356, httpOnly: true });
             res.redirect("http://localhost:8000/dashboard");
         });
@@ -33,7 +33,7 @@ class UserController {
     Get(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             var id = req.cookies.id;
-            var use = yield UserController.service.Get(id);
+            var use = yield UserController.user.Get(id);
             if (use) {
                 use.Account = "";
                 res.json({
@@ -50,7 +50,7 @@ class UserController {
     }
     getAllArtist(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            var ls = yield UserController.service.getAllArtist("1");
+            var ls = yield UserController.user.getAllArtist("1");
             res.json({
                 err: false,
                 ls: ls
@@ -61,7 +61,15 @@ class UserController {
         return __awaiter(this, void 0, void 0, function* () {
             var idartise = req.params.artisepage;
             var id = req.cookies.id;
-            var l = yield Promise.all([UserController.service.Get(idartise),
+            if (id == idartise) {
+                var ls = yield UserController.user.Get(idartise);
+                res.json({
+                    ls: ls,
+                    isfriend: undefined
+                });
+                return;
+            }
+            var l = yield Promise.all([UserController.user.Get(idartise),
                 UserController.HaveListFriends.Get(id, idartise)]);
             res.json({
                 err: false,
@@ -73,7 +81,7 @@ class UserController {
     update(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             var d = new UserModel_1.default();
-            var olduer = yield UserController.service.Get(req.cookies.id);
+            var olduer = yield UserController.user.Get(req.cookies.id);
             if (!olduer) {
                 res.json({
                     err: true
@@ -91,13 +99,24 @@ class UserController {
                     console.log(error);
                 }
             }
-            var check = yield UserController.service.Update(d);
+            var check = yield UserController.user.Update(d);
             res.json({
                 err: check == undefined
             });
         });
     }
+    GetAllUserAdmin(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var Vertify = req.body.Vertify || "";
+            var ls = yield UserController.user.GetAllUserByType(Vertify);
+            res.json({
+                err: false,
+                ls: ls
+            });
+        });
+    }
 }
-UserController.service = UserService_1.default;
+UserController.user = UserService_1.default;
 UserController.HaveListFriends = HaveListFriendsService_1.default;
-exports.default = new UserController();
+var userController = new UserController();
+exports.default = userController;

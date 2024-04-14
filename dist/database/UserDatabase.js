@@ -80,17 +80,6 @@ class UserDatabase {
             return check;
         });
     }
-    SearchName(name, iduse) {
-        return __awaiter(this, void 0, void 0, function* () {
-            var sql = `SELECT * FROM user 
-        LEFT JOIN havelistfriends ON user.id=havelistfriends.idFriends
-        AND havelistfriends.idUser=?
-        WHERE user.Name LIKE ?  `;
-            var check;
-            check = yield Config_1.default.query(sql, [iduse, `%${name}%`]);
-            return check;
-        });
-    }
     GetAccountByAccAndPass(acc, pass) {
         return __awaiter(this, void 0, void 0, function* () {
             var sql = "SELECT * FROM user WHERE Account=? AND Password =? ";
@@ -104,6 +93,14 @@ class UserDatabase {
             var sql = "UPDATE `user` SET `Name`=?,`Nationality`=?,`ChanalName`=?,`pathImage`=? WHERE id=? ";
             var check;
             check = yield Config_1.default.query(sql, [d.Name, d.Nationality, d.ChanalName, d.pathImage, d.id]);
+            return check;
+        });
+    }
+    GetAllUserByType(Vertify) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var sql = "SELECT * FROM `user` WHERE Vertify LIKE ? ";
+            var check;
+            check = yield Config_1.default.query(sql, [`%${Vertify}%`]);
             return check;
         });
     }

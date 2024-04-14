@@ -41,8 +41,8 @@ export class HaveListFriendsService {
             "Responsd": "1",
             "Friend": "2"
         }
-        
-        
+
+
         var check = await this.data.GetAllTypeFriend(idUser, d[IsFriend])
         return check
     }
@@ -53,6 +53,15 @@ export class HaveListFriendsService {
     async AcceptRequset(idUser: string, idFriend: string) {
         var check = await this.data.UpDateType(idUser, idFriend, "2")
         return check
+    }
+    async SearchName(name: string, iduse: string, type?: string) {
+        type = type || ""
+        var check = await this.data.SearchName(name, iduse, type)
+        return this.Setls(check)
+    }
+    async SearchOther(name: string, iduse: string) {
+        var check = await this.data.SearchOther(name, iduse)
+        return this.Setls(check)
     }
 }
 

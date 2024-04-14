@@ -8,7 +8,7 @@ export class PlayListService {
     }
     async Add(d: PlayListModel) {
         var check = await this.playlist.Add(d)
-        console.log(check);
+        
 
         return check
     }

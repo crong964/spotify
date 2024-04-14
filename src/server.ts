@@ -24,7 +24,8 @@ import BoxChatRoute from "./route/BoxChatRoute";
 import MessRoute from "./route/MessRoute";
 import { createServer } from "http";
 import { parse } from "cookie";
-import FriendRoute from "./route/Friend";
+import FriendRoute from "./route/FriendRoute";
+import UserRouteAdmin from "./admin/UserRouteAdmin";
 
 const app = express()
 const httpServer = createServer(app);
@@ -34,6 +35,7 @@ const io = new Server(httpServer, {
 
 app.use("/static", express.static(path.join(process.cwd(), "web", "static")))
 app.use("/public", express.static(path.join(process.cwd(), "public")))
+app.use("/i", express.static(path.join(process.cwd(), "public", "upload")))
 
 
 app.use(cookieParser())
@@ -157,6 +159,7 @@ app.use("/playlist", PlayListRoute)
 app.use("/genre", GenreRouteAdmin)
 app.use("/playlist", PlayListRouteAdmin)
 app.use("/contain", ContainRouteAdmin)
+app.use("/admin/UserRouteAdmin", UserRouteAdmin)
 app.get("/admin", (req, res) => {
     res.sendFile(join(process.cwd(), "web/admin.html"))
 })

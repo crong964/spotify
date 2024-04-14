@@ -8,6 +8,7 @@ import { RootState } from "./Redux";
 import PlayListForm from "./PlayList/PlayListForn";
 import PlaylistAndGenre from "./PlayList/PlaylistAndGenre";
 import PlayListEdit from "./PlayList/PlayListEdit";
+import UserList from "./user/UserList";
 
 export default function App() {
   var children: React.JSX.Element;
@@ -39,6 +40,13 @@ export default function App() {
       children = (
         <Main title="Chỉnh sửa danh sách">
           <PlayListEdit />
+        </Main>
+      );
+      break;
+    case "userlist":
+      children = (
+        <Main title="Danh sách người dùng">
+          <UserList />
         </Main>
       );
       break;

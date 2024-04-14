@@ -21,7 +21,7 @@ export default class BoxDatabase {
         return check
     }
 
-    async UpdateLastMessBox(idUser: string, content: string, idBox: string, type: "mess" | "image" | "liveLocation" | "shareLocation") {
+    async UpdateLastMessBox(idUser: string, content: string, idBox: string, type: "Mess" | "Image" ) {
         var sql = "UPDATE boxchat SET content=?,id=?, updateDay=CURRENT_TIMESTAMP, messType=?  WHERE idBox =?"
         var check
         check = await Mysql2.query(sql, [content, idUser, type, idBox])

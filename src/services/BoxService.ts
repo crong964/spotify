@@ -34,7 +34,7 @@ export class BoxService {
         return check
     }
 
-    async UpdateLastMessBox(idUser: string, content: string, idBox: string, type: "mess" | "image" | "liveLocation" | "shareLocation") {
+    async UpdateLastMessBox(idUser: string, content: string, idBox: string, type: "Mess" | "Image") {
         var check
         check = await this.data.UpdateLastMessBox(idUser, content, idBox, type)
         return check

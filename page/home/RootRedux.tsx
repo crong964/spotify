@@ -2,6 +2,15 @@ import { PayloadAction, configureStore, createSlice } from "@reduxjs/toolkit";
 import { useSelector } from "react-redux";
 import { Socket, io } from "socket.io-client";
 
+interface mess {
+  idMess: string;
+  content: string;
+  idBox: string;
+  idUser: string;
+  ngay: string;
+  type: string;
+}
+
 interface Commamd {
   page:
     | "genre"
@@ -15,7 +24,8 @@ interface Commamd {
   param: string;
 }
 interface Root {
-  client: Socket | undefined;
+  watchbox: string;
+  mess: mess;
   BoxList: string[];
   command: Commamd;
   idSong: string;
@@ -31,7 +41,7 @@ interface Root {
   SearchName: string;
 }
 const initialState: Root = {
-  client: undefined,
+  watchbox: "",
   SearchName: "",
   BoxList: [],
   command: {
@@ -48,6 +58,14 @@ const initialState: Root = {
   DeleteDiscuss: "",
   stack: [{ page: "home", param: "" }],
   position: 0,
+  mess: {
+    content: "",
+    idBox: "",
+    idMess: "",
+    idUser: "",
+    ngay: "",
+    type: "",
+  },
 };
 var rootslice = createSlice({
   name: "rootHome",
@@ -72,12 +90,12 @@ var rootslice = createSlice({
       state.update = !state.update;
     },
     NaviRight: (state, action: PayloadAction<"Discuss" | "Queue" | "Mess">) => {
-      if (state.Right==action.payload) {
+      if (state.Right == action.payload) {
         state.recentList = !state.recentList;
-        return
+        return;
       }
       state.Right = action.payload;
-      state.recentList=true
+      state.recentList = true;
     },
     SetdeleteDiscuss: (state, action) => {
       state.DeleteDiscuss = action.payload;
@@ -98,15 +116,29 @@ var rootslice = createSlice({
       }
       state.command = state.stack[state.position];
     },
-    SetBoxList: (state, action) => {
-      state.BoxList.push(action.payload);
+    SetBoxList: (state, action: PayloadAction<string>) => {
+      var coincide = false;
+      for (let i = 0; i < state.BoxList.length; i++) {
+        const element = state.BoxList[i];
+        if (element == action.payload) {
+          coincide = true;
+        }
+      }
+      if (coincide) {
+        state.BoxList = state.BoxList;
+      } else {
+        state.BoxList.push(action.payload);
+      }
     },
-    RemoveBoxList: (state, action) => {
-      state.BoxList.shift();
+    RemoveBoxList: (state, action: PayloadAction<string>) => {
+      state.BoxList = state.BoxList.filter((v) => v !== action.payload);
     },
     SetSearchName: (state, action: PayloadAction<string>) => {
       state.SearchName = action.payload;
-    }
+    },
+    SetMess: (state, action: PayloadAction<mess>) => {
+      state.mess = action.payload;
+    },
   },
 });
 
@@ -132,6 +164,7 @@ export const {
   SetBoxList,
   RemoveBoxList,
   SetSearchName,
+  SetMess,
 } = rootslice.actions;
 
 export default rootHome;

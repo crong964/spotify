@@ -121,14 +121,6 @@ function MainDiscuss(d: MainDiscuss) {
   const delateDiscuss = useSelector(
     (state: RootHome) => state.rootHome.DeleteDiscuss
   );
-  async function handle() {
-    if (contentRef && contentRef.current) {
-      SetClamped(
-        contentRef.current.scrollHeight > contentRef.current.clientHeight
-      );
-      SetAvatar(JSON.parse(localStorage.getItem("userinfor") as any).pathImage);
-    }
-  }
 
   useEffect(() => {
     SetReplayList([
@@ -145,18 +137,28 @@ function MainDiscuss(d: MainDiscuss) {
     SetShowReplay(!showReplay);
   }
   useEffect(() => {
+    async function handle() {
+      if (contentRef && contentRef.current) {
+        SetClamped(
+          contentRef.current.scrollHeight > contentRef.current.clientHeight
+        );
+        SetAvatar(
+          JSON.parse(localStorage.getItem("userinfor") as any).pathImage
+        );
+      }
+    }
     handle();
   }, []);
   return (
-    <div className="grid grid-cols-10  text-[16px] mt-1">
+    <div className="grid grid-cols-12  text-[16px] mt-4">
       <img
         src={d.pathImage}
         alt=""
         className="col-span-2 size-[50px] rounded-full"
         srcSet=""
       />
-      <div className=" space-y-2 col-span-7">
-        <div className=" flex p-2">
+      <div className=" space-y-2 col-span-8">
+        <div className=" flex ">
           <div className="text-[13px] mr-2 font-bold">{d.Name}</div>{" "}
           <Time time={d.createtime} />
         </div>
@@ -208,7 +210,7 @@ function MainDiscuss(d: MainDiscuss) {
         )}
       </div>
 
-      <div className="col-span-1 relative self-start">
+      <div className="col-span-2 relative self-start">
         <Action Discuss_id={d.Discuss_Id} User_id={d.User_Id} />
       </div>
 
@@ -262,7 +264,6 @@ function MainDiscuss(d: MainDiscuss) {
                   },
                   (v: any) => {
                     if (!v.err) {
-                      alert("thanh cong ");
                       Set(v.discuss);
                       SetContent("");
                       d.Replay_quality += 1;
@@ -285,9 +286,9 @@ function MainDiscuss(d: MainDiscuss) {
       {replaylist.length == 0 && d.Replay_quality == 0 ? (
         <></>
       ) : (
-        <div className="col-span-full">
-          <div className="grid grid-cols-8">
-            <div className="col-span-2"></div>
+        <>
+          <div className="col-span-2"></div>
+          <div className="col-span-8">
             {showReplay ? (
               <div
                 onClick={() => {
@@ -315,7 +316,8 @@ function MainDiscuss(d: MainDiscuss) {
               </div>
             )}
           </div>
-        </div>
+          <div className="col-span-2"></div>
+        </>
       )}
 
       {showReplay ? <ReplayList SetReplay={Set} list={replaylist} /> : <></>}
@@ -395,8 +397,8 @@ function Replay(d: Replay) {
     handle();
   }, []);
   return (
-    <div className="grid grid-cols-10 text-[14px] mt-1">
-      <div className="col-span-1"></div>
+    <>
+      <div className="col-span-2"></div>
       <img
         src={d.pathImage}
         alt=""
@@ -528,7 +530,7 @@ function Replay(d: Replay) {
       <div className="col-span-1 relative self-start">
         <Action Discuss_id={d.Discuss_Id} User_id={d.User_Id} />
       </div>
-    </div>
+    </>
   );
 }
 interface Action {
@@ -607,7 +609,7 @@ function Action(d: Action) {
 }
 function ReplayList(d: ReplayList) {
   return (
-    <div className="col-span-full">
+    <>
       {d.list.map((v) => {
         return (
           <Replay
@@ -623,6 +625,6 @@ function ReplayList(d: ReplayList) {
           />
         );
       })}
-    </div>
+    </>
   );
 }

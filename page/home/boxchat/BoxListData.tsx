@@ -1,8 +1,14 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { post } from "../../config/req";
-import { useDispatch } from "react-redux";
-import { SetBoxList } from "../RootRedux";
-
+import { useDispatch, useSelector } from "react-redux";
+import { RootHome, SetBoxList, SetMess } from "../RootRedux";
+interface lastmess {
+  type: string;
+  idMess: string;
+  content: string;
+  idBox: string;
+  idUser: string;
+}
 interface handle {
   idBox: string;
   mess: string;
@@ -20,12 +26,12 @@ interface BoxButton {
 }
 interface boxdata {
   idBox: string;
-  idUser: number;
+  idUser: string; //id của bạn bè
   Name: string;
   pathImage: string;
   imagebox: string;
   boxtype: number;
-  id: number;
+  id: string; // id của người gửi tin nhắn cuối cuối
   content: string;
   messType: string;
   status: number;
@@ -33,58 +39,14 @@ interface boxdata {
 
 function useBoxList() {
   const [data, SetData] = useState<boxdata[]>([]);
-
   useEffect(() => {
     post("box/", {}, (v: any) => {
       SetData(v.ls);
     });
   }, []);
 
-  function ReadBox(idbox: string) {
-    for (let i = 0; i < data.length; i++) {
-      const element = data[i];
-      if (idbox == element.idBox) {
-        element.status = 1;
-        break;
-      }
-    }
-    SetData([...data]);
-  }
-  function ReceiveMess(idBox: string, mess: string, curIdbox: string) {
-    var tempLs: boxdata[] = [];
-    var box: boxdata | undefined = undefined,
-      curBox: boxdata | undefined = undefined;
-    for (let i = 0; i < data.length; i++) {
-      const element = data[i];
-      if (element.idBox == idBox && idBox != curIdbox) {
-        box = element;
-        box.status = 2;
-        continue;
-      }
-      if (element.idBox == curIdbox) {
-        curBox = element;
-        curBox.status = 1;
-        continue;
-      }
-      tempLs.push(element);
-    }
-    if (idBox == curIdbox && curBox) {
-      SetData([curBox, ...tempLs]);
-      return;
-    }
-    if (box && !curBox) {
-      SetData([box, ...tempLs]);
-      return;
-    }
-    if (box && curBox) {
-      SetData([curBox, box, ...tempLs]);
-      return;
-    }
-  }
   return {
     data,
-    ReceiveMess,
-    ReadBox,
   };
 }
 
@@ -170,12 +132,52 @@ function useBoxData() {
 }
 
 function BoxData(data: boxdata) {
+  const mess = useSelector((state: RootHome) => state.rootHome.mess);
   const va = useBoxData();
   const [bubble, SetBudbble] = useState(false);
+  const [watch, SetWatch] = useState(true);
+  const [lastMess, SetLastMess] = useState<lastmess>({
+    content: data.content,
+    idBox: data.idBox,
+    idMess: "",
+    idUser: data.idUser,
+    type: data.messType,
+  });
   const dispatch = useDispatch();
   var status = ["", "", "font-bold"];
-  // Seen = "1",
-  // Unread = "2"
+  useEffect(() => {
+    if (data.status == 2) {
+      SetWatch(false);
+    }
+  }, []);
+  useEffect(() => {
+    if (mess.idBox == "") {
+      return;
+    }
+
+    if (mess.idBox == data.idBox) {
+      if (mess.content.length > 0) {
+        SetLastMess(mess);
+      }
+      if (mess.idUser == data.idUser) {
+        SetWatch(false);
+      } else {
+        SetWatch(true);
+      }
+      // data.idUser  là bạn bè
+
+      dispatch(
+        SetMess({
+          idBox: "",
+          content: "",
+          idMess: "",
+          idUser: "",
+          ngay: "",
+          type: "",
+        })
+      );
+    }
+  }, [mess, watch]);
   return (
     <div
       onMouseEnter={() => {
@@ -185,11 +187,20 @@ function BoxData(data: boxdata) {
         SetBudbble(false);
       }}
       className={`relative BOX${data.idBox}`}
-      title={`BOX${data.idBox}`}
     >
       <div
         onClick={() => {
           dispatch(SetBoxList(data.idBox));
+          dispatch(
+            SetMess({
+              idBox: data.idBox,
+              content: "",
+              idMess: "",
+              idUser: "",
+              ngay: "",
+              type: "",
+            })
+          );
         }}
         className="px-2 h-18 py-3 flex items-center hover:bg-[#2A2A2A] cursor-pointer"
       >
@@ -200,25 +211,20 @@ function BoxData(data: boxdata) {
         </div>
         <div className="w-3/5 px-3 font-sans">
           <div className="">{data.Name}</div>
-          <div className={`text-xs line-clamp-1 ${status[data.status]}`}>
-            {data.id == data.idUser ? "Bạn " : ""}
-            {data.content}
+          <div
+            className={`text-xs line-clamp-1 flex space-x-3 ${
+              status[data.status]
+            }`}
+          >
+            {lastMess.idUser == data.idUser ? " " : <div>Bạn</div>}
+            <TypeMess content={lastMess.content} type={lastMess.type} />
           </div>
         </div>
-        {data.status == 2 ? (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-            className="w-6 h-6 hover:fill-blue-500"
-          >
-            <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
-            <path
-              fillRule="evenodd"
-              d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 0 1 0-1.113ZM17.25 12a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z"
-              clipRule="evenodd"
-            />
-          </svg>
+        {watch == false ? (
+          <span className="relative flex size-6 justify-center items-center">
+            <span className="animate-ping absolute h-full w-full rounded-full bg-[#1ED760] opacity-75"></span>
+            <span className=" rounded-full h-3 w-3 bg-[#1ED760]"></span>
+          </span>
         ) : (
           <></>
         )}
@@ -246,29 +252,55 @@ function BoxData(data: boxdata) {
   );
 }
 export default function BoxListData(p: handle) {
-  const { data, ReceiveMess } = useBoxList();
+  const { data } = useBoxList();
 
-  useEffect(() => {
-    ReceiveMess(p.idBox, p.mess, p.curIdbox);
-  }, [p.idBox, p.mess]);
-
-  var list = data.map((v) => {
+  var list = data.map((v, i) => {
     return (
       <BoxData
         imagebox=""
-        messType=""
-        status={0}
+        messType={v.messType}
+        status={v.status}
         pathImage={v.pathImage}
         boxtype={v.boxtype}
         content={v.content}
-        id={0}
+        id={v.id}
         idUser={v.idUser}
         Name={v.Name}
-        key=""
+        key={v.idBox}
         idBox={v.idBox}
       />
     );
   });
 
   return <>{list}</>;
+}
+
+interface TypeMess {
+  type: string;
+  content: string;
+}
+function TypeMess(params: TypeMess) {
+  console.log(params);
+
+  switch (params.type) {
+    case "Image":
+      return (
+        <>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            className="size-[20px] cursor-pointer fill-white hover:fill-[#1FDF64]"
+          >
+            <path
+              fillRule="evenodd"
+              d="M1.5 6a2.25 2.25 0 0 1 2.25-2.25h16.5A2.25 2.25 0 0 1 22.5 6v12a2.25 2.25 0 0 1-2.25 2.25H3.75A2.25 2.25 0 0 1 1.5 18V6ZM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0 0 21 18v-1.94l-2.69-2.689a1.5 1.5 0 0 0-2.12 0l-.88.879.97.97a.75.75 0 1 1-1.06 1.06l-5.16-5.159a1.5 1.5 0 0 0-2.12 0L3 16.061Zm10.125-7.81a1.125 1.125 0 1 1 2.25 0 1.125 1.125 0 0 1-2.25 0Z"
+              clipRule="evenodd"
+            />
+          </svg>
+        </>
+      );
+    default:
+      return <div>{params.content}</div>;
+  }
 }

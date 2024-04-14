@@ -48,7 +48,7 @@ class HaveListFriendController {
             var check1 = yield HaveListFriendController.haveListFriend.InsertListFriends(id, idFriend, "Request");
             var check1 = yield HaveListFriendController.haveListFriend.InsertListFriends(idFriend, id, "Responsd");
             if (check1) {
-                server_1.default.to(idFriend).emit("ReqAddFriends", "yêu cầu kết bạn");
+                server_1.default.to(idFriend).emit("tb", "yêu cầu kết bạn");
             }
             res.json({ err: false, mess: "bạn đã giử thành công" });
         });
@@ -90,7 +90,6 @@ class HaveListFriendController {
         return __awaiter(this, void 0, void 0, function* () {
             var id = req.cookies.id;
             var ls = yield HaveListFriendController.haveListFriend.GetAllTypeFriend(id, "Responsd");
-            console.log(ls);
             res.json({
                 err: false,
                 ls: ls

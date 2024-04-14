@@ -22,7 +22,6 @@ class UserModel extends BaseModel_1.default {
     setAll(d) {
         super.setAll(d);
         this.Password = "";
-        this.Account = "";
     }
 }
 exports.default = UserModel;

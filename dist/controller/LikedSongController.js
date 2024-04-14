@@ -26,7 +26,6 @@ class LikedSongController {
             temp.id_user_liked = id_user_liked;
             var check;
             var get = yield LikedSongController.likedSongService.Get(temp);
-            console.log(get === null || get === void 0 ? void 0 : get.liked);
             if (get == undefined) {
                 get = temp;
                 get.liked = 1;

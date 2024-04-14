@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import SingleMess, { singleMess } from "../Mess/SingleMess";
 import { post } from "../../config/req";
-import { useDispatch } from "react-redux";
-import { NaviPage, RemoveBoxList } from "../RootRedux";
-import { socket } from "../../socket/Socket";
+import { useDispatch, useSelector } from "react-redux";
+import { NaviPage, RemoveBoxList, RootHome, SetMess } from "../RootRedux";
 
 interface BoxInfor {
   idbox: string;
@@ -12,19 +11,17 @@ interface boxChat {
   pathImage: string;
   Name: string;
   idBox: string;
-  id: string;
+  id: string; // id người gửi cuối
   type: string;
   permission: number;
-  idUser: string;
+  idUser: string; //id bạn của bạn
 }
 interface SendMessData {
   idbox: string;
 }
 
-function sendMess() {}
-
 function useChatBox(boxInfor: BoxInfor) {
-  const [listMess, setListMess] = useState<singleMess[]>([]);
+  const [listMess, SetListMess] = useState<singleMess[]>([]);
   const [boxChatData, SetBoxChatData] = useState<boxChat>({
     idBox: boxInfor.idbox,
     id: "",
@@ -36,65 +33,42 @@ function useChatBox(boxInfor: BoxInfor) {
   });
   const [scroll, SetScroll] = useState(0);
   const [scrollStatus, SetScrollStatus] = useState<"up" | "down">("down");
-  const [load, setLoad] = useState(false);
-  const [now, setNow] = useState("");
+  const [load, SetLoad] = useState(false);
+  const [now, SetNow] = useState("");
+  const mess = useSelector((state: RootHome) => state.rootHome.mess);
 
   useEffect(() => {
     var url = "mess/GetAllMessInbox";
     post(url, { idBox: boxInfor.idbox }, (v: any) => {
       SetBoxChatData(v.infor);
-      console.log(v.infor);
-
-      setListMess((v.mess as []).reverse());
+      SetListMess([...(v.mess as []).reverse()]);
+      SetNow(v.now);
     });
   }, []);
 
   useEffect(() => {
-    function Receive(p: any) {
-      p.pathImage = boxChatData.pathImage;
-
-      setListMess([...listMess, p]);
+    if (
+      mess.idBox == boxChatData.idBox &&
+      mess.idBox != "" &&
+      mess.content != ""
+    ) {
+      SetListMess([...listMess, mess as any]);
     }
-    socket.on(boxInfor.idbox, Receive);
-    return () => {
-      socket.off(boxInfor.idbox, Receive);
-    };
-  }, [listMess, boxChatData]);
-
+  }, [listMess, mess]);
   function SetParamester() {
     post(
-      "mess/getContentSCroll",
+      "mess/NextMessList",
       { idFriend: boxChatData.id, idBox: boxChatData.idBox, now: now },
       (v: any) => {
-        setListMess([...(v.listMess as []).reverse(), ...listMess]);
-        setNow(v.now);
-        setLoad(false);
+        SetListMess([...(v.ls as []).reverse(), ...listMess]);
+        SetNow(v.now);
+        SetLoad(false);
         SetScrollStatus("up");
       }
     );
-    setLoad(true);
+    SetLoad(true);
   }
 
-  function Set(type: "AddMyMessIntoListMess", value: any) {
-    switch (type) {
-      case "AddMyMessIntoListMess":
-        var temp: singleMess | any = {
-          avatar: "",
-          content: value,
-          idCurrent: boxChatData.id,
-          type: "0",
-          idMess: "",
-          idUser: boxChatData.id,
-          idUser2: boxChatData.id,
-          ngay: "",
-        };
-
-        setListMess([...listMess, temp]);
-        SetScrollStatus("down");
-
-        break;
-    }
-  }
   return {
     listMess,
     boxChatData,
@@ -102,20 +76,33 @@ function useChatBox(boxInfor: BoxInfor) {
     load,
     scroll,
     scrollStatus,
+    mess,
     SetParamester,
     SetScroll,
     SetScrollStatus,
-    setListMess,
-    Set,
+    SetListMess,
   };
 }
 
 function SendMess(data: SendMessData) {
+  const dispatch = useDispatch();
   const [text, SetText] = useState("");
   return (
     <div className="chat">
       <div className="flex p-2 ">
         <input
+          onClick={() => {
+            dispatch(
+              SetMess({
+                content: "",
+                idBox: data.idbox,
+                idMess: "",
+                idUser: "",
+                ngay: "",
+                type: "",
+              })
+            );
+          }}
           type="text"
           placeholder="Aa"
           className="focus:outline-none  mess w-11/12 bg-black rounded-lg border-0 "
@@ -202,11 +189,12 @@ export default function ChatBox(boxInfor: BoxInfor) {
   } = useChatBox(boxInfor);
 
   useEffect(() => {
-    var f = document.querySelector(".boxscroll") as HTMLElement;
+    var f = document.querySelector(
+      `.boxscroll${boxChatData.idBox}`
+    ) as HTMLElement;
 
     if (f) {
       var y1 = scroll;
-
       var y2 = f.scrollHeight;
 
       if (scrollStatus == "up") {
@@ -214,6 +202,7 @@ export default function ChatBox(boxInfor: BoxInfor) {
           behavior: "auto",
           top: y2 - y1,
         });
+        console.log(y1, y2);
       } else {
         f.scrollTo({
           behavior: "auto",
@@ -241,7 +230,7 @@ export default function ChatBox(boxInfor: BoxInfor) {
         type={v.type}
         idMess={v.idMess}
         idUser={v.idUser}
-        idUser2={boxChatData.idUser}// my id
+        idUser2={boxChatData.idUser} // my id
         key={v.idMess}
       />
     );
@@ -249,7 +238,10 @@ export default function ChatBox(boxInfor: BoxInfor) {
   });
 
   return boxInfor.idbox != "-1" ? (
-    <div className=" boxchat w-[300px] rounded-lg h-[400px] border border-white">
+    <div
+      title={boxInfor.idbox}
+      className=" boxchat w-[300px] rounded-lg h-[400px] border border-white"
+    >
       {boxChatData ? (
         <>
           <HeadChatBox
@@ -263,7 +255,7 @@ export default function ChatBox(boxInfor: BoxInfor) {
           />
           <div className=" bg-black  h-[300px] w-full border-y-2 grid grid-cols-1 content-end py-2">
             <div
-              className=" overflow-x-hidden overflow-y-scroll boxscroll"
+              className={`overflow-x-hidden  overflow-y-scroll boxscroll${boxChatData.idBox}`}
               onScroll={(r) => {
                 if (load) {
                   return;
@@ -278,6 +270,43 @@ export default function ChatBox(boxInfor: BoxInfor) {
               }}
             >
               {list}
+            </div>
+            <div className="p-2">
+              <label htmlFor={`file${boxChatData.idBox}`}>
+                <input
+                  multiple
+                  onChange={(v) => {
+                    var files = v.currentTarget.files;
+                    if (files == undefined) {
+                      return;
+                    }
+                    var fo = new FormData();
+                    for (let i = 0; i < files.length; i++) {
+                      const element = files[i];
+                      fo.append("image", element);
+                    }
+                    fo.set("idbox", boxInfor.idbox);
+                    post("mess/image", fo, () =>{
+                      
+                    });
+                  }}
+                  type="file"
+                  className="hidden"
+                  id={`file${boxChatData.idBox}`}
+                />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  className="size-[20px] cursor-pointer fill-white hover:fill-[#1FDF64]"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M1.5 6a2.25 2.25 0 0 1 2.25-2.25h16.5A2.25 2.25 0 0 1 22.5 6v12a2.25 2.25 0 0 1-2.25 2.25H3.75A2.25 2.25 0 0 1 1.5 18V6ZM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0 0 21 18v-1.94l-2.69-2.689a1.5 1.5 0 0 0-2.12 0l-.88.879.97.97a.75.75 0 1 1-1.06 1.06l-5.16-5.159a1.5 1.5 0 0 0-2.12 0L3 16.061Zm10.125-7.81a1.125 1.125 0 1 1 2.25 0 1.125 1.125 0 0 1-2.25 0Z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </label>
             </div>
           </div>
           <SendMess idbox={boxChatData.idBox} />

@@ -72,6 +72,19 @@ class HaveListFriendsService {
             return check;
         });
     }
+    SearchName(name, iduse, type) {
+        return __awaiter(this, void 0, void 0, function* () {
+            type = type || "";
+            var check = yield this.data.SearchName(name, iduse, type);
+            return this.Setls(check);
+        });
+    }
+    SearchOther(name, iduse) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var check = yield this.data.SearchOther(name, iduse);
+            return this.Setls(check);
+        });
+    }
 }
 exports.HaveListFriendsService = HaveListFriendsService;
 var haveListFriendsService = new HaveListFriendsService(new HaveListFriendsDatabase_1.default());

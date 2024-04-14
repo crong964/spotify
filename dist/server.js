@@ -50,7 +50,8 @@ const BoxChatRoute_1 = __importDefault(require("./route/BoxChatRoute"));
 const MessRoute_1 = __importDefault(require("./route/MessRoute"));
 const http_1 = require("http");
 const cookie_1 = require("cookie");
-const Friend_1 = __importDefault(require("./route/Friend"));
+const FriendRoute_1 = __importDefault(require("./route/FriendRoute"));
+const UserRouteAdmin_1 = __importDefault(require("./admin/UserRouteAdmin"));
 const app = (0, express_1.default)();
 const httpServer = (0, http_1.createServer)(app);
 const io = new socket_io_1.Server(httpServer, {
@@ -58,6 +59,7 @@ const io = new socket_io_1.Server(httpServer, {
 });
 app.use("/static", express_1.default.static(path_1.default.join(process.cwd(), "web", "static")));
 app.use("/public", express_1.default.static(path_1.default.join(process.cwd(), "public")));
+app.use("/i", express_1.default.static(path_1.default.join(process.cwd(), "public", "upload")));
 app.use((0, cookie_parser_1.default)());
 app.use(body_parser_1.default.urlencoded({ extended: false, limit: "500mb" }));
 app.use(body_parser_1.default.json());
@@ -77,7 +79,7 @@ app.use("/rs", RecentSongRoute_1.default);
 app.use("/search", SearchRoute_1.default);
 app.use("/discuss", DiscussRoute_1.default);
 app.use("/notification", NotificationRoute_1.default);
-app.use("/friend", Friend_1.default);
+app.use("/friend", FriendRoute_1.default);
 app.get("/dashboard", (req, res) => {
     res.sendFile(path_1.default.join(process.cwd(), "web/dashboard.html"));
 });
@@ -159,6 +161,7 @@ app.use("/playlist", PlayListRoute_1.default);
 app.use("/genre", GenreRouteAdmin_1.default);
 app.use("/playlist", PlayListRouteAdmin_1.default);
 app.use("/contain", ContainRouteAdmin_1.default);
+app.use("/admin/UserRouteAdmin", UserRouteAdmin_1.default);
 app.get("/admin", (req, res) => {
     res.sendFile((0, path_1.join)(process.cwd(), "web/admin.html"));
 });

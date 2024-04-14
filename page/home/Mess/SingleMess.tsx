@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { post } from "../../config/req";
 export interface singleMess {
   idUser2: string;
-  idFuture: string|undefined;
+  idFuture: string | undefined;
   avatar: string;
   idUser: string;
   content: string;
@@ -107,7 +107,7 @@ export default function SingleMess(data: singleMess) {
 
   return (
     <div
-      title={data.idUser+":"+data.idUser2}
+      title={data.idUser + ":" + data.idUser2}
       className={"text-[15px] Mess" + data.idMess}
       onClick={(r) => {
         if (controll) {
@@ -157,7 +157,11 @@ export default function SingleMess(data: singleMess) {
               ) : (
                 <></>
               )}
-              <Content content={data.content} ngay={data.ngay} />
+              <Content
+                content={data.content}
+                ngay={data.ngay}
+                type={data.type}
+              />
             </div>
           </div>
         </div>
@@ -190,7 +194,11 @@ export default function SingleMess(data: singleMess) {
               </div>
               <div className="grid grid-cols-1 bg-[#2A2A2A] relative w-1/2 cursor-pointer">
                 <div className=" p-2 rounded-md ">
-                  <Content content={data.content} ngay={data.ngay} />
+                  <Content
+                    content={data.content}
+                    ngay={data.ngay}
+                    type={data.type}
+                  />
                 </div>
                 {naviagte ? (
                   <div
@@ -234,20 +242,57 @@ interface Time {
 }
 function Time(d: Time) {
   var temp = new Date(d.ngay);
-
+  var now = new Date();
   return (
-    <p className="py-2 text-white text-[11px]">{temp.toLocaleTimeString()}</p>
+    <p className="py-2 text-white text-[11px]">
+      {temp.toLocaleDateString() == now.toLocaleDateString()
+        ? ""
+        : temp.toLocaleDateString()}{" "}
+      {temp.toLocaleTimeString()}
+    </p>
   );
 }
 interface Content {
   ngay: string;
   content: string;
+  type: string;
 }
 function Content(p: Content) {
   return (
     <div>
-      <div>{p.content}</div>
+      <Mess content={p.content} ngay="" type={p.type} />
       <Time ngay={p.ngay} />
     </div>
   );
+}
+
+function Mess(params: Content) {
+  switch (params.type) {
+    case "Mess":
+      return <div>{params.content}</div>;
+    default:
+      return (
+        <ImageContent content={params.content} ngay="" type=""></ImageContent>
+      );
+  }
+}
+function ImageContent(data: Content) {
+  var texts = data.content;
+  texts = texts.trim();
+
+  var r = texts.split("@");
+  var a = r
+    .filter((v) => {
+      return v.length > 0;
+    })
+    .map((text) => {
+      var s = `${text}`;
+      return (
+        <span className="w-fit " key={Math.random()}>
+          <img src={s} className="w-30 h-auto" alt="" />
+        </span>
+      );
+    });
+
+  return <div className="grid grid-cols-1">{a}</div>;
 }

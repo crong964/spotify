@@ -53,15 +53,6 @@ class UserDatabase {
         check = await Mysql2.query(sql, [`%${name}%`])
         return check
     }
-    async SearchName(name: string, iduse: string) {
-        var sql = `SELECT * FROM user 
-        LEFT JOIN havelistfriends ON user.id=havelistfriends.idFriends
-        AND havelistfriends.idUser=?
-        WHERE user.Name LIKE ?  `
-        var check
-        check = await Mysql2.query(sql, [iduse, `%${name}%`])
-        return check
-    }
     async GetAccountByAccAndPass(acc: string, pass: string) {
         var sql = "SELECT * FROM user WHERE Account=? AND Password =? "
         var check
@@ -72,6 +63,14 @@ class UserDatabase {
         var sql = "UPDATE `user` SET `Name`=?,`Nationality`=?,`ChanalName`=?,`pathImage`=? WHERE id=? "
         var check
         check = await Mysql2.query(sql, [d.Name, d.Nationality, d.ChanalName, d.pathImage, d.id])
+        return check
+    }
+
+
+    async GetAllUserByType(Vertify: "" | "0" | "1") {
+        var sql = "SELECT * FROM `user` WHERE Vertify LIKE ? "
+        var check
+        check = await Mysql2.query(sql, [`%${Vertify}%`])
         return check
     }
 }

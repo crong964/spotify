@@ -40,7 +40,7 @@ class DiscussDatabase {
     }
     GetMainDiscussBySong_Id(Song_Id) {
         return __awaiter(this, void 0, void 0, function* () {
-            var sql = "SELECT discuss.*,user.pathImage, user.Name FROM discuss,user WHERE discuss.User_Id=user.id AND discuss.Song_Id= ? AND discuss.Type=0";
+            var sql = "SELECT discuss.*,user.pathImage, user.Name FROM discuss,user WHERE discuss.User_Id=user.id AND discuss.Song_Id= ? AND discuss.Type=0 ORDER BY discuss.createtime DESC";
             var check;
             check = yield Config_1.default.query(sql, [Song_Id]);
             return check;

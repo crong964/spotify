@@ -16,7 +16,12 @@ const Config_1 = __importDefault(require("../config/Config"));
 class MessDatabase {
     GetAllContentByidBox(idBox, idUser, now) {
         return __awaiter(this, void 0, void 0, function* () {
-            let sql = ` SELECT *  FROM messenge m WHERE m.idBox= ? AND m.ngay > (SELECT h.ngay FROM havelistboxchat h WHERE h.idBox = ? AND h.idUser = ? ) AND   m.idMess NOT IN (SELECT hd.idMess FROM hiddenmesslist hd WHERE hd.idUser = ? ) AND m.ngay < ? ORDER BY ngay DESC LIMIT 12`;
+            let sql = ` SELECT *  
+        FROM messenge m 
+        WHERE m.idBox= ? AND m.ngay > 
+        (SELECT h.ngay FROM havelistboxchat h WHERE h.idBox = ? AND h.idUser = ? ) 
+        AND  m.idMess NOT IN (SELECT hd.idMess FROM hiddenmesslist hd WHERE hd.idUser = ? ) 
+        AND m.ngay < ? ORDER BY ngay DESC LIMIT 12`;
             var check = yield Config_1.default.query(sql, [idBox, idBox, idUser, idUser, now]);
             return check;
         });

@@ -21,12 +21,11 @@ class MessService {
     }
     GetAllContentByidBox(idBox, idUser, day) {
         return __awaiter(this, void 0, void 0, function* () {
-            var today = new Date();
+            var today = new Date(day || Date.now());
             var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
             var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
             var dateTime = date + ' ' + time;
-            day = day || `${dateTime}`;
-            var check = yield this.data.GetAllContentByidBox(idBox, idUser, day);
+            var check = yield this.data.GetAllContentByidBox(idBox, idUser, dateTime);
             return this.setlsMess(check);
         });
     }

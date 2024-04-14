@@ -95,8 +95,6 @@ Account.get("/github", (req, res) => __awaiter(void 0, void 0, void 0, function*
     //     visibility: null,
     //   },
     // ];
-    console.log(c[0].data);
-    console.log(c[1].data);
     //avatar_url: 'https://avatars.githubusercontent.com/u/71593544?v=4'
     var acc = yield UserService_1.default.GetByAccount(c[0].data[0].email);
     if (!acc) {

@@ -51,5 +51,25 @@ class HaveListFriendsDatabase {
             return check;
         });
     }
+    SearchName(name, iduse, type) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var sql = `SELECT * FROM user LEFT JOIN havelistfriends ON user.id=havelistfriends.idFriends
+        AND havelistfriends.idUser=? WHERE user.Name LIKE ?  AND havelistfriends.IsFriend like ?`;
+            var check;
+            check = yield Config_1.default.query(sql, [iduse, `%${name}%`, `%${type}%`]);
+            return check;
+        });
+    }
+    SearchOther(name, iduse) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var sql = `SELECT * FROM user LEFT JOIN havelistfriends ON user.id=havelistfriends.idFriends AND havelistfriends.idUser= ?
+        WHERE user.Name LIKE ? AND user.id <> ? AND user.id NOT IN (
+            SELECT havelistfriends.idFriends FROM havelistfriends WHERE havelistfriends.idUser= ? AND havelistfriends.IsFriend=2 
+        )`;
+            var check;
+            check = yield Config_1.default.query(sql, [iduse, `%${name}%`, iduse, iduse]);
+            return check;
+        });
+    }
 }
 exports.default = HaveListFriendsDatabase;

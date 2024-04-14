@@ -22,7 +22,6 @@ class PlayListService {
     Add(d) {
         return __awaiter(this, void 0, void 0, function* () {
             var check = yield this.playlist.Add(d);
-            console.log(check);
             return check;
         });
     }

@@ -7,13 +7,11 @@ export class MessService {
         this.data = i
     }
     async GetAllContentByidBox(idBox: string, idUser: string, day?: string) {
-
-        var today = new Date();
+        var today = new Date(day || Date.now());
         var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
         var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
         var dateTime = date + ' ' + time;
-        day = day || `${dateTime}`
-        var check = await this.data.GetAllContentByidBox(idBox, idUser, day)
+        var check = await this.data.GetAllContentByidBox(idBox, idUser, dateTime)
         return this.setlsMess(check)
     }
 

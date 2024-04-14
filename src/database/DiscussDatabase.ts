@@ -22,7 +22,7 @@ export default class DiscussDatabase {
         return check
     }
     async GetMainDiscussBySong_Id(Song_Id: string) {
-        var sql = "SELECT discuss.*,user.pathImage, user.Name FROM discuss,user WHERE discuss.User_Id=user.id AND discuss.Song_Id= ? AND discuss.Type=0"
+        var sql = "SELECT discuss.*,user.pathImage, user.Name FROM discuss,user WHERE discuss.User_Id=user.id AND discuss.Song_Id= ? AND discuss.Type=0 ORDER BY discuss.createtime DESC"
         var check
         check = await Mysql2.query(sql, [Song_Id])
         return check

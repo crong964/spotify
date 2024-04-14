@@ -95,8 +95,7 @@ Account.get("/github", async (req, res) => {
   //     visibility: null,
   //   },
   // ];
-  console.log(c[0].data);
-  console.log(c[1].data);
+ 
   //avatar_url: 'https://avatars.githubusercontent.com/u/71593544?v=4'
   var acc = await userService.GetByAccount(c[0].data[0].email)
 

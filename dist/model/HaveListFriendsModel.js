@@ -7,7 +7,7 @@ const UserModel_1 = __importDefault(require("./UserModel"));
 class HaveListFriendsModel extends UserModel_1.default {
     constructor() {
         super();
-        this.IsFriend = 0;
+        this.IsFriend = -1;
         this.idfriend = "";
         this.iduser = "";
     }

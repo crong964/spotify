@@ -100,12 +100,6 @@ class UserService {
             return check;
         });
     }
-    SearchName(name, iduser) {
-        return __awaiter(this, void 0, void 0, function* () {
-            var ls = yield this.userDatabae.SearchName(name, iduser);
-            return this.SetList(ls);
-        });
-    }
     SearchNameArtist(name) {
         return __awaiter(this, void 0, void 0, function* () {
             var ls = yield this.userDatabae.SearchNameArtist(name);
@@ -117,6 +111,12 @@ class UserService {
             var check;
             check = yield this.userDatabae.Update(d);
             return check;
+        });
+    }
+    GetAllUserByType(Vertify) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var ls = yield this.userDatabae.GetAllUserByType(Vertify);
+            return this.SetList(ls);
         });
     }
 }

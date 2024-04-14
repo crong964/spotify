@@ -6,7 +6,7 @@ export default class HaveListFriendsModel extends UserModel {
     IsFriend: number
     constructor() {
         super()
-        this.IsFriend = 0
+        this.IsFriend = -1
         this.idfriend = ""
         this.iduser = ""
     }

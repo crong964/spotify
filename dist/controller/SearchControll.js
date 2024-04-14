@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const LikedSongService_1 = __importDefault(require("../services/LikedSongService"));
 const UserService_1 = __importDefault(require("../services/UserService"));
 const LikedSongModel_1 = __importDefault(require("../model/LikedSongModel"));
+const HaveListFriendsService_1 = __importDefault(require("../services/HaveListFriendsService"));
 class SearchControll {
     constructor() {
     }
@@ -41,15 +42,18 @@ class SearchControll {
         return __awaiter(this, void 0, void 0, function* () {
             var name = req.body.name;
             var id = req.cookies.id;
-            var ls = yield SearchControll.user.SearchName(name, id);
+            var ls = yield Promise.all([SearchControll.haveListFriends.SearchName(name, id, "2"),
+                SearchControll.haveListFriends.SearchOther(name, id)]);
             res.json({
                 err: false,
-                ls: ls,
+                friend: ls[0],
+                orther: ls[1]
             });
         });
     }
 }
 SearchControll.user = UserService_1.default;
 SearchControll.likedSong = LikedSongService_1.default;
+SearchControll.haveListFriends = HaveListFriendsService_1.default;
 var searchControll = new SearchControll();
 exports.default = searchControll;
