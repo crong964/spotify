@@ -21,5 +21,17 @@ class BaseModel {
         }
         return s;
     }
+    swagger() {
+        var s = {};
+        for (const key in this) {
+            const element = this[key];
+            if (element != undefined) {
+                s[key] = {
+                    "type": "string"
+                };
+            }
+        }
+        return s;
+    }
 }
 exports.default = BaseModel;

@@ -1,3 +1,4 @@
+import Mysql2 from "../config/Config";
 import HaveListFriendsDatabase from "../database/HaveListFriendsDatabase";
 import HaveListFriendsModel from "../model/HaveListFriendsModel";
 
@@ -13,7 +14,8 @@ export class HaveListFriendsService {
             "Responsd": "1",
             "Friend": "2"
         }
-        var check = await this.data.InsertListFriends(idUser, idFriend, d[IsFriend])
+        let sql = `INSERT INTO havelistfriends(idUser, idFriends,IsFriend) VALUES (?,?,?)`
+        var check = await Mysql2.query(sql, [idUser, idFriend, IsFriend])
         return check
     }
 
@@ -32,7 +34,8 @@ export class HaveListFriendsService {
         return lts
     }
     async Get(idUser: string, idAddFriends: string) {
-        var check = await this.data.Get(idUser, idAddFriends)
+        var sql = "SELECT * FROM havelistfriends WHERE idUser=? AND idFriends=? ";
+        var check = await Mysql2.query(sql, [idUser, idAddFriends])
         return this.Setls(check)[0]
     }
     async GetAllTypeFriend(idUser: string, IsFriend: "Request" | "Responsd" | "Friend") {
@@ -41,26 +44,35 @@ export class HaveListFriendsService {
             "Responsd": "1",
             "Friend": "2"
         }
-
-
-        var check = await this.data.GetAllTypeFriend(idUser, d[IsFriend])
+        let sql = `SELECT u.id,u.Name,u.pathImage FROM havelistfriends h,user u WHERE u.id=h.idFriends AND h.idUser =?  AND h.IsFriend= ?`
+        var check = await Mysql2.query(sql, [idUser, IsFriend])
         return check
     }
     async CancelFriends(idUser: string, idFriend: string) {
-        var check = await this.data.CancelFriends(idUser, idFriend)
+        let sql = `DELETE FROM havelistfriends WHERE idUser = ? AND idFriends = ?`
+        var check = await Mysql2.query(sql, [idUser, idFriend])
         return check
     }
     async AcceptRequset(idUser: string, idFriend: string) {
-        var check = await this.data.UpDateType(idUser, idFriend, "2")
+        let sql = `UPDATE havelistfriends SET IsFriend=? WHERE idUser=? AND idFriends=?`
+        var check = await Mysql2.query(sql, ["2", idUser, idFriend])
         return check
     }
     async SearchName(name: string, iduse: string, type?: string) {
         type = type || ""
-        var check = await this.data.SearchName(name, iduse, type)
+        var sql = `SELECT * FROM user LEFT JOIN havelistfriends ON user.id=havelistfriends.idFriends
+        AND havelistfriends.idUser=? WHERE user.Name LIKE ?  AND havelistfriends.IsFriend like ?`
+        var check
+        check = await Mysql2.query(sql, [iduse, `%${name}%`, `%${type}%`])
         return this.Setls(check)
     }
     async SearchOther(name: string, iduse: string) {
-        var check = await this.data.SearchOther(name, iduse)
+        var sql = `SELECT * FROM user LEFT JOIN havelistfriends ON user.id=havelistfriends.idFriends AND havelistfriends.idUser= ?
+        WHERE user.Name LIKE ? AND user.id <> ? AND user.id NOT IN (
+            SELECT havelistfriends.idFriends FROM havelistfriends WHERE havelistfriends.idUser= ? AND havelistfriends.IsFriend=2 
+        )`
+        var check
+        check = await Mysql2.query(sql, [iduse, `%${name}%`, iduse, iduse])
         return this.Setls(check)
     }
 }

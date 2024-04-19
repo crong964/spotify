@@ -120,6 +120,7 @@ export class PlayListController {
             err: ls[0] == undefined
         })
     }
+   
 }
 
 var playListController: PlayListController = new PlayListController()

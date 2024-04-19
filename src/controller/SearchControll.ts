@@ -3,18 +3,23 @@ import likedSongService, { LikedSongService } from "../services/LikedSongService
 import userService, { UserService } from "../services/UserService"
 import LikedSongModel from "../model/LikedSongModel"
 import haveListFriendsService from "../services/HaveListFriendsService"
+import playListService, { PlayListService } from "../services/PlayListService"
 
 class SearchControll {
     static user: UserService = userService
     static likedSong: LikedSongService = likedSongService
     static haveListFriends = haveListFriendsService
+    static playlist: PlayListService = playListService
     constructor() {
 
     }
     async SearchNameArtist(req: Request, res: Response) {
         var name = req.body.name
         var id = req.cookies.id
-        var ls = await Promise.all([SearchControll.likedSong.SearchName(name, id), SearchControll.user.SearchNameArtist(name)])
+        var ls = await Promise.all([SearchControll.likedSong.SearchName(name, id),
+        SearchControll.user.SearchNameArtist(name),
+        SearchControll.playlist.SearchPlaylistName(name)
+        ])
         var songls: LikedSongModel[] = []
         if (ls[1].length > 0) {
             var liked = new LikedSongModel()
@@ -25,7 +30,8 @@ class SearchControll {
         res.json({
             ls: ls[0],
             artise: ls[1],
-            songls: songls
+            songls: songls,
+            playlists: ls[2]
         })
     }
     async SearchName(req: Request, res: Response) {

@@ -354,15 +354,26 @@ Account.post("/sendcode", (req, res) => __awaiter(void 0, void 0, void 0, functi
         html: `<h1>${code}</h1>`,
     });
     var hash = Hash_1.Hash.CreateHas({ a1: `${code} ${account}`, outNumber: 20, salt: undefined });
+    hash.a1 = account;
+    var token = Buffer.from(JSON.stringify({
+        f1: account,
+        f2: hash.a2,
+        timef: hash.time
+    })).toString("base64");
     res.cookie("f1", account, { httpOnly: true, sameSite: "strict", secure: true });
     res.cookie("f2", hash.a2, { httpOnly: true, sameSite: "strict", secure: true });
     res.cookie("timef", hash.time, { httpOnly: true, sameSite: "strict", secure: true });
     res.json({
-        err: false
+        err: false,
+        token: token
     });
 }));
 Account.post("/vertifycode", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var code = req.body.code;
+    var token = req.body.token;
+    if (token != undefined) {
+        req.cookies = JSON.parse(Buffer.from(token, "base64").toString());
+    }
     var account = req.cookies.f1;
     var f2 = req.cookies.f2;
     var timef = req.cookies.timef;
@@ -380,7 +391,8 @@ Account.post("/vertifycode", (req, res) => __awaiter(void 0, void 0, void 0, fun
         d.Password = req.body.Password;
         var check = yield UserService_1.default.UpdatePassword(d);
         res.json({
-            err: check == undefined
+            err: check == undefined,
+            mess: "thành công"
         });
         return;
     }
@@ -389,11 +401,32 @@ Account.post("/vertifycode", (req, res) => __awaiter(void 0, void 0, void 0, fun
         mess: "Mã không chính xác"
     });
 }));
+Account.post("/apikey", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const account = req.body.account;
+    const password = req.body.password;
+    var acc = yield UserService_1.default.GetAccountByAccAndPass(account, password);
+    if (!acc) {
+        res.json({
+            err: true,
+            mess: "Tài khoản hoặc mật khẩu không đúng"
+        });
+        return;
+    }
+    var apikey = Buffer.from(JSON.stringify(SetApiKey(res, acc))).toString("base64");
+    res.json({
+        err: false,
+        apikey: apikey
+    });
+})); //0k
 function SetCookie(res, acc) {
     var hash = Hash_1.Hash.CreateHas({ a1: acc.id, outNumber: undefined, salt: undefined });
     res.cookie("id", acc.id, { maxAge: 1000 * 60 * 60 * 24 * 356, httpOnly: true });
     res.cookie("a2", hash.a2, { maxAge: 1000 * 60 * 60 * 24 * 356, httpOnly: true });
     res.cookie("timeSIN", hash.time, { maxAge: 1000 * 60 * 60 * 24 * 356, httpOnly: true });
+}
+function SetApiKey(res, acc) {
+    var hash = Hash_1.Hash.CreateHas({ a1: acc.id, outNumber: undefined, salt: undefined });
+    return hash;
 }
 function clearCookie(res) {
     res.clearCookie("id");

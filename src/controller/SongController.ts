@@ -238,7 +238,6 @@ class SongController {
             songs: ls
         })
     }
-
     async GetSongByGenre(req: Request, res: Response) {
         var idGenre = req.body.idGenre
         var start = req.body.end | 0

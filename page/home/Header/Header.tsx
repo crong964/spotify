@@ -47,35 +47,36 @@ export default function Header() {
         <div className="flex space-x-3  items-center">
           <Back />
           <Forward />
-          <div
-            onClick={() => {
-              dispatch(NaviPage({ page: "genre", param: "" }));
-            }}
-            className="flex items-center border-white border-2 px-3 bg-[#2A2A2A] rounded-full"
-          >
-            <svg
-              data-encore-id="icon"
-              fill="white"
-              role="img"
-              aria-hidden="true"
-              className="size-[16px] "
-              viewBox="0 0 16 16"
-            >
-              <path d="M7 1.75a5.25 5.25 0 1 0 0 10.5 5.25 5.25 0 0 0 0-10.5zM.25 7a6.75 6.75 0 1 1 12.096 4.12l3.184 3.185a.75.75 0 1 1-1.06 1.06L11.304 12.2A6.75 6.75 0 0 1 .25 7z"></path>
-            </svg>
-            <input
-              onChange={(v) => {
-                var value = v.currentTarget.value;
-                if (value.length < 2) {
-                  dispatch(NaviPage({ page: "genre", param: "" }));
-                  return;
-                }
-                dispatch(NaviPage({ page: "search", param: value }));
-              }}
-              type="text"
-              className="searchname p-3 text-white w-[300px] bg-[#2A2A2A] border-[#2A2A2A]  focus:outline-none border-2 rounded-full"
-            />
-          </div>
+          <>
+            {page == "genre" ? (
+              <div className="flex items-center border-white border-2 px-3 bg-[#2A2A2A] rounded-full">
+                <svg
+                  data-encore-id="icon"
+                  fill="white"
+                  role="img"
+                  aria-hidden="true"
+                  className="size-[16px] "
+                  viewBox="0 0 16 16"
+                >
+                  <path d="M7 1.75a5.25 5.25 0 1 0 0 10.5 5.25 5.25 0 0 0 0-10.5zM.25 7a6.75 6.75 0 1 1 12.096 4.12l3.184 3.185a.75.75 0 1 1-1.06 1.06L11.304 12.2A6.75 6.75 0 0 1 .25 7z"></path>
+                </svg>
+                <input
+                  onChange={(v) => {
+                    var value = v.currentTarget.value;
+                    if (value.length < 2) {
+                      dispatch(NaviPage({ page: "genre", param: "" }));
+                      return;
+                    }
+                    dispatch(NaviPage({ page: "search", param: value }));
+                  }}
+                  type="text"
+                  className="searchname p-3 text-white w-[300px] bg-[#2A2A2A] border-[#2A2A2A]  focus:outline-none border-2 rounded-full"
+                />
+              </div>
+            ) : (
+              <div className="size-[16px] p-3"></div>
+            )}
+          </>
         </div>
         <div className="flex  items-center space-x-3">
           <div className="cursor-pointer text-sm font-bold bg-white text-black rounded-3xl px-2 py-1">

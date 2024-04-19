@@ -86,18 +86,13 @@ function BoxButton(params: BoxButton) {
               text="Xóa hộp thoại"
               onClick={() => {
                 post(
-                  "/box/hiddenBoxChat",
+                  "/box/remove",
                   {
                     idBox: params.idBox,
                   },
                   (n: any) => {
                     alert(n.mess);
                     params.SetShow(false);
-                    (
-                      document.querySelector(
-                        `.BOX${params.idBox}`
-                      ) as HTMLElement
-                    ).classList.add("hidden");
                   }
                 );
               }}
@@ -280,8 +275,6 @@ interface TypeMess {
   content: string;
 }
 function TypeMess(params: TypeMess) {
-  console.log(params);
-
   switch (params.type) {
     case "Image":
       return (

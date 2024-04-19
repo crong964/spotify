@@ -26,22 +26,33 @@ import { createServer } from "http";
 import { parse } from "cookie";
 import FriendRoute from "./route/FriendRoute";
 import UserRouteAdmin from "./admin/UserRouteAdmin";
+import { buffer } from "stream/consumers";
 
 const app = express()
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
     cookie: false
 })
-
+app.use(cookieParser())
+app.use((req, res, next) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader('Access-Control-Allow-Headers', "*");
+    res.setHeader('Access-Control-Allow-Methods', "*");
+    var apikey = req.headers.apikey
+    if (apikey) {
+        var cookie = JSON.parse(Buffer.from(apikey as string, "base64").toString())
+        req.cookies.id = cookie.a1
+    }
+    next();
+});
 app.use("/static", express.static(path.join(process.cwd(), "web", "static")))
 app.use("/public", express.static(path.join(process.cwd(), "public")))
 app.use("/i", express.static(path.join(process.cwd(), "public", "upload")))
 
-
-app.use(cookieParser())
-
 app.use(bodyParser.urlencoded({ extended: false, limit: "500mb" }))
 app.use(bodyParser.json())
+
+
 
 app.get("/", (req, res) => {
     if (VerifyCookie(req)) {
@@ -50,10 +61,6 @@ app.get("/", (req, res) => {
     }
     res.redirect("/auth")
 })
-
-
-
-
 app.use("/mess", MessRoute)
 app.use("/box", BoxChatRoute)
 app.use("/user", UserRoute)
@@ -69,7 +76,6 @@ app.get("/dashboard", (req, res) => {
 })
 
 app.use("/auth", Account)
-
 app.get("/idSong", (req, res) => {
     var start = req.headers.range?.replace("bytes=", "").split("-")
     var music = req.cookies.music
@@ -112,13 +118,9 @@ app.get("/idSong", (req, res) => {
         })
     }
 })
-
 app.get("/s", (req, res) => {
     var start = req.headers.range?.replace("bytes=", "").split("-")
     var namestrong = req.query.id as string
-
-
-
     try {
         var pathg = path.join(process.cwd(), "public/music", namestrong)
 
@@ -153,8 +155,6 @@ app.get("/gg", (req, res) => {
 })
 app.use("/genre", GenreRoute)
 app.use("/playlist", PlayListRoute)
-
-
 //admin
 app.use("/genre", GenreRouteAdmin)
 app.use("/playlist", PlayListRouteAdmin)
@@ -164,13 +164,13 @@ app.get("/admin", (req, res) => {
     res.sendFile(join(process.cwd(), "web/admin.html"))
 })
 
-app.get("/test", (req, res) => {
-    res.sendFile(join(process.cwd(), "web/client.html"))
+app.get("/swagger", (req, res) => {
+    res.sendFile(join(process.cwd(), "web/swagger.html"))
 })
 
 httpServer.listen(8000, () => {
     console.log("http://localhost:8000/");
-    console.log("http://localhost:8000/test");
+    console.log("http://localhost:8000/swagger");
     console.log("http://localhost:8000/gg");
     console.log("http://localhost:8000/auth");
     console.log("http://localhost:8000/admin");

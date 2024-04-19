@@ -54,5 +54,12 @@ class PlayListDatabase {
             return check;
         });
     }
+    SearchPlaylistName(playlistName) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var sql = `SELECT * FROM playlist WHERE Type=1 AND PlayListName LIKE ?`;
+            var check = yield Config_1.default.query(sql, [`%${playlistName}%`]);
+            return check;
+        });
+    }
 }
 exports.default = PlayListDatabase;

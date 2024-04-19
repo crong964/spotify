@@ -30,7 +30,7 @@ class Mysql2 {
         return __awaiter(this, void 0, void 0, function* () {
             var rows, fields;
             try {
-                [rows, fields] = yield Mysql2.pool.query(sql, val);
+                [rows, fields] = yield Mysql2.db.query(sql, val);
             }
             catch (error) {
                 console.log(error);
@@ -42,7 +42,7 @@ class Mysql2 {
         return __awaiter(this, void 0, void 0, function* () {
             var rows, fields;
             try {
-                [rows, fields] = yield Mysql2.pool.query(sql, val);
+                [rows, fields] = yield Mysql2.db.query(sql, val);
             }
             catch (error) {
                 console.log(error);
@@ -51,5 +51,5 @@ class Mysql2 {
         });
     }
 }
-Mysql2.pool = pool;
+Mysql2.db = pool;
 exports.default = Mysql2;

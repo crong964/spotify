@@ -45,7 +45,7 @@ export default class HaveListFriendsDatabase {
             SELECT havelistfriends.idFriends FROM havelistfriends WHERE havelistfriends.idUser= ? AND havelistfriends.IsFriend=2 
         )`
         var check
-        check = await Mysql2.query(sql, [ iduse,`%${name}%`,iduse,iduse])
+        check = await Mysql2.query(sql, [iduse, `%${name}%`, iduse, iduse])
         return check
     }
 }

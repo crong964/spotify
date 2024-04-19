@@ -36,7 +36,7 @@ export default function Index() {
   const { Set, queue, SetQueue, scroll } = useIndex();
   const page = useSelector((state: RootHome) => state.rootHome.command.page);
   const BoxList = useSelector((state: RootHome) => state.rootHome.BoxList);
-  const mess = useSelector((state: RootHome) => state.rootHome.mess);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -48,7 +48,7 @@ export default function Index() {
       socket.off("mess", res);
     };
   }, []);
-  
+
   var children: React.JSX.Element;
   switch (page) {
     case "genre":

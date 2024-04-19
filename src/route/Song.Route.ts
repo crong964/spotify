@@ -16,13 +16,13 @@ const storage = multer.diskStorage({
 })
 
 const upload = multer({ storage: storage })
-SongRoute.post("/Update", upload.single("avatar"), songController.Update)
-SongRoute.post("/Upload", songController.Upload)
-SongRoute.post("/SongList", songController.SongList)
-SongRoute.post("/get", songController.GetSong)
-SongRoute.post("/NewUpdate", upload.single("avatar"), songController.NewUpdate)
+SongRoute.post("/Update", upload.single("avatar"), songController.Update)//0k
+SongRoute.post("/Upload", songController.Upload)//0k
+SongRoute.post("/SongList", songController.SongList)//0k
+SongRoute.post("/get", songController.GetSong)//0k
+SongRoute.post("/NewUpdate", upload.single("avatar"), songController.NewUpdate)//0k
 SongRoute.post("/newupload", songController.NewUpload)
-SongRoute.post("/upStatus", songController.UpStatus)
+SongRoute.post("/upStatus", songController.UpStatus)//0k
 SongRoute.get("/valisong/:idpage", songController.GetValidateAll)
 
 

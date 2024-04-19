@@ -25,10 +25,10 @@ const mutil = multer({
 
 const MessRoute = Router()
 
-MessRoute.post("/GetAllMessInbox", messController.GetAllMessInbox)
-MessRoute.post("/send", messController.SendMess)
-MessRoute.post("/hiddenMess", messController.HiddenMess)
-MessRoute.post("/remove", messController.Remove)
-MessRoute.post("/image", mutil, messController.Image)
-MessRoute.post("/NextMessList", messController.NextMessList)
+MessRoute.post("/GetAllMessInbox", messController.GetAllMessInbox)//0k
+MessRoute.post("/send", messController.SendMess)//0k
+MessRoute.post("/hiddenMess", messController.HiddenMess)//0k
+MessRoute.post("/remove", messController.Remove)//0k
+MessRoute.post("/image", mutil, messController.Image)//0k
+MessRoute.post("/NextMessList", messController.NextMessList)//0k
 export default MessRoute

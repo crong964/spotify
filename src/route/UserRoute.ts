@@ -19,10 +19,10 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage })
 
 UserRoute.get("/signin", userController.SignIn)
-UserRoute.get("/", userController.Get)
+UserRoute.get("/", userController.Get)//0k
 UserRoute.get("/artist", (req, res) => {
     userController.getAllArtist(req, res)
-})
-UserRoute.get("/artisepage/:artisepage", userController.getArtisePage)
+})//0k
+UserRoute.get("/artisepage/:artisepage", userController.getArtisePage)//0k
 UserRoute.post("/update", upload.single("avatar"), userController.update)
 export default UserRoute 

@@ -75,6 +75,16 @@ class BoxController {
             });
         });
     }
+    Remove(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let id = req.cookies.id;
+            var idBox = req.body.idBox;
+            var check = yield BoxController.haveListBoxChat.HiddenBoxChat(id, idBox);
+            res.json({
+                err: check == undefined
+            });
+        });
+    }
 }
 exports.BoxController = BoxController;
 BoxController.box = BoxService_1.default;

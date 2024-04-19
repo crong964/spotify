@@ -1,3 +1,4 @@
+import Mysql2 from "../config/Config"
 import PlayListDatabase from "../database/PlayListDatabase"
 import { PlayListModel } from "../model/PlayListModel"
 
@@ -7,27 +8,33 @@ export class PlayListService {
         this.playlist = playlist
     }
     async Add(d: PlayListModel) {
-        var check = await this.playlist.Add(d)
-        
-
+        var sql = "INSERT INTO playlist(id, User_id, Genre_ID, Type, ImagePath, PlayListName, Likes, Songs, Duration, Status, Discripition) VALUES (?,?,?,?,?,?,?,?,?,?,?)"
+        var check
+        check = await Mysql2.query(sql, [d.id, d.User_id, d.Genre_ID, d.Type, d.ImagePath, d.PlayListName, d.Likes, d.Songs, d.Duration, d.Status, d.Discripition])
         return check
     }
     async Get(id: string) {
-        var check = await this.playlist.Get(id)
+        var sql = "SELECT * FROM playlist WHERE id=?"
+        var check
+        check = await Mysql2.query(sql, [id])
         var ls = this.SetLs(check)
         return ls.length > 0 ? ls[0] : undefined;
     }
     async GetByGenre(Genre_ID: string, s: number, f: number) {
-        var ls = await this.playlist.GetByGenre(Genre_ID, s, f)
-        return this.SetLs(ls)
+        var sql = `SELECT * FROM playlist WHERE Genre_ID in (SELECT g1.Id FROM genre g1, genre g2   WHERE g2.Id =? AND g1.LeftGenre >= g2.LeftGenre AND g1.RightGenre <= g2.RightGenre ) AND Type = 1 LIMIT ?,? `
+        var check = await Mysql2.query(sql, [Genre_ID, s, f])
+        return this.SetLs(check)
     }
     async GetByUser_id(User_id: string) {
-        var ls = await this.playlist.GetByUser_id(User_id)
+        var sql = "SELECT * FROM playlist WHERE User_id=?"
+        var ls = await Mysql2.query(sql, [User_id])
         return this.SetLs(ls)
     }
 
     async Update(d: PlayListModel) {
-        var check = await this.playlist.Update(d)
+        var sql = "UPDATE playlist SET ImagePath=?,PlayListName=?,Likes=?,Songs=?,Duration=?,Status=?,Discripition=? WHERE id =?"
+        var check
+        check = await Mysql2.query(sql, [d.ImagePath, d.PlayListName, d.Likes, d.Songs, d.Duration, d.Status, d.Discripition, d.id])
         return check
     }
     SetLs(ls: any) {
@@ -42,6 +49,11 @@ export class PlayListService {
             list.push(tem)
         }
         return list
+    }
+    async SearchPlaylistName(playlistName: string) {
+        var sql = `SELECT * FROM playlist WHERE Type=1 AND PlayListName LIKE ?`
+        var ls = await Mysql2.query(sql, [`%${playlistName}%`])
+        return this.SetLs(ls)
     }
 }
 

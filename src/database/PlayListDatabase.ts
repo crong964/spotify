@@ -34,4 +34,10 @@ export default class PlayListDatabase {
         check = await Mysql2.query(sql, [d.ImagePath, d.PlayListName, d.Likes, d.Songs, d.Duration, d.Status, d.Discripition, d.id])
         return check
     }
+
+    async SearchPlaylistName(playlistName: string) {
+        var sql = `SELECT * FROM playlist WHERE Type=1 AND PlayListName LIKE ?`
+        var check = await Mysql2.query(sql, [`%${playlistName}%`])
+        return check
+    }
 }

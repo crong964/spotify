@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import React from "react";
 import { get } from "../config/req";
 import PlayButtom from "./PlayButtom";
-interface PlayList {
+export interface PlayList {
   id: string;
   Genre_ID: string;
   ImagePath: string;
@@ -80,7 +80,7 @@ function PlayListByGenre(d: PlayListByGenre) {
   );
 }
 
-function PlayList(d: PlayList) {
+export function PlayList(d: PlayList) {
   const [show, SetShow] = useState(false);
   const dispatch = useDispatch();
   return (

@@ -16,6 +16,7 @@ const LikedSongService_1 = __importDefault(require("../services/LikedSongService
 const UserService_1 = __importDefault(require("../services/UserService"));
 const LikedSongModel_1 = __importDefault(require("../model/LikedSongModel"));
 const HaveListFriendsService_1 = __importDefault(require("../services/HaveListFriendsService"));
+const PlayListService_1 = __importDefault(require("../services/PlayListService"));
 class SearchControll {
     constructor() {
     }
@@ -23,7 +24,10 @@ class SearchControll {
         return __awaiter(this, void 0, void 0, function* () {
             var name = req.body.name;
             var id = req.cookies.id;
-            var ls = yield Promise.all([SearchControll.likedSong.SearchName(name, id), SearchControll.user.SearchNameArtist(name)]);
+            var ls = yield Promise.all([SearchControll.likedSong.SearchName(name, id),
+                SearchControll.user.SearchNameArtist(name),
+                SearchControll.playlist.SearchPlaylistName(name)
+            ]);
             var songls = [];
             if (ls[1].length > 0) {
                 var liked = new LikedSongModel_1.default();
@@ -34,7 +38,8 @@ class SearchControll {
             res.json({
                 ls: ls[0],
                 artise: ls[1],
-                songls: songls
+                songls: songls,
+                playlists: ls[2]
             });
         });
     }
@@ -55,5 +60,6 @@ class SearchControll {
 SearchControll.user = UserService_1.default;
 SearchControll.likedSong = LikedSongService_1.default;
 SearchControll.haveListFriends = HaveListFriendsService_1.default;
+SearchControll.playlist = PlayListService_1.default;
 var searchControll = new SearchControll();
 exports.default = searchControll;

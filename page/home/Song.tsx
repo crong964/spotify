@@ -64,7 +64,7 @@ export function SongInPlayList(v: SongInPlayList) {
               Id: v.Id,
             },
             (v: any) => {
-              console.log(v);
+              
 
               if (v.err) {
                 alert("có lỗi");

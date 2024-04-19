@@ -19,13 +19,13 @@ const storage = multer_1.default.diskStorage({
     }
 });
 const upload = (0, multer_1.default)({ storage: storage });
-SongRoute.post("/Update", upload.single("avatar"), SongController_1.default.Update);
-SongRoute.post("/Upload", SongController_1.default.Upload);
-SongRoute.post("/SongList", SongController_1.default.SongList);
-SongRoute.post("/get", SongController_1.default.GetSong);
-SongRoute.post("/NewUpdate", upload.single("avatar"), SongController_1.default.NewUpdate);
+SongRoute.post("/Update", upload.single("avatar"), SongController_1.default.Update); //0k
+SongRoute.post("/Upload", SongController_1.default.Upload); //0k
+SongRoute.post("/SongList", SongController_1.default.SongList); //0k
+SongRoute.post("/get", SongController_1.default.GetSong); //0k
+SongRoute.post("/NewUpdate", upload.single("avatar"), SongController_1.default.NewUpdate); //0k
 SongRoute.post("/newupload", SongController_1.default.NewUpload);
-SongRoute.post("/upStatus", SongController_1.default.UpStatus);
+SongRoute.post("/upStatus", SongController_1.default.UpStatus); //0k
 SongRoute.get("/valisong/:idpage", SongController_1.default.GetValidateAll);
 //admin
 SongRoute.post("/GetSongByGenre", SongController_1.default.GetSongByGenre);

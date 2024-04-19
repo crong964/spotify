@@ -57,10 +57,21 @@ const httpServer = (0, http_1.createServer)(app);
 const io = new socket_io_1.Server(httpServer, {
     cookie: false
 });
+app.use((0, cookie_parser_1.default)());
+app.use((req, res, next) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader('Access-Control-Allow-Headers', "*");
+    res.setHeader('Access-Control-Allow-Methods', "*");
+    var apikey = req.headers.apikey;
+    if (apikey) {
+        var cookie = JSON.parse(Buffer.from(apikey, "base64").toString());
+        req.cookies.id = cookie.a1;
+    }
+    next();
+});
 app.use("/static", express_1.default.static(path_1.default.join(process.cwd(), "web", "static")));
 app.use("/public", express_1.default.static(path_1.default.join(process.cwd(), "public")));
 app.use("/i", express_1.default.static(path_1.default.join(process.cwd(), "public", "upload")));
-app.use((0, cookie_parser_1.default)());
 app.use(body_parser_1.default.urlencoded({ extended: false, limit: "500mb" }));
 app.use(body_parser_1.default.json());
 app.get("/", (req, res) => {
@@ -165,12 +176,12 @@ app.use("/admin/UserRouteAdmin", UserRouteAdmin_1.default);
 app.get("/admin", (req, res) => {
     res.sendFile((0, path_1.join)(process.cwd(), "web/admin.html"));
 });
-app.get("/test", (req, res) => {
-    res.sendFile((0, path_1.join)(process.cwd(), "web/client.html"));
+app.get("/swagger", (req, res) => {
+    res.sendFile((0, path_1.join)(process.cwd(), "web/swagger.html"));
 });
 httpServer.listen(8000, () => {
     console.log("http://localhost:8000/");
-    console.log("http://localhost:8000/test");
+    console.log("http://localhost:8000/swagger");
     console.log("http://localhost:8000/gg");
     console.log("http://localhost:8000/auth");
     console.log("http://localhost:8000/admin");

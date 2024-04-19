@@ -4,11 +4,11 @@ const FriendRoute = Router()
 
 
 
-FriendRoute.post("/Request", haveListFriendController.AddFriendsRequset)
-FriendRoute.post("/Reponse", haveListFriendController.GetRespond)
-FriendRoute.post("/", haveListFriendController.GetAllFriend)
-FriendRoute.post("/Cancenl", haveListFriendController.CancelRequst)
-FriendRoute.post("/Accept", haveListFriendController.AcceptRequset)
+FriendRoute.post("/Request", haveListFriendController.AddFriendsRequset)//0k
+FriendRoute.post("/Reponse", haveListFriendController.GetRespond)//0k
+FriendRoute.post("/", haveListFriendController.GetAllFriend)//0k
+FriendRoute.post("/Cancenl", haveListFriendController.CancelRequst)//0k
+FriendRoute.post("/Accept", haveListFriendController.AcceptRequset)//0k
 
 
 

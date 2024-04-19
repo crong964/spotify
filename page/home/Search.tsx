@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { SongList } from "./PlayList";
+import { PlayList } from "./IdGenre";
 import { Song } from "./PlayList";
 import { useDispatch, useSelector } from "react-redux";
 import { NaviPage, RootHome } from "./RootRedux";
@@ -18,14 +19,16 @@ interface Artists {
 export default function Search() {
   const [songname, SetSongName] = useState<Song[]>([]);
   const [songs, SetSongS] = useState<Song[]>([]);
+
   const search = useSelector((state: RootHome) => state.rootHome.command.param);
   const [artist, SetArtis] = useState<artist[]>([]);
-
+  const [playlists, SetPlayLists] = useState<PlayList[]>([]);
   useEffect(() => {
     post("/search", { name: search }, (v: any) => {
       SetSongName(v["ls"]);
       SetArtis(v["artise"]);
       SetSongS(v["songls"]);
+      SetPlayLists(v["playlists"]);
     });
   }, [search]);
   return (
@@ -33,6 +36,7 @@ export default function Search() {
       <SongList data={songname} />
       <Artists d={artist} />
       <SongList data={songs} />
+      <PlayLists d={playlists} />
     </div>
   );
 }
@@ -44,7 +48,7 @@ function Artists(d: Artists) {
   return (
     <div className="mt-8">
       {d.d.length > 0 ? (
-        <div className="text-white text-[24px] font-bold">Nghệ sĩ</div>
+        <div className="text-white text-[24px] my-5 font-bold">Nghệ sĩ</div>
       ) : (
         <></>
       )}
@@ -107,5 +111,38 @@ function Artist(params: artist) {
         {params.type == "artist" ? "nghệ sĩ" : params.artist}
       </div>
     </div>
+  );
+}
+interface PlayLists {
+  d: PlayList[];
+}
+function PlayLists(p: PlayLists) {
+  var children = p.d.map((v) => {
+    return (
+      <PlayList
+        Genre_ID={v.Genre_ID}
+        ImagePath={v.ImagePath}
+        PlayListName={v.PlayListName}
+        id={v.id}
+        key={v.id}
+      />
+    );
+  });
+  const recentList = useSelector((s: RootHome) => s.rootHome.recentList);
+  return (
+    <>
+      <div>
+        {children.length > 0 ? (
+          <div className="text-[24px] my-5">Danh sách phát nhạc</div>
+        ) : (
+          <></>
+        )}
+      </div>
+      <div
+        className={`grid gap-2 ${!recentList ? "grid-cols-7" : "grid-cols-5 "}`}
+      >
+        {children}
+      </div>
+    </>
   );
 }

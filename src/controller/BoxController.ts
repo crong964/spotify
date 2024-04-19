@@ -70,6 +70,14 @@ export class BoxController {
             idbox: idbox,
         })
     }
+    async Remove(req: Request, res: Response) {
+        let id = req.cookies.id;
+        var idBox = req.body.idBox;
+        var check = await BoxController.haveListBoxChat.HiddenBoxChat(id, idBox)
+        res.json({
+            err: check == undefined
+        })
+    }
 }
 
 const boxController = new BoxController()

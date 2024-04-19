@@ -20,10 +20,10 @@ const storage = multer_1.default.diskStorage({
 });
 const upload = (0, multer_1.default)({ storage: storage });
 UserRoute.get("/signin", UserController_1.default.SignIn);
-UserRoute.get("/", UserController_1.default.Get);
+UserRoute.get("/", UserController_1.default.Get); //0k
 UserRoute.get("/artist", (req, res) => {
     UserController_1.default.getAllArtist(req, res);
-});
-UserRoute.get("/artisepage/:artisepage", UserController_1.default.getArtisePage);
+}); //0k
+UserRoute.get("/artisepage/:artisepage", UserController_1.default.getArtisePage); //0k
 UserRoute.post("/update", upload.single("avatar"), UserController_1.default.update);
 exports.default = UserRoute;

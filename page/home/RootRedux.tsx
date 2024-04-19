@@ -51,7 +51,7 @@ const initialState: Root = {
   NotificationPageIdSong: "",
   NotificationPage: "list",
   idSong: JSON.parse(localStorage.getItem("song") as any).Id || "",
-  recentList: true,
+  recentList: false,
   isLogin: false,
   update: true,
   Right: "Mess",

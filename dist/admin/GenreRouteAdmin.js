@@ -10,7 +10,7 @@ const GenreRouteAdmin = (0, express_1.default)();
 GenreRouteAdmin.get("/", (req, res) => {
     res.sendFile((0, path_1.join)(process.cwd(), "web/admin.html"));
 });
-GenreRouteAdmin.post("/Add", GenreController_1.default.Add);
-GenreRouteAdmin.post("/UpdateName", GenreController_1.default.UpdateName);
-GenreRouteAdmin.post("/Delete", GenreController_1.default.Delete);
+GenreRouteAdmin.post("/Add", GenreController_1.default.Add); //0k
+GenreRouteAdmin.post("/UpdateName", GenreController_1.default.UpdateName); //0k
+GenreRouteAdmin.post("/Delete", GenreController_1.default.Delete); //0k
 exports.default = GenreRouteAdmin;

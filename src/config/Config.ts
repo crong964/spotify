@@ -14,11 +14,11 @@ const pool = mysql2.createPool({
 })
 
 class Mysql2 {
-    static pool = pool
+    static db = pool
     public static async query(sql: string, val: any[]) {
         var rows, fields
         try {
-            [rows, fields] = await Mysql2.pool.query(sql, val)
+            [rows, fields] = await Mysql2.db.query(sql, val)
         } catch (error) {
             console.log(error);
         }
@@ -27,7 +27,7 @@ class Mysql2 {
     public async query2(sql: string, val: any[]) {
         var rows, fields
         try {
-            [rows, fields] = await Mysql2.pool.query(sql, val)
+            [rows, fields] = await Mysql2.db.query(sql, val)
         } catch (error) {
             console.log(error);
         }

@@ -27,10 +27,10 @@ const mutil = (0, multer_1.default)({
     },
 }).array("image", 9);
 const MessRoute = (0, express_1.Router)();
-MessRoute.post("/GetAllMessInbox", MessController_1.default.GetAllMessInbox);
-MessRoute.post("/send", MessController_1.default.SendMess);
-MessRoute.post("/hiddenMess", MessController_1.default.HiddenMess);
-MessRoute.post("/remove", MessController_1.default.Remove);
-MessRoute.post("/image", mutil, MessController_1.default.Image);
-MessRoute.post("/NextMessList", MessController_1.default.NextMessList);
+MessRoute.post("/GetAllMessInbox", MessController_1.default.GetAllMessInbox); //0k
+MessRoute.post("/send", MessController_1.default.SendMess); //0k
+MessRoute.post("/hiddenMess", MessController_1.default.HiddenMess); //0k
+MessRoute.post("/remove", MessController_1.default.Remove); //0k
+MessRoute.post("/image", mutil, MessController_1.default.Image); //0k
+MessRoute.post("/NextMessList", MessController_1.default.NextMessList); //0k
 exports.default = MessRoute;
