@@ -243,7 +243,7 @@ class SongController {
         var start = req.body.end | 0
         var l: limit = {
             start: start,
-            end: start + 10
+            end: start + 200
         }
         var ls = await SongController.song.GetSongByGenre(idGenre, l)
         res.json({

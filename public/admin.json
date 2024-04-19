@@ -1,0 +1,705 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Sample API",
+    "description": "Optional multiline or single-line description in",
+    "version": "1.0.11"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8000"
+    }
+  ],
+  "paths": {
+    "/genre/GetAll": {
+      "description": "lấy tất cả thể loại",
+      "get": {
+        "tags": [
+          "Thể loại"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "example": {
+                  "err": false,
+                  "ls": []
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "err": {
+                      "type": "boolean"
+                    },
+                    "ls": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/genre"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/genre/Add": {
+      "description": "thêm mới thể loại",
+      "post": {
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "tags": [
+          "Thể loại"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "Floor": {
+                    "type": "number"
+                  },
+                  "Name": {
+                    "type": "string"
+                  },
+                  "idParent": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "Floor",
+                  "Name"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/res"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/genre/UpdateName": {
+      "description": "cập nhật tên thể loại",
+      "post": {
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "tags": [
+          "Thể loại"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "Name": {
+                    "type": "string"
+                  },
+                  "id": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "id",
+                  "Name"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/res"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/genre/Delete": {
+      "post": {
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "description": "xóa thể loại",
+        "tags": [
+          "Thể loại"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "id"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/res"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/song/GetSongByGenre": {
+      "post": {
+        "tags": [
+          "danh sách bài hát "
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "Genre_ID": {
+                    "type": "string",
+                    "description": "thể loại"
+                  }
+                },
+                "required": [
+                  "Genre_ID"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "key được sinh ra",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "err": {
+                      "type": "boolean"
+                    },
+                    "ls": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/song"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/playlist/playListDetailAdmin/{idplaylist}": {
+      "get": {
+        "tags": [
+          "danh sách phát"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "idplaylist",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "key được sinh ra",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "err": {
+                      "type": "boolean"
+                    },
+                    "ls": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/playlist"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/playlist/GetAllPlayList": {
+      "post": {
+        "tags": [
+          "danh sách phát"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "Genre_ID": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "Genre_ID"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "key được sinh ra",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "err": {
+                      "type": "boolean"
+                    },
+                    "ls": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/playlist"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/playlist/AddNewPlayList": {
+      "post": {
+        "tags": [
+          "danh sách phát"
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "Genre_ID": {
+                    "type": "string"
+                  },
+                  "PlayListName": {
+                    "type": "string"
+                  },
+                  "avatar": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "ls": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "danh sách id của bài hát"
+                  }
+                },
+                "required": [
+                  "Genre_ID",
+                  "avatar",
+                  "PlayListName",
+                  "ls"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "key được sinh ra",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "err": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/playlist/UpdatePlayList": {
+      "post": {
+        "tags": [
+          "danh sách phát"
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "Genre_ID": {
+                    "type": "string"
+                  },
+                  "id": {
+                    "type": "string",
+                    "description": "id của danh sách phát"
+                  },
+                  "PlayListName": {
+                    "type": "string"
+                  },
+                  "avatar": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "ls": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "danh sách id của bài hát"
+                  }
+                },
+                "required": [
+                  "Genre_ID",
+                  "avatar",
+                  "PlayListName",
+                  "ls",
+                  "id"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "key được sinh ra",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "err": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "res": {
+        "type": "object",
+        "properties": {
+          "err": {
+            "type": "boolean"
+          }
+        }
+      },
+      "account": {
+        "type": "object",
+        "properties": {
+          "account": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "user": {
+        "type": "object",
+        "properties": {
+          "Name": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "Vertify": {
+            "type": "string"
+          },
+          "ChanalName": {
+            "type": "string"
+          },
+          "Account": {
+            "type": "string"
+          },
+          "pathImage": {
+            "type": "string"
+          },
+          "banner": {
+            "type": "string"
+          }
+        }
+      },
+      "box": {
+        "type": "object",
+        "properties": {
+          "Name": {
+            "type": "string"
+          },
+          "boxtype": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "idUser": {
+            "type": "string"
+          },
+          "idBox": {
+            "type": "string"
+          },
+          "messType": {
+            "type": "string"
+          },
+          "pathImage": {
+            "type": "string"
+          },
+          "status": {
+            "type": "integer"
+          }
+        }
+      },
+      "discuss": {
+        "type": "object",
+        "properties": {
+          "User_Id": {
+            "type": "string"
+          },
+          "Discuss_Id": {
+            "type": "string"
+          },
+          "Parent_discuss_Id": {
+            "type": "string"
+          },
+          "Replay_Discuss_Id": {
+            "type": "string"
+          },
+          "Replay_quality": {
+            "type": "number"
+          },
+          "Content": {
+            "type": "string"
+          },
+          "Type": {
+            "type": "string"
+          },
+          "Song_Id": {
+            "type": "string"
+          },
+          "Name": {
+            "type": "string"
+          },
+          "pathImage": {
+            "type": "string"
+          }
+        }
+      },
+      "song": {
+        "type": "object",
+        "properties": {
+          "dicussquality": {
+            "type": "string"
+          },
+          "SongImage": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "Id": {
+            "type": "string"
+          },
+          "Duration": {
+            "type": "string"
+          },
+          "Genre_id": {
+            "type": "string"
+          },
+          "Singer": {
+            "type": "string"
+          },
+          "SongName": {
+            "type": "string"
+          },
+          "Viewer": {
+            "type": "string"
+          },
+          "user_id": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "publicDate": {
+            "type": "string"
+          },
+          "filePath": {
+            "type": "string"
+          }
+        }
+      },
+      "mess": {
+        "type": "object",
+        "properties": {
+          "createtime": {
+            "type": "string"
+          },
+          "idBox": {
+            "type": "string"
+          },
+          "idUser": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "idMess": {
+            "type": "string"
+          },
+          "ngay": {
+            "type": "string"
+          }
+        }
+      },
+      "playlist": {
+        "type": "object",
+        "properties": {
+          "createtime": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "User_id": {
+            "type": "string"
+          },
+          "Genre_ID": {
+            "type": "string"
+          },
+          "Type": {
+            "type": "string"
+          },
+          "ImagePath": {
+            "type": "string"
+          },
+          "PlayListName": {
+            "type": "string"
+          },
+          "Likes": {
+            "type": "string"
+          },
+          "Songs": {
+            "type": "string"
+          },
+          "Duration": {
+            "type": "string"
+          },
+          "Status": {
+            "type": "string"
+          },
+          "Discripition": {
+            "type": "string"
+          }
+        }
+      },
+      "genre": {
+        "type": "object",
+        "properties": {
+          "Floor": {
+            "type": "string"
+          },
+          "idParent": {
+            "type": "string"
+          },
+          "Id": {
+            "type": "string"
+          },
+          "Name": {
+            "type": "string"
+          },
+          "RightGenre": {
+            "type": "string"
+          },
+          "LeftGenre": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "in": "header",
+        "name": "apiKey",
+        "type": "apiKey"
+      }
+    }
+  }
+}

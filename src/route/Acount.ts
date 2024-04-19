@@ -36,7 +36,7 @@ Account.post("/signin", async (req, res) => {
   }
   SetCookie(res, acc)
   res.redirect("/")
-});
+});//0k
 Account.get("/github", async (req, res) => {
   var code = req.query.code;
 
@@ -403,7 +403,7 @@ Account.post("/sendcode", async (req, res) => {
     err: false,
     token: token
   })
-})
+})//0k
 Account.post("/vertifycode", async (req, res) => {
   var code = req.body.code
   var token = req.body.token
@@ -444,7 +444,7 @@ Account.post("/vertifycode", async (req, res) => {
     err: true,
     mess: "Mã không chính xác"
   })
-});
+});//0k
 
 
 Account.post("/apikey", async (req, res) => {
