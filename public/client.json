@@ -846,7 +846,7 @@
       }
     },
     "/lsong/likedsongs": {
-      "post": {
+      "get": {
         "security": [
           {
             "ApiKeyAuth": []

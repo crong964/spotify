@@ -199,13 +199,13 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "Genre_ID": {
+                  "idGenre": {
                     "type": "string",
                     "description": "thể loại"
                   }
                 },
                 "required": [
-                  "Genre_ID"
+                  "idGenre"
                 ]
               }
             }

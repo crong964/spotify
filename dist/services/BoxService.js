@@ -13,21 +13,26 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BoxService = void 0;
-const BoxDatabase_1 = __importDefault(require("../database/BoxDatabase"));
+const Config_1 = __importDefault(require("../config/Config"));
 const BoxModel_1 = __importDefault(require("../model/BoxModel"));
 class BoxService {
-    constructor(i) {
-        this.data = i;
+    constructor() {
     }
     getAllBoxByIdUser(idUser) {
         return __awaiter(this, void 0, void 0, function* () {
-            var ls = yield this.data.getAllBoxById(idUser);
+            var sql = `SELECT u.Name,u.pathImage,idFriend as "idUser", bc.content,bc.id,bc.idBox,bc.boxtype,bc.messType, hb.status
+        FROM havelistboxchat hb, boxchat bc , user u
+        WHERE hb.idUser=? AND hb.idBox=bc.idBox AND u.id=hb.idFriend AND hb.status <> 0
+        ORDER BY bc.updateDay DESC; `;
+            var ls = yield Config_1.default.query(sql, [idUser]);
             return this.setlsBox(ls);
         });
     }
     insertNewBox(idBox, type) {
         return __awaiter(this, void 0, void 0, function* () {
-            var check = yield this.data.insertNewBox(idBox, type);
+            var sql = "INSERT INTO `boxchat`(`idBox`, `boxtype`) VALUES (?,?)";
+            var check;
+            check = yield Config_1.default.query(sql, [idBox, type]);
             return check;
         });
     }
@@ -46,14 +51,16 @@ class BoxService {
     }
     UpdateBoxType(idBox, type) {
         return __awaiter(this, void 0, void 0, function* () {
-            var check = yield this.data.UpdateBoxType(idBox, type);
+            var sql = "UPDATE boxchat SET boxtype= ? WHERE idbox= ?";
+            var check = yield Config_1.default.query(sql, [type, idBox]);
             return check;
         });
     }
     UpdateLastMessBox(idUser, content, idBox, type) {
         return __awaiter(this, void 0, void 0, function* () {
+            var sql = "UPDATE boxchat SET content=?,id=?, updateDay=CURRENT_TIMESTAMP, messType=?  WHERE idBox =?";
             var check;
-            check = yield this.data.UpdateLastMessBox(idUser, content, idBox, type);
+            check = yield Config_1.default.query(sql, [content, idUser, type, idBox]);
             return check;
         });
     }
@@ -61,7 +68,8 @@ class BoxService {
         return __awaiter(this, void 0, void 0, function* () {
             var box;
             try {
-                var ls = yield this.data.GetBoxbyIdBox(idBox);
+                var sql = `SELECT * FROM boxchat WHERE idBox= ? `;
+                var ls = yield Config_1.default.query(sql, [idBox]);
                 for (let i = 0; i < ls.length; i++) {
                     const element = ls[i];
                     box = new BoxModel_1.default();
@@ -77,5 +85,5 @@ class BoxService {
     }
 }
 exports.BoxService = BoxService;
-var boxService = new BoxService(new BoxDatabase_1.default());
+var boxService = new BoxService();
 exports.default = boxService;

@@ -55,6 +55,17 @@ export class PlayListService {
         var ls = await Mysql2.query(sql, [`%${playlistName}%`])
         return this.SetLs(ls)
     }
+    async DeletePlaylist(id: string) {
+        var sql = `Delete from playlist where id=?`
+        var ls = await Mysql2.query(sql, [id])
+        return this.SetLs(ls)
+    }
+    async DeleteSongInPlayList(id: string) {
+        var sql = `Delete From contain where PlayList_id=?`
+        var check
+        check = await Mysql2.query(sql, [id])
+        return check
+    }
 }
 
 var playListService: PlayListService = new PlayListService(new PlayListDatabase())

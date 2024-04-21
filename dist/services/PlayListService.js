@@ -79,6 +79,21 @@ class PlayListService {
             return this.SetLs(ls);
         });
     }
+    DeletePlaylist(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var sql = `Delete from playlist where id=?`;
+            var ls = yield Config_1.default.query(sql, [id]);
+            return this.SetLs(ls);
+        });
+    }
+    DeleteSongInPlayList(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var sql = `Delete From contain where PlayList_id=?`;
+            var check;
+            check = yield Config_1.default.query(sql, [id]);
+            return check;
+        });
+    }
 }
 exports.PlayListService = PlayListService;
 var playListService = new PlayListService(new PlayListDatabase_1.default());

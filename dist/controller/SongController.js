@@ -274,7 +274,7 @@ class SongController {
             var start = req.body.end | 0;
             var l = {
                 start: start,
-                end: start + 10
+                end: start + 200
             };
             var ls = yield SongController.song.GetSongByGenre(idGenre, l);
             res.json({

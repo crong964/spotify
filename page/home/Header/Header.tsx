@@ -48,7 +48,7 @@ export default function Header() {
           <Back />
           <Forward />
           <>
-            {page == "genre" ? (
+            {page == "genre" || page == "search" ? (
               <div className="flex items-center border-white border-2 px-3 bg-[#2A2A2A] rounded-full">
                 <svg
                   data-encore-id="icon"

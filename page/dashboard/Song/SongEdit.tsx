@@ -102,7 +102,7 @@ export default function SongForm() {
   return (
     <div className="w-[70%] mx-auto py-[72px] px-[42px] text-[16px] font-bold space-y-4">
       <div className="text-center text-[40px] font-bold">
-        Thông tin sản phẩm chỉnh sửa
+        Thông tin bài hát chỉnh sửa
       </div>
       <div className="w-full">
         <div className="flex space-x-4">

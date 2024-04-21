@@ -176,12 +176,16 @@ app.use("/admin/UserRouteAdmin", UserRouteAdmin_1.default);
 app.get("/admin", (req, res) => {
     res.sendFile((0, path_1.join)(process.cwd(), "web/admin.html"));
 });
-app.get("/swagger", (req, res) => {
-    res.sendFile((0, path_1.join)(process.cwd(), "web/swagger.html"));
+app.get("/api-client", (req, res) => {
+    res.sendFile((0, path_1.join)(process.cwd(), "web/swagger_client.html"));
+});
+app.get("/api-admin", (req, res) => {
+    res.sendFile((0, path_1.join)(process.cwd(), "web/swagger_admin.html"));
 });
 httpServer.listen(8000, () => {
     console.log("http://localhost:8000/");
-    console.log("http://localhost:8000/swagger");
+    console.log("http://localhost:8000/api-client");
+    console.log("http://localhost:8000/api-admin");
     console.log("http://localhost:8000/gg");
     console.log("http://localhost:8000/auth");
     console.log("http://localhost:8000/admin");

@@ -45,7 +45,7 @@ export class HaveListFriendsService {
             "Friend": "2"
         }
         let sql = `SELECT u.id,u.Name,u.pathImage FROM havelistfriends h,user u WHERE u.id=h.idFriends AND h.idUser =?  AND h.IsFriend= ?`
-        var check = await Mysql2.query(sql, [idUser, IsFriend])
+        var check = await Mysql2.query(sql, [idUser, d[IsFriend]])
         return check
     }
     async CancelFriends(idUser: string, idFriend: string) {
