@@ -151,7 +151,7 @@ export default function Header() {
 
                 <div
                   onClick={() => {
-                    post("/auth/logout", {}, (e: any) => {
+                    get("/auth/logout", (e: any) => {
                       window.location.replace("/auth");
                     });
                   }}

@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import GenreRoute from "./route/GenreRoute";
 import cookieParser from "cookie-parser";
 import { Server, Socket } from "socket.io"
-
+import jwt, { JwtPayload } from "jsonwebtoken"
 import UserRoute from "./route/UserRoute";
 import SongRoute from "./route/Song.Route";
 import Account, { VerifyCookie } from "./route/Acount";
@@ -26,7 +26,8 @@ import { createServer } from "http";
 import { parse } from "cookie";
 import FriendRoute from "./route/FriendRoute";
 import UserRouteAdmin from "./admin/UserRouteAdmin";
-import { buffer } from "stream/consumers";
+import ADMIN from "./config/admin";
+
 
 const app = express()
 const httpServer = createServer(app);
@@ -38,26 +39,85 @@ app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader('Access-Control-Allow-Headers', "*");
     res.setHeader('Access-Control-Allow-Methods', "*");
-    var apikey = req.headers.apikey
+    var apikey = (req.headers.apikey as any) || req.cookies.apikey
+
     if (apikey) {
-        var cookie = JSON.parse(Buffer.from(apikey as string, "base64").toString())
-        req.cookies.id = cookie.a1
+        var cookie = jwt.verify(apikey, "1") as JwtPayload
+        req.cookies.id = cookie.id
+
+
     }
     next();
 });
 app.use("/static", express.static(path.join(process.cwd(), "web", "static")))
 app.use("/public", express.static(path.join(process.cwd(), "public")))
 app.use("/i", express.static(path.join(process.cwd(), "public", "upload")))
+app.get("/swagger", (req, res) => {
+    res.sendFile(join(process.cwd(), "web/swagger.html"))
+})
 
+// app.use((req, res, next) => {
+//     //eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0ZW5Mb3AiOiJCb290Y2FtcCA2MSIsIkhldEhhblN0cmluZyI6IjI4LzA5LzIwMjQiLCJIZXRIYW5UaW1lIjoiMTcyNzQ4MTYwMDAwMCIsIm5iZiI6MTY5ODUxMjQwMCwiZXhwIjoxNzI3NjI5MjAwfQ.uWn4XmIr3aGBNm4QCi5Q5RFxVqNTwws8-EDFxQQud_I
+//     var TokenCybersoft = req.headers.tokencybersoft as string
+//     if (!TokenCybersoft) {
+//         res.status(403).send({
+//             "statusCode": 403,
+//             "message": "Không đủ quyền truy cập!",
+//             "content": "Token không cybersoft không hợp lệ hoặc đã hết hạn truy cập !",
+//             "dateTime": new Date().toISOString(),
+//             "messageConstants": null
+//         })
+
+//         return
+//     }
+//     var part = TokenCybersoft.split(".")
+//     if (part.length < 2) {
+//         res.status(403).send({
+//             "statusCode": 403,
+//             "message": "Không đủ quyền truy cập!",
+//             "content": "Token không cybersoft không hợp lệ",
+//             "dateTime": new Date().toISOString(),
+//             "messageConstants": null
+//         })
+
+//         return
+//     }
+//     var time = JSON.parse(Buffer.from(part[1], "base64").toString()).HetHanTime
+//     var now = new Date().getTime() + ""
+
+//     if (!time || time < now) {
+//         res.status(403).send({
+//             "statusCode": 403,
+//             "message": "Không đủ quyền truy cập!",
+//             "content": "Token không cybersoft không hợp lệ hoặc đã hết hạn truy cập !",
+//             "dateTime": new Date().toISOString(),
+//             "messageConstants": null
+//         })
+
+//         return
+//     }
+//     next()
+// })
 app.use(bodyParser.urlencoded({ extended: false, limit: "500mb" }))
 app.use(bodyParser.json())
 
 
 
 app.get("/", (req, res) => {
-    if (VerifyCookie(req)) {
-        res.sendFile(path.join(process.cwd(), "web/home.html"))
-        return
+    var apikey = (req.headers.apikey as any) || req.cookies.apikey
+
+    if (apikey) {
+        var cookie = jwt.verify(apikey, "1") as JwtPayload
+        req.cookies.id = cookie.a1
+    }
+
+    try {
+        if (jwt.verify(apikey, "1")) {
+            res.sendFile(path.join(process.cwd(), "web/home.html"))
+            return
+        }
+    } catch (error) {
+
     }
     res.redirect("/auth")
 })
@@ -81,7 +141,10 @@ app.get("/idSong", (req, res) => {
     var music = req.cookies.music
     var idSong = req.query.idSong as string
 
+
+
     var id = req.cookies.id
+
     if (idSong == undefined || id == undefined) {
         res.end()
         return
@@ -156,27 +219,21 @@ app.get("/gg", (req, res) => {
 app.use("/genre", GenreRoute)
 app.use("/playlist", PlayListRoute)
 //admin
-app.use("/genre", GenreRouteAdmin)
-app.use("/playlist", PlayListRouteAdmin)
-app.use("/contain", ContainRouteAdmin)
-app.use("/admin/UserRouteAdmin", UserRouteAdmin)
-app.get("/admin", (req, res) => {
+app.use("/genre", ADMIN, GenreRouteAdmin)
+app.use("/playlist", ADMIN, PlayListRouteAdmin)
+app.use("/contain", ADMIN, ContainRouteAdmin)
+app.use("/admin/UserRouteAdmin", ADMIN, UserRouteAdmin)
+app.get("/admin", ADMIN, (req, res) => {
     res.sendFile(join(process.cwd(), "web/admin.html"))
 })
 
-app.get("/api-client", (req, res) => {
-    res.sendFile(join(process.cwd(), "web/swagger_client.html"))
-})
+
 app.get("/api-admin", (req, res) => {
     res.sendFile(join(process.cwd(), "web/swagger_admin.html"))
 })
 httpServer.listen(8000, () => {
     console.log("http://localhost:8000/");
-    console.log("http://localhost:8000/api-client");
-    console.log("http://localhost:8000/api-admin");
-
-
-    
+    console.log("http://localhost:8000/swagger");
     console.log("http://localhost:8000/gg");
     console.log("http://localhost:8000/auth");
     console.log("http://localhost:8000/admin");

@@ -3,6 +3,7 @@ import UserModel from "../model/UserModel";
 import userService, { UserService } from "../services/UserService";
 import { Request, Response } from "express";
 import { unlink } from "fs/promises";
+import { v4 as uuidv4 } from 'uuid';
 import haveListFriendsService, { HaveListFriendsService } from "../services/HaveListFriendsService";
 class UserController {
     static user: UserService = userService
@@ -92,8 +93,6 @@ class UserController {
             err: check == undefined
         })
     }
-
-
     async GetAllUserAdmin(req: Request, res: Response) {
         var Vertify = req.body.Vertify || ""
         var ls = await UserController.user.GetAllUserByType(Vertify)
@@ -102,6 +101,58 @@ class UserController {
             ls: ls
         })
     }
+
+    async GetAllEAdmin(req: Request, res: Response) {
+        var role = req.body.role || "employee"
+        var ls = await UserController.user.GetAllEAdmin(role)
+        res.json({
+            err: false,
+            ls: ls
+        })
+    }
+    async AddEAdmin(req: Request, res: Response) {
+        var user = new UserModel()
+        user.setAll(req.body)
+        var check = await UserController.user.GetByAccount(user.Account)
+        if (check) {
+            res.json({
+                err: true,
+                mess: "đã tồn tại"
+            })
+            return
+        }
+        user.id = `user-${uuidv4()}`
+
+        var add = await UserController.user.AddAccount(user)
+        res.json({
+            err: add == undefined,
+
+        })
+    }
+    async DeleteEAdmin(req: Request, res: Response) {
+        var id = req.body.id
+        var de = await UserController.user.DeleteEAdmin(id)
+        res.json({
+            err: de == undefined
+        })
+    }
+    async GetEditUser(req: Request, res: Response) {
+        var id = req.params.id
+        var de = await UserController.user.Get(id)
+        res.json({
+            err: de == undefined,
+            data: de
+        })
+    }
+    async PostEditUser(req: Request, res: Response) {
+        var user = new UserModel()
+        user.setAll(req.body)
+        var de = await UserController.user.UpdateE(user)
+        res.json({
+            err: de == undefined,
+        })
+    }
+
 }
 var userController = new UserController()
 

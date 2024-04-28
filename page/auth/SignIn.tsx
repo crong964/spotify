@@ -44,7 +44,7 @@ export default function SignIn() {
                     SetAccount(v.currentTarget.value);
                   }}
                   placeholder="name@domain.com"
-                  className="border-2 text-white  bg-black border-white p-3 w-full"
+                  className="border-2 text-white rounded-2xl bg-black border-white p-3 w-full"
                 />
                 <div className="text-[14px] font-bold text-white">Mật khẩu</div>
                 <input
@@ -52,7 +52,7 @@ export default function SignIn() {
                   onChange={(v) => {
                     SetPassword(v.currentTarget.value);
                   }}
-                  className="border-2 text-white bg-black border-white p-3 w-full"
+                  className="border-2 rounded-2xl text-white bg-black border-white p-3 w-full"
                 />
                 <div className="flex items-center space-x-2">
                   <div className="cursor-pointer ">

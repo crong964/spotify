@@ -21,6 +21,7 @@ interface SendMessData {
 }
 
 function useChatBox(boxInfor: BoxInfor) {
+  const dcp = useDispatch();
   const [listMess, SetListMess] = useState<singleMess[]>([]);
   const [boxChatData, SetBoxChatData] = useState<boxChat>({
     idBox: boxInfor.idbox,
@@ -53,6 +54,18 @@ function useChatBox(boxInfor: BoxInfor) {
       mess.content != ""
     ) {
       SetListMess([...listMess, mess as any]);
+      SetScrollStatus("down");
+      // data.idUser  là bạn bè
+      dcp(
+        SetMess({
+          idBox: "",
+          content: "",
+          idMess: "",
+          idUser: "",
+          ngay: "",
+          type: "",
+        })
+      );
     }
   }, [listMess, mess]);
   function SetParamester() {
@@ -187,8 +200,7 @@ export default function ChatBox(boxInfor: BoxInfor) {
     scroll,
     scrollStatus,
   } = useChatBox(boxInfor);
-
-  useEffect(() => {
+  async function SetList() {
     var f = document.querySelector(
       `.boxscroll${boxChatData.idBox}`
     ) as HTMLElement;
@@ -202,7 +214,6 @@ export default function ChatBox(boxInfor: BoxInfor) {
           behavior: "auto",
           top: y2 - y1,
         });
-        console.log(y1, y2);
       } else {
         f.scrollTo({
           behavior: "auto",
@@ -211,9 +222,12 @@ export default function ChatBox(boxInfor: BoxInfor) {
       }
       SetScroll(f.scrollHeight);
     }
+  }
+  useEffect(() => {
+    SetList();
   }, [listMess]);
 
-  var idFuture;
+  var idFuture;  
   var id = "";
   if (boxChatData.id.length > 0) {
     id = boxChatData.id;
@@ -286,9 +300,7 @@ export default function ChatBox(boxInfor: BoxInfor) {
                       fo.append("image", element);
                     }
                     fo.set("idbox", boxInfor.idbox);
-                    post("mess/image", fo, () =>{
-                      
-                    });
+                    post("mess/image", fo, () => {});
                   }}
                   type="file"
                   className="hidden"

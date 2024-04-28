@@ -36,9 +36,9 @@ class UserDatabase {
         return check
     }
     async AddAccount(d: UserModel) {
-        var sql = "INSERT INTO user(id, Account, Name, Vertify, Nationality, ChanalName, pathImage, description, RefeshToken, Password, Banner) VALUES (?,?,?,?,?,?,?,?,?,?,?)"
+        var sql = "INSERT INTO user(id, Account, Name, Vertify, Nationality, ChanalName, pathImage, description, RefeshToken, Password, Banner,role) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)"
         var check
-        check = await Mysql2.query(sql, [d.id, d.Account, d.Name, d.Vertify, d.Nationality, d.ChanalName, d.pathImage, d.description, d.RefeshToken, d.Password, d.Banner])
+        check = await Mysql2.query(sql, [d.id, d.Account, d.Name, d.Vertify, d.Nationality, d.ChanalName, d.pathImage, d.description, d.RefeshToken, d.Password, d.Banner, d.role])
         return check
     }
     async UpdatePassword(d: UserModel) {
@@ -68,7 +68,7 @@ class UserDatabase {
 
 
     async GetAllUserByType(Vertify: "" | "0" | "1") {
-        var sql = "SELECT * FROM `user` WHERE Vertify LIKE ? "
+        var sql = "SELECT * FROM `user` WHERE Vertify LIKE ? AND role <> 'master' "
         var check
         check = await Mysql2.query(sql, [`%${Vertify}%`])
         return check

@@ -2,6 +2,9 @@ import { Router } from "express";
 import messController from "../controller/MessController";
 import multer from "multer";
 import { join } from "path";
+import sharp from "sharp";
+sharp.cache(false)
+
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {

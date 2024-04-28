@@ -21,11 +21,15 @@ const UserService_1 = __importDefault(require("../services/UserService"));
 const UserModel_1 = __importDefault(require("../model/UserModel"));
 const uuid_1 = require("uuid");
 const nodemailer_1 = __importDefault(require("nodemailer"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 require("dotenv/config");
 const client_secret_si = process.env.CLIENT_SECRET_SI;
 const client_id_si = process.env.CLIENT_ID_SI;
 const client_secret_su = process.env.CLIENT_SECRET_SU;
 const client_id_su = process.env.CLIENT_ID_SU;
+const email = process.env.EMAIL;
+const emailpsapp = process.env.EMAILPSAPP;
+const secret = process.env.SECRET;
 const Account = (0, express_1.Router)();
 Account.get("/", (req, res) => {
     res.sendFile(path_1.default.join(process.cwd(), "/web/auth.html"));
@@ -42,6 +46,10 @@ Account.post("/signin", (req, res) => __awaiter(void 0, void 0, void 0, function
         return;
     }
     SetCookie(res, acc);
+    if (acc.role == "master") {
+        res.redirect("/admin");
+        return;
+    }
     res.redirect("/");
 })); //0k
 Account.get("/github", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -285,7 +293,7 @@ Account.post("/ggup", (req, res) => {
     res.cookie("name", profi.name);
     res.redirect("/auth");
 });
-Account.post("/logout", (req, res) => {
+Account.get("/logout", (req, res) => {
     clearCookie(res);
     res.redirect("/auth");
 });
@@ -342,15 +350,15 @@ Account.post("/sendcode", (req, res) => __awaiter(void 0, void 0, void 0, functi
     const transporter = nodemailer_1.default.createTransport({
         service: "gmail",
         auth: {
-            user: "huy91027@gmail.com",
-            pass: "tltl bfzr txhs uvav",
+            user: email,
+            pass: emailpsapp,
         },
     });
     const info = yield transporter.sendMail({
         from: 'spotify@gmail.com.com',
         to: account,
-        subject: "Mã Xác thực",
-        text: "Hello world?",
+        subject: "Mã Xác thực đổi mật khẩu",
+        text: "Đây là mã xác thực của bạn đừng chia sẻ cho ai",
         html: `<h1>${code}</h1>`,
     });
     var hash = Hash_1.Hash.CreateHas({ a1: `${code} ${account}`, outNumber: 20, salt: undefined });
@@ -412,17 +420,92 @@ Account.post("/apikey", (req, res) => __awaiter(void 0, void 0, void 0, function
         });
         return;
     }
-    var apikey = Buffer.from(JSON.stringify(SetApiKey(res, acc))).toString("base64");
+    var apikey = jsonwebtoken_1.default.sign({ role: acc.role, id: acc.id }, secret || "1", { expiresIn: "2 days" });
     res.json({
         err: false,
         apikey: apikey
     });
 })); //0k
+Account.post("/sendCodeVertifyEmail", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var account = req.body.account;
+    var d = yield UserService_1.default.GetByAccount(account);
+    if (account == undefined) {
+        res.json({
+            err: true,
+            mess: "chưa nhập tài khoản"
+        });
+        return;
+    }
+    if (d != undefined) {
+        res.json({
+            err: true,
+            mess: "tài khoản đã tồn tại"
+        });
+        return;
+    }
+    var code = new Date().getTime() % 100000;
+    const transporter = nodemailer_1.default.createTransport({
+        service: "gmail",
+        auth: {
+            user: email,
+            pass: emailpsapp,
+        },
+    });
+    try {
+        const info = yield transporter.sendMail({
+            from: 'spotify@gmail.com.com',
+            to: account,
+            subject: "Mã Xác thực email",
+            text: "Đây là mã xác thực của bạn đừng chia sẻ cho ai",
+            html: `<h1>${code}</h1>`,
+        });
+    }
+    catch (error) {
+    }
+    var token = jsonwebtoken_1.default.sign({ Account: account }, code + "", {
+        expiresIn: "3h"
+    });
+    res.json({
+        err: false,
+        token: token
+    });
+})); //0k
+Account.post("/createACC", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var Account = req.body.Account;
+    var code = req.body.code;
+    var token = req.body.token;
+    var decode;
+    try {
+        decode = jsonwebtoken_1.default.verify(token, code + "");
+    }
+    catch (error) {
+    }
+    if (decode == undefined) {
+        res.json({
+            err: true,
+            mess: "MÃ KO ĐÚNG"
+        });
+        return;
+    }
+    if (decode.Account != Account) {
+        res.json({
+            err: true,
+            mess: "GMAIL KHÔNG ĐÚNG"
+        });
+        return;
+    }
+    var u = new UserModel_1.default();
+    u.setAll(req.body);
+    u.Password = req.body.Password;
+    u.id = (0, uuid_1.v4)();
+    var check = yield UserService_1.default.AddAccount(u);
+    res.json({
+        err: check == undefined,
+    });
+})); //0k
 function SetCookie(res, acc) {
-    var hash = Hash_1.Hash.CreateHas({ a1: acc.id, outNumber: undefined, salt: undefined });
-    res.cookie("id", acc.id, { maxAge: 1000 * 60 * 60 * 24 * 356, httpOnly: true });
-    res.cookie("a2", hash.a2, { maxAge: 1000 * 60 * 60 * 24 * 356, httpOnly: true });
-    res.cookie("timeSIN", hash.time, { maxAge: 1000 * 60 * 60 * 24 * 356, httpOnly: true });
+    var apikey = jsonwebtoken_1.default.sign({ role: acc.role, id: acc.id }, '1', { expiresIn: "2 days" });
+    res.cookie("apikey", apikey, { maxAge: 900000000 });
 }
 function SetApiKey(res, acc) {
     var hash = Hash_1.Hash.CreateHas({ a1: acc.id, outNumber: undefined, salt: undefined });
@@ -432,6 +515,7 @@ function clearCookie(res) {
     res.clearCookie("id");
     res.clearCookie("a2");
     res.clearCookie("timeSIN");
+    res.clearCookie("apikey");
 }
 function VerifyCookie(req) {
     var id = req.cookies.id;

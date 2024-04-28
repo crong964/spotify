@@ -159,18 +159,7 @@ function BoxData(data: boxdata) {
       } else {
         SetWatch(true);
       }
-      // data.idUser  là bạn bè
-
-      dispatch(
-        SetMess({
-          idBox: "",
-          content: "",
-          idMess: "",
-          idUser: "",
-          ngay: "",
-          type: "",
-        })
-      );
+      
     }
   }, [mess, watch]);
   return (

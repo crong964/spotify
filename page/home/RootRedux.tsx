@@ -80,8 +80,16 @@ var rootslice = createSlice({
     NaviPage: (state, action: PayloadAction<Commamd>) => {
       state.command.page = action.payload.page;
       state.command.param = action.payload.param;
-      state.stack = [...state.stack, action.payload];
-      state.position = state.stack.length - 1;
+
+      console.log(state.position);
+
+      if (state.stack[state.position + 1]) {
+        state.stack[state.position + 1] = action.payload;
+        state.position = state.position + 1;
+      } else {
+        state.stack = [...state.stack, action.payload];
+        state.position = state.stack.length - 1;
+      }
     },
     IsLogin: (state, action: PayloadAction<boolean>) => {
       state.isLogin = action.payload;

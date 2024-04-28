@@ -58,9 +58,9 @@ class UserDatabase {
     }
     AddAccount(d) {
         return __awaiter(this, void 0, void 0, function* () {
-            var sql = "INSERT INTO user(id, Account, Name, Vertify, Nationality, ChanalName, pathImage, description, RefeshToken, Password, Banner) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+            var sql = "INSERT INTO user(id, Account, Name, Vertify, Nationality, ChanalName, pathImage, description, RefeshToken, Password, Banner,role) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
             var check;
-            check = yield Config_1.default.query(sql, [d.id, d.Account, d.Name, d.Vertify, d.Nationality, d.ChanalName, d.pathImage, d.description, d.RefeshToken, d.Password, d.Banner]);
+            check = yield Config_1.default.query(sql, [d.id, d.Account, d.Name, d.Vertify, d.Nationality, d.ChanalName, d.pathImage, d.description, d.RefeshToken, d.Password, d.Banner, d.role]);
             return check;
         });
     }
@@ -98,7 +98,7 @@ class UserDatabase {
     }
     GetAllUserByType(Vertify) {
         return __awaiter(this, void 0, void 0, function* () {
-            var sql = "SELECT * FROM `user` WHERE Vertify LIKE ? ";
+            var sql = "SELECT * FROM `user` WHERE Vertify LIKE ? AND role <> 'master' ";
             var check;
             check = yield Config_1.default.query(sql, [`%${Vertify}%`]);
             return check;

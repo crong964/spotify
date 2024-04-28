@@ -56,6 +56,11 @@
         },
         "/user/artist": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "tags": [
                     "Trang chủ"
                 ],
@@ -94,6 +99,11 @@
         },
         "/user/artisepage/{artisepage}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "parameters": [
                     {
                         "in": "path",
@@ -152,141 +162,6 @@
                         }
                     }
                 }
-            }
-        },
-        "/auth/sendCodeVertifyEmail": {
-            "post": {
-                "description": "đăng ký 1 token để tạo tài khoản",
-                "tags": [
-                    "Tạo tài khoản mới"
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "example": {
-                                "account": "f@gmail.com"
-                            },
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "account": {
-                                        "type": "string",
-                                        "description": "gmail để tạo"
-                                    }
-                                },
-                                "required": [
-                                    "account"
-                                ]
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "token được sinh ra",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "err": {
-                                            "type": "boolean"
-                                        },
-                                        "token": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "parameters": [
-                    {
-                        "schema": {
-                            "type": "string"
-                        },
-                        "name": "TokenCybersoft",
-                        "in": "header",
-                        "required": true
-                    }
-                ]
-            }
-        },
-        "/auth/createACC": {
-            "post": {
-                "description": "điền thông tin",
-                "tags": [
-                    "Tạo tài khoản mới"
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "Account": {
-                                        "type": "string",
-                                        "description": "gmail"
-                                    },
-                                    "Password": {
-                                        "type": "string",
-                                        "description": "mật khẩu "
-                                    },
-                                    "code": {
-                                        "type": "string",
-                                        "description": "mã xác thực"
-                                    },
-                                    "token": {
-                                        "type": "string"
-                                    },
-                                    "Name": {
-                                        "type": "string",
-                                        "description": "tên người dùng"
-                                    }
-                                },
-                                "required": [
-                                    "account",
-                                    "Password",
-                                    "code",
-                                    "Name",
-                                    "token"
-                                ]
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "token được sinh ra",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "err": {
-                                            "type": "boolean"
-                                        },
-                                        "token": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "parameters": [
-                    {
-                        "schema": {
-                            "type": "string"
-                        },
-                        "name": "TokenCybersoft",
-                        "in": "header",
-                        "required": true
-                    }
-                ]
             }
         },
         "/auth/signin": {
@@ -986,6 +861,11 @@
         },
         "/lsong/getall/{idartise}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "lấy tất cả bài hát của ca sĩ",
                 "parameters": [
                     {
@@ -1190,6 +1070,11 @@
         },
         "/genre/GetLimitFloor": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "lấy giới hạn các thể loại",
                 "tags": [
                     "Thể loại"
@@ -1232,6 +1117,11 @@
         },
         "/genre/{idParent}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "lấy tất cả thể loại và danh sách phát",
                 "parameters": [
                     {
@@ -1287,6 +1177,11 @@
         },
         "/playlist/{idplaylist}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "lấy sanh sách phát theo ididplaylist",
                 "parameters": [
                     {
@@ -2802,6 +2697,11 @@
                 "tags": [
                     "Thể loại: admin"
                 ],
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "ok",
@@ -3115,11 +3015,6 @@
         },
         "/playlist/AddNewPlayList": {
             "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "tags": [
                     "danh sách phát: admin"
                 ],
@@ -3188,11 +3083,6 @@
         },
         "/playlist/UpdatePlayList": {
             "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "parameters": [
                     {
                         "schema": {
@@ -3257,310 +3147,6 @@
                                             "type": "boolean"
                                         }
                                     }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/admin/UserRouteAdmin/userlist": {
-            "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "parameters": [
-                    {
-                        "schema": {
-                            "type": "string"
-                        },
-                        "name": "TokenCybersoft",
-                        "in": "header",
-                        "required": true
-                    }
-                ],
-                "tags": [
-                    "danh sách người dùng: admin"
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/x-www-form-urlencoded": {
-                            "schema": {
-                                "type": "string",
-                                "properties": {
-                                    "Vertify": {
-                                        "type": "string",
-                                        "example": "0 1 2 "
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "key được sinh ra",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/user"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/admin/UserRouteAdmin/addE": {
-            "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "parameters": [
-                    {
-                        "schema": {
-                            "type": "string"
-                        },
-                        "name": "TokenCybersoft",
-                        "in": "header",
-                        "required": true
-                    }
-                ],
-                "tags": [
-                    "danh sách người dùng: admin"
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "Account": {
-                                        "type": "string"
-                                    },
-                                    "Name": {
-                                        "type": "string"
-                                    },
-                                    "Password": {
-                                        "type": "string"
-                                    },
-                                    "role": {
-                                        "type": "string",
-                                        "example": "employee"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "key được sinh ra",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/res"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/admin/UserRouteAdmin/getE": {
-            "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "parameters": [
-                    {
-                        "schema": {
-                            "type": "string"
-                        },
-                        "name": "TokenCybersoft",
-                        "in": "header",
-                        "required": true
-                    }
-                ],
-                "tags": [
-                    "danh sách người dùng: admin"
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "role": {
-                                        "type": "string",
-                                        "example": "employee"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "key được sinh ra",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/user"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/admin/UserRouteAdmin/deE": {
-            "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "parameters": [
-                    {
-                        "schema": {
-                            "type": "string"
-                        },
-                        "name": "TokenCybersoft",
-                        "in": "header",
-                        "required": true
-                    }
-                ],
-                "tags": [
-                    "danh sách người dùng: admin"
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "id": {
-                                        "type": "string"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "key được sinh ra",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/user"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/admin/UserRouteAdmin/edit/{id}": {
-            "get": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "parameters": [
-                    {
-                        "schema": {
-                            "type": "string"
-                        },
-                        "name": "TokenCybersoft",
-                        "in": "header",
-                        "required": true
-                    },
-                    {
-                        "schema": {
-                            "type": "string"
-                        },
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "tags": [
-                    "danh sách người dùng: admin"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/user"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/admin/UserRouteAdmin/edit": {
-            "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "parameters": [
-                    {
-                        "schema": {
-                            "type": "string"
-                        },
-                        "name": "TokenCybersoft",
-                        "in": "header",
-                        "required": true
-                    }
-                ],
-                "tags": [
-                    "danh sách người dùng: admin"
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "id": {
-                                        "type": "string"
-                                    },
-                                    "Name": {
-                                        "type": "string"
-                                    },
-                                    "Password": {
-                                        "type": "string"
-                                    },
-                                    "role": {
-                                        "type": "string",
-                                        "example": "employee"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/res"
                                 }
                             }
                         }

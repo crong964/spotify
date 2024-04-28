@@ -10,11 +10,13 @@ class UserModel extends BaseModel {
     description: string
     pathImage: string
     Password: string
-    Banner:string
-    RefeshToken:string
+    Banner: string
+    RefeshToken: string
+    role: string
     constructor() {
         super()
-        this.RefeshToken=""
+        this.role = "user"
+        this.RefeshToken = ""
         this.Password = ""
         this.Name = ""
         this.id = ""
@@ -24,13 +26,13 @@ class UserModel extends BaseModel {
         this.Account = ""
         this.description = ""
         this.pathImage = ""
-        this.Banner=""
+        this.Banner = ""
 
     }
     setAll(d: any): void {
         super.setAll(d)
         this.Password = ""
-        
+        this.pathImage = this.pathImage || "public/avatar/avatar.jpg"
     }
 }
 

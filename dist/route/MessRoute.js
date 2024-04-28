@@ -7,6 +7,8 @@ const express_1 = require("express");
 const MessController_1 = __importDefault(require("../controller/MessController"));
 const multer_1 = __importDefault(require("multer"));
 const path_1 = require("path");
+const sharp_1 = __importDefault(require("sharp"));
+sharp_1.default.cache(false);
 const storage = multer_1.default.diskStorage({
     destination: function (req, file, cb) {
         cb(null, (0, path_1.join)(process.cwd(), '/public/upload'));

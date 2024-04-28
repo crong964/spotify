@@ -6,6 +6,7 @@ import userService from "../services/UserService";
 import UserModel from "../model/UserModel";
 import { v4 as uuidv4 } from 'uuid';
 import nodemailer from "nodemailer"
+import jwt from "jsonwebtoken"
 import "dotenv/config"
 interface google {
   email: string;
@@ -18,6 +19,11 @@ const client_id_si = process.env.CLIENT_ID_SI;
 
 const client_secret_su = process.env.CLIENT_SECRET_SU;
 const client_id_su = process.env.CLIENT_ID_SU;
+
+const email = process.env.EMAIL
+const emailpsapp = process.env.EMAILPSAPP
+const secret = process.env.SECRET
+
 const Account = Router();
 
 Account.get("/", (req, res) => {
@@ -35,6 +41,10 @@ Account.post("/signin", async (req, res) => {
     return
   }
   SetCookie(res, acc)
+  if (acc.role == "master") {
+    res.redirect("/admin")
+    return
+  }
   res.redirect("/")
 });//0k
 Account.get("/github", async (req, res) => {
@@ -316,7 +326,7 @@ Account.post("/ggup", (req, res) => {
   res.cookie("name", profi.name);
   res.redirect("/auth");
 });
-Account.post("/logout", (req, res) => {
+Account.get("/logout", (req, res) => {
   clearCookie(res)
   res.redirect("/auth")
 })
@@ -377,15 +387,15 @@ Account.post("/sendcode", async (req, res) => {
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-      user: "huy91027@gmail.com",
-      pass: "tltl bfzr txhs uvav",
+      user: email,
+      pass: emailpsapp,
     },
   });
   const info = await transporter.sendMail({
     from: 'spotify@gmail.com.com',
     to: account,
-    subject: "Mã Xác thực",
-    text: "Hello world?",
+    subject: "Mã Xác thực đổi mật khẩu",
+    text: "Đây là mã xác thực của bạn đừng chia sẻ cho ai",
     html: `<h1>${code}</h1>`,
   });
 
@@ -410,7 +420,7 @@ Account.post("/vertifycode", async (req, res) => {
   if (token != undefined) {
     req.cookies = JSON.parse(Buffer.from(token, "base64").toString())
   }
-  
+
 
   var account = req.cookies.f1
   var f2 = req.cookies.f2
@@ -435,7 +445,7 @@ Account.post("/vertifycode", async (req, res) => {
 
     res.json({
       err: check == undefined,
-      mess:"thành công"
+      mess: "thành công"
     })
     return
   }
@@ -445,12 +455,11 @@ Account.post("/vertifycode", async (req, res) => {
     mess: "Mã không chính xác"
   })
 });//0k
-
-
 Account.post("/apikey", async (req, res) => {
   const account = req.body.account
   const password = req.body.password
   var acc = await userService.GetAccountByAccAndPass(account, password)
+
   if (!acc) {
     res.json({
       err: true,
@@ -458,17 +467,105 @@ Account.post("/apikey", async (req, res) => {
     })
     return
   }
-  var apikey = Buffer.from(JSON.stringify(SetApiKey(res, acc))).toString("base64")
+  var apikey = jwt.sign({ role: acc.role, id: acc.id }, secret || "1", { expiresIn: "2 days" })
   res.json({
     err: false,
     apikey: apikey
   })
 });//0k
+
+Account.post("/sendCodeVertifyEmail", async (req, res) => {
+  var account = req.body.account
+  var d = await userService.GetByAccount(account)
+
+  if (account == undefined) {
+    res.json({
+      err: true,
+      mess: "chưa nhập tài khoản"
+    })
+    return
+  }
+  if (d != undefined) {
+    res.json({
+      err: true,
+      mess: "tài khoản đã tồn tại"
+    })
+    return
+  }
+
+  var code = new Date().getTime() % 100000
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: email,
+      pass: emailpsapp,
+    },
+  });
+
+
+  try {
+    const info = await transporter.sendMail({
+      from: 'spotify@gmail.com.com',
+      to: account,
+      subject: "Mã Xác thực email",
+      text: "Đây là mã xác thực của bạn đừng chia sẻ cho ai",
+      html: `<h1>${code}</h1>`,
+    });
+  } catch (error) {
+
+  }
+
+
+  var token = jwt.sign({ Account: account }, code + "", {
+    expiresIn: "3h"
+  })
+  res.json({
+    err: false,
+    token: token
+  })
+})//0k
+Account.post("/createACC", async (req, res) => {
+  var Account = req.body.Account
+  var code = req.body.code
+  var token = req.body.token
+  
+  
+  var decode
+  try {
+    decode = jwt.verify(token, code + "") as jwt.JwtPayload
+  } catch (error) {
+  }
+
+  if (decode == undefined) {
+    res.json({
+      err: true,
+      mess: "MÃ KO ĐÚNG"
+    })
+    return
+  }
+  
+  
+  if (decode.Account != Account) {
+    res.json({
+      err: true,
+      mess: "GMAIL KHÔNG ĐÚNG"
+    })
+    return
+  }
+
+  var u = new UserModel()
+  u.setAll(req.body)
+  u.Password = req.body.Password
+  u.id = uuidv4()
+  var check = await userService.AddAccount(u)
+  res.json({
+    err: check == undefined,
+  })
+})//0k
+
 function SetCookie(res: Response, acc: UserModel) {
-  var hash = Hash.CreateHas({ a1: acc.id, outNumber: undefined, salt: undefined })
-  res.cookie("id", acc.id, { maxAge: 1000 * 60 * 60 * 24 * 356, httpOnly: true })
-  res.cookie("a2", hash.a2, { maxAge: 1000 * 60 * 60 * 24 * 356, httpOnly: true })
-  res.cookie("timeSIN", hash.time, { maxAge: 1000 * 60 * 60 * 24 * 356, httpOnly: true })
+  var apikey = jwt.sign({ role: acc.role, id: acc.id }, '1', { expiresIn: "2 days" })
+  res.cookie("apikey", apikey, { maxAge: 900000000 })
 }
 function SetApiKey(res: Response, acc: UserModel) {
   var hash = Hash.CreateHas({ a1: acc.id, outNumber: undefined, salt: undefined })
@@ -478,6 +575,7 @@ function clearCookie(res: Response) {
   res.clearCookie("id")
   res.clearCookie("a2")
   res.clearCookie("timeSIN")
+  res.clearCookie("apikey")
 }
 export function VerifyCookie(req: Request) {
   var id = req.cookies.id

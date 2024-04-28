@@ -33,9 +33,10 @@ const body_parser_1 = __importDefault(require("body-parser"));
 const GenreRoute_1 = __importDefault(require("./route/GenreRoute"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const socket_io_1 = require("socket.io");
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const UserRoute_1 = __importDefault(require("./route/UserRoute"));
 const Song_Route_1 = __importDefault(require("./route/Song.Route"));
-const Acount_1 = __importStar(require("./route/Acount"));
+const Acount_1 = __importDefault(require("./route/Acount"));
 const LikedSongRoute_1 = __importDefault(require("./route/LikedSongRoute"));
 const RecentSongService_1 = __importDefault(require("./services/RecentSongService"));
 const RecentSongRoute_1 = __importDefault(require("./route/RecentSongRoute"));
@@ -52,6 +53,7 @@ const http_1 = require("http");
 const cookie_1 = require("cookie");
 const FriendRoute_1 = __importDefault(require("./route/FriendRoute"));
 const UserRouteAdmin_1 = __importDefault(require("./admin/UserRouteAdmin"));
+const admin_1 = __importDefault(require("./config/admin"));
 const app = (0, express_1.default)();
 const httpServer = (0, http_1.createServer)(app);
 const io = new socket_io_1.Server(httpServer, {
@@ -62,22 +64,72 @@ app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader('Access-Control-Allow-Headers', "*");
     res.setHeader('Access-Control-Allow-Methods', "*");
-    var apikey = req.headers.apikey;
+    var apikey = req.headers.apikey || req.cookies.apikey;
     if (apikey) {
-        var cookie = JSON.parse(Buffer.from(apikey, "base64").toString());
-        req.cookies.id = cookie.a1;
+        var cookie = jsonwebtoken_1.default.verify(apikey, "1");
+        req.cookies.id = cookie.id;
     }
     next();
 });
 app.use("/static", express_1.default.static(path_1.default.join(process.cwd(), "web", "static")));
 app.use("/public", express_1.default.static(path_1.default.join(process.cwd(), "public")));
 app.use("/i", express_1.default.static(path_1.default.join(process.cwd(), "public", "upload")));
+app.get("/swagger", (req, res) => {
+    res.sendFile((0, path_1.join)(process.cwd(), "web/swagger.html"));
+});
+// app.use((req, res, next) => {
+//     //eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0ZW5Mb3AiOiJCb290Y2FtcCA2MSIsIkhldEhhblN0cmluZyI6IjI4LzA5LzIwMjQiLCJIZXRIYW5UaW1lIjoiMTcyNzQ4MTYwMDAwMCIsIm5iZiI6MTY5ODUxMjQwMCwiZXhwIjoxNzI3NjI5MjAwfQ.uWn4XmIr3aGBNm4QCi5Q5RFxVqNTwws8-EDFxQQud_I
+//     var TokenCybersoft = req.headers.tokencybersoft as string
+//     if (!TokenCybersoft) {
+//         res.status(403).send({
+//             "statusCode": 403,
+//             "message": "Không đủ quyền truy cập!",
+//             "content": "Token không cybersoft không hợp lệ hoặc đã hết hạn truy cập !",
+//             "dateTime": new Date().toISOString(),
+//             "messageConstants": null
+//         })
+//         return
+//     }
+//     var part = TokenCybersoft.split(".")
+//     if (part.length < 2) {
+//         res.status(403).send({
+//             "statusCode": 403,
+//             "message": "Không đủ quyền truy cập!",
+//             "content": "Token không cybersoft không hợp lệ",
+//             "dateTime": new Date().toISOString(),
+//             "messageConstants": null
+//         })
+//         return
+//     }
+//     var time = JSON.parse(Buffer.from(part[1], "base64").toString()).HetHanTime
+//     var now = new Date().getTime() + ""
+//     if (!time || time < now) {
+//         res.status(403).send({
+//             "statusCode": 403,
+//             "message": "Không đủ quyền truy cập!",
+//             "content": "Token không cybersoft không hợp lệ hoặc đã hết hạn truy cập !",
+//             "dateTime": new Date().toISOString(),
+//             "messageConstants": null
+//         })
+//         return
+//     }
+//     next()
+// })
 app.use(body_parser_1.default.urlencoded({ extended: false, limit: "500mb" }));
 app.use(body_parser_1.default.json());
 app.get("/", (req, res) => {
-    if ((0, Acount_1.VerifyCookie)(req)) {
-        res.sendFile(path_1.default.join(process.cwd(), "web/home.html"));
-        return;
+    var apikey = req.headers.apikey || req.cookies.apikey;
+    if (apikey) {
+        var cookie = jsonwebtoken_1.default.verify(apikey, "1");
+        req.cookies.id = cookie.a1;
+    }
+    try {
+        if (jsonwebtoken_1.default.verify(apikey, "1")) {
+            res.sendFile(path_1.default.join(process.cwd(), "web/home.html"));
+            return;
+        }
+    }
+    catch (error) {
     }
     res.redirect("/auth");
 });
@@ -169,23 +221,19 @@ app.get("/gg", (req, res) => {
 app.use("/genre", GenreRoute_1.default);
 app.use("/playlist", PlayListRoute_1.default);
 //admin
-app.use("/genre", GenreRouteAdmin_1.default);
-app.use("/playlist", PlayListRouteAdmin_1.default);
-app.use("/contain", ContainRouteAdmin_1.default);
-app.use("/admin/UserRouteAdmin", UserRouteAdmin_1.default);
-app.get("/admin", (req, res) => {
+app.use("/genre", admin_1.default, GenreRouteAdmin_1.default);
+app.use("/playlist", admin_1.default, PlayListRouteAdmin_1.default);
+app.use("/contain", admin_1.default, ContainRouteAdmin_1.default);
+app.use("/admin/UserRouteAdmin", admin_1.default, UserRouteAdmin_1.default);
+app.get("/admin", admin_1.default, (req, res) => {
     res.sendFile((0, path_1.join)(process.cwd(), "web/admin.html"));
-});
-app.get("/api-client", (req, res) => {
-    res.sendFile((0, path_1.join)(process.cwd(), "web/swagger_client.html"));
 });
 app.get("/api-admin", (req, res) => {
     res.sendFile((0, path_1.join)(process.cwd(), "web/swagger_admin.html"));
 });
 httpServer.listen(8000, () => {
     console.log("http://localhost:8000/");
-    console.log("http://localhost:8000/api-client");
-    console.log("http://localhost:8000/api-admin");
+    console.log("http://localhost:8000/swagger");
     console.log("http://localhost:8000/gg");
     console.log("http://localhost:8000/auth");
     console.log("http://localhost:8000/admin");

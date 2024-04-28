@@ -9,6 +9,7 @@ import PlayListForm from "./PlayList/PlayListForn";
 import PlaylistAndGenre from "./PlayList/PlaylistAndGenre";
 import PlayListEdit from "./PlayList/PlayListEdit";
 import UserList from "./user/UserList";
+import Employls from "./user/Employls";
 
 export default function App() {
   var children: React.JSX.Element;
@@ -50,6 +51,13 @@ export default function App() {
         </Main>
       );
       break;
+    case "employls":
+      children = (
+        <Main title="Danh sách nhân viên">
+          <Employls />
+        </Main>
+      );
+      break;
     default:
       children = (
         <Main title="Danh sách nhạc">
@@ -64,6 +72,7 @@ export default function App() {
       <div className="relative  w-full flex flex-col h-full overflow-y-auto">
         <div className="w-full h-full border-t flex flex-col">{children}</div>
       </div>
+      
     </div>
   );
 }

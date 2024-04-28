@@ -7,6 +7,7 @@ const BaseModel_1 = __importDefault(require("./BaseModel"));
 class UserModel extends BaseModel_1.default {
     constructor() {
         super();
+        this.role = "user";
         this.RefeshToken = "";
         this.Password = "";
         this.Name = "";
@@ -22,6 +23,7 @@ class UserModel extends BaseModel_1.default {
     setAll(d) {
         super.setAll(d);
         this.Password = "";
+        this.pathImage = this.pathImage || "public/avatar/avatar.jpg";
     }
 }
 exports.default = UserModel;

@@ -35,7 +35,7 @@ function User(d: user) {
                     dcp(SetBoxList(data.idbox));
                   });
                 }}
-              >
+              > 
                 Nhắn tin
               </div>
             </div>

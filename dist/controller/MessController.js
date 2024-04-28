@@ -20,11 +20,15 @@ const BoxService_1 = __importDefault(require("../services/BoxService"));
 const uuid_1 = require("uuid");
 const HiddenMessService_1 = __importDefault(require("../services/HiddenMessService"));
 const server_1 = __importDefault(require("../server"));
+const sharp_1 = __importDefault(require("sharp"));
+const path_1 = require("path");
+const fs_1 = require("fs");
 class MessController {
     constructor() {
     }
     GetAllMessInbox(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
+            var _a;
             var id = req.cookies.id;
             var idBox = req.body.idBox;
             MessController.haveListBoxChat.visualBoxChat(id, idBox);
@@ -35,7 +39,7 @@ class MessController {
                 mess: ls[0],
                 infor: ls[1],
                 myid: id,
-                now: ls[0][ls[0].length - 1].ngay
+                now: ((_a = ls[0][ls[0].length - 1]) === null || _a === void 0 ? void 0 : _a.ngay) || -1
             });
         });
     }
@@ -96,7 +100,7 @@ class MessController {
             var idmess = req.body.idMess;
             var s = req.cookies.id;
             var f = yield MessController.mess.GetMessById(idmess);
-            var iduser = s.id;
+            var iduser = s;
             if (f == undefined) {
                 res.json({
                     err: true,
@@ -106,6 +110,20 @@ class MessController {
             if (iduser == (f.idUser + "")) {
                 yield Promise.all([MessController.hiddenMess.DelHiddenMess(idmess),
                     MessController.mess.DelMessById(idmess, iduser)]);
+                if (f.type == "image") {
+                    var ls = f.content.split("@");
+                    ls.map((v) => {
+                        if (v.length <= 0) {
+                            return;
+                        }
+                        var input = (0, path_1.join)(process.cwd(), "public/upload", v.replace("i/", ""));
+                        (0, fs_1.unlink)(input, (err) => {
+                            if (err) {
+                                console.log(err);
+                            }
+                        });
+                    });
+                }
                 res.json({
                     err: false,
                 });
@@ -120,9 +138,31 @@ class MessController {
     Image(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             var files = req.files;
-            files[0].fieldname;
-            var messfile = files.reduce((a, b) => {
-                a += `i/${b.filename}@`;
+            var s = files.map((v) => __awaiter(this, void 0, void 0, function* () {
+                var input = (0, path_1.join)(process.cwd(), "public/upload", v.filename);
+                var output = (0, path_1.join)(process.cwd(), "public/upload", `${v.filename}.jpg`);
+                try {
+                    yield (0, sharp_1.default)(input)
+                        .jpeg({ force: false, quality: 10, progressive: true })
+                        .png({ palette: true, quality: 1, compressionLevel: 9, progressive: true, force: false })
+                        .toFile(output);
+                }
+                catch (error) {
+                    console.log(error);
+                }
+                return `${v.filename}.jpg`;
+            }));
+            var ls = yield Promise.all(s);
+            files.map((v) => __awaiter(this, void 0, void 0, function* () {
+                var input = (0, path_1.join)(process.cwd(), "public/upload", v.filename);
+                (0, fs_1.unlink)(input, (err) => {
+                    if (err) {
+                        console.log(err);
+                    }
+                });
+            }));
+            var messfile = ls.reduce((a, b) => {
+                a += `i/${b}@`;
                 return a;
             }, "");
             var mess = new MessModel_1.default();

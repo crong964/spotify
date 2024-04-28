@@ -7,6 +7,9 @@ import boxService, { BoxService } from "../services/BoxService";
 import { v4 } from 'uuid';
 import hiddenMessService from "../services/HiddenMessService";
 import io from "../server";
+import sharp from "sharp";
+import { join } from "path";
+import { unlink } from "fs";
 export class MessController {
 
     static haveListBoxChat: HaveListBoxChatService = haveListBoxChatService
@@ -27,7 +30,7 @@ export class MessController {
             mess: ls[0],
             infor: ls[1],
             myid: id,
-            now: ls[0][ls[0].length - 1].ngay
+            now: ls[0][ls[0].length - 1]?.ngay || -1
         })
     }
     async SendMess(req: Request, res: Response) {
@@ -87,8 +90,10 @@ export class MessController {
     async Remove(req: Request, res: Response) {
         var idmess = req.body.idMess
         var s = req.cookies.id;
+
+
         var f = await MessController.mess.GetMessById(idmess)
-        var iduser = s.id
+        var iduser = s
         if (f == undefined) {
             res.json({
                 err: true,
@@ -99,6 +104,21 @@ export class MessController {
             await Promise.all([MessController.hiddenMess.DelHiddenMess(idmess),
             MessController.mess.DelMessById(idmess, iduser)])
 
+
+            if (f.type == "image") {
+                var ls = f.content.split("@")
+                ls.map((v) => {
+                    if (v.length <= 0) {
+                        return
+                    }
+                    var input = join(process.cwd(), "public/upload", v.replace("i/", ""))
+                    unlink(input, (err) => {
+                        if (err) {
+                            console.log(err);
+                        }
+                    })
+                })
+            }
             res.json({
                 err: false,
             })
@@ -111,9 +131,32 @@ export class MessController {
     }
     async Image(req: Request, res: Response) {
         var files = req.files as Express.Multer.File[]
-        files[0].fieldname
-        var messfile = files.reduce((a, b) => {
-            a += `i/${b.filename}@`
+        var s = files.map(async (v) => {
+            var input = join(process.cwd(), "public/upload", v.filename)
+            var output = join(process.cwd(), "public/upload", `${v.filename}.jpg`)
+
+            try {
+                await sharp(input)
+                    .jpeg({ force: false, quality: 10, progressive: true })
+                    .png({ palette: true, quality: 1, compressionLevel: 9, progressive: true, force: false })
+                    .toFile(output)
+            } catch (error) {
+                console.log(error);
+            }
+            return `${v.filename}.jpg`
+        })
+        var ls = await Promise.all(s)
+
+        files.map(async (v) => {
+            var input = join(process.cwd(), "public/upload", v.filename)
+            unlink(input, (err) => {
+                if (err) {
+                    console.log(err);
+                }
+            })
+        })
+        var messfile = ls.reduce((a, b) => {
+            a += `i/${b}@`
             return a
         }, "")
 

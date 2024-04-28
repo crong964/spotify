@@ -16,6 +16,7 @@ const path_1 = require("path");
 const UserModel_1 = __importDefault(require("../model/UserModel"));
 const UserService_1 = __importDefault(require("../services/UserService"));
 const promises_1 = require("fs/promises");
+const uuid_1 = require("uuid");
 const HaveListFriendsService_1 = __importDefault(require("../services/HaveListFriendsService"));
 class UserController {
     constructor() {
@@ -112,6 +113,64 @@ class UserController {
             res.json({
                 err: false,
                 ls: ls
+            });
+        });
+    }
+    GetAllEAdmin(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var role = req.body.role || "employee";
+            var ls = yield UserController.user.GetAllEAdmin(role);
+            res.json({
+                err: false,
+                ls: ls
+            });
+        });
+    }
+    AddEAdmin(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var user = new UserModel_1.default();
+            user.setAll(req.body);
+            var check = yield UserController.user.GetByAccount(user.Account);
+            if (check) {
+                res.json({
+                    err: true,
+                    mess: "đã tồn tại"
+                });
+                return;
+            }
+            user.id = `user-${(0, uuid_1.v4)()}`;
+            var add = yield UserController.user.AddAccount(user);
+            res.json({
+                err: add == undefined,
+            });
+        });
+    }
+    DeleteEAdmin(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var id = req.body.id;
+            var de = yield UserController.user.DeleteEAdmin(id);
+            res.json({
+                err: de == undefined
+            });
+        });
+    }
+    GetEditUser(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var id = req.params.id;
+            var de = yield UserController.user.Get(id);
+            res.json({
+                err: de == undefined,
+                data: de
+            });
+        });
+    }
+    PostEditUser(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var user = new UserModel_1.default();
+            user.setAll(req.body);
+            var de = yield UserController.user.UpdateE(user);
+            res.json({
+                err: de == undefined,
             });
         });
     }
