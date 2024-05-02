@@ -61,7 +61,7 @@ class HaveListFriendsService {
             };
             let sql = `SELECT u.id,u.Name,u.pathImage FROM havelistfriends h,user u WHERE u.id=h.idFriends AND h.idUser =?  AND h.IsFriend= ?`;
             var check = yield Config_1.default.query(sql, [idUser, d[IsFriend]]);
-            return check;
+            return this.Setls(check);
         });
     }
     CancelFriends(idUser, idFriend) {

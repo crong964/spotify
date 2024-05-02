@@ -54,6 +54,8 @@ const cookie_1 = require("cookie");
 const FriendRoute_1 = __importDefault(require("./route/FriendRoute"));
 const UserRouteAdmin_1 = __importDefault(require("./admin/UserRouteAdmin"));
 const admin_1 = __importDefault(require("./config/admin"));
+require("dotenv/config");
+const secret = process.env.SECRET || "1";
 const app = (0, express_1.default)();
 const httpServer = (0, http_1.createServer)(app);
 const io = new socket_io_1.Server(httpServer, {
@@ -66,8 +68,12 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Methods', "*");
     var apikey = req.headers.apikey || req.cookies.apikey;
     if (apikey) {
-        var cookie = jsonwebtoken_1.default.verify(apikey, "1");
-        req.cookies.id = cookie.id;
+        try {
+            var cookie = jsonwebtoken_1.default.verify(apikey, "1");
+            req.cookies.id = cookie.id;
+        }
+        catch (error) {
+        }
     }
     next();
 });
@@ -119,10 +125,6 @@ app.use(body_parser_1.default.urlencoded({ extended: false, limit: "500mb" }));
 app.use(body_parser_1.default.json());
 app.get("/", (req, res) => {
     var apikey = req.headers.apikey || req.cookies.apikey;
-    if (apikey) {
-        var cookie = jsonwebtoken_1.default.verify(apikey, "1");
-        req.cookies.id = cookie.a1;
-    }
     try {
         if (jsonwebtoken_1.default.verify(apikey, "1")) {
             res.sendFile(path_1.default.join(process.cwd(), "web/home.html"));
@@ -245,7 +247,14 @@ httpServer.listen(8000, () => {
 });
 io.on("connection", (socket) => {
     var cookie = (0, cookie_1.parse)(socket.handshake.headers.cookie || "");
-    socket.join(cookie.id);
+    var id = "";
+    try {
+        id = jsonwebtoken_1.default.verify(cookie.apikey, secret).id;
+    }
+    catch (error) {
+    }
+    console.log("id", id);
+    socket.join(id);
     socket.on("disconnect", () => {
         io.socketsLeave("");
     });

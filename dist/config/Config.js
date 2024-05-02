@@ -13,8 +13,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const promise_1 = __importDefault(require("mysql2/promise"));
+require("dotenv/config");
+const db = process.env.HOST;
 const pool = promise_1.default.createPool({
-    host: 'localhost',
+    host: db,
     user: 'root',
     database: 'spotify',
     waitForConnections: true,
@@ -23,7 +25,7 @@ const pool = promise_1.default.createPool({
     idleTimeout: 60000, // idle connections timeout, in milliseconds, the default value 60000
     queueLimit: 0,
     enableKeepAlive: true,
-    keepAliveInitialDelay: 0,
+    keepAliveInitialDelay: 0
 });
 class Mysql2 {
     static query(sql, val) {

@@ -27,8 +27,9 @@ import { parse } from "cookie";
 import FriendRoute from "./route/FriendRoute";
 import UserRouteAdmin from "./admin/UserRouteAdmin";
 import ADMIN from "./config/admin";
+import "dotenv/config"
 
-
+const secret = process.env.SECRET || "1"
 const app = express()
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
@@ -42,10 +43,12 @@ app.use((req, res, next) => {
     var apikey = (req.headers.apikey as any) || req.cookies.apikey
 
     if (apikey) {
-        var cookie = jwt.verify(apikey, "1") as JwtPayload
-        req.cookies.id = cookie.id
+        try {
+            var cookie = jwt.verify(apikey, "1") as JwtPayload
+            req.cookies.id = cookie.id
+        } catch (error) {
 
-
+        }
     }
     next();
 });
@@ -105,12 +108,6 @@ app.use(bodyParser.json())
 
 app.get("/", (req, res) => {
     var apikey = (req.headers.apikey as any) || req.cookies.apikey
-
-    if (apikey) {
-        var cookie = jwt.verify(apikey, "1") as JwtPayload
-        req.cookies.id = cookie.a1
-    }
-
     try {
         if (jwt.verify(apikey, "1")) {
             res.sendFile(path.join(process.cwd(), "web/home.html"))
@@ -245,10 +242,19 @@ httpServer.listen(8000, () => {
 });
 
 io.on("connection", (socket) => {
+
     var cookie = parse(socket.handshake.headers.cookie || "")
+    var id = ""
 
-    socket.join(cookie.id)
+    try {
+        id = (jwt.verify(cookie.apikey, secret) as JwtPayload).id
+    } catch (error) {
 
+    } 
+    console.log("id",id);
+    
+    
+    socket.join(id)
     socket.on("disconnect", () => {
         io.socketsLeave("")
     })

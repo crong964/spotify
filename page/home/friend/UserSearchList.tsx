@@ -115,8 +115,10 @@ export default function UserSearchList() {
   );
   useEffect(() => {
     post("/search/user", { name: SearchName }, (v: any) => {
+     if (!v.err) {
       SetFriend(v.friend);
       SetOrther(v.orther);
+     }
     });
   }, [SearchName]);
 
@@ -164,7 +166,9 @@ export function UsersRespond() {
 
   useEffect(() => {
     post("/friend/Reponse", {}, (v: any) => {
-      SetUser(v.ls);
+      if (!v.err) {
+        SetUser(v.ls);
+      }
     });
   }, []);
 
