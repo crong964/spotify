@@ -8,6 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 import nodemailer from "nodemailer"
 import jwt from "jsonwebtoken"
 import "dotenv/config"
+import { VertifyJWT } from "../config/Helper";
 interface google {
   email: string;
   name: string;
@@ -528,14 +529,9 @@ Account.post("/createACC", async (req, res) => {
   var Account = req.body.Account
   var code = req.body.code
   var token = req.body.token
-  
-  
-  var decode
-  try {
-    decode = jwt.verify(token, code + "") as jwt.JwtPayload
-  } catch (error) {
-  }
 
+
+  var decode = VertifyJWT(token, code + "")
   if (decode == undefined) {
     res.json({
       err: true,
@@ -543,8 +539,8 @@ Account.post("/createACC", async (req, res) => {
     })
     return
   }
-  
-  
+
+
   if (decode.Account != Account) {
     res.json({
       err: true,
@@ -564,7 +560,7 @@ Account.post("/createACC", async (req, res) => {
 })//0k
 
 function SetCookie(res: Response, acc: UserModel) {
-  var apikey = jwt.sign({ role: acc.role, id: acc.id }, '1', { expiresIn: "2 days" })
+  var apikey = jwt.sign({ role: acc.role, id: acc.id }, secret || '1', { expiresIn: "2 days" })
   res.cookie("apikey", apikey, { maxAge: 900000000 })
 }
 function SetApiKey(res: Response, acc: UserModel) {

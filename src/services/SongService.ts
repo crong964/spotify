@@ -31,9 +31,12 @@ export class SongService {
     async Delete(id: string) {
         var check = await this.songDatabase.Delete(id)
         return check
-    }
+    } 
     async Update(d: SongModel) {
-        var check = await this.songDatabase.Update(d)
+        var sql = `UPDATE song Set genre_id =?, SongName=?, Duration=?, publicDate=?, description=?,SongImage=?, Singer=?
+        WHERE Id =?`
+        var check
+        check = await Mysql2.query(sql, [d.Genre_id, d.SongName, d.Duration, d.publicDate, d.description, d.SongImage, d.Singer, d.Id])
         return check
     }
     async UpStatus(d: SongModel) {

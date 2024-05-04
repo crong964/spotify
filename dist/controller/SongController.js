@@ -50,7 +50,8 @@ class SongController {
             var song = new SongModel_1.default();
             if (u == undefined) {
                 res.json({
-                    err: true
+                    err: true,
+                    mess: "Không có bài hát này"
                 });
                 return;
             }
@@ -124,6 +125,47 @@ class SongController {
                 name: f,
                 err: false,
                 idSong: idSong
+            });
+        });
+    }
+    FileSong(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var _a, _b, _c;
+            if (((_a = req.file) === null || _a === void 0 ? void 0 : _a.filename) == undefined) {
+                res.json({
+                    err: true,
+                    mess: "Không có file"
+                });
+                return;
+            }
+            var id = req.cookies.id;
+            var f = (0, uuid_1.v4)();
+            let check = yield SongController.user.Get(id);
+            if (check == undefined) {
+                res.json({
+                    err: true
+                });
+                return;
+            }
+            f = (0, uuid_1.v4)();
+            var song = new SongModel_1.default();
+            song.Genre_id = "";
+            song.Id = f;
+            song.Singer = check.ChanalName;
+            song.user_id = check.id;
+            song.SongImage = check.pathImage;
+            song.filePath = (_b = req.file) === null || _b === void 0 ? void 0 : _b.filename;
+            var fcheck = yield SongController.song.Add(song);
+            console.log(song);
+            if (fcheck == undefined) {
+                res.json({
+                    err: true
+                });
+                return;
+            }
+            res.json({
+                namefile: (_c = req.file) === null || _c === void 0 ? void 0 : _c.filename,
+                idSong: f
             });
         });
     }

@@ -1,9 +1,9 @@
 import mysql2 from "mysql2/promise"
 import "dotenv/config"
-const db = process.env.HOST;
-
+const LOCALHOST = process.env.LOCALHOST;
+const DockerDB = process.env.DockerDB;
 const pool = mysql2.createPool({
-    host: db,
+    host: DockerDB || LOCALHOST,
     user: 'root',
     database: 'spotify',
     waitForConnections: true,
@@ -12,7 +12,7 @@ const pool = mysql2.createPool({
     idleTimeout: 60000, // idle connections timeout, in milliseconds, the default value 60000
     queueLimit: 0,
     enableKeepAlive: true,
-    keepAliveInitialDelay: 0 
+    keepAliveInitialDelay: 0
 })
 class Mysql2 {
     static db = pool

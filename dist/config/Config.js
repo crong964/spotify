@@ -14,9 +14,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const promise_1 = __importDefault(require("mysql2/promise"));
 require("dotenv/config");
-const db = process.env.HOST;
+const LOCALHOST = process.env.LOCALHOST;
+const DockerDB = process.env.DockerDB;
 const pool = promise_1.default.createPool({
-    host: db,
+    host: DockerDB || LOCALHOST,
     user: 'root',
     database: 'spotify',
     waitForConnections: true,

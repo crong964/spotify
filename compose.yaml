@@ -7,6 +7,8 @@ services:
       - ./:/app
     container_name: app_spotify
     command: sh -c "npm install && node ./dist/server.js"
+    environment:
+      - DockerDB=db
     ports:
       - 8000:8000
   db:

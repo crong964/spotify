@@ -33,7 +33,6 @@ const body_parser_1 = __importDefault(require("body-parser"));
 const GenreRoute_1 = __importDefault(require("./route/GenreRoute"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const socket_io_1 = require("socket.io");
-const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const UserRoute_1 = __importDefault(require("./route/UserRoute"));
 const Song_Route_1 = __importDefault(require("./route/Song.Route"));
 const Acount_1 = __importDefault(require("./route/Acount"));
@@ -55,6 +54,7 @@ const FriendRoute_1 = __importDefault(require("./route/FriendRoute"));
 const UserRouteAdmin_1 = __importDefault(require("./admin/UserRouteAdmin"));
 const admin_1 = __importDefault(require("./config/admin"));
 require("dotenv/config");
+const Helper_1 = require("./config/Helper");
 const secret = process.env.SECRET || "1";
 const app = (0, express_1.default)();
 const httpServer = (0, http_1.createServer)(app);
@@ -68,12 +68,13 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Methods', "*");
     var apikey = req.headers.apikey || req.cookies.apikey;
     if (apikey) {
-        try {
-            var cookie = jsonwebtoken_1.default.verify(apikey, "1");
+        var cookie = (0, Helper_1.VertifyJWT)(apikey);
+        if (cookie != undefined) {
             req.cookies.id = cookie.id;
         }
-        catch (error) {
-        }
+    }
+    if (req.headers.iduser) {
+        req.cookies.id = req.headers.iduser;
     }
     next();
 });
@@ -96,20 +97,9 @@ app.get("/swagger", (req, res) => {
 //         })
 //         return
 //     }
-//     var part = TokenCybersoft.split(".")
-//     if (part.length < 2) {
-//         res.status(403).send({
-//             "statusCode": 403,
-//             "message": "Không đủ quyền truy cập!",
-//             "content": "Token không cybersoft không hợp lệ",
-//             "dateTime": new Date().toISOString(),
-//             "messageConstants": null
-//         })
-//         return
-//     }
-//     var time = JSON.parse(Buffer.from(part[1], "base64").toString()).HetHanTime
 //     var now = new Date().getTime() + ""
-//     if (!time || time < now) {
+//     var decode = jwt.decode(TokenCybersoft) as jwt.JwtPayload
+//     if (decode == null || !decode.HetHanTime || decode.HetHanTime + "" < now) {
 //         res.status(403).send({
 //             "statusCode": 403,
 //             "message": "Không đủ quyền truy cập!",
@@ -126,7 +116,7 @@ app.use(body_parser_1.default.json());
 app.get("/", (req, res) => {
     var apikey = req.headers.apikey || req.cookies.apikey;
     try {
-        if (jsonwebtoken_1.default.verify(apikey, "1")) {
+        if ((0, Helper_1.VertifyJWT)(apikey)) {
             res.sendFile(path_1.default.join(process.cwd(), "web/home.html"));
             return;
         }
@@ -217,9 +207,6 @@ app.get("/s", (req, res) => {
         });
     }
 });
-app.get("/gg", (req, res) => {
-    res.sendFile(path_1.default.join(process.cwd(), "web/gg.html"));
-});
 app.use("/genre", GenreRoute_1.default);
 app.use("/playlist", PlayListRoute_1.default);
 //admin
@@ -230,9 +217,6 @@ app.use("/admin/UserRouteAdmin", admin_1.default, UserRouteAdmin_1.default);
 app.get("/admin", admin_1.default, (req, res) => {
     res.sendFile((0, path_1.join)(process.cwd(), "web/admin.html"));
 });
-app.get("/api-admin", (req, res) => {
-    res.sendFile((0, path_1.join)(process.cwd(), "web/swagger_admin.html"));
-});
 httpServer.listen(8000, () => {
     console.log("http://localhost:8000/");
     console.log("http://localhost:8000/swagger");
@@ -240,20 +224,15 @@ httpServer.listen(8000, () => {
     console.log("http://localhost:8000/auth");
     console.log("http://localhost:8000/admin");
     console.log("http://localhost:8000/dashboard");
-    console.log("http://localhost:8000/user/signin?account=sontungmtp@enter.com");
-    console.log("http://localhost:8000/user/signin?account=PhanManhQuynh@pmq.com");
-    console.log("http://localhost:8000/user/signin?account=DenVau@pmq.com");
     console.log("http://localhost:8000/auth/forgot");
 });
 io.on("connection", (socket) => {
     var cookie = (0, cookie_1.parse)(socket.handshake.headers.cookie || "");
     var id = "";
-    try {
-        id = jsonwebtoken_1.default.verify(cookie.apikey, secret).id;
+    var decode = (0, Helper_1.VertifyJWT)(cookie.apikey);
+    if (decode) {
+        id = decode.id;
     }
-    catch (error) {
-    }
-    console.log("id", id);
     socket.join(id);
     socket.on("disconnect", () => {
         io.socketsLeave("");

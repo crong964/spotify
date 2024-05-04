@@ -5,8 +5,7 @@ import bodyParser from "body-parser"
 import { v4 as uuidv4 } from 'uuid';
 import GenreRoute from "./route/GenreRoute";
 import cookieParser from "cookie-parser";
-import { Server, Socket } from "socket.io"
-import jwt, { JwtPayload } from "jsonwebtoken"
+import { Server } from "socket.io"
 import UserRoute from "./route/UserRoute";
 import SongRoute from "./route/Song.Route";
 import Account, { VerifyCookie } from "./route/Acount";
@@ -28,7 +27,8 @@ import FriendRoute from "./route/FriendRoute";
 import UserRouteAdmin from "./admin/UserRouteAdmin";
 import ADMIN from "./config/admin";
 import "dotenv/config"
-
+import { VertifyJWT } from "./config/Helper";
+import jwt from "jsonwebtoken"
 const secret = process.env.SECRET || "1"
 const app = express()
 const httpServer = createServer(app);
@@ -42,13 +42,16 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Methods', "*");
     var apikey = (req.headers.apikey as any) || req.cookies.apikey
 
+    
     if (apikey) {
-        try {
-            var cookie = jwt.verify(apikey, "1") as JwtPayload
+        var cookie = VertifyJWT(apikey)
+        if (cookie != undefined) {
             req.cookies.id = cookie.id
-        } catch (error) {
-
         }
+
+    }
+    if (req.headers.iduser) {
+        req.cookies.id = req.headers.iduser
     }
     next();
 });
@@ -59,48 +62,35 @@ app.get("/swagger", (req, res) => {
     res.sendFile(join(process.cwd(), "web/swagger.html"))
 })
 
-// app.use((req, res, next) => {
-//     //eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0ZW5Mb3AiOiJCb290Y2FtcCA2MSIsIkhldEhhblN0cmluZyI6IjI4LzA5LzIwMjQiLCJIZXRIYW5UaW1lIjoiMTcyNzQ4MTYwMDAwMCIsIm5iZiI6MTY5ODUxMjQwMCwiZXhwIjoxNzI3NjI5MjAwfQ.uWn4XmIr3aGBNm4QCi5Q5RFxVqNTwws8-EDFxQQud_I
-//     var TokenCybersoft = req.headers.tokencybersoft as string
-//     if (!TokenCybersoft) {
-//         res.status(403).send({
-//             "statusCode": 403,
-//             "message": "Không đủ quyền truy cập!",
-//             "content": "Token không cybersoft không hợp lệ hoặc đã hết hạn truy cập !",
-//             "dateTime": new Date().toISOString(),
-//             "messageConstants": null
-//         })
+app.use((req, res, next) => {
+    //eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0ZW5Mb3AiOiJCb290Y2FtcCA2MSIsIkhldEhhblN0cmluZyI6IjI4LzA5LzIwMjQiLCJIZXRIYW5UaW1lIjoiMTcyNzQ4MTYwMDAwMCIsIm5iZiI6MTY5ODUxMjQwMCwiZXhwIjoxNzI3NjI5MjAwfQ.uWn4XmIr3aGBNm4QCi5Q5RFxVqNTwws8-EDFxQQud_I
+    var TokenCybersoft = req.headers.tokencybersoft as string
+    if (!TokenCybersoft) {
+        res.status(403).send({
+            "statusCode": 403,
+            "message": "Không đủ quyền truy cập!",
+            "content": "Token không cybersoft không hợp lệ hoặc đã hết hạn truy cập !",
+            "dateTime": new Date().toISOString(),
+            "messageConstants": null
+        })
 
-//         return
-//     }
-//     var part = TokenCybersoft.split(".")
-//     if (part.length < 2) {
-//         res.status(403).send({
-//             "statusCode": 403,
-//             "message": "Không đủ quyền truy cập!",
-//             "content": "Token không cybersoft không hợp lệ",
-//             "dateTime": new Date().toISOString(),
-//             "messageConstants": null
-//         })
+        return
+    }
+    var now = new Date().getTime() + ""
+    var decode = jwt.decode(TokenCybersoft) as jwt.JwtPayload
+    if (decode == null || !decode.HetHanTime || decode.HetHanTime + "" < now) {
+        res.status(403).send({
+            "statusCode": 403,
+            "message": "Không đủ quyền truy cập!",
+            "content": "Token không cybersoft không hợp lệ hoặc đã hết hạn truy cập !",
+            "dateTime": new Date().toISOString(),
+            "messageConstants": null
+        })
 
-//         return
-//     }
-//     var time = JSON.parse(Buffer.from(part[1], "base64").toString()).HetHanTime
-//     var now = new Date().getTime() + ""
-
-//     if (!time || time < now) {
-//         res.status(403).send({
-//             "statusCode": 403,
-//             "message": "Không đủ quyền truy cập!",
-//             "content": "Token không cybersoft không hợp lệ hoặc đã hết hạn truy cập !",
-//             "dateTime": new Date().toISOString(),
-//             "messageConstants": null
-//         })
-
-//         return
-//     }
-//     next()
-// })
+        return
+    }
+    next()
+})
 app.use(bodyParser.urlencoded({ extended: false, limit: "500mb" }))
 app.use(bodyParser.json())
 
@@ -109,7 +99,7 @@ app.use(bodyParser.json())
 app.get("/", (req, res) => {
     var apikey = (req.headers.apikey as any) || req.cookies.apikey
     try {
-        if (jwt.verify(apikey, "1")) {
+        if (VertifyJWT(apikey)) {
             res.sendFile(path.join(process.cwd(), "web/home.html"))
             return
         }
@@ -210,9 +200,7 @@ app.get("/s", (req, res) => {
 
 
 })
-app.get("/gg", (req, res) => {
-    res.sendFile(path.join(process.cwd(), "web/gg.html"))
-})
+
 app.use("/genre", GenreRoute)
 app.use("/playlist", PlayListRoute)
 //admin
@@ -224,10 +212,6 @@ app.get("/admin", ADMIN, (req, res) => {
     res.sendFile(join(process.cwd(), "web/admin.html"))
 })
 
-
-app.get("/api-admin", (req, res) => {
-    res.sendFile(join(process.cwd(), "web/swagger_admin.html"))
-})
 httpServer.listen(8000, () => {
     console.log("http://localhost:8000/");
     console.log("http://localhost:8000/swagger");
@@ -235,25 +219,18 @@ httpServer.listen(8000, () => {
     console.log("http://localhost:8000/auth");
     console.log("http://localhost:8000/admin");
     console.log("http://localhost:8000/dashboard");
-    console.log("http://localhost:8000/user/signin?account=sontungmtp@enter.com");
-    console.log("http://localhost:8000/user/signin?account=PhanManhQuynh@pmq.com");
-    console.log("http://localhost:8000/user/signin?account=DenVau@pmq.com");
     console.log("http://localhost:8000/auth/forgot");
 });
 
 io.on("connection", (socket) => {
-
     var cookie = parse(socket.handshake.headers.cookie || "")
     var id = ""
 
-    try {
-        id = (jwt.verify(cookie.apikey, secret) as JwtPayload).id
-    } catch (error) {
+    var decode = VertifyJWT(cookie.apikey)
+    if (decode) {
+        id = decode.id
+    }
 
-    } 
-    console.log("id",id);
-    
-    
     socket.join(id)
     socket.on("disconnect", () => {
         io.socketsLeave("")

@@ -10,4 +10,5 @@ UserRouteAdmin.post("/deE", userController.DeleteEAdmin)//0k
 
 UserRouteAdmin.get("/edit/:id", userController.GetEditUser)//0k
 UserRouteAdmin.post("/edit", userController.PostEditUser)//0k
+UserRouteAdmin.post("/VertifyArtist", userController.VertifyArtist)//OK
 export default UserRouteAdmin

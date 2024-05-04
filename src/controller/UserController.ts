@@ -101,7 +101,6 @@ class UserController {
             ls: ls
         })
     }
-
     async GetAllEAdmin(req: Request, res: Response) {
         var role = req.body.role || "employee"
         var ls = await UserController.user.GetAllEAdmin(role)
@@ -152,7 +151,13 @@ class UserController {
             err: de == undefined,
         })
     }
-
+    async VertifyArtist(req: Request, res: Response) {
+        var idArtist = req.body.idArtist
+        var check = await UserController.user.VertifyAccount(idArtist, "1")
+        res.json({
+            err: check == undefined
+        })
+    }
 }
 var userController = new UserController()
 

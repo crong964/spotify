@@ -1,9 +1,8 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+require("dotenv/config");
+const Helper_1 = require("./Helper");
+const SECRET = process.env.SECRET;
 function ADMIN(req, res, next) {
     var apikey = req.headers.apikey || req.cookies.apikey;
     if (!apikey) {
@@ -12,7 +11,13 @@ function ADMIN(req, res, next) {
         });
         return;
     }
-    var decode = jsonwebtoken_1.default.verify(apikey, "1");
+    var decode = (0, Helper_1.VertifyJWT)(apikey);
+    if (decode == undefined) {
+        res.status(403).send({
+            mess: "ko có quyền "
+        });
+        return;
+    }
     if (decode.role == "master") {
         next();
         return;

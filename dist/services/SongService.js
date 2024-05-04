@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SongService = void 0;
+const Config_1 = __importDefault(require("../config/Config"));
 const SongDatabase_1 = __importDefault(require("../database/SongDatabase"));
 const SongModel_1 = __importDefault(require("../model/SongModel"));
 class SongService {
@@ -52,7 +53,10 @@ class SongService {
     }
     Update(d) {
         return __awaiter(this, void 0, void 0, function* () {
-            var check = yield this.songDatabase.Update(d);
+            var sql = `UPDATE song Set genre_id =?, SongName=?, Duration=?, publicDate=?, description=?,SongImage=?, Singer=?
+        WHERE Id =?`;
+            var check;
+            check = yield Config_1.default.query(sql, [d.Genre_id, d.SongName, d.Duration, d.publicDate, d.description, d.SongImage, d.Singer, d.Id]);
             return check;
         });
     }

@@ -23,6 +23,7 @@ const uuid_1 = require("uuid");
 const nodemailer_1 = __importDefault(require("nodemailer"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 require("dotenv/config");
+const Helper_1 = require("../config/Helper");
 const client_secret_si = process.env.CLIENT_SECRET_SI;
 const client_id_si = process.env.CLIENT_ID_SI;
 const client_secret_su = process.env.CLIENT_SECRET_SU;
@@ -474,12 +475,7 @@ Account.post("/createACC", (req, res) => __awaiter(void 0, void 0, void 0, funct
     var Account = req.body.Account;
     var code = req.body.code;
     var token = req.body.token;
-    var decode;
-    try {
-        decode = jsonwebtoken_1.default.verify(token, code + "");
-    }
-    catch (error) {
-    }
+    var decode = (0, Helper_1.VertifyJWT)(token, code + "");
     if (decode == undefined) {
         res.json({
             err: true,
@@ -504,7 +500,7 @@ Account.post("/createACC", (req, res) => __awaiter(void 0, void 0, void 0, funct
     });
 })); //0k
 function SetCookie(res, acc) {
-    var apikey = jsonwebtoken_1.default.sign({ role: acc.role, id: acc.id }, '1', { expiresIn: "2 days" });
+    var apikey = jsonwebtoken_1.default.sign({ role: acc.role, id: acc.id }, secret || '1', { expiresIn: "2 days" });
     res.cookie("apikey", apikey, { maxAge: 900000000 });
 }
 function SetApiKey(res, acc) {

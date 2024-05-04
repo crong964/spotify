@@ -174,6 +174,15 @@ class UserController {
             });
         });
     }
+    VertifyArtist(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var idArtist = req.body.idArtist;
+            var check = yield UserController.user.VertifyAccount(idArtist, "1");
+            res.json({
+                err: check == undefined
+            });
+        });
+    }
 }
 UserController.user = UserService_1.default;
 UserController.HaveListFriends = HaveListFriendsService_1.default;

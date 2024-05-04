@@ -18,7 +18,8 @@ class SongController {
         var song = new SongModel()
         if (u == undefined) {
             res.json({
-                err: true
+                err: true,
+                mess: "Không có bài hát này"
             })
             return
         }
@@ -66,7 +67,6 @@ class SongController {
             song.SongImage = check.pathImage
             song.filePath = f
             var fcheck = await SongController.song.Add(song)
-
             if (fcheck == undefined) {
                 res.json({
                     err: true,
@@ -77,8 +77,6 @@ class SongController {
         } else {
             f = req.body.name
         }
-
-
         var write = createWriteStream(path.join(process.cwd(), "/public/music", `${f}`), {
             flags: "as+"
         })
@@ -95,8 +93,49 @@ class SongController {
             idSong: idSong
         })
     }
+    async FileSong(req: Request, res: Response) {
+        if (req.file?.filename == undefined) {
+            res.json({
+                err: true,
+                mess: "Không có file"
+            })
+            return
+        }
+        var id = req.cookies.id
+        var f = uuidv4()
+
+        let check = await SongController.user.Get(id)
+        if (check == undefined) {
+            res.json({
+                err: true
+            })
+            return
+        }
+        f = uuidv4()
+        var song = new SongModel()
+        song.Genre_id = ""
+        song.Id = f
+        song.Singer = check.ChanalName
+        song.user_id = check.id
+        song.SongImage = check.pathImage
+        song.filePath = req.file?.filename
+        var fcheck = await SongController.song.Add(song)
+        if (fcheck == undefined) {
+            res.json({
+                err: true
+
+            })
+            return
+        }
+        res.json({
+            namefile: req.file?.filename,
+            idSong: f
+        })
+    }
     async SongList(req: Request, res: Response) {
         var id = req.cookies.id
+
+
         var ls = await SongController.song.GetAll(id)
         res.json({
             err: true,

@@ -13,11 +13,6 @@
     "paths": {
         "/user/": {
             "get": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "tags": [
                     "Trang chủ"
                 ],
@@ -48,6 +43,14 @@
                             "type": "string"
                         },
                         "name": "TokenCybersoft",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "name": "idUser",
                         "in": "header",
                         "required": true
                     }
@@ -222,7 +225,6 @@
                 "requestBody": {
                     "content": {
                         "application/json": {
-                            
                             "schema": {
                                 "type": "object",
                                 "properties": {
@@ -519,11 +521,6 @@
         },
         "/box": {
             "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "tags": [
                     "Hộp thoại"
                 ],
@@ -565,17 +562,20 @@
                         "name": "TokenCybersoft",
                         "in": "header",
                         "required": true
+                    },
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "name": "idUser",
+                        "in": "header",
+                        "required": true
                     }
                 ]
             }
         },
         "/box/chat": {
             "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "tags": [
                     "Hộp thoại"
                 ],
@@ -626,17 +626,20 @@
                         "name": "TokenCybersoft",
                         "in": "header",
                         "required": true
+                    },
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "name": "idUser",
+                        "in": "header",
+                        "required": true
                     }
                 ]
             }
         },
         "/box/remove": {
             "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "xóa hộp thoại",
                 "tags": [
                     "Hộp thoại"
@@ -677,17 +680,20 @@
                         "name": "TokenCybersoft",
                         "in": "header",
                         "required": true
+                    },
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "name": "idUser",
+                        "in": "header",
+                        "required": true
                     }
                 ]
             }
         },
         "/discuss/": {
             "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "danh sách các bình luận của bài hát",
                 "tags": [
                     "Bình luận"
@@ -753,11 +759,6 @@
         },
         "/discuss/ReplayList": {
             "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "tags": [
                     "Bình luận"
                 ],
@@ -811,17 +812,20 @@
                         "name": "TokenCybersoft",
                         "in": "header",
                         "required": true
+                    },
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "name": "idUser",
+                        "in": "header",
+                        "required": true
                     }
                 ]
             }
         },
         "/discuss/add": {
             "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "tags": [
                     "Bình luận"
                 ],
@@ -866,17 +870,20 @@
                         "name": "TokenCybersoft",
                         "in": "header",
                         "required": true
+                    },
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "name": "idUser",
+                        "in": "header",
+                        "required": true
                     }
                 ]
             }
         },
         "/discuss/replay": {
             "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "tags": [
                     "Bình luận"
                 ],
@@ -927,17 +934,20 @@
                         "name": "TokenCybersoft",
                         "in": "header",
                         "required": true
+                    },
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "name": "idUser",
+                        "in": "header",
+                        "required": true
                     }
                 ]
             }
         },
         "/discuss/delete": {
             "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "tags": [
                     "Bình luận"
                 ],
@@ -978,6 +988,14 @@
                             "type": "string"
                         },
                         "name": "TokenCybersoft",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "name": "idUser",
                         "in": "header",
                         "required": true
                     }
@@ -1037,11 +1055,6 @@
         },
         "/lsong/add/": {
             "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "thêm bài hát yêu thích",
                 "requestBody": {
                     "content": {
@@ -1084,17 +1097,20 @@
                         "name": "TokenCybersoft",
                         "in": "header",
                         "required": true
+                    },
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "name": "idUser",
+                        "in": "header",
+                        "required": true
                     }
                 ]
             }
         },
         "/lsong/delete/": {
             "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "hủy yêu thích bài hát",
                 "requestBody": {
                     "content": {
@@ -1137,17 +1153,20 @@
                         "name": "TokenCybersoft",
                         "in": "header",
                         "required": true
+                    },
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "name": "idUser",
+                        "in": "header",
+                        "required": true
                     }
                 ]
             }
         },
         "/lsong/likedsongs": {
             "get": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "lấy tất cả bài hát yêu thích",
                 "tags": [
                     "Bài hát"
@@ -1182,6 +1201,14 @@
                             "type": "string"
                         },
                         "name": "TokenCybersoft",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "name": "idUser",
                         "in": "header",
                         "required": true
                     }
@@ -1401,6 +1428,14 @@
                         "name": "TokenCybersoft",
                         "in": "header",
                         "required": true
+                    },
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "name": "idUser",
+                        "in": "header",
+                        "required": true
                     }
                 ]
             }
@@ -1483,11 +1518,6 @@
         },
         "/notification/all": {
             "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "danh sách các thông báo",
                 "tags": [
                     "Thông báo"
@@ -1524,17 +1554,20 @@
                         "name": "TokenCybersoft",
                         "in": "header",
                         "required": true
+                    },
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "name": "idUser",
+                        "in": "header",
+                        "required": true
                     }
                 ]
             }
         },
         "/notification/delete": {
             "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "danh sách các thông báo",
                 "tags": [
                     "Thông báo"
@@ -1581,17 +1614,20 @@
                         "name": "TokenCybersoft",
                         "in": "header",
                         "required": true
+                    },
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "name": "idUser",
+                        "in": "header",
+                        "required": true
                     }
                 ]
             }
         },
         "/friend/": {
             "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "lấy danh sách bạn bè",
                 "tags": [
                     "Bạn bè"
@@ -1631,17 +1667,20 @@
                         "name": "TokenCybersoft",
                         "in": "header",
                         "required": true
+                    },
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "name": "idUser",
+                        "in": "header",
+                        "required": true
                     }
                 ]
             }
         },
         "/friend/idFriend": {
             "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "Yêu cầu kết bạn",
                 "tags": [
                     "Bạn bè"
@@ -1693,17 +1732,20 @@
                         "name": "TokenCybersoft",
                         "in": "header",
                         "required": true
+                    },
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "name": "idUser",
+                        "in": "header",
+                        "required": true
                     }
                 ]
             }
         },
         "/friend/Reponse": {
             "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "danh sách yêu cầu kết bạn",
                 "tags": [
                     "Bạn bè"
@@ -1742,17 +1784,20 @@
                         "name": "TokenCybersoft",
                         "in": "header",
                         "required": true
+                    },
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "name": "idUser",
+                        "in": "header",
+                        "required": true
                     }
                 ]
             }
         },
         "/friend/Accept": {
             "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "Chấp nhận lời kết bạn",
                 "tags": [
                     "Bạn bè"
@@ -1804,17 +1849,20 @@
                         "name": "TokenCybersoft",
                         "in": "header",
                         "required": true
+                    },
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "name": "idUser",
+                        "in": "header",
+                        "required": true
                     }
                 ]
             }
         },
         "/friend/Cancenl": {
             "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "Hủy yêu cầu lời kết bạn hoặc hủy bạn bè",
                 "tags": [
                     "Bạn bè"
@@ -1866,17 +1914,20 @@
                         "name": "TokenCybersoft",
                         "in": "header",
                         "required": true
+                    },
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "name": "idUser",
+                        "in": "header",
+                        "required": true
                     }
                 ]
             }
         },
         "/mess/GetAllMessInbox": {
             "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "Lấy danh sách tin nhắn cho lần đầu",
                 "tags": [
                     "Nội dung boxchat"
@@ -1950,17 +2001,20 @@
                         "name": "TokenCybersoft",
                         "in": "header",
                         "required": true
+                    },
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "name": "idUser",
+                        "in": "header",
+                        "required": true
                     }
                 ]
             }
         },
         "/mess/NextMessList": {
             "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "Lấy danh sách tin nhắn tiếp theo theo thời gian cuối của tin nhắn",
                 "tags": [
                     "Nội dung boxchat"
@@ -2028,17 +2082,20 @@
                         "name": "TokenCybersoft",
                         "in": "header",
                         "required": true
+                    },
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "name": "idUser",
+                        "in": "header",
+                        "required": true
                     }
                 ]
             }
         },
         "/mess/send": {
             "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "Gửi tin nhắn",
                 "tags": [
                     "Nội dung boxchat"
@@ -2094,17 +2151,20 @@
                         "name": "TokenCybersoft",
                         "in": "header",
                         "required": true
+                    },
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "name": "idUser",
+                        "in": "header",
+                        "required": true
                     }
                 ]
             }
         },
         "/mess/image": {
             "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "Gửi hình ảnh",
                 "tags": [
                     "Nội dung boxchat"
@@ -2164,17 +2224,20 @@
                         "name": "TokenCybersoft",
                         "in": "header",
                         "required": true
+                    },
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "name": "idUser",
+                        "in": "header",
+                        "required": true
                     }
                 ]
             }
         },
         "/mess/hiddenMess": {
             "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "Ẩn tin nhắn",
                 "tags": [
                     "Nội dung boxchat"
@@ -2221,17 +2284,20 @@
                         "name": "TokenCybersoft",
                         "in": "header",
                         "required": true
+                    },
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "name": "idUser",
+                        "in": "header",
+                        "required": true
                     }
                 ]
             }
         },
         "/mess/remove": {
             "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "xóa tin nhắn của chính mình",
                 "tags": [
                     "Nội dung boxchat"
@@ -2278,6 +2344,14 @@
                         "name": "TokenCybersoft",
                         "in": "header",
                         "required": true
+                    },
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "name": "idUser",
+                        "in": "header",
+                        "required": true
                     }
                 ]
             }
@@ -2318,21 +2392,42 @@
                         "name": "TokenCybersoft",
                         "in": "header",
                         "required": true
+                    },
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "name": "idUser",
+                        "in": "header",
+                        "required": true
                     }
                 ]
             }
         },
-        "/song/Upload": {
+        "/song/FileSong": {
             "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "tải file âm thanh lên server",
                 "tags": [
                     "quản lý bài hát"
                 ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "songfile": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "required": [
+                                    "songfile"
+                                ]
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "tải video lên server",
@@ -2367,17 +2462,20 @@
                         "name": "TokenCybersoft",
                         "in": "header",
                         "required": true
+                    },
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "name": "idUser",
+                        "in": "header",
+                        "required": true
                     }
                 ]
             }
         },
         "/song/Update": {
             "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "cập nhật thông tin của bài hát",
                 "tags": [
                     "quản lý bài hát"
@@ -2388,7 +2486,10 @@
                             "schema": {
                                 "type": "object",
                                 "properties": {
-                                    "avata": {
+                                    "Id": {
+                                        "type": "string"
+                                    },
+                                    "avatar": {
                                         "type": "string",
                                         "format": "binary"
                                     },
@@ -2409,7 +2510,8 @@
                                     }
                                 },
                                 "required": [
-                                    "avata",
+                                    "Id",
+                                    "avatar",
                                     "description",
                                     "Duration",
                                     "Genre_id",
@@ -2449,17 +2551,20 @@
                         "name": "TokenCybersoft",
                         "in": "header",
                         "required": true
+                    },
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "name": "idUser",
+                        "in": "header",
+                        "required": true
                     }
                 ]
             }
         },
         "/song/NewUpdate": {
             "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "cập nhật thông tin mới của bài hát",
                 "tags": [
                     "quản lý bài hát"
@@ -2470,7 +2575,10 @@
                             "schema": {
                                 "type": "object",
                                 "properties": {
-                                    "avata": {
+                                    "Id": {
+                                        "type": "string"
+                                    },
+                                    "avatar": {
                                         "type": "string",
                                         "format": "binary"
                                     },
@@ -2491,7 +2599,7 @@
                                     }
                                 },
                                 "required": [
-                                    "avata",
+                                    "avatar",
                                     "description",
                                     "Duration",
                                     "Genre_id",
@@ -2531,17 +2639,20 @@
                         "name": "TokenCybersoft",
                         "in": "header",
                         "required": true
+                    },
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "name": "idUser",
+                        "in": "header",
+                        "required": true
                     }
                 ]
             }
         },
         "/song/upStatus": {
             "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "cập nhật trạng thái của bài hát",
                 "tags": [
                     "quản lý bài hát"
@@ -2593,6 +2704,14 @@
                             "type": "string"
                         },
                         "name": "TokenCybersoft",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "name": "idUser",
                         "in": "header",
                         "required": true
                     }
@@ -2690,11 +2809,6 @@
         },
         "/rs": {
             "get": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "danh sách nhạc gần đây nghe",
                 "tags": [
                     "nhạc gần đây"
@@ -2732,6 +2846,14 @@
                             "type": "string"
                         },
                         "name": "TokenCybersoft",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "name": "idUser",
                         "in": "header",
                         "required": true
                     }
@@ -3548,6 +3670,54 @@
                                     "role": {
                                         "type": "string",
                                         "example": "employee"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/res"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/VertifyArtist/": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "name": "TokenCybersoft",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "danh sách người dùng: admin"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "idArtist": {
+                                        "type": "string"
                                     }
                                 }
                             }

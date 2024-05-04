@@ -28,11 +28,11 @@ class SongDatabase {
         return check
     }
     async Update(d: SongModel) {
-        var sql = `UPDATE song Set genre_id =?, SongName=?, Duration=?, publicDate=?, description=?,SongImage=?,filePath=?, Singer=?
+        var sql = `UPDATE song Set genre_id =?, SongName=?, Duration=?, publicDate=?, description=?,SongImage=?, Singer=?
         WHERE Id =?`
 
         var check
-        check = await Mysql2.query(sql, [d.Genre_id, d.SongName, d.Duration, d.publicDate, d.description, d.SongImage, d.filePath, d.Singer, d.Id])
+        check = await Mysql2.query(sql, [d.Genre_id, d.SongName, d.Duration, d.publicDate, d.description, d.SongImage, d.Singer, d.Id])
         return check
     }
     async UpStatus(d: SongModel) {
