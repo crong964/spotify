@@ -98,6 +98,14 @@ class SongService {
             return check;
         });
     }
+    NextSong(SongId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var sql = `SELECT * FROM song WHERE id <> ?`;
+            var check;
+            check = yield Config_1.default.query(sql, [SongId]);
+            return this.SetLs(check);
+        });
+    }
     SetLs(check) {
         if (check == undefined) {
             return [];

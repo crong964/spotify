@@ -20,10 +20,12 @@ export function SetionList(params: SetionList) {
     });
   }, []);
   return (
-    <div className="mt-8">
-      <div className="text-white text-[24px] font-bold">{params.name}</div>
+    <div className="mt-8 w-full overflow-auto ">
+      <div className="text-white sticky top-0 left-0 text-[24px] font-bold">{params.name}</div>
       <div
-        className={`grid gap-3 ${!recentList ? "grid-cols-7" : "grid-cols-5 "}`}
+        className={` flex overflow-x-scroll w-max sm:w-full sm:grid sm:gap-3 ${
+          !recentList ? "grid-cols-7" : "grid-cols-5 "
+        }`}
       >
         {artist.map((v) => {
           return (
@@ -37,6 +39,7 @@ export function SetionList(params: SetionList) {
             />
           );
         })}
+        
       </div>
     </div>
   );
@@ -54,7 +57,7 @@ export default function SetionData(params: SetionData) {
   const dispatch = useDispatch();
   return (
     <div
-      className="w-full cursor-pointer"
+      className="w-[200px] sm:w-full cursor-pointer"
       onClick={() => {
         dispatch(NaviPage({ page: "artise", param: params.id }));
       }}

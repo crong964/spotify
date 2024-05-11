@@ -51,6 +51,7 @@ SongRoute.post("/newupload", songController.NewUpload)
 SongRoute.post("/upStatus", songController.UpStatus)//0k
 SongRoute.get("/valisong/:idpage", songController.GetValidateAll)
 
+SongRoute.post("/NextSong", songController.NextSong)
 
 //admin
 SongRoute.post("/GetSongByGenre", songController.GetSongByGenre)//0k

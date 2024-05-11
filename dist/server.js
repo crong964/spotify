@@ -55,6 +55,7 @@ const UserRouteAdmin_1 = __importDefault(require("./admin/UserRouteAdmin"));
 const admin_1 = __importDefault(require("./config/admin"));
 require("dotenv/config");
 const Helper_1 = require("./config/Helper");
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const secret = process.env.SECRET || "1";
 const app = (0, express_1.default)();
 const httpServer = (0, http_1.createServer)(app);
@@ -84,46 +85,33 @@ app.use("/i", express_1.default.static(path_1.default.join(process.cwd(), "publi
 app.get("/swagger", (req, res) => {
     res.sendFile((0, path_1.join)(process.cwd(), "web/swagger.html"));
 });
-// app.use((req, res, next) => {
-//     //eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0ZW5Mb3AiOiJCb290Y2FtcCA2MSIsIkhldEhhblN0cmluZyI6IjI4LzA5LzIwMjQiLCJIZXRIYW5UaW1lIjoiMTcyNzQ4MTYwMDAwMCIsIm5iZiI6MTY5ODUxMjQwMCwiZXhwIjoxNzI3NjI5MjAwfQ.uWn4XmIr3aGBNm4QCi5Q5RFxVqNTwws8-EDFxQQud_I
-//     var TokenCybersoft = req.headers.tokencybersoft as string
-//     if (!TokenCybersoft) {
-//         res.status(403).send({
-//             "statusCode": 403,
-//             "message": "Không đủ quyền truy cập!",
-//             "content": "Token không cybersoft không hợp lệ hoặc đã hết hạn truy cập !",
-//             "dateTime": new Date().toISOString(),
-//             "messageConstants": null
-//         })
-//         return
-//     }
-//     var now = new Date().getTime() + ""
-//     var decode = jwt.decode(TokenCybersoft) as jwt.JwtPayload
-//     if (decode == null || !decode.HetHanTime || decode.HetHanTime + "" < now) {
-//         res.status(403).send({
-//             "statusCode": 403,
-//             "message": "Không đủ quyền truy cập!",
-//             "content": "Token không cybersoft không hợp lệ hoặc đã hết hạn truy cập !",
-//             "dateTime": new Date().toISOString(),
-//             "messageConstants": null
-//         })
-//         return
-//     }
-//     next()
-// })
+app.use((req, res, next) => {
+    //eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0ZW5Mb3AiOiJCb290Y2FtcCA2MSIsIkhldEhhblN0cmluZyI6IjI4LzA5LzIwMjQiLCJIZXRIYW5UaW1lIjoiMTcyNzQ4MTYwMDAwMCIsIm5iZiI6MTY5ODUxMjQwMCwiZXhwIjoxNzI3NjI5MjAwfQ.uWn4XmIr3aGBNm4QCi5Q5RFxVqNTwws8-EDFxQQud_I
+    var TokenCybersoft = req.headers.tokencybersoft;
+    if (TokenCybersoft) {
+        var now = new Date().getTime() + "";
+        var decode = jsonwebtoken_1.default.decode(TokenCybersoft);
+        if (decode == null || !decode.HetHanTime || decode.HetHanTime + "" < now) {
+            res.status(403).send({
+                "statusCode": 403,
+                "message": "Không đủ quyền truy cập!",
+                "content": "Token không cybersoft không hợp lệ hoặc đã hết hạn truy cập !",
+                "dateTime": new Date().toISOString(),
+                "messageConstants": null
+            });
+            return;
+        }
+    }
+    next();
+});
 app.use(body_parser_1.default.urlencoded({ extended: false, limit: "500mb" }));
 app.use(body_parser_1.default.json());
 app.get("/", (req, res) => {
     var apikey = req.headers.apikey || req.cookies.apikey;
-    try {
-        if ((0, Helper_1.VertifyJWT)(apikey)) {
-            res.sendFile(path_1.default.join(process.cwd(), "web/home.html"));
-            return;
-        }
+    if ((0, Helper_1.VertifyJWT)(apikey) != undefined) {
+        req.cookies.id = (0, Helper_1.VertifyJWT)(apikey).id;
     }
-    catch (error) {
-    }
-    res.redirect("/auth");
+    res.sendFile(path_1.default.join(process.cwd(), "web/home.html"));
 });
 app.use("/mess", MessRoute_1.default);
 app.use("/box", BoxChatRoute_1.default);
@@ -145,12 +133,12 @@ app.get("/idSong", (req, res) => {
     var music = req.cookies.music;
     var idSong = req.query.idSong;
     var id = req.cookies.id;
-    if (idSong == undefined || id == undefined) {
+    if (idSong == undefined) {
         res.end();
         return;
     }
     res.cookie("music", idSong, { httpOnly: true, maxAge: 1000 * 60 * 60 * 24 * 365 });
-    if (!music || music != idSong) {
+    if (!music && music != idSong && id != undefined) {
         RecentSongService_1.default.Add(id, idSong);
     }
     try {
@@ -218,6 +206,7 @@ app.get("/admin", admin_1.default, (req, res) => {
     res.sendFile((0, path_1.join)(process.cwd(), "web/admin.html"));
 });
 httpServer.listen(8000, () => {
+    console.log("http://localhost:8000/");
     console.log("http://localhost:8000/");
     console.log("http://localhost:8000/swagger");
     console.log("http://localhost:8000/gg");

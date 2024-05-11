@@ -28,7 +28,7 @@ import UserRouteAdmin from "./admin/UserRouteAdmin";
 import ADMIN from "./config/admin";
 import "dotenv/config"
 import { VertifyJWT } from "./config/Helper";
-import jwt from "jsonwebtoken"
+import jwt, { JwtPayload } from "jsonwebtoken"
 const secret = process.env.SECRET || "1"
 const app = express()
 const httpServer = createServer(app);
@@ -42,7 +42,7 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Methods', "*");
     var apikey = (req.headers.apikey as any) || req.cookies.apikey
 
-    
+
     if (apikey) {
         var cookie = VertifyJWT(apikey)
         if (cookie != undefined) {
@@ -65,29 +65,20 @@ app.get("/swagger", (req, res) => {
 app.use((req, res, next) => {
     //eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0ZW5Mb3AiOiJCb290Y2FtcCA2MSIsIkhldEhhblN0cmluZyI6IjI4LzA5LzIwMjQiLCJIZXRIYW5UaW1lIjoiMTcyNzQ4MTYwMDAwMCIsIm5iZiI6MTY5ODUxMjQwMCwiZXhwIjoxNzI3NjI5MjAwfQ.uWn4XmIr3aGBNm4QCi5Q5RFxVqNTwws8-EDFxQQud_I
     var TokenCybersoft = req.headers.tokencybersoft as string
-    if (!TokenCybersoft) {
-        res.status(403).send({
-            "statusCode": 403,
-            "message": "Không đủ quyền truy cập!",
-            "content": "Token không cybersoft không hợp lệ hoặc đã hết hạn truy cập !",
-            "dateTime": new Date().toISOString(),
-            "messageConstants": null
-        })
 
-        return
-    }
-    var now = new Date().getTime() + ""
-    var decode = jwt.decode(TokenCybersoft) as jwt.JwtPayload
-    if (decode == null || !decode.HetHanTime || decode.HetHanTime + "" < now) {
-        res.status(403).send({
-            "statusCode": 403,
-            "message": "Không đủ quyền truy cập!",
-            "content": "Token không cybersoft không hợp lệ hoặc đã hết hạn truy cập !",
-            "dateTime": new Date().toISOString(),
-            "messageConstants": null
-        })
-
-        return
+    if (TokenCybersoft) {
+        var now = new Date().getTime() + ""
+        var decode = jwt.decode(TokenCybersoft) as jwt.JwtPayload
+        if (decode == null || !decode.HetHanTime || decode.HetHanTime + "" < now) {
+            res.status(403).send({
+                "statusCode": 403,
+                "message": "Không đủ quyền truy cập!",
+                "content": "Token không cybersoft không hợp lệ hoặc đã hết hạn truy cập !",
+                "dateTime": new Date().toISOString(),
+                "messageConstants": null
+            })
+            return
+        }
     }
     next()
 })
@@ -98,15 +89,10 @@ app.use(bodyParser.json())
 
 app.get("/", (req, res) => {
     var apikey = (req.headers.apikey as any) || req.cookies.apikey
-    try {
-        if (VertifyJWT(apikey)) {
-            res.sendFile(path.join(process.cwd(), "web/home.html"))
-            return
-        }
-    } catch (error) {
-
+    if (VertifyJWT(apikey) != undefined) {
+        req.cookies.id = (VertifyJWT(apikey) as JwtPayload).id
     }
-    res.redirect("/auth")
+    res.sendFile(path.join(process.cwd(), "web/home.html"))
 })
 app.use("/mess", MessRoute)
 app.use("/box", BoxChatRoute)
@@ -131,14 +117,13 @@ app.get("/idSong", (req, res) => {
 
 
     var id = req.cookies.id
-
-    if (idSong == undefined || id == undefined) {
+    if (idSong == undefined) {
         res.end()
         return
     }
     res.cookie("music", idSong, { httpOnly: true, maxAge: 1000 * 60 * 60 * 24 * 365 })
 
-    if (!music || music != idSong) {
+    if (!music && music != idSong && id != undefined) {
         recentSongService.Add(id, idSong)
     }
     try {
@@ -213,6 +198,7 @@ app.get("/admin", ADMIN, (req, res) => {
 })
 
 httpServer.listen(8000, () => {
+    console.log("http://localhost:8000/");
     console.log("http://localhost:8000/");
     console.log("http://localhost:8000/swagger");
     console.log("http://localhost:8000/gg");

@@ -11,8 +11,6 @@ export default function ChangePassword() {
   return page == "changePassword" ? (
     <div className="h-full">
       <div className="w-full p-9 bg-[#121212]">
-        
-        
         <svg
           role="img"
           viewBox="0 0 78 24"

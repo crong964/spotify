@@ -13,23 +13,22 @@ export function RecentPlaylist(params: RecentPlaylist) {
   const [hidden, SetHidden] = useState(true);
   return (
     <div
-      className="flex items-center space-x-2 bg-[#414854] relative"
+      className="flex items-center space-x-2 cursor-pointer bg-[#414854] relative"
       onMouseEnter={() => {
         SetHidden(false);
-        
       }}
       onMouseLeave={() => {
         SetHidden(true);
       }}
     >
-      <div className="size-[64px]">
+      <div className="size-14 sm:size-[64px]">
         <img src={params.img} alt="" srcSet="" />
       </div>
       <div className="text-white text-[16px] font-bold ">{params.name}</div>
       {hidden ? (
         <></>
       ) : (
-        <div className="absolute right-0 bottom-0">
+        <div className="absolute right-0 bottom-0 sm:block hidden">
           <PlayButtom />
         </div>
       )}
@@ -37,5 +36,9 @@ export function RecentPlaylist(params: RecentPlaylist) {
   );
 }
 export default function RecentList(params: List) {
-  return <div className="grid grid-cols-4 gap-1 py-2">{params.children}</div>;
+  return (
+    <div className="grid grid-cols-2 sm:grid-cols-4 gap-1 py-2">
+      {params.children}
+    </div>
+  );
 }

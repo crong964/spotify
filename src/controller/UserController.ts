@@ -24,7 +24,7 @@ class UserController {
     async Get(req: Request, res: Response) {
         var id = req.cookies.id
         var use = await UserController.user.Get(id)
-
+        
         if (use) {
             use.Account = ""
             res.json({

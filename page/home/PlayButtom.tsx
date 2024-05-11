@@ -2,11 +2,11 @@ import React from "react";
 
 export default function PlayButtom() {
   return (
-    <div className="size-12 cursor-pointer rounded-full hover:bg-[#1ED760] bg-[#1FDC62] flex justify-center items-center">
+    <div className="size-12  cursor-pointer rounded-full hover:bg-[#1ED760] bg-[#1FDC62] flex justify-center items-center">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
-        className="w-6 h-6 fill-black"
+        className="size-6 fill-black"
       >
         <path
           fillRule="evenodd"

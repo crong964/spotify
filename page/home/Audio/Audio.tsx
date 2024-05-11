@@ -1,8 +1,11 @@
 import React from "react";
 import { useEffect, useState } from "react";
+import { post } from "../../config/req";
 
 interface Audio {
   path: string;
+  next(a: any): void;
+  id: string;
 }
 export default function Audio(params: Audio) {
   const [duration, SetDuration] = useState(0);
@@ -19,8 +22,11 @@ export default function Audio(params: Audio) {
     set();
   });
   return (
-    <div className="col-span-2 flex flex-col space-y-2" onMouseLeave={() => {}}>
-      <div className="flex space-x-9 justify-center items-center">
+    <div
+      className="col-span-full sm:col-span-2 flex flex-col space-y-0 sm:space-y-2"
+      onMouseLeave={() => {}}
+    >
+      <div className="hidden sm:flex space-x-9 justify-center items-center">
         <button>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -38,7 +44,16 @@ export default function Audio(params: Audio) {
           </svg>
         </button>
 
-        <button>
+        <button
+          onClick={() => {
+            post("/song/NextSong", { idSong: params.id }, (v: any) => {
+              if (v.err) {
+                return;
+              }
+              params.next(v.song);
+            });
+          }}
+        >
           <svg
             aria-hidden="true"
             viewBox="0 0 16 16"
@@ -80,7 +95,16 @@ export default function Audio(params: Audio) {
           )}
         </button>
 
-        <button>
+        <button
+          onClick={() => {
+            post("/song/NextSong", { idSong: params.id }, (v: any) => {
+              if (v.err) {
+                return;
+              }
+              params.next(v.song);
+            });
+          }}
+        >
           <svg
             width="16"
             height="16"
@@ -104,7 +128,8 @@ export default function Audio(params: Audio) {
           </svg>
         </button>
       </div>
-      <div className="flex justify-center  items-center space-x-2 ">
+
+      <div className="flex justify-center items-center space-x-2 ">
         <Time d={curTime} key={0} />
         <input
           type="range"
@@ -136,7 +161,12 @@ export default function Audio(params: Audio) {
               e.currentTarget.duration - e.currentTarget.currentTime <
               0.001
             ) {
-              e.currentTarget.currentTime = 0;
+              post("/song/NextSong", { idSong: params.id }, (v: any) => {
+                if (v.err) {
+                  return;
+                }
+                params.next(v.song);
+              });
             }
             if (timeUpdate) {
               SetCurTime(e.currentTarget.currentTime);

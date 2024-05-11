@@ -31,7 +31,7 @@ export class SongService {
     async Delete(id: string) {
         var check = await this.songDatabase.Delete(id)
         return check
-    } 
+    }
     async Update(d: SongModel) {
         var sql = `UPDATE song Set genre_id =?, SongName=?, Duration=?, publicDate=?, description=?,SongImage=?, Singer=?
         WHERE Id =?`
@@ -67,6 +67,13 @@ export class SongService {
         var check
         check = await this.songDatabase.DeincreaseNumberDiscuss(SongId, n)
         return check
+    }
+
+    async NextSong(SongId: string) {
+        var sql = `SELECT * FROM song WHERE id <> ?`
+        var check
+        check = await Mysql2.query(sql, [SongId])
+        return this.SetLs(check)
     }
     SetLs(check: any) {
         if (check == undefined) {

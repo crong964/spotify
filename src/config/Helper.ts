@@ -7,7 +7,7 @@ export interface limit {
 }
 
 export function VertifyJWT(apikey: string, secret?: string) {
-    var decode = undefined
+    var decode: jwt.JwtPayload | undefined = undefined
     try {
         decode = jwt.verify(apikey, secret || SECRET || "1") as jwt.JwtPayload
     } catch (error) {

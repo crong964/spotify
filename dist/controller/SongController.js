@@ -156,7 +156,6 @@ class SongController {
             song.SongImage = check.pathImage;
             song.filePath = (_b = req.file) === null || _b === void 0 ? void 0 : _b.filename;
             var fcheck = yield SongController.song.Add(song);
-            console.log(song);
             if (fcheck == undefined) {
                 res.json({
                     err: true
@@ -322,6 +321,20 @@ class SongController {
             res.json({
                 err: false,
                 ls: ls
+            });
+        });
+    }
+    NextSong(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var idSong = req.body.idSong;
+            var ls = yield SongController.song.NextSong(idSong);
+            var index = 0;
+            if (ls.length != 0) {
+                index = Math.floor(Math.random() * 1000 % ls.length);
+            }
+            res.json({
+                err: ls.length == 0,
+                song: ls[index]
             });
         });
     }

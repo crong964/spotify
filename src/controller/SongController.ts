@@ -290,6 +290,19 @@ class SongController {
             ls: ls
         })
     }
+
+    async NextSong(req: Request, res: Response) {
+        var idSong = req.body.idSong
+        var ls = await SongController.song.NextSong(idSong)
+        var index = 0
+        if (ls.length != 0) {
+            index = Math.floor(Math.random() * 1000 % ls.length)
+        }
+        res.json({
+            err: ls.length == 0,
+            song: ls[index]
+        })
+    }
 }
 
 var songController = new SongController()

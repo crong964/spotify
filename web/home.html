@@ -9,18 +9,15 @@
     <!-- <link href="/public/css/Share.css" rel="stylesheet"> -->
 </head>
 <style>
-   
-
     input[type="range"]::-webkit-slider-thumb {
         width: 15px;
         -webkit-appearance: none;
         appearance: none;
         height: 15px;
-        cursor: ew-resize;
+        cursor: pointer;
         background: #FFF;
         box-shadow: -405px 0 0 400px #605E5C;
-        border-radius: 50%;
-
+        border-radius: 100%;
     }
 
     .CircularSpUIv3T-Book {
@@ -29,8 +26,15 @@
 
     /* width */
     ::-webkit-scrollbar {
-        width: 15px;
+        width: 1px;
         background: rgb(0, 0, 0);
+    }
+
+    @media (min-width: 640px) {
+        ::-webkit-scrollbar {
+            width: 10px;
+            background: rgb(0, 0, 0);
+        }
     }
 
 
@@ -41,7 +45,7 @@
     }
 </style>
 
-<body style="height: 100%; " class="CircularSpUIv3T-Book text-white">
+<body style="height: 100%; " class="CircularSpUIv3T-Book text-white bg-[#121212]">
     <div id="root" style="height: 100%;">
 
     </div>

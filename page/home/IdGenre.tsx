@@ -28,7 +28,7 @@ export default function IdGenre() {
   useEffect(() => {
     get(`genre/${idgenre}`, (v: any) => {
       console.log(v);
-      
+
       SetPlayLists(v.playlist);
       SetGernes(v.genre);
     });
@@ -61,18 +61,25 @@ function PlayListByGenre(d: PlayListByGenre) {
       );
     });
   return (
-    <div className="">
+    <div className="overflow-auto w-full">
       {ls.length > 0 ? (
-        <div className="text-white my-3 space-y-3">
-          <div className="text-[24px] font-bold">{d.genre.Name}</div>
-          <div
-            className={`grid gap-2 ${
-              !recentList ? "grid-cols-7" : "grid-cols-5 "
-            }`}
-          >
-            {ls}
+        <>
+          <div className="text-[24px] font-bold sticky top-0 left-0">
+            {d.genre.Name}
+          </div>{" "}
+          <div className="text-white overflow-x-scroll w-max sm:w-full my-3 space-y-3">
+            <div
+              className={`flex sm:grid gap-2 ${
+                !recentList ? "grid-cols-7" : "grid-cols-5 "
+              }`}
+            >
+              {ls}
+              {ls}
+              {ls}
+              {ls}
+            </div>
           </div>
-        </div>
+        </>
       ) : (
         <></>
       )}
@@ -84,7 +91,7 @@ export function PlayList(d: PlayList) {
   const [show, SetShow] = useState(false);
   const dispatch = useDispatch();
   return (
-    <div>
+    <div className=" overflow-hidden">
       <div
         className="cursor-pointer relative"
         onMouseEnter={() => {
@@ -100,10 +107,14 @@ export function PlayList(d: PlayList) {
               param: d.id,
             })
           );
-          
         }}
       >
-        <img src={d.ImagePath} className="rounded-2xl" alt="" srcSet="" />
+        <img
+          src={d.ImagePath}
+          className="rounded-2xl size-[150px] sm:size-full "
+          alt=""
+          srcSet=""
+        />
         {show ? (
           <div className="absolute bottom-0 right-0">
             <PlayButtom />
@@ -112,7 +123,7 @@ export function PlayList(d: PlayList) {
           <></>
         )}
       </div>
-      <div className="text-[16px] line-clamp-1">{d.PlayListName}</div>
+      <div className="text-[16px] line-clamp-1 w-[150px]">{d.PlayListName}</div>
     </div>
   );
 }

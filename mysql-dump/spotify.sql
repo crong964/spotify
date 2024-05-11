@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th4 29, 2024 lúc 10:38 AM
+-- Thời gian đã tạo: Th5 05, 2024 lúc 05:59 AM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -43,9 +43,9 @@ CREATE TABLE `boxchat` (
 --
 
 INSERT INTO `boxchat` (`idBox`, `Ngay`, `content`, `id`, `boxtype`, `boxiamge`, `updateDay`, `messType`) VALUES
-('idbox-6acf7197-951e-45ca-bfc2-a984997d6501', '2024-04-11 09:05:30', 'dasda', 'c9a79c22-8546-4540-8d16-92c01c4a6a23', 'noFriend', NULL, '2024-04-14 19:56:02', 'Mess'),
-('idbox-deae105f-13a3-4656-bd1e-d2c669c238ff', '2024-04-10 10:00:08', 'dasdsa', 'c9a79c22-8546-4540-8d16-92c01c4a6a23', 'noFriend', NULL, '2024-04-14 19:55:59', 'Mess'),
-('idbox-ff455627-b907-4ede-b7a0-f9371a20703d', '2024-04-11 09:15:28', 'i/image-1713969676357-285471206.jpeg.jpg@i/image-1713969676359-460334851.png.jpg@i/image-17139696763', 'c9a79c22-8546-4540-8d16-92c01c4a6a23', 'noFriend', NULL, '2024-04-24 21:41:16', 'Image');
+('idbox-6acf7197-951e-45ca-bfc2-a984997d6501', '2024-04-11 09:05:30', '', 'c9a79c22-8546-4540-8d16-92c01c4a6a23', 'noFriend', NULL, '2024-04-14 19:56:02', 'Mess'),
+('idbox-deae105f-13a3-4656-bd1e-d2c669c238ff', '2024-04-10 10:00:08', '', 'c9a79c22-8546-4540-8d16-92c01c4a6a23', 'noFriend', NULL, '2024-04-14 19:55:59', 'Mess'),
+('idbox-ff455627-b907-4ede-b7a0-f9371a20703d', '2024-04-11 09:15:28', 'i/image-1714881571915-613140972.jpeg.jpg@', '42a9314d-5f14-4786-88ab-604359aa75e1', 'noFriend', NULL, '2024-05-05 10:59:31', 'Image');
 
 -- --------------------------------------------------------
 
@@ -184,8 +184,8 @@ INSERT INTO `havelistboxchat` (`idUser`, `idBox`, `Ngay`, `status`, `idFriend`, 
 ('51925ca6-74c6-418d-9273-793061b05aa6', 'idbox-deae105f-13a3-4656-bd1e-d2c669c238ff', '2024-04-10 10:00:08', 2, '51925ca6-74c6-418d-9273-793061b05aa6', 0),
 ('c9a79c22-8546-4540-8d16-92c01c4a6a23', 'idbox-6acf7197-951e-45ca-bfc2-a984997d6501', '2024-04-11 09:05:30', 1, '9e3aadcb-23b1-4540-8ec3-4bbb6892f3e1', 0),
 ('9e3aadcb-23b1-4540-8ec3-4bbb6892f3e1', 'idbox-6acf7197-951e-45ca-bfc2-a984997d6501', '2024-04-11 09:05:30', 2, 'c9a79c22-8546-4540-8d16-92c01c4a6a23', 0),
-('c9a79c22-8546-4540-8d16-92c01c4a6a23', 'idbox-ff455627-b907-4ede-b7a0-f9371a20703d', '2024-04-11 09:15:28', 1, '42a9314d-5f14-4786-88ab-604359aa75e1', 0),
-('42a9314d-5f14-4786-88ab-604359aa75e1', 'idbox-ff455627-b907-4ede-b7a0-f9371a20703d', '2024-04-11 09:15:28', 2, 'c9a79c22-8546-4540-8d16-92c01c4a6a23', 0);
+('c9a79c22-8546-4540-8d16-92c01c4a6a23', 'idbox-ff455627-b907-4ede-b7a0-f9371a20703d', '2024-04-11 09:15:28', 2, '42a9314d-5f14-4786-88ab-604359aa75e1', 0),
+('42a9314d-5f14-4786-88ab-604359aa75e1', 'idbox-ff455627-b907-4ede-b7a0-f9371a20703d', '2024-04-11 09:15:28', 1, 'c9a79c22-8546-4540-8d16-92c01c4a6a23', 0);
 
 -- --------------------------------------------------------
 
@@ -219,17 +219,6 @@ CREATE TABLE `hiddenmesslist` (
   `idMess` varchar(100) CHARACTER SET utf8 COLLATE utf8_vietnamese_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_vietnamese_ci;
 
---
--- Đang đổ dữ liệu cho bảng `hiddenmesslist`
---
-
-INSERT INTO `hiddenmesslist` (`idUser`, `idMess`) VALUES
-('c9a79c22-8546-4540-8d16-92c01c4a6a23', 'Mess-f9e0d2ad-a7b4-4429-8954-1e46f3e96f2d'),
-('c9a79c22-8546-4540-8d16-92c01c4a6a23', 'Mess-0ab34ab4-97e7-49d6-b8b5-761e00e42bbb'),
-('c9a79c22-8546-4540-8d16-92c01c4a6a23', 'Mess-a564b2a0-0b96-49bc-a6a7-9c1a6eac1d24'),
-('c9a79c22-8546-4540-8d16-92c01c4a6a23', 'Mess-19e42538-e5c7-4a2a-9c37-70fa484b6984'),
-('c9a79c22-8546-4540-8d16-92c01c4a6a23', 'Mess-fcef770a-fac1-4baf-ba51-1751984d75d3');
-
 -- --------------------------------------------------------
 
 --
@@ -248,6 +237,7 @@ CREATE TABLE `likedsong` (
 
 INSERT INTO `likedsong` (`Id`, `id_user_liked`, `liked`) VALUES
 ('1aa8ac68-dce5-4ad0-a34d-9bd0b7df00cc', 'c9a79c22-8546-4540-8d16-92c01c4a6a23', 1),
+('1f78e78f-18c0-405c-abe3-71ffd1fc0397', 'c9a79c22-8546-4540-8d16-92c01c4a6a23', 1),
 ('50d8169a-a6da-4856-bb75-c0283f9849ae', 'c9a79c22-8546-4540-8d16-92c01c4a6a23', 1),
 ('67a81238-3348-4cdf-b953-5096df977e27', 'c9a79c22-8546-4540-8d16-92c01c4a6a23', 0),
 ('837b3000-7ec2-4c85-a8fa-bc088cc0074e', 'c9a79c22-8546-4540-8d16-92c01c4a6a23', 1),
@@ -268,6 +258,15 @@ CREATE TABLE `messenge` (
   `idUser` varchar(100) NOT NULL,
   `ngay` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_vietnamese_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `messenge`
+--
+
+INSERT INTO `messenge` (`idMess`, `idBox`, `content`, `type`, `idUser`, `ngay`) VALUES
+('Mess-4c0a445d-73c9-4a71-8336-df90a796e424', 'idbox-ff455627-b907-4ede-b7a0-f9371a20703d', 'i/image-1714881565879-870849810.jpeg.jpg@', 'image', '42a9314d-5f14-4786-88ab-604359aa75e1', '2024-05-05 10:59:25'),
+('Mess-db290f45-ad1c-41bb-8a6c-0dbb5426495d', 'idbox-ff455627-b907-4ede-b7a0-f9371a20703d', 'i/image-1714881571915-613140972.jpeg.jpg@', 'image', '42a9314d-5f14-4786-88ab-604359aa75e1', '2024-05-05 10:59:31'),
+('Mess-fc00c5da-5bb1-4a5f-bc75-f0d4628d2a8e', 'idbox-ff455627-b907-4ede-b7a0-f9371a20703d', 'i/image-1714881568664-7437403.png.jpg@', 'image', '42a9314d-5f14-4786-88ab-604359aa75e1', '2024-05-05 10:59:28');
 
 -- --------------------------------------------------------
 
@@ -385,7 +384,19 @@ INSERT INTO `recentsong` (`user_id`, `Id`, `Time`) VALUES
 ('c9a79c22-8546-4540-8d16-92c01c4a6a23', '1aa8ac68-dce5-4ad0-a34d-9bd0b7df00cc', '2024-04-20 15:47:50'),
 ('c9a79c22-8546-4540-8d16-92c01c4a6a23', '50d8169a-a6da-4856-bb75-c0283f9849ae', '2024-04-20 15:55:38'),
 ('admine88e7421-a0d4-48f2-a221-b30cfc54a7dc]', '837b3000-7ec2-4c85-a8fa-bc088cc0074e', '2024-04-26 11:32:36'),
-('admine88e7421-a0d4-48f2-a221-b30cfc54a7dc]', '67a81238-3348-4cdf-b953-5096df977e27', '2024-04-26 11:33:13');
+('admine88e7421-a0d4-48f2-a221-b30cfc54a7dc]', '67a81238-3348-4cdf-b953-5096df977e27', '2024-04-26 11:33:13'),
+('c9a79c22-8546-4540-8d16-92c01c4a6a23', '67a81238-3348-4cdf-b953-5096df977e27', '2024-05-03 21:35:19'),
+('c9a79c22-8546-4540-8d16-92c01c4a6a23', '', '2024-05-03 21:37:20'),
+('c9a79c22-8546-4540-8d16-92c01c4a6a23', '', '2024-05-03 21:38:29'),
+('c9a79c22-8546-4540-8d16-92c01c4a6a23', '', '2024-05-03 21:40:15'),
+('c9a79c22-8546-4540-8d16-92c01c4a6a23', 'f6e0a637-d439-49d2-b720-edb8f9c750f5', '2024-05-03 21:40:20'),
+('c9a79c22-8546-4540-8d16-92c01c4a6a23', '', '2024-05-03 21:57:43'),
+('c9a79c22-8546-4540-8d16-92c01c4a6a23', '', '2024-05-03 22:00:52'),
+('c9a79c22-8546-4540-8d16-92c01c4a6a23', '', '2024-05-03 22:06:27'),
+('c9a79c22-8546-4540-8d16-92c01c4a6a23', '', '2024-05-03 22:07:21'),
+('c9a79c22-8546-4540-8d16-92c01c4a6a23', 'music-7a354a3e-e82c-46a2-b8d0-7d5868e3e847', '2024-05-03 22:07:24'),
+('42a9314d-5f14-4786-88ab-604359aa75e1', '82a0e146-1b63-4194-a0f8-cfb1913f50dc', '2024-05-03 22:10:22'),
+('c9a79c22-8546-4540-8d16-92c01c4a6a23', 'music-7a354a3e-e82c-46a2-b8d0-7d5868e3e847', '2024-05-05 10:10:33');
 
 -- --------------------------------------------------------
 
@@ -415,9 +426,11 @@ CREATE TABLE `song` (
 
 INSERT INTO `song` (`Id`, `user_id`, `genre_id`, `SongName`, `Viewer`, `Singer`, `Duration`, `status`, `description`, `SongImage`, `publicDate`, `filePath`, `dicussquality`) VALUES
 ('1aa8ac68-dce5-4ad0-a34d-9bd0b7df00cc', '42a9314d-5f14-4786-88ab-604359aa75e1', 'c2c8e9b7-b5c0-47b9-a990-348e803a9058', 'hãy ra khỏi người đó đi', 0, 'Phan Mạnh Quỳnh', 190, 1, '', 'public/image/avatar-1711332268132-928382065.jpeg', '0000-00-00 00:00:00', '1aa8ac68-dce5-4ad0-a34d-9bd0b7df00cc', 0),
+('1f78e78f-18c0-405c-abe3-71ffd1fc0397', '42a9314d-5f14-4786-88ab-604359aa75e1', 'c2c8e9b7-b5c0-47b9-a990-348e803a9058', 'Xuất sơn', 0, 'Phan Mạnh Quỳnh', 1233, 1, 'a', 'public/image/avatar-1714748780919-644838342.jpeg', '0000-00-00 00:00:00', 'music-7a354a3e-e82c-46a2-b8d0-7d5868e3e847', 0),
 ('381b6b5e-305f-4cbc-a3bf-7707147c8804', '9e3aadcb-23b1-4540-8ec3-4bbb6892f3e1', 'c2c8e9b7-b5c0-47b9-a990-348e803a9058', 'Đi Về Nhà', 0, 'Đen Vâu, JustaTee', 206, 1, '', 'public/image/avatar-1711977353391-140999932.jpeg', '0000-00-00 00:00:00', '381b6b5e-305f-4cbc-a3bf-7707147c8804', 0),
 ('50d8169a-a6da-4856-bb75-c0283f9849ae', '42a9314d-5f14-4786-88ab-604359aa75e1', 'c2c8e9b7-b5c0-47b9-a990-348e803a9058', 'vơ người ta', 0, 'Phan Mạnh Quỳnh', 197, 1, '', 'public/image/avatar-1711332228038-776879475.jpeg', '0000-00-00 00:00:00', '50d8169a-a6da-4856-bb75-c0283f9849ae', 7),
 ('67a81238-3348-4cdf-b953-5096df977e27', '51925ca6-74c6-418d-9273-793061b05aa6', 'c2c8e9b7-b5c0-47b9-a990-348e803a9058', 'Nơi này có anh', 0, 'Sơn Tùng M-TP', 262, 1, '', 'public/image/avatar-1711272410077-676924021.jpeg', '0000-00-00 00:00:00', '67a81238-3348-4cdf-b953-5096df977e27', 0),
+('82a0e146-1b63-4194-a0f8-cfb1913f50dc', '42a9314d-5f14-4786-88ab-604359aa75e1', '34c696c6-e129-4a7b-93c2-e887daf485f6', 'wc', 0, 'Phan Mạnh Quỳnh', 225, 1, '3123', 'public/image/avatar-1714749010345-298928302.jpeg', '0000-00-00 00:00:00', '82a0e146-1b63-4194-a0f8-cfb1913f50dc', 0),
 ('837b3000-7ec2-4c85-a8fa-bc088cc0074e', '9e3aadcb-23b1-4540-8ec3-4bbb6892f3e1', 'c2c8e9b7-b5c0-47b9-a990-348e803a9058', 'Nhạc Này Chill Phết', 0, 'Đen Vâu, Min', 273, 1, '', 'public/image/avatar-1711977387771-118609622.jpeg', '0000-00-00 00:00:00', '837b3000-7ec2-4c85-a8fa-bc088cc0074e', 0),
 ('9bb2ddba-abfa-474a-ac84-d7952a51ad7e', '51925ca6-74c6-418d-9273-793061b05aa6', 'c2c8e9b7-b5c0-47b9-a990-348e803a9058', 'Chúng ta của hiện tại', 0, 'Sơn Tùng M-TP', 302, 1, '', 'public/image/avatar-1711272707603-723681858.jpeg', '0000-00-00 00:00:00', '9bb2ddba-abfa-474a-ac84-d7952a51ad7e', 0),
 ('b50e07a9-f2ea-4626-8b14-f9ef213ad8fc', '51925ca6-74c6-418d-9273-793061b05aa6', 'c2c8e9b7-b5c0-47b9-a990-348e803a9058', 'MUỘN RỒI MÀ SAO CÒN ', 0, 'SƠN TÙNG M-TP ', 274, 1, '', 'public/image/avatar-1711977508087-423908970.jpeg', '0000-00-00 00:00:00', 'b50e07a9-f2ea-4626-8b14-f9ef213ad8fc', 0),

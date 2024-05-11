@@ -3,7 +3,11 @@ import React from "react";
 
 export function post(url: string, body: any, cb: any) {
   axios
-    .post(url, body)
+    .post(url, body,{
+      headers:{
+        "type":"web"
+      }
+    })
     .then((v) => {
       cb(v.data);
     })

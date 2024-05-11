@@ -62,6 +62,7 @@ SongRoute.post("/NewUpdate", upload.single("avatar"), SongController_1.default.N
 SongRoute.post("/newupload", SongController_1.default.NewUpload);
 SongRoute.post("/upStatus", SongController_1.default.UpStatus); //0k
 SongRoute.get("/valisong/:idpage", SongController_1.default.GetValidateAll);
+SongRoute.post("/NextSong", SongController_1.default.NextSong);
 //admin
 SongRoute.post("/GetSongByGenre", SongController_1.default.GetSongByGenre); //0k
 exports.default = SongRoute;
