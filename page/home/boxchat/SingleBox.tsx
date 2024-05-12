@@ -100,9 +100,28 @@ function useChatBox(boxInfor: BoxInfor) {
 function SendMess(data: SendMessData) {
   const dispatch = useDispatch();
   const [text, SetText] = useState("");
+  var submit = () => {
+    if (text.length <= 0) {
+      return;
+    }
+    //         idBox: string;
+    // idUser: string;
+    // content: string;
+
+    post(
+      "/mess/send",
+      {
+        idBox: data.idbox,
+        content: text,
+      },
+      (v: any) => {
+        SetText("");
+      }
+    );
+  };
   return (
     <div className="chat">
-      <div className="flex p-2 ">
+      <form onSubmit={submit} className="flex p-2 ">
         <input
           onClick={() => {
             dispatch(
@@ -124,28 +143,7 @@ function SendMess(data: SendMessData) {
             SetText(inputData.currentTarget.value);
           }}
         />
-        <button
-          className="bg-white rounded-full p-1"
-          onClick={() => {
-            if (text.length <= 0) {
-              return;
-            }
-            //         idBox: string;
-            // idUser: string;
-            // content: string;
-
-            post(
-              "/mess/send",
-              {
-                idBox: data.idbox,
-                content: text,
-              },
-              (v: any) => {
-                SetText("");
-              }
-            );
-          }}
-        >
+        <button className="bg-white rounded-full p-1" onClick={submit}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
@@ -154,7 +152,7 @@ function SendMess(data: SendMessData) {
             <path d="M3.478 2.404a.75.75 0 0 0-.926.941l2.432 7.905H13.5a.75.75 0 0 1 0 1.5H4.984l-2.432 7.905a.75.75 0 0 0 .926.94 60.519 60.519 0 0 0 18.445-8.986.75.75 0 0 0 0-1.218A60.517 60.517 0 0 0 3.478 2.404Z" />
           </svg>
         </button>
-      </div>
+      </form>
     </div>
   );
 }
@@ -227,7 +225,7 @@ export default function ChatBox(boxInfor: BoxInfor) {
     SetList();
   }, [listMess]);
 
-  var idFuture;  
+  var idFuture;
   var id = "";
   if (boxChatData.id.length > 0) {
     id = boxChatData.id;

@@ -1,9 +1,3 @@
 node_modules
-public/avatar/*
-public/banner/*
-public/image/*
-public/music/*
-public/playlist/*
-public/upload/*
 sql.txt
 .env

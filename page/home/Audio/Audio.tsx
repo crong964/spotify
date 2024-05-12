@@ -1,20 +1,25 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useEffect, useState } from "react";
 import { post } from "../../config/req";
+import { useDispatch, useSelector } from "react-redux";
+import { RootHome } from "../RootRedux";
+import { SetStop } from "./AudioRedux";
 
 interface Audio {
   path: string;
-  next(a: any): void;
+  next(a: "song" | "pause", d: any): void;
   id: string;
 }
 export default function Audio(params: Audio) {
+  const stop = useSelector((state: RootHome) => state.audioroot.stop);
+  const dispatch = useDispatch();
   const [duration, SetDuration] = useState(0);
   const [curTime, SetCurTime] = useState(0);
-  const [stop, SetStop] = useState(true);
   const [timeUpdate, SetTimeUpdate] = useState(true);
   useEffect(() => {
     async function set() {
       var mu = document.querySelector(".g") as HTMLAudioElement;
+
       if (mu) {
         SetDuration(mu.duration);
       }
@@ -22,10 +27,7 @@ export default function Audio(params: Audio) {
     set();
   });
   return (
-    <div
-      className="col-span-full sm:col-span-2 flex flex-col space-y-0 sm:space-y-2"
-      onMouseLeave={() => {}}
-    >
+    <div className="col-span-full sm:col-span-2 flex flex-col space-y-0 sm:space-y-2">
       <div className="hidden sm:flex space-x-9 justify-center items-center">
         <button>
           <svg
@@ -50,7 +52,7 @@ export default function Audio(params: Audio) {
               if (v.err) {
                 return;
               }
-              params.next(v.song);
+              params.next("song", v.song);
             });
           }}
         >
@@ -64,33 +66,33 @@ export default function Audio(params: Audio) {
         </button>
 
         <button
-          className="rounded-full border-[5px] border-white p-2"
+          className=""
           onClick={() => {
             var mu = document.querySelector(".g") as HTMLAudioElement;
             if (mu.paused) {
               mu.play();
-              SetStop(false);
+              dispatch(SetStop(false));
             } else {
               mu.pause();
-              SetStop(true);
+              dispatch(SetStop(true));
             }
           }}
         >
           {stop ? (
             <svg
-              aria-hidden="true"
-              viewBox="0 0 16 16"
-              className="size-4 fill-white"
+              className="fill-white size-8"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 512 512"
             >
-              <path d="M3 1.713a.7.7 0 0 1 1.05-.607l10.89 6.288a.7.7 0 0 1 0 1.212L4.05 14.894A.7.7 0 0 1 3 14.288V1.713z"></path>
+              <path d="M464 256A208 208 0 1 0 48 256a208 208 0 1 0 416 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zM188.3 147.1c7.6-4.2 16.8-4.1 24.3 .5l144 88c7.1 4.4 11.5 12.1 11.5 20.5s-4.4 16.1-11.5 20.5l-144 88c-7.4 4.5-16.7 4.7-24.3 .5s-12.3-12.2-12.3-20.9V168c0-8.7 4.7-16.7 12.3-20.9z" />
             </svg>
           ) : (
             <svg
-              aria-hidden="true"
-              viewBox="0 0 16 16"
-              className="size-4 fill-white"
+              className="fill-white size-8"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 512 512"
             >
-              <path d="M2.7 1a.7.7 0 0 0-.7.7v12.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V1.7a.7.7 0 0 0-.7-.7H2.7zm8 0a.7.7 0 0 0-.7.7v12.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V1.7a.7.7 0 0 0-.7-.7h-2.6z"></path>
+              <path d="M464 256A208 208 0 1 0 48 256a208 208 0 1 0 416 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm224-72V328c0 13.3-10.7 24-24 24s-24-10.7-24-24V184c0-13.3 10.7-24 24-24s24 10.7 24 24zm112 0V328c0 13.3-10.7 24-24 24s-24-10.7-24-24V184c0-13.3 10.7-24 24-24s24 10.7 24 24z" />
             </svg>
           )}
         </button>
@@ -101,7 +103,7 @@ export default function Audio(params: Audio) {
               if (v.err) {
                 return;
               }
-              params.next(v.song);
+              params.next("song", v.song);
             });
           }}
         >
@@ -133,7 +135,7 @@ export default function Audio(params: Audio) {
         <Time d={curTime} key={0} />
         <input
           type="range"
-          className="rounded-lg cursor-pointer overflow-hidden appearance-none bg-gray-400 h-[6px] w-[70%]"
+          className="rounded-lg  cursor-pointer overflow-hidden appearance-none bg-gray-400 h-[6px] w-full sm:w-[70%]"
           max={duration}
           value={curTime}
           onChange={(e) => {
@@ -149,12 +151,11 @@ export default function Audio(params: Audio) {
         <Time d={duration} key={1} />
         <audio
           src={`idSong?idSong=${params.path}`}
-          onCanPlay={(e) => {
-            var cu = e.currentTarget;
-
-            cu.play();
-            SetStop(e.currentTarget.paused);
-          }}
+          // onCanPlay={(e) => {
+          //   var cu = e.currentTarget;
+          //   cu.play();
+          //   SetStop(e.currentTarget.paused);
+          // }}
           className="g"
           onTimeUpdate={(e) => {
             if (
@@ -165,7 +166,7 @@ export default function Audio(params: Audio) {
                 if (v.err) {
                   return;
                 }
-                params.next(v.song);
+                params.next("song", v.song);
               });
             }
             if (timeUpdate) {
@@ -192,7 +193,7 @@ function Time(params: Time) {
   var minute = parseInt(data / 60 + "");
   var second = data % 60;
   return (
-    <div className="text-[12px] text-[#a7a7a7]">
+    <div className="text-[12px] text-[#a7a7a7] hidden sm:inline-block ">
       {minute}:{second < 10 ? `0${second}` : `${second}`}
     </div>
   );

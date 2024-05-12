@@ -1,6 +1,7 @@
 import { PayloadAction, configureStore, createSlice } from "@reduxjs/toolkit";
 import { useSelector } from "react-redux";
 import { Socket, io } from "socket.io-client";
+import audioSlice from "./Audio/AudioRedux";
 
 interface mess {
   idMess: string;
@@ -153,11 +154,12 @@ var rootslice = createSlice({
 const rootHome = configureStore({
   reducer: {
     rootHome: rootslice.reducer,
+    audioroot: audioSlice.reducer,
   },
 });
-
-export type RootHome = ReturnType<typeof rootHome.getState>;
-
+export type RootTy = typeof rootHome;
+export type RootHome = ReturnType<RootTy["getState"]>;
+export type RootDispatch = RootTy["dispatch"];
 export const {
   ShowRecentList,
   PlaySong,

@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Song from "../Song";
 import { useDispatch, useSelector } from "react-redux";
 import { NaviRight, RootHome, ShowRecentList } from "../RootRedux";
 import Audio from "./Audio";
 import { post } from "../../config/req";
+import { SetStop } from "./AudioRedux";
 
 interface SongI {
   Id: string;
@@ -14,17 +15,29 @@ interface SongI {
   filePath: string;
 }
 export default function PlayingBar() {
+  const stop = useSelector((state: RootHome) => state.audioroot.stop);
   const dispatch = useDispatch();
+
   const idsong = useSelector((state: RootHome) => state.rootHome.idSong);
   const isLogin = useSelector((state: RootHome) => state.rootHome.isLogin);
+
   var temp: SongI | undefined = undefined;
   if (localStorage.getItem("song") != null) {
     temp = JSON.parse(localStorage.getItem("song") as string);
   }
 
-  var NextSong = (Song: SongI) => {
+  const NextSong = (Song: SongI) => {
     localStorage.setItem("song", JSON.stringify(Song));
     SetSong(Song);
+  };
+  const HandelAu = (type: "song" | "pause", d: any) => {
+    switch (type) {
+      case "song":
+        NextSong(d);
+        break;
+      default:
+        break;
+    }
   };
   const [song, SetSong] = useState<SongI>({
     Duration: temp?.Duration ? temp.Duration : "",
@@ -50,13 +63,44 @@ export default function PlayingBar() {
   }, [idsong]);
   return (
     <div className="w-full bg-[#121212] h-[9%] sm:h-[12%] grid items-center grid-cols-1 sm:grid-cols-4 mt-0 ">
-      <Song
-        Id={song.Id}
-        image={song.SongImage}
-        name={song.SongName}
-        singer={song.Singer}
-      />
-      <Audio path={song.filePath} next={NextSong} id={song.Id} />
+      <div className="flex sm:inline-block justify-between items-center px-2 sm:px-0">
+        <Song
+          Id={song.Id}
+          image={song.SongImage}
+          name={song.SongName}
+          singer={song.Singer}
+        />
+        <div>
+          <button
+            className=" p-2 inline-block sm:hidden"
+            onClick={() => {
+              var mu = document.querySelector(".g") as HTMLAudioElement;
+              if (mu.paused) {
+                mu.play();
+                dispatch(SetStop(false));
+              } else {
+                mu.pause();
+                dispatch(SetStop(true));
+              }
+            }}
+          >
+            {stop ? (
+              <svg
+                className="fill-white size-8" 
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 512 512"
+              >
+                <path d="M464 256A208 208 0 1 0 48 256a208 208 0 1 0 416 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zM188.3 147.1c7.6-4.2 16.8-4.1 24.3 .5l144 88c7.1 4.4 11.5 12.1 11.5 20.5s-4.4 16.1-11.5 20.5l-144 88c-7.4 4.5-16.7 4.7-24.3 .5s-12.3-12.2-12.3-20.9V168c0-8.7 4.7-16.7 12.3-20.9z" />
+              </svg>
+            ) : (
+              <svg className="fill-white size-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                <path d="M464 256A208 208 0 1 0 48 256a208 208 0 1 0 416 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm224-72V328c0 13.3-10.7 24-24 24s-24-10.7-24-24V184c0-13.3 10.7-24 24-24s24 10.7 24 24zm112 0V328c0 13.3-10.7 24-24 24s-24-10.7-24-24V184c0-13.3 10.7-24 24-24s24 10.7 24 24z" />
+              </svg>
+            )}
+          </button>
+        </div>
+      </div>
+      <Audio path={song.filePath} next={HandelAu} id={song.Id} />
       <div className="hidden sm:flex space-x-2  justify-center items-center">
         {isLogin ? (
           <>
