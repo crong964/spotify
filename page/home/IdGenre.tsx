@@ -4,12 +4,8 @@ import { useEffect, useState } from "react";
 import React from "react";
 import { get } from "../config/req";
 import PlayButtom from "./PlayButtom";
-export interface PlayList {
-  id: string;
-  Genre_ID: string;
-  ImagePath: string;
-  PlayListName: string;
-}
+import { PlayList } from "../component/Playlist";
+
 interface Genre {
   Id: string;
   Name: string;
@@ -44,7 +40,7 @@ interface PlayListByGenre {
   ls: PlayList[];
 }
 function PlayListByGenre(d: PlayListByGenre) {
-  const recentList = useSelector((s: RootHome) => s.rootHome.recentList);
+  const Right = useSelector((s: RootHome) => s.rootHome.Right);
   var ls = d.ls
     .filter((v) => {
       return v.Genre_ID == d.genre.Id;
@@ -70,12 +66,9 @@ function PlayListByGenre(d: PlayListByGenre) {
           <div className="text-white overflow-x-scroll w-max sm:w-full my-3 space-y-3">
             <div
               className={`flex sm:grid gap-2 ${
-                !recentList ? "grid-cols-7" : "grid-cols-5 "
+                Right == "" ? "grid-cols-7" : "grid-cols-5 "
               }`}
             >
-              {ls}
-              {ls}
-              {ls}
               {ls}
             </div>
           </div>
@@ -83,47 +76,6 @@ function PlayListByGenre(d: PlayListByGenre) {
       ) : (
         <></>
       )}
-    </div>
-  );
-}
-
-export function PlayList(d: PlayList) {
-  const [show, SetShow] = useState(false);
-  const dispatch = useDispatch();
-  return (
-    <div className=" overflow-hidden">
-      <div
-        className="cursor-pointer relative"
-        onMouseEnter={() => {
-          SetShow(true);
-        }}
-        onMouseLeave={() => {
-          SetShow(false);
-        }}
-        onClick={() => {
-          dispatch(
-            NaviPage({
-              page: "playlist",
-              param: d.id,
-            })
-          );
-        }}
-      >
-        <img
-          src={d.ImagePath}
-          className="rounded-2xl size-[150px] sm:size-full "
-          alt=""
-          srcSet=""
-        />
-        {show ? (
-          <div className="absolute bottom-0 right-0">
-            <PlayButtom />
-          </div>
-        ) : (
-          <></>
-        )}
-      </div>
-      <div className="text-[16px] line-clamp-1 w-[150px]">{d.PlayListName}</div>
     </div>
   );
 }

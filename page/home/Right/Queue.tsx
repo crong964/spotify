@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import Song from "../Song";
+import Song from "../../component/Song";
 import { useDispatch, useSelector } from "react-redux";
 import RecentList from "./RecentPlaylist";
-import { RootHome, ShowRecentList } from "../RootRedux";
+import { RemoveRight, RootHome } from "../RootRedux";
 import { get } from "../../config/req";
 interface RecentSong {
   Id: string;
@@ -20,16 +20,16 @@ interface RecentSong {
 }
 export default function Queue() {
   const dispatch = useDispatch();
-  const recentList = useSelector((s: RootHome) => s.rootHome.recentList);
+
   const [recentSongs, SetRecentSongs] = useState<RecentSong[]>([]);
-  const Right = useSelector((state: RootHome) => state.rootHome.Right);
+  
   useEffect(() => {
     get("/rs/", (v: any) => {
       SetRecentSongs(v.ls);
     });
   }, []);
   return (
-    <div className="w-[400px] h-full bg-[#121212] rounded-lg  overflow-y-scroll">
+    <div className="w-full h-full bg-[#121212] rounded-lg  overflow-y-scroll">
       <div className="sticky bg-[#121212] top-0 left-0 flex space-x-3 h-min w-full px-3 rounded-lg py-4 ">
         <div className=" cursor-pointer font-bold w-max  text-white  text-[14px]">
           Danh sách chờ
@@ -39,7 +39,7 @@ export default function Queue() {
         </div>
         <div
           onClick={() => {
-            dispatch(ShowRecentList(false));
+            dispatch(RemoveRight());
           }}
           className=" cursor-pointer font-bold w-max text-white flex justify-end text-[14px]"
         >

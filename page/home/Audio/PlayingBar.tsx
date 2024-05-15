@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
-import Song from "../Song";
+import Song from "../../component/Song";
 import { useDispatch, useSelector } from "react-redux";
-import { NaviRight, RootHome, ShowRecentList } from "../RootRedux";
+import { NaviRight, RootHome } from "../RootRedux";
 import Audio from "./Audio";
 import { post } from "../../config/req";
 import { SetStop } from "./AudioRedux";
@@ -62,7 +62,7 @@ export default function PlayingBar() {
     );
   }, [idsong]);
   return (
-    <div className="w-full bg-[#121212] h-[9%] sm:h-[12%] grid items-center grid-cols-1 sm:grid-cols-4 mt-0 ">
+    <div className="w-full bg-[#121212] h-[10%] sm:h-[12%] grid items-center grid-cols-1 sm:grid-cols-4 mt-0 ">
       <div className="flex sm:inline-block justify-between items-center px-2 sm:px-0">
         <Song
           Id={song.Id}

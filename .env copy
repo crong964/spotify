@@ -6,3 +6,6 @@ EMAIL=
 EMAILPSAPP=
 SECRET=
 HOST=
+
+
+http://localhost:8000/

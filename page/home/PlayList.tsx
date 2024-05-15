@@ -4,7 +4,7 @@ import PlayButtom from "./PlayButtom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootHome, PlaySong } from "./RootRedux";
 import { Duration, get, post } from "../config/req";
-import { SongInPlayList } from "./Song";
+import { SongInPlayList, SongList } from "../component/Song";
 import TypeFriend from "./friend/TypeFriend";
 
 var g = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 6, 7];
@@ -40,11 +40,11 @@ interface PlayList {
   Songs: number;
   Duration: string;
 }
-export function Artise() {
+export function ArtisePage() {
   const idpage = useSelector((state: RootHome) => state.rootHome.command.param);
   const [artise, SetaAtist] = useState<artise>();
   const [isfriend, SetIsfriend] = useState<"-1" | "0" | "1" | "2">();
-  const [songs, SetSongS] = useState<Song[]>([]);
+  const [songs, SetSongS] = useState<SongInPlayList[]>([]);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -59,8 +59,12 @@ export function Artise() {
   return (
     <div className="relative">
       <div
-        className="bg-no-repeat bg-cover rounded-t-lg absolute top-0 left-0 w-full h-[320px] flex  flex-col justify-end "
+        className="hidden sm:block bg-no-repeat bg-cover rounded-t-lg absolute top-0 left-0 w-full h-[320px] "
         style={{ backgroundImage: `url(${artise?.Banner})` }}
+      ></div>
+      <div
+        className="block sm:hidden bg-no-repeat bg-cover rounded-t-lg absolute top-0 left-0 w-full h-[320px]"
+        style={{ backgroundImage: `url(${artise?.pathImage})` }}
       ></div>
       <div className="opacity-25 bg-black absolute top-0 left-0 w-full h-[320px]"></div>
       <div className="flex flex-col justify-end absolute top-0 left-0 h-[320px] z-10 p-4">
@@ -78,7 +82,7 @@ export function Artise() {
           </span>
         </div>
         <h1>
-          <span className="text-white font-bol text-[96px] font-black">
+          <span className="text-white font-bol text-[40px] sm:text-[96px] font-black">
             {artise?.ChanalName}
           </span>
         </h1>
@@ -103,7 +107,7 @@ export function Artise() {
               <path d="M4.5 13.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm15 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm-7.5 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"></path>
             </svg>
           </div>
-          <TypeFriend idFriend={artise?.id}  type={isfriend} />
+          <TypeFriend idFriend={artise?.id} type={isfriend} />
         </div>
         <div className="py-3 font-bold text-[24px]  text-white">
           Các bài hát
@@ -118,40 +122,9 @@ export function Artise() {
 interface SongList {
   data: Song[];
 }
-export function SongList(d: SongList) {
-  var stt = 0;
-  return (
-    <div className="py-2">
-      {d.data.map((v) => {
-        stt += 1;
-        return (
-          <SongInPlayList
-            Duration={v.Duration + ""}
-            Id={v.Id}
-            Singer={v.Singer}
-            SongName={v.SongName}
-            Viewer={v.Viewer}
-            filePath={v.filePath}
-            SongImage={v.SongImage}
-            liked={v.liked}
-            stt={stt}
-            user_id=""
-            key={v.Id}
-          />
-        );
-      })}
 
-      {d.data.length > 0 ? (
-        <div className="text-white font-bold">Xem thêm</div>
-      ) : (
-        <></>
-      )}
-    </div>
-  );
-}
-
-export function LikedSongList() {
-  const [songs, SetSongS] = useState<Song[]>([]);
+export function LikedSongListPage() {
+  const [songs, SetSongS] = useState<SongInPlayList[]>([]);
   useEffect(() => {
     get(`lsong/likedsongs`, (v: any) => {
       SetSongS(v.ls);
@@ -199,11 +172,11 @@ export function LikedSongList() {
   );
 }
 
-export default function Playlist() {
+export default function PlaylistPage() {
   const idPlayList = useSelector(
     (state: RootHome) => state.rootHome.command.param
   );
-  const [songs, SetSongS] = useState<Song[]>([]);
+  const [songs, SetSongS] = useState<SongInPlayList[]>([]);
   const [playlist, SetPlayList] = useState<PlayList>({
     Duration: "",
     id: "",
@@ -232,16 +205,16 @@ export default function Playlist() {
 
   return (
     <div className="relative">
-      <div className="bg-gradient-to-r from-green-400 to-blue-500 rounded-t-lg absolute top-0 left-0 w-full h-[320px] flex  flex-col justify-end ">
+      <div className="bg-gradient-to-r from-green-400 to-blue-500 rounded-t-lg absolute top-0 left-0 w-full h-[320px] flex flex-col justify-end ">
         <div className="flex items-end justify-start">
-          <div className="flex z-10 p-4 justify-center items-end space-x-4">
+          <div className="flex z-10 p-4 justify-center items-end sm:space-x-4">
             <img
               className="size-[250px] rounded-2xl"
               src={playlist.ImagePath}
               alt=""
               srcSet=""
             />
-            <div className="flex flex-col">
+            <div className="hidden sm:flex flex-col">
               <div className="flex items-center">
                 <span className="font-normal text-[16px] text-white">
                   playlist
@@ -288,5 +261,3 @@ export default function Playlist() {
     </div>
   );
 }
-
-

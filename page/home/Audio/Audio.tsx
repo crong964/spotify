@@ -151,11 +151,11 @@ export default function Audio(params: Audio) {
         <Time d={duration} key={1} />
         <audio
           src={`idSong?idSong=${params.path}`}
-          // onCanPlay={(e) => {
-          //   var cu = e.currentTarget;
-          //   cu.play();
-          //   SetStop(e.currentTarget.paused);
-          // }}
+          onCanPlay={(e) => {
+            var cu = e.currentTarget;
+            cu.play();
+            SetStop(e.currentTarget.paused);
+          }}
           className="g"
           onTimeUpdate={(e) => {
             if (
@@ -192,6 +192,10 @@ function Time(params: Time) {
   var data = parseInt(params.d + "");
   var minute = parseInt(data / 60 + "");
   var second = data % 60;
+
+  if (isNaN(data)) {
+    return <div></div>;
+  }
   return (
     <div className="text-[12px] text-[#a7a7a7] hidden sm:inline-block ">
       {minute}:{second < 10 ? `0${second}` : `${second}`}

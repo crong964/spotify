@@ -1,12 +1,11 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { NaviPage, RootHome } from "../RootRedux";
+import { NaviPage, NaviRight, RootHome } from "../RootRedux";
 import Navi from "./Navi";
 
 export function Home() {
   const dispatch = useDispatch();
   const page = useSelector((state: RootHome) => state.rootHome.command.page);
-  console.log("fffffffffff", "home");
   return (
     <div
       onClick={() => {
@@ -35,26 +34,23 @@ export function Home() {
           <path d="M13.5 1.515a3 3 0 0 0-3 0L3 5.845a2 2 0 0 0-1 1.732V21a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-6h4v6a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V7.577a2 2 0 0 0-1-1.732l-7.5-4.33z"></path>
         </svg>
       )}
-    <div className="block sm:hidden">
-      Trang chủ
-    </div>
+      <div className="block sm:hidden">Trang chủ</div>
     </div>
   );
 }
 export function NewHome() {
   const dispatch = useDispatch();
   const curpage = useSelector((state: RootHome) => state.rootHome.command.page);
-  console.log("fffffffffff", "home");
-
-  function page() {
-    dispatch(NaviPage({ page: "home", param: "" }));
-  }
+  const mobiletype = useSelector((state: RootHome) => state.mobile.type);
   return (
     <Navi
       curpage={curpage}
       namepage="Trang chủ"
       onclick={() => {
         dispatch(NaviPage({ page: "home", param: "" }));
+        if (mobiletype == "mobile") {
+          dispatch(NaviRight(""));
+        }
       }}
       ortherpage={
         <svg

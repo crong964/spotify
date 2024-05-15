@@ -74,7 +74,7 @@ class UserDatabase {
     }
     SearchNameArtist(name) {
         return __awaiter(this, void 0, void 0, function* () {
-            var sql = "SELECT * FROM user WHERE Name like ? AND Vertify <> 0 ";
+            var sql = "SELECT * FROM user WHERE user.role ='user' AND Name like ? AND Vertify <> 0 ";
             var check;
             check = yield Config_1.default.query(sql, [`%${name}%`]);
             return check;

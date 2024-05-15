@@ -48,7 +48,7 @@ class UserDatabase {
         return check
     }
     async SearchNameArtist(name: string) {
-        var sql = "SELECT * FROM user WHERE Name like ? AND Vertify <> 0 "
+        var sql = "SELECT * FROM user WHERE user.role ='user' AND Name like ? AND Vertify <> 0 "
         var check
         check = await Mysql2.query(sql, [`%${name}%`])
         return check

@@ -1,12 +1,13 @@
 import { useDispatch, useSelector } from "react-redux";
-import { NaviPage, RootHome } from "../RootRedux";
+import { NaviPage, NaviRight, RootHome } from "../RootRedux";
 import React from "react";
 import Navi from "./Navi";
+import { NaviPageMobile } from "./NaviRedux";
 
 export function SearchButtom() {
   const dispatch = useDispatch();
   const page = useSelector((state: RootHome) => state.rootHome.command.page);
-  console.log("fffffffffff", "NewSearchButtom");
+
   return (
     <div
       onClick={() => {
@@ -45,20 +46,19 @@ export function SearchButtom() {
   );
 }
 
-export function NewSearchButtom() {
-  const curpage = useSelector((state: RootHome) => state.rootHome.command.page);
+export function MobileSearchButtom() {
   const dispatch = useDispatch();
-  console.log("fffffffffff", "NewSearchButtom");
-
-  function name() {
-    dispatch(NaviPage({ page: "genre", param: "" }));
-  }
+  const curpage = useSelector((state: RootHome) => state.rootHome.command.page);
+  const mobiletype = useSelector((state: RootHome) => state.mobile.type);
   return (
     <Navi
       curpage={curpage}
       namepage="Tìm kiếm"
       onclick={() => {
         dispatch(NaviPage({ page: "genre", param: "" }));
+        if (mobiletype == "mobile") {
+          dispatch(NaviRight(""));
+        }
       }}
       page="genre"
       ortherpage={

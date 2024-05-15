@@ -61,7 +61,7 @@ export class HaveListFriendsService {
     async SearchName(name: string, iduse: string, type?: string) {
         type = type || ""
         var sql = `SELECT * FROM user LEFT JOIN havelistfriends ON user.id=havelistfriends.idFriends
-        AND havelistfriends.idUser=? WHERE user.Name LIKE ?  AND havelistfriends.IsFriend like ?`
+        AND  havelistfriends.idUser=? WHERE user.role ="user" AND user.Name LIKE ?  AND havelistfriends.IsFriend like ?`
         var check
         check = await Mysql2.query(sql, [iduse, `%${name}%`, `%${type}%`])
         return this.Setls(check)

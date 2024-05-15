@@ -22,9 +22,8 @@ export default function Genre() {
     "#E91429",
   ];
   var i = 0;
-  const recentList = useSelector(
-    (state: RootHome) => state.rootHome.recentList
-  );
+  const Right = useSelector((state: RootHome) => state.rootHome.Right);
+  const dispatch = useDispatch();
   const [genre, SetGenre] = useState<Genre[]>([]);
   useEffect(() => {
     get("genre/GetLimitFloor", (v: any) => {
@@ -34,9 +33,36 @@ export default function Genre() {
   return (
     <div>
       <div className="text-[24px] font-bold text-white">Duyệt tìm tất cả</div>
+      <form className="flex sm:hidden w-full sticky top-0 left-0 items-center bg-white text-black rounded-2xl my-1 p-2">
+        <input
+          className="w-[90%] p-2 focus:outline-none "
+          onChange={(v) => {
+            var value = v.currentTarget.value;
+            if (value.length == 2) {
+              dispatch(NaviPage({ page: "genre", param: "" }));
+              return;
+            }
+            dispatch(NaviPage({ page: "search", param: value }));
+          }}
+        />
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="1.5"
+          stroke="currentColor"
+          className="w-6 h-6"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+          />
+        </svg>
+      </form>
       <div
-        className={`grid  grid-cols-2 ${
-          recentList ? "sm:grid-cols-6 gap-2" : "sm:grid-cols-8 "
+        className={`grid grid-cols-2 ${
+          Right != "" ? "sm:grid-cols-6 " : "sm:grid-cols-8 "
         }`}
       >
         {genre.map((v) => {
@@ -66,7 +92,7 @@ function GenreData(d: GenreData) {
       onClick={() => {
         dispatch(NaviPage({ page: "idgenre", param: d.id }));
       }}
-      className={`bg-[${d.color}] cursor-pointer size-[200px] sm:size-[160px] rounded-lg p-2`}
+      className={`bg-[${d.color}] cursor-pointer m-2 h-[100px] sm:size-[160px] rounded-lg p-2`}
     >
       <div className="text-[24px] font-bold text-white ">{d.name}</div>
     </div>

@@ -11,6 +11,27 @@ export default function SignIn() {
   const [on, SetOn] = useState(false);
   const dispatch = useDispatch();
   const page = useSelector((state: RootAuth) => state.rootauth.page);
+  var submit = (e: any) => {
+    e.preventDefault();
+    if (account.length <= 0 || password.length <= 0) {
+      alert("chưa điền đủ");
+      return;
+    }
+    post(
+      "/auth/signin",
+      {
+        account: account,
+        password: password,
+      },
+      (v: any) => {
+        if (v.err) {
+          alert(v.mess);
+        } else {
+          window.location.replace("/");
+        }
+      }
+    );
+  };
   useEffect(() => {
     if (window.location.href.indexOf("?dk=yes") >= 0) {
       dispatch(Page("signup"));
@@ -37,16 +58,21 @@ export default function SignIn() {
             </svg>
           </div>
           <div className="bg-[#2A2A2A] flex font-normal justify-center h-full items-center">
-            <div className="bg-black w-full sm:w-[80%] h-min-[90%] p-3 sm:p-20 rounded-3xl">
+            <div className="bg-black w-[90%] sm:w-[60%] h-min-[90%] p-3 sm:p-20 rounded-3xl">
               <div className="text-[30px] sm:text-[48px] text-center my-3 text-white font-bold">
                 Đăng nhập vào Spotify
               </div>
-              <div className="w-[90%] sm:w-[40%] mx-auto space-y-2">
+              <form
+                method="post"
+                onSubmit={submit}
+                className="w-[90%] sm:w-[50%] mx-auto space-y-2"
+              >
                 <div className="text-[14px] font-bold text-white">
                   Email hoặc tên người dùng
                 </div>
                 <input
                   type="text"
+                  name="account"
                   value={account}
                   onChange={(v) => {
                     SetAccount(v.currentTarget.value);
@@ -79,31 +105,9 @@ export default function SignIn() {
                   </div>
                   <div className="text-white text-[14px]">nhớ mật khẩu</div>
                 </div>
-                <div
-                  onClick={() => {
-                    if (account.length <= 0 || password.length <= 0) {
-                      alert("chưa điền đủ");
-                      return;
-                    }
-                    post(
-                      "/auth/signin",
-                      {
-                        account: account,
-                        password: password,
-                      },
-                      (v: any) => {
-                        if (v.err) {
-                          alert(v.mess);
-                        } else {
-                          window.location.replace("/");
-                        }
-                      }
-                    );
-                  }}
-                  className="cursor-pointer bg-[#1FDF64] mt-5 p-3 font-bold text-center rounded-full"
-                >
+                <button className="cursor-pointer w-full bg-[#1FDF64] mt-5 p-3 font-bold text-center rounded-full">
                   Đăng nhập
-                </div>
+                </button>
                 <div
                   onClick={() => {
                     dispatch(Page("fotgot"));
@@ -112,7 +116,7 @@ export default function SignIn() {
                 >
                   Quên mật khẩu của bạn?
                 </div>
-              </div>
+              </form>
               <div className="border border-white opacity-30 my-5 "></div>
               <SignInGoogleButtom />
               <SignInGitHubButtom />

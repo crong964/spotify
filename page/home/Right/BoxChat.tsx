@@ -10,7 +10,7 @@ export default function BoxChat() {
   const [order, SetOrder] = useState(0);
 
   return (
-    <div className="bg-[#121212] relative overflow-y-auto px-2 h-full w-[400px]">
+    <div className="bg-[#121212] relative overflow-y-auto px-2 h-full w-full">
       <div className="  p-2">
         <>
           <div className="text-[20px] flex justify-around sticky top-0 left-0 bg-[#121212] z-40  py-2 cursor-pointer">

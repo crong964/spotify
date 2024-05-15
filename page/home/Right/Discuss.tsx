@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { RootHome, SetdeleteDiscuss, ShowRecentList } from "../RootRedux";
+import { RootHome, SetdeleteDiscuss, RemoveRight } from "../RootRedux";
 import { useDispatch, useSelector } from "react-redux";
 import { post } from "../../config/req";
 import Time from "../../config/hepler";
@@ -56,7 +56,7 @@ export default function Discuss(data: Discuss) {
   }, [delateDiscuss]);
 
   return (
-    <div className="bg-[#121212] space-y-4 h-full w-[400px]">
+    <div className="bg-[#121212] space-y-4 h-full w-full">
       <div className="text-white rounded-lg h-[90%] overflow-y-scroll">
         <HeaderDiscuss num={dicussquality}></HeaderDiscuss>
         <MainDiscussList list={mainDiscussList} />
@@ -357,7 +357,7 @@ function HeaderDiscuss(d: HeaderDiscuss) {
       <div className="text-[20px]">{d.num} Thảo luận</div>
       <div
         onClick={() => {
-          dispatch(ShowRecentList(false));
+          dispatch(RemoveRight());
         }}
         className=" cursor-pointer font-bold w-max text-white flex justify-end text-[14px]"
       >

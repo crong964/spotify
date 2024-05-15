@@ -452,8 +452,9 @@ Account.post("/sendCodeVertifyEmail", (req, res) => __awaiter(void 0, void 0, vo
             pass: emailpsapp,
         },
     });
+    var info = undefined;
     try {
-        const info = yield transporter.sendMail({
+        info = yield transporter.sendMail({
             from: 'spotify@gmail.com.com',
             to: account,
             subject: "Mã Xác thực email",
@@ -467,7 +468,7 @@ Account.post("/sendCodeVertifyEmail", (req, res) => __awaiter(void 0, void 0, vo
         expiresIn: "3h"
     });
     res.json({
-        err: false,
+        err: info == undefined,
         token: token
     });
 })); //0k

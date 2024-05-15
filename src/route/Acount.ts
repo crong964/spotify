@@ -374,6 +374,8 @@ Account.post("/create", async (req, res) => {
 });
 Account.post("/sendcode", async (req, res) => {
   var account = req.body.account
+
+
   var d = await userService.GetByAccount(account)
 
   if (d == undefined) {
@@ -503,9 +505,9 @@ Account.post("/sendCodeVertifyEmail", async (req, res) => {
     },
   });
 
-
+  var info = undefined
   try {
-    const info = await transporter.sendMail({
+    info = await transporter.sendMail({
       from: 'spotify@gmail.com.com',
       to: account,
       subject: "Mã Xác thực email",
@@ -521,7 +523,7 @@ Account.post("/sendCodeVertifyEmail", async (req, res) => {
     expiresIn: "3h"
   })
   res.json({
-    err: false,
+    err: info == undefined,
     token: token
   })
 })//0k

@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import { Duration, post } from "../config/req";
 import { useDispatch, useSelector } from "react-redux";
-import { PlaySong, RootHome } from "./RootRedux";
+import { PlaySong, RootHome } from "../home/RootRedux";
 
 interface Song {
   image: string;
   name: string;
   singer: string;
   Id: string;
+}
+interface SongList {
+  data: SongInPlayList[];
 }
 export default function Song(d: Song) {
   const dispatch = useDispatch();
@@ -40,7 +43,7 @@ export default function Song(d: Song) {
     </div>
   );
 }
-interface SongInPlayList {
+export interface SongInPlayList {
   Id: string;
   user_id: string;
   SongName: string;
@@ -57,7 +60,7 @@ export function SongInPlayList(v: SongInPlayList) {
   const isLogin = useSelector((state: RootHome) => state.rootHome.isLogin);
   const dispatch = useDispatch();
   return (
-    <div className="grid grid-cols-7 text-[13px] sm:text-[14px]  cursor-pointer space-x-2 hover:bg-[#2D2D2D] text-white font-bold p-4 rounded-lg items-center">
+    <div className="grid grid-cols-7 text-[13px] sm:text-[14px]  cursor-pointer sm:space-x-2 hover:bg-[#2D2D2D] text-white font-bold p-4 rounded-lg items-center">
       <div
         className="col-span-5 grid grid-cols-5"
         onClick={() => {
@@ -65,7 +68,7 @@ export function SongInPlayList(v: SongInPlayList) {
         }}
       >
         <div className="col-span-1 flex items-center space-x-2">
-          <div className="">{v.stt}</div>
+          <div className="sm:inline-block hidden">{v.stt}</div>
           <img className="size-9" src={v.SongImage} alt="" srcSet="" />
         </div>
         <div className="col-span-3 sm:col-span-2 p-2 ">
@@ -125,6 +128,37 @@ export function SongInPlayList(v: SongInPlayList) {
 
         <Duration Duration={v.Duration} />
       </div>
+    </div>
+  );
+}
+export function SongList(d: SongList) {
+  var stt = 0;
+  return (
+    <div className="py-2">
+      {d.data.map((v) => {
+        stt += 1;
+        return (
+          <SongInPlayList
+            Duration={v.Duration + ""}
+            Id={v.Id}
+            Singer={v.Singer}
+            SongName={v.SongName}
+            Viewer={v.Viewer}
+            filePath={v.filePath}
+            SongImage={v.SongImage}
+            liked={v.liked}
+            stt={stt}
+            user_id=""
+            key={v.Id}
+          />
+        );
+      })}
+
+      {d.data.length > 0 ? (
+        <div className="text-white font-bold">Xem thêm</div>
+      ) : (
+        <></>
+      )}
     </div>
   );
 }

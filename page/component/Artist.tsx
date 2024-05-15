@@ -1,41 +1,40 @@
-import { useEffect, useState } from "react";
-import PlayButtom from "./PlayButtom";
-import React from "react";
-import { get } from "../config/req";
+import React, { useState } from "react";
+import PlayButtom from "../home/PlayButtom";
 import { useDispatch, useSelector } from "react-redux";
-import { NaviPage, RootHome } from "./RootRedux";
-
-interface SetionList {
-  name: string;
-  type: "artist" | "album" | "normal";
+import { NaviPage, RootHome } from "../home/RootRedux";
+interface artist {
+  pathImage: string;
+  ChanalName: string;
+  artist: string;
+  id: string;
+  type: string;
 }
-export function SetionList(params: SetionList) {
-  const [artist, SetaAtist] = useState<SetionData[]>([]);
+interface Artists {
+  d: artist[];
+}
+export function Artists(d: Artists) {
   const Right = useSelector((state: RootHome) => state.rootHome.Right);
-  useEffect(() => {
-    get("/user/artist", (v: any) => {
-      SetaAtist(v.ls);
-    });
-  }, []);
   return (
-    <div className="mt-8 w-full overflow-auto ">
-      <div className="text-white sticky top-0 left-0 text-[24px] font-bold">
-        {params.name}
-      </div>
+    <div className="mt-8 overflow-auto sm:overflow-hidden">
+      {d.d.length > 0 ? (
+        <div className="text-white text-[24px] my-5 font-bold">Nghệ sĩ</div>
+      ) : (
+        <></>
+      )}
       <div
-        className={` flex overflow-x-scroll w-max sm:w-full sm:grid sm:gap-3 ${
-          Right == "" ? "grid-cols-7" : "grid-cols-5 "
+        className={`flex sm:grid gap-3 ${
+          Right != "" ? "grid-cols-6" : "grid-cols-7 "
         }`}
       >
-        {artist.map((v) => {
+        {d.d.map((v) => {
           return (
-            <SetionData
+            <Artist
               ChanalName={v.ChanalName}
               artist={v.artist}
               key={v.id}
               id={v.id}
               pathImage={v.pathImage}
-              type={params.type}
+              type="nghệ sĩ"
             />
           );
         })}
@@ -43,22 +42,16 @@ export function SetionList(params: SetionList) {
     </div>
   );
 }
-interface SetionData {
-  pathImage: string;
-  ChanalName: string;
-  artist: string;
-  id: string;
-  type: string;
-}
-export default function SetionData(params: SetionData) {
+
+export default function Artist(params: artist) {
   const [hidden, SetHidden] = useState(true);
 
   const dispatch = useDispatch();
   return (
     <div
-      className="w-[200px] sm:w-full cursor-pointer"
+      className="w-full cursor-pointer"
       onClick={() => {
-        dispatch(NaviPage({ page: "artise", param: params.id }));
+        dispatch(NaviPage({ page: "playlist", param: params.id }));
       }}
       onMouseEnter={() => {
         SetHidden(false);

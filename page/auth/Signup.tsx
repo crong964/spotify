@@ -1,11 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import {
-  SignInGitHubButtom,
-  SignInGoogleButtom,
-  SignUpGitHubButtom,
-  SignUpGoogleButtom,
-} from "./SignButtom";
+import { SignUpGitHubButtom, SignUpGoogleButtom } from "./SignButtom";
 import { post } from "../config/req";
 import { useDispatch, useSelector } from "react-redux";
 import { Page, RootAuth } from "./RootAuth";
@@ -28,6 +23,33 @@ export default function Signup() {
   });
 
   const [infor, SetInfor] = useState(false);
+
+  const SubmitCodeVertifyEmail = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    post("/auth/sendCodeVertifyEmail", { account: user.Account }, (v: any) => {
+      if (!v.err) {
+        SetInfor(!v.err);
+        SetUser({
+          ...user,
+          token: v.token,
+        });
+      } else {
+        alert("taì khoản đã tồn tại");
+      }
+    });
+  };
+  const SubmitCreateACC = (e: any) => {
+    e.preventDefault();
+    post("/auth/createACC", user, (v: any) => {
+      if (v.err) {
+        alert("Không đăng ký được hãy thử lại");
+      } else {
+        alert("đăng ký thành công");
+      }
+    });
+  };
+
   return page == "signup" ? (
     <div className="h-full">
       <div className="w-full p-2 sm:p-9 bg-[#121212]">
@@ -54,12 +76,13 @@ export default function Signup() {
           <div className="w-[90%] sm:w-[60%] mx-auto space-y-2">
             <>
               {!infor ? (
-                <>
+                <form onSubmit={SubmitCodeVertifyEmail}>
                   <div className="text-[14px] font-bold text-white">
                     Email hoặc tên người dùng
                   </div>
                   <input
                     type="text"
+                    name="account"
                     value={user.Account}
                     onChange={(v) => {
                       var f = v.currentTarget.value;
@@ -71,31 +94,12 @@ export default function Signup() {
                     placeholder="name@domain.com"
                     className="border-2 text-white  bg-black border-white rounded-lg p-3 w-full"
                   />
-                  <button
-                    onClick={() => {
-                      post(
-                        "/auth/sendCodeVertifyEmail",
-                        { account: user.Account },
-                        (v: any) => {
-                          if (!v.err) {
-                            SetInfor(!v.err);
-                            SetUser({
-                              ...user,
-                              token: v.token,
-                            });
-                          } else {
-                            alert(v.mess);
-                          }
-                        }
-                      );
-                    }}
-                    className="cursor-pointer w-full bg-[#54f68f] hover:bg-[#1FDF64] mt-5 p-3 font-bold text-center rounded-full"
-                  >
+                  <button className="cursor-pointer w-full bg-[#54f68f] hover:bg-[#1FDF64] mt-5 p-3 font-bold text-center rounded-full">
                     Tiếp theo
                   </button>
-                </>
+                </form>
               ) : (
-                <>
+                <form onSubmit={SubmitCreateACC}>
                   <div className="text-[14px] font-bold text-white">
                     Email hoặc tên người dùng
                   </div>
@@ -161,21 +165,10 @@ export default function Signup() {
                     placeholder=""
                     className="border-2 text-white rounded-2xl bg-black border-white p-3 w-full"
                   />
-                  <button
-                    onClick={() => {
-                      post("/auth/createACC", user, (v: any) => {
-                        if (v.err) {
-                          alert("Không đăng ký được hãy thử lại");
-                        } else {
-                          alert("đăng ký thành công");
-                        }
-                      });
-                    }}
-                    className="cursor-pointer w-full bg-[#54f68f] hover:bg-[#1FDF64] mt-5 p-3 font-bold text-center rounded-full"
-                  >
+                  <button className="cursor-pointer w-full bg-[#54f68f] hover:bg-[#1FDF64] mt-5 p-3 font-bold text-center rounded-full">
                     Đăng ký
                   </button>
-                </>
+                </form>
               )}
             </>
           </div>

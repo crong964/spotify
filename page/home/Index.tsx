@@ -5,7 +5,7 @@ import RecentList, { RecentPlaylist } from "./Right/RecentPlaylist";
 import Genre from "./Genre";
 import Queue from "./Right/Queue";
 
-import Playlist, { Artise, LikedSongList } from "./PlayList";
+import PlaylistPage, { ArtisePage, LikedSongListPage } from "./PlayList";
 
 import { useDispatch, useSelector } from "react-redux";
 import PlayingBar from "./Audio/PlayingBar";
@@ -20,6 +20,7 @@ import ChatBox from "./boxchat/SingleBox";
 import { socket } from "../socket/Socket";
 import { Home } from "./NaviHome/Home";
 import { SearchButtom } from "./NaviHome/SearchButtom";
+import { SetTypeMobile } from "./NaviHome/NaviRedux";
 import { NaviHomeMobile } from "./NaviHome/NaviHome";
 
 function useIndex() {
@@ -37,62 +38,43 @@ function useIndex() {
 }
 export default function Index() {
   const { Set, queue, SetQueue, scroll } = useIndex();
-  const page = useSelector((state: RootHome) => state.rootHome.command.page);
+
+  const mobiletype = useSelector((state: RootHome) => state.mobile.type);
   const BoxList = useSelector((state: RootHome) => state.rootHome.BoxList);
   const isLogin = useSelector((state: RootHome) => state.rootHome.isLogin);
+  const screem = () => {
+    if (window.screen.width > 650) {
+      dispatch(SetTypeMobile("pc"));
+    } else {
+      dispatch(SetTypeMobile("mobile"));
+    }
+  };
   const dispatch = useDispatch();
-
   useEffect(() => {
     function res(v: any) {
       dispatch(SetMess(v));
     }
     socket.on("mess", res);
+    window.addEventListener("load", (ev) => {
+      screem();
+    });
+    window.addEventListener("resize", (ev) => {
+      screem();
+    });
     return () => {
       socket.off("mess", res);
+      window.removeEventListener("load", (ev) => {
+        screem();
+      });
+      window.removeEventListener("resize", (ev) => {
+        screem();
+      });
     };
   }, []);
 
-  var children: React.JSX.Element;
-  switch (page) {
-    case "genre":
-      children = <Genre></Genre>;
-      break;
-    case "playlist":
-      children = <Playlist></Playlist>;
-      break;
-    case "likedsongs":
-      children = <LikedSongList></LikedSongList>;
-      break;
-    case "artise":
-      children = <Artise></Artise>;
-      break;
-    case "search":
-      children = <Search></Search>;
-      break;
-    case "profile":
-      children = <Profile></Profile>;
-      break;
-    case "idgenre":
-      children = <IdGenre></IdGenre>;
-      break;
-    default:
-      children = (
-        <div>
-          <div className="">
-            <RecentList>
-              <RecentPlaylist img="../public/ca.jpg" name="Cà Phê Quán Quen" />
-              <RecentPlaylist img="../public/ca.jpg" name="Cà Phê Quán Quen" />
-            </RecentList>
-            <SetionList name="Danh sách các nghệ sĩ" type="artist"/>
-           
-          </div>
-        </div>
-      );
-      break;
-  }
   return (
-    <div className="h-full w-full bg-black CircularSpUIv3T-Book overflow-y-hidden">
-      <div className="flex h-[82%] sm:h-[85%] space-x-1 relative">
+    <div className="h-full w-full p-0 m-0 bg-black CircularSpUIv3T-Book overflow-hidden">
+      <div className="flex h-[82%]  sm:h-[88%] space-x-1 relative">
         <div className="w-[80px] hidden sm:block px-1 space-y-1">
           <div className="h-[20%] bg-[#121212] rounded-lg py-2">
             <div className="h-full  ">
@@ -118,13 +100,14 @@ export default function Index() {
             <></>
           )}
         </div>
-        <div className="flex-1 w-[100%]  space-y-1">
-          <div className="relative ">
+        <div className=" w-full  space-y-1">
+          <div className="relative h-[10%]">
             <Header></Header>
           </div>
-          <div className=" overflow-y-scroll h-[80%] relative">{children}</div>
+          <div className="flex h-[90%] w-full ">
+            {mobiletype == "pc" ? <PcBody /> : <MobileBody />}
+          </div>
         </div>
-        <Right />
         <div className="absolute right-[400px] z-40 space-x-2 flex bottom-0 ">
           {BoxList.map((v) => {
             return <ChatBox idbox={v} key={v} />;
@@ -134,5 +117,68 @@ export default function Index() {
       <PlayingBar />
       <NaviHomeMobile />
     </div>
+  );
+}
+
+function Center() {
+  const page = useSelector((state: RootHome) => state.rootHome.command.page);
+  switch (page) {
+    case "genre":
+      return <Genre></Genre>;
+    case "playlist":
+      return <PlaylistPage></PlaylistPage>;
+    case "likedsongs":
+      return <LikedSongListPage></LikedSongListPage>;
+    case "artise":
+      return <ArtisePage></ArtisePage>;
+    case "search":
+      return <Search></Search>;
+    case "profile":
+      return <Profile></Profile>;
+    case "idgenre":
+      return <IdGenre></IdGenre>;
+    default:
+      return (
+        <>
+          <div className="h-full">
+            <RecentList>
+              <RecentPlaylist img="../public/ca.jpg" name="Cà Phê Quán Quen" />
+              <RecentPlaylist img="../public/ca.jpg" name="Cà Phê Quán Quen" />
+            </RecentList>
+            <SetionList name="Danh sách các nghệ sĩ" type="artist" />
+          </div>
+        </>
+      );
+  }
+}
+
+function PcBody() {
+  return (
+    <>
+      <div className="flex-1 h-full overflow-y-scroll">
+        <div className=" h-max relative">
+          <Center />
+        </div>
+      </div>
+      <Right />
+    </>
+  );
+}
+
+function MobileBody() {
+  const center = useSelector((state: RootHome) => state.rootHome.center);
+ 
+  return (
+    <>
+      {center ? (
+        <div className="flex-1 h-full overflow-y-scroll">
+          <div className=" h-max relative">
+            <Center />
+          </div>
+        </div>
+      ) : (
+        <Right />
+      )}
+    </>
   );
 }

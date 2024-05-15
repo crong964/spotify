@@ -2,6 +2,7 @@ import { PayloadAction, configureStore, createSlice } from "@reduxjs/toolkit";
 import { useSelector } from "react-redux";
 import { Socket, io } from "socket.io-client";
 import audioSlice from "./Audio/AudioRedux";
+import mobileRedux from "./NaviHome/NaviRedux";
 
 interface mess {
   idMess: string;
@@ -26,11 +27,11 @@ interface Commamd {
 }
 interface Root {
   watchbox: string;
+  center: boolean;
   mess: mess;
   BoxList: string[];
   command: Commamd;
   idSong: string;
-  recentList: boolean;
   isLogin: boolean;
   update: boolean;
   Right: string;
@@ -42,6 +43,7 @@ interface Root {
   SearchName: string;
 }
 const initialState: Root = {
+  center: true,
   watchbox: "",
   SearchName: "",
   BoxList: [],
@@ -52,10 +54,9 @@ const initialState: Root = {
   NotificationPageIdSong: "",
   NotificationPage: "list",
   idSong: JSON.parse(localStorage.getItem("song") || "{}").Id || "",
-  recentList: false,
   isLogin: false,
   update: true,
-  Right: "Mess",
+  Right: "",
   DeleteDiscuss: "",
   stack: [{ page: "home", param: "" }],
   position: 0,
@@ -72,8 +73,8 @@ var rootslice = createSlice({
   name: "rootHome",
   initialState: initialState,
   reducers: {
-    ShowRecentList: (state, action) => {
-      state.recentList = !state.recentList;
+    RemoveRight: (state) => {
+      state.Right = "";
     },
     PlaySong: (state, action: PayloadAction<string>) => {
       state.idSong = action.payload;
@@ -82,8 +83,10 @@ var rootslice = createSlice({
       state.command.page = action.payload.page;
       state.command.param = action.payload.param;
 
-      console.log(state.position);
-
+      state.center = true;
+      if (action.payload.page == state.stack[state.position].page) {
+        return;
+      }
       if (state.stack[state.position + 1]) {
         state.stack[state.position + 1] = action.payload;
         state.position = state.position + 1;
@@ -98,13 +101,17 @@ var rootslice = createSlice({
     Update: (state) => {
       state.update = !state.update;
     },
-    NaviRight: (state, action: PayloadAction<"Discuss" | "Queue" | "Mess">) => {
+    NaviRight: (
+      state,
+      action: PayloadAction<"Discuss" | "Queue" | "Mess" | "">
+    ) => {
       if (state.Right == action.payload) {
-        state.recentList = !state.recentList;
+        state.Right = "";
+        state.center = true;
         return;
       }
       state.Right = action.payload;
-      state.recentList = true;
+      state.center = false;
     },
     SetdeleteDiscuss: (state, action) => {
       state.DeleteDiscuss = action.payload;
@@ -155,13 +162,13 @@ const rootHome = configureStore({
   reducer: {
     rootHome: rootslice.reducer,
     audioroot: audioSlice.reducer,
+    mobile: mobileRedux.reducer,
   },
 });
 export type RootTy = typeof rootHome;
 export type RootHome = ReturnType<RootTy["getState"]>;
 export type RootDispatch = RootTy["dispatch"];
 export const {
-  ShowRecentList,
   PlaySong,
   NaviPage,
   IsLogin,
@@ -175,6 +182,7 @@ export const {
   RemoveBoxList,
   SetSearchName,
   SetMess,
+  RemoveRight,
 } = rootslice.actions;
 
 export default rootHome;

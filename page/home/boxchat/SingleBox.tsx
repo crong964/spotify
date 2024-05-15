@@ -100,7 +100,8 @@ function useChatBox(boxInfor: BoxInfor) {
 function SendMess(data: SendMessData) {
   const dispatch = useDispatch();
   const [text, SetText] = useState("");
-  var submit = () => {
+  const SubmitSendMess = (e: any) => {
+    e.preventDefault();
     if (text.length <= 0) {
       return;
     }
@@ -121,9 +122,10 @@ function SendMess(data: SendMessData) {
   };
   return (
     <div className="chat">
-      <form onSubmit={submit} className="flex p-2 ">
+      <form onSubmit={SubmitSendMess} className="flex p-2 ">
         <input
-          onClick={() => {
+          onClick={(e) => {
+            e.preventDefault();
             dispatch(
               SetMess({
                 content: "",
@@ -143,7 +145,7 @@ function SendMess(data: SendMessData) {
             SetText(inputData.currentTarget.value);
           }}
         />
-        <button className="bg-white rounded-full p-1" onClick={submit}>
+        <button className="bg-white rounded-full p-1">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
