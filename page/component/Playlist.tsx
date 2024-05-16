@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PlayButtom from "../home/PlayButtom";
 import { NaviPage, RootHome } from "../home/RootRedux";
 import { useDispatch, useSelector } from "react-redux";
+import { post } from "../config/req";
 
 export interface PlayList {
   id: string;
@@ -73,7 +74,7 @@ export default function PlayLists(p: PlayLists) {
   return (
     <div className="w-full overflow-auto sm:overflow-hidden relative">
       {children.length > 0 ? (
-        <div className="text-[24px] my-5 sticky top-0 left-0">{p.title}</div>
+        <div className="text-[24px] font-bold my-5 sticky top-0 left-0">{p.title}</div>
       ) : (
         <></>
       )}
@@ -86,4 +87,15 @@ export default function PlayLists(p: PlayLists) {
       </div>
     </div>
   );
+}
+
+export function SuggestPlaylist() {
+  const [playlists, SetPlayLists] = useState<PlayList[]>([]);
+  useEffect(() => {
+    post("/playlist/Nextplaylist", {}, (v: any) => {
+      SetPlayLists(v.ls);
+    });
+  }, []);
+
+  return <PlayLists d={playlists} title="Danh sách đề cử" />;
 }

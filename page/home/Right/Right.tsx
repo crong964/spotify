@@ -21,7 +21,7 @@ export default function Right() {
     child = <BoxChat></BoxChat>;
   }
   return (
-    <div className="h-full w-full sm:w-[400px]  self-stretch">{child}</div>
+    <div className="h-full w-full sm:w-[400px] self-stretch">{child}</div>
   );
 }
 

@@ -41,16 +41,14 @@ export function Home() {
 export function NewHome() {
   const dispatch = useDispatch();
   const curpage = useSelector((state: RootHome) => state.rootHome.command.page);
-  const mobiletype = useSelector((state: RootHome) => state.mobile.type);
+
   return (
     <Navi
       curpage={curpage}
       namepage="Trang chủ"
       onclick={() => {
+        
         dispatch(NaviPage({ page: "home", param: "" }));
-        if (mobiletype == "mobile") {
-          dispatch(NaviRight(""));
-        }
       }}
       ortherpage={
         <svg

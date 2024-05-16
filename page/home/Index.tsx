@@ -10,7 +10,13 @@ import PlaylistPage, { ArtisePage, LikedSongListPage } from "./PlayList";
 import { useDispatch, useSelector } from "react-redux";
 import PlayingBar from "./Audio/PlayingBar";
 import Header from "./Header/Header";
-import { NaviPage, RootHome, SetMess } from "./RootRedux";
+import {
+  NaviPage,
+  RootHome,
+  SetDeviceType,
+  SetMess,
+  ShowTopbarContent,
+} from "./RootRedux";
 import Search from "./Search";
 import Profile from "./Profile";
 import IdGenre from "./IdGenre";
@@ -22,6 +28,8 @@ import { Home } from "./NaviHome/Home";
 import { SearchButtom } from "./NaviHome/SearchButtom";
 import { SetTypeMobile } from "./NaviHome/NaviRedux";
 import { NaviHomeMobile } from "./NaviHome/NaviHome";
+import Foot from "./Foot";
+import { SuggestPlaylist } from "../component/Playlist";
 
 function useIndex() {
   const [queue, SetQueue] = useState(false);
@@ -38,15 +46,14 @@ function useIndex() {
 }
 export default function Index() {
   const { Set, queue, SetQueue, scroll } = useIndex();
-
   const mobiletype = useSelector((state: RootHome) => state.mobile.type);
   const BoxList = useSelector((state: RootHome) => state.rootHome.BoxList);
   const isLogin = useSelector((state: RootHome) => state.rootHome.isLogin);
   const screem = () => {
-    if (window.screen.width > 650) {
-      dispatch(SetTypeMobile("pc"));
+    if (window.screen.availWidth > 600) {
+      dispatch(SetDeviceType("pc"));
     } else {
-      dispatch(SetTypeMobile("mobile"));
+      dispatch(SetDeviceType("mobile"));
     }
   };
   const dispatch = useDispatch();
@@ -74,7 +81,7 @@ export default function Index() {
 
   return (
     <div className="h-full w-full p-0 m-0 bg-black CircularSpUIv3T-Book overflow-hidden">
-      <div className="flex h-[82%]  sm:h-[88%] space-x-1 relative">
+      <div className="flex h-[88%]  sm:h-[88%] space-x-1 relative">
         <div className="w-[80px] hidden sm:block px-1 space-y-1">
           <div className="h-[20%] bg-[#121212] rounded-lg py-2">
             <div className="h-full  ">
@@ -101,10 +108,10 @@ export default function Index() {
           )}
         </div>
         <div className=" w-full  space-y-1">
-          <div className="relative h-[10%]">
+          <div className="relative h-[13%]">
             <Header></Header>
           </div>
-          <div className="flex h-[90%] w-full ">
+          <div className="flex h-[87%] w-full ">
             {mobiletype == "pc" ? <PcBody /> : <MobileBody />}
           </div>
         </div>
@@ -122,23 +129,35 @@ export default function Index() {
 
 function Center() {
   const page = useSelector((state: RootHome) => state.rootHome.command.page);
+  const topbarcontent = useSelector(
+    (state: RootHome) => state.rootHome.topbarcontent
+  );
+  const dispatch = useDispatch();
+  var children: React.JSX.Element;
   switch (page) {
     case "genre":
-      return <Genre></Genre>;
+      children = <Genre></Genre>;
+      break;
     case "playlist":
-      return <PlaylistPage></PlaylistPage>;
+      children = <PlaylistPage></PlaylistPage>;
+      break;
     case "likedsongs":
-      return <LikedSongListPage></LikedSongListPage>;
+      children = <LikedSongListPage></LikedSongListPage>;
+      break;
     case "artise":
-      return <ArtisePage></ArtisePage>;
+      children = <ArtisePage></ArtisePage>;
+      break;
     case "search":
-      return <Search></Search>;
+      children = <Search></Search>;
+      break;
     case "profile":
-      return <Profile></Profile>;
+      children = <Profile></Profile>;
+      break;
     case "idgenre":
-      return <IdGenre></IdGenre>;
+      children = <IdGenre></IdGenre>;
+      break;
     default:
-      return (
+      children = (
         <>
           <div className="h-full">
             <RecentList>
@@ -146,39 +165,50 @@ function Center() {
               <RecentPlaylist img="../public/ca.jpg" name="Cà Phê Quán Quen" />
             </RecentList>
             <SetionList name="Danh sách các nghệ sĩ" type="artist" />
+            <SuggestPlaylist></SuggestPlaylist>
           </div>
         </>
       );
   }
+  return (
+    <div
+      onScroll={(e) => {
+        var h = e.currentTarget.scrollTop;
+        if (h < 320) {
+          dispatch(ShowTopbarContent(false));
+          return;
+        }
+        if (
+          (page == "artise" || page == "playlist") &&
+          e.currentTarget.scrollTop >= 320 &&
+          !topbarcontent
+        ) {
+          dispatch(ShowTopbarContent(true));
+        }
+      }}
+      className="flex-1 h-full overflow-y-scroll"
+    >
+      <div className=" h-max relative">{children}</div>
+      <Foot />
+    </div>
+  );
 }
 
 function PcBody() {
   return (
     <>
-      <div className="flex-1 h-full overflow-y-scroll">
-        <div className=" h-max relative">
-          <Center />
-        </div>
-      </div>
+      <Center />
       <Right />
     </>
   );
 }
 
 function MobileBody() {
-  const center = useSelector((state: RootHome) => state.rootHome.center);
- 
-  return (
-    <>
-      {center ? (
-        <div className="flex-1 h-full overflow-y-scroll">
-          <div className=" h-max relative">
-            <Center />
-          </div>
-        </div>
-      ) : (
-        <Right />
-      )}
-    </>
-  );
+  const side = useSelector((state: RootHome) => state.rootHome.side);
+  switch (side) {
+    case "right":
+      return <Right />;
+    default:
+      return <Center />;
+  }
 }

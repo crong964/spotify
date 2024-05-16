@@ -30,7 +30,6 @@ export class PlayListService {
         var ls = await Mysql2.query(sql, [User_id])
         return this.SetLs(ls)
     }
-
     async Update(d: PlayListModel) {
         var sql = "UPDATE playlist SET ImagePath=?,PlayListName=?,Likes=?,Songs=?,Duration=?,Status=?,Discripition=? WHERE id =?"
         var check
@@ -55,10 +54,16 @@ export class PlayListService {
         var ls = await Mysql2.query(sql, [`%${playlistName}%`])
         return this.SetLs(ls)
     }
+
+    async GetPlayListLimit(start: number, count: number) {
+        var sql = "SELECT * FROM playlist LIMIT ?,?"
+        var ls = await Mysql2.query(sql, [start, count])
+        return this.SetLs(ls)
+    }
     async DeletePlaylist(id: string) {
         var sql = `Delete from playlist where id=?`
         var ls = await Mysql2.query(sql, [id])
-        return this.SetLs(ls)
+        return ls
     }
     async DeleteSongInPlayList(id: string) {
         var sql = `Delete From contain where PlayList_id=?`

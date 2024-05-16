@@ -27,7 +27,7 @@ interface Replay {
 interface Discuss {
   idsong: string;
 }
-export default function Discuss(data: Discuss) {
+export default function  Discuss(data: Discuss) {
   const delateDiscuss = useSelector(
     (state: RootHome) => state.rootHome.DeleteDiscuss
   );

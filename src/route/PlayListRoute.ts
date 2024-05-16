@@ -7,4 +7,5 @@ const PlayListRoute = Router()
 
 PlayListRoute.post("/GetAllPlayList", playListController.GetByGenreAdmin)//0k
 PlayListRoute.get("/:idplaylist", playListController.GetPlayListById)//0k
+PlayListRoute.post("/Nextplaylist",playListController.NextPlayListLimit)
 export default PlayListRoute

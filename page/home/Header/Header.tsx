@@ -12,6 +12,7 @@ import {
 } from "../RootRedux";
 import { get, post } from "../../config/req";
 import NotificationPage, { NotificationList } from "./NotificationList";
+import PlayButtom from "../PlayButtom";
 
 interface Infor {
   pathImage: string;
@@ -20,6 +21,10 @@ interface Infor {
 }
 export default function Header() {
   const [show, SetShow] = useState(false);
+  const curName = useSelector((state: RootHome) => state.rootHome.curName);
+  const topbarcontent = useSelector(
+    (state: RootHome) => state.rootHome.topbarcontent
+  );
   const dispathch = useDispatch();
   const [showNotification, SetShowNotification] = useState(false);
   const page = useSelector((state: RootHome) => state.rootHome.command.page);
@@ -42,11 +47,21 @@ export default function Header() {
   }, [update]);
 
   return (
-    <div className={`sticky w-full z-30  top-0 left-0 px-5 py-4 space-y-2`}>
-      <div className="flex items-center justify-between space-x-2">
+    <div
+      className={`h-max w-full sticky bg-black top-0 z-10 px-3 py-2 space-y-2`}
+    >
+      <div className="flex items-center justify-between space-x-2 mx-3">
         <div className="flex space-x-3  items-center">
           <Back />
           <Forward />
+          {topbarcontent ? (
+            <button className="flex items-center text-white text-2xl font-bold space-x-2">
+              <PlayButtom />
+              <div className="">{curName}</div>
+            </button>
+          ) : (
+            <></>
+          )}
           <>
             {page == "genre" || page == "search" ? (
               <div className="hidden sm:flex items-center border-white border-2 px-3 bg-[#2A2A2A] rounded-lg">
@@ -189,6 +204,19 @@ export default function Header() {
           </>
         )}
       </div>
+      {page == "home" ? (
+        <div className="text-white flex justify-start space-x-1 items-center">
+          <button className="px-2 py-1 rounded-2xl bg-white text-black">
+            Tất cả
+          </button>
+          <button className="px-2 py-1 rounded-2xl bg-[#2F2F2F] ">Nhạc</button>
+          <button className="px-2 py-1 rounded-2xl bg-[#2F2F2F] ">
+            Podcast
+          </button>
+        </div>
+      ) : (
+        <></>
+      )}
     </div>
   );
 }

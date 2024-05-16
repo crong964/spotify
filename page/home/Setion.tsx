@@ -4,6 +4,7 @@ import React from "react";
 import { get } from "../config/req";
 import { useDispatch, useSelector } from "react-redux";
 import { NaviPage, RootHome } from "./RootRedux";
+import { Artists } from "../component/Artist";
 
 interface SetionList {
   name: string;
@@ -17,31 +18,7 @@ export function SetionList(params: SetionList) {
       SetaAtist(v.ls);
     });
   }, []);
-  return (
-    <div className="mt-8 w-full overflow-auto ">
-      <div className="text-white sticky top-0 left-0 text-[24px] font-bold">
-        {params.name}
-      </div>
-      <div
-        className={` flex overflow-x-scroll w-max sm:w-full sm:grid sm:gap-3 ${
-          Right == "" ? "grid-cols-7" : "grid-cols-5 "
-        }`}
-      >
-        {artist.map((v) => {
-          return (
-            <SetionData
-              ChanalName={v.ChanalName}
-              artist={v.artist}
-              key={v.id}
-              id={v.id}
-              pathImage={v.pathImage}
-              type={params.type}
-            />
-          );
-        })}
-      </div>
-    </div>
-  );
+  return <Artists d={artist}></Artists>;
 }
 interface SetionData {
   pathImage: string;

@@ -22,12 +22,16 @@ interface Commamd {
     | "home"
     | "search"
     | "profile"
-    | "idgenre";
+    | "idgenre"
+    | "";
   param: string;
 }
 interface Root {
+  topbarcontent: boolean;
+  curName: string;
+  devicetype: "pc" | "mobile";
   watchbox: string;
-  center: boolean;
+  side: "left" | "center" | "right";
   mess: mess;
   BoxList: string[];
   command: Commamd;
@@ -43,7 +47,10 @@ interface Root {
   SearchName: string;
 }
 const initialState: Root = {
-  center: true,
+  topbarcontent: false,
+  curName: "",
+  devicetype: "pc",
+  side: "center",
   watchbox: "",
   SearchName: "",
   BoxList: [],
@@ -83,10 +90,15 @@ var rootslice = createSlice({
       state.command.page = action.payload.page;
       state.command.param = action.payload.param;
 
-      state.center = true;
+      if (state.devicetype == "mobile") {
+        state.Right = "";
+        return;
+      }
+
       if (action.payload.page == state.stack[state.position].page) {
         return;
       }
+
       if (state.stack[state.position + 1]) {
         state.stack[state.position + 1] = action.payload;
         state.position = state.position + 1;
@@ -105,13 +117,17 @@ var rootslice = createSlice({
       state,
       action: PayloadAction<"Discuss" | "Queue" | "Mess" | "">
     ) => {
+      if (state.Right == action.payload && state.devicetype == "mobile") {
+        return;
+      }
+      if (state.devicetype == "mobile") {
+        state.command.page = "";
+      }
       if (state.Right == action.payload) {
         state.Right = "";
-        state.center = true;
         return;
       }
       state.Right = action.payload;
-      state.center = false;
     },
     SetdeleteDiscuss: (state, action) => {
       state.DeleteDiscuss = action.payload;
@@ -155,6 +171,16 @@ var rootslice = createSlice({
     SetMess: (state, action: PayloadAction<mess>) => {
       state.mess = action.payload;
     },
+    SetDeviceType: (state, action: PayloadAction<"pc" | "mobile">) => {
+      state.devicetype = action.payload;
+      state.command.page = "home";
+    },
+    SetCurName: (state, action: PayloadAction<string>) => {
+      state.curName = action.payload;
+    },
+    ShowTopbarContent: (state, action: PayloadAction<boolean>) => {
+      state.topbarcontent = action.payload;
+    },
   },
 });
 
@@ -169,6 +195,8 @@ export type RootTy = typeof rootHome;
 export type RootHome = ReturnType<RootTy["getState"]>;
 export type RootDispatch = RootTy["dispatch"];
 export const {
+  ShowTopbarContent,
+  SetCurName,
   PlaySong,
   NaviPage,
   IsLogin,
@@ -183,6 +211,7 @@ export const {
   SetSearchName,
   SetMess,
   RemoveRight,
+  SetDeviceType,
 } = rootslice.actions;
 
 export default rootHome;

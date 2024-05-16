@@ -124,6 +124,17 @@ class PlayListController {
             });
         });
     }
+    NextPlayListLimit(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var start = req.body.start || 0;
+            var count = req.body.count || 10;
+            var ls = yield PlayListController.playlist.GetPlayListLimit(start, count);
+            res.json({
+                err: false,
+                ls: ls
+            });
+        });
+    }
 }
 exports.PlayListController = PlayListController;
 PlayListController.playlist = PlayListService_1.default;

@@ -79,11 +79,18 @@ class PlayListService {
             return this.SetLs(ls);
         });
     }
+    GetPlayListLimit(start, count) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var sql = "SELECT * FROM playlist LIMIT ?,?";
+            var ls = yield Config_1.default.query(sql, [start, count]);
+            return this.SetLs(ls);
+        });
+    }
     DeletePlaylist(id) {
         return __awaiter(this, void 0, void 0, function* () {
             var sql = `Delete from playlist where id=?`;
             var ls = yield Config_1.default.query(sql, [id]);
-            return this.SetLs(ls);
+            return ls;
         });
     }
     DeleteSongInPlayList(id) {

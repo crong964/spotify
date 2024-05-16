@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import InforUser from "./Header/InforUser";
 import PlayButtom from "./PlayButtom";
 import { useDispatch, useSelector } from "react-redux";
-import { RootHome, PlaySong } from "./RootRedux";
+import { RootHome, PlaySong, SetCurName } from "./RootRedux";
 import { Duration, get, post } from "../config/req";
 import { SongInPlayList, SongList } from "../component/Song";
 import TypeFriend from "./friend/TypeFriend";
@@ -51,6 +51,7 @@ export function ArtisePage() {
     get(`/user/artisepage/${idpage}`, (v: any) => {
       SetaAtist(v.ls);
       SetIsfriend(v.isfriend);
+      dispatch(SetCurName(v.ls.ChanalName));
     });
     get(`lsong/getall/${idpage}`, (v: any) => {
       SetSongS(v.ls);
@@ -173,9 +174,11 @@ export function LikedSongListPage() {
 }
 
 export default function PlaylistPage() {
+  const dispatch = useDispatch();
   const idPlayList = useSelector(
     (state: RootHome) => state.rootHome.command.param
   );
+
   const [songs, SetSongS] = useState<SongInPlayList[]>([]);
   const [playlist, SetPlayList] = useState<PlayList>({
     Duration: "",
@@ -199,6 +202,7 @@ export default function PlaylistPage() {
         v.playlist.Duration = time;
         v.playlist.Songs = song;
         SetPlayList(v.playlist);
+        dispatch(SetCurName(v.playlist.PlayListName));
       }
     });
   }, [idPlayList]);

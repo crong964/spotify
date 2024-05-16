@@ -20,11 +20,8 @@ export default function IdGenre() {
   );
   const [playlists, SetPlayLists] = useState<PlayList[]>([]);
   const [genres, SetGernes] = useState<Genre[]>([]);
-
   useEffect(() => {
     get(`genre/${idgenre}`, (v: any) => {
-      console.log(v);
-
       SetPlayLists(v.playlist);
       SetGernes(v.genre);
     });

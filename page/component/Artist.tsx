@@ -22,8 +22,8 @@ export function Artists(d: Artists) {
         <></>
       )}
       <div
-        className={`flex sm:grid gap-3 ${
-          Right != "" ? "grid-cols-6" : "grid-cols-7 "
+        className={`flex sm:grid gap-3 overflow-x-scroll w-max sm:w-full  ${
+          Right != "" ? "grid-cols-5" : "grid-cols-7 "
         }`}
       >
         {d.d.map((v) => {
@@ -38,6 +38,7 @@ export function Artists(d: Artists) {
             />
           );
         })}
+        
       </div>
     </div>
   );
@@ -51,7 +52,7 @@ export default function Artist(params: artist) {
     <div
       className="w-full cursor-pointer"
       onClick={() => {
-        dispatch(NaviPage({ page: "playlist", param: params.id }));
+        dispatch(NaviPage({ page: "artise", param: params.id }));
       }}
       onMouseEnter={() => {
         SetHidden(false);
@@ -63,7 +64,7 @@ export default function Artist(params: artist) {
       <div className="relative">
         <img
           src={params.pathImage}
-          className="w-full rounded-full"
+          className="size-[150px] sm:size-full rounded-full"
           alt=""
           srcSet=""
         />
@@ -75,7 +76,7 @@ export default function Artist(params: artist) {
           </div>
         )}
       </div>
-      <div className="text-[16px] text-white font-bold line-clamp-1">
+      <div className="text-[14px] sm:text-[16px] text-white font-bold line-clamp-1">
         {params.ChanalName}
       </div>
       <div className="text-[14px] text-[#b3b3b3] font-normal line-clamp-1">

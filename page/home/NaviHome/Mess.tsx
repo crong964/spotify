@@ -28,9 +28,9 @@ function MessButtom() {
 }
 
 export function MobileMessButtom() {
-  const curpage = useSelector((state: RootHome) => state.rootHome.command.page);
+  const curpage = useSelector((state: RootHome) => state.rootHome.Right);
   const dispatch = useDispatch();
-  const mobiletype = useSelector((state: RootHome) => state.mobile.type);
+  
   return (
     <Navi
       curpage={curpage}
@@ -38,7 +38,7 @@ export function MobileMessButtom() {
       onclick={() => {
         dispatch(NaviRight("Mess"));
       }}
-      page="mess"
+      page="Mess"
       ortherpage={
         <svg
           viewBox="0 0 12 13"

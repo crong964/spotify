@@ -54,13 +54,9 @@ export class PlayListController {
     }
     async PlayListDetailAdmin(req: Request, res: Response) {
         var idplaylist = req.params.idplaylist
-
-
         var ls = await Promise.all([PlayListController.playlist.Get(idplaylist),
         PlayListController.contain.GetAllByPlayList(idplaylist), PlayListController.
             genre.GetIdParentByIdplaylist(idplaylist)])
-
-
         res.json({
             err: ls[0] == undefined,
             playlist: ls[0],
@@ -120,7 +116,15 @@ export class PlayListController {
             err: ls[0] == undefined
         })
     }
-   
+    async NextPlayListLimit(req: Request, res: Response) {
+        var start = req.body.start || 0
+        var count = req.body.count || 10
+        var ls = await PlayListController.playlist.GetPlayListLimit(start, count)
+        res.json({
+            err: false,
+            ls: ls
+        })
+    }
 }
 
 var playListController: PlayListController = new PlayListController()
