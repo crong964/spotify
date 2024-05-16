@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import PlayButtom from "../home/PlayButtom";
+import PlayButtom from "./PlayButtom";
 import { useDispatch, useSelector } from "react-redux";
 import { NaviPage, RootHome } from "../home/RootRedux";
 interface artist {
@@ -72,7 +72,7 @@ export default function Artist(params: artist) {
           <></>
         ) : (
           <div className="absolute right-0 bottom-0">
-            <PlayButtom />
+           <PlayButtom status="pause"/>
           </div>
         )}
       </div>

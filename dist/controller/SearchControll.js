@@ -33,7 +33,7 @@ class SearchControll {
                 var liked = new LikedSongModel_1.default();
                 liked.id_user_liked = req.cookies.id;
                 liked.user_id = ls[1][0].id;
-                songls = yield SearchControll.likedSong.GetAll(liked);
+                songls = yield SearchControll.likedSong.GetAllByIduserAndIdArtise(liked);
             }
             res.json({
                 ls: ls[0],

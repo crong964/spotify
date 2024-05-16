@@ -1,22 +1,28 @@
 import LikedSongDatabase from "../database/LikedSongDatabase";
 import LikedSongModel from "../model/LikedSongModel";
-
+import Mysql2 from "../config/Config";
 export class LikedSongService {
     likedSongDatabase: LikedSongDatabase
     constructor(likedSongDatabase: LikedSongDatabase) {
         this.likedSongDatabase = likedSongDatabase
     }
     async Add(d: LikedSongModel) {
-        var check = await this.likedSongDatabase.Add(d)
+        var sql = "INSERT INTO `likedsong`(`Id`, `id_user_liked`) VALUES (?,?)";
+        var check = await Mysql2.query(sql, [d.Id, d.id_user_liked]);
         return check;
     }
     async Delete(d: LikedSongModel) {
         var check = await this.likedSongDatabase.Delete(d)
         return check;
     }
-    async GetAll(d: LikedSongModel) {
-        var ls = await this.likedSongDatabase.GetAll(d)
-        return this.SetLs(ls);
+    async GetAllByIduserAndIdArtise(d: LikedSongModel) {
+        var sql = `SELECT song.Id, song.SongName,song.SongImage, song.Singer,song.Viewer,song.Duration,likedsong.liked 
+        FROM song LEFT JOIN likedsong ON song.Id = likedsong.Id and likedsong.id_user_liked=? 
+        WHERE song.user_id=? And song.status = 1;`
+
+        var check = await Mysql2.query(sql, [d.id_user_liked, d.user_id]);
+
+        return this.SetLs(check);
     }
     async Update(d: LikedSongModel) {
         var check = await this.likedSongDatabase.Update(d)

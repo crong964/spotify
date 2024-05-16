@@ -13,7 +13,7 @@ export default function TypeFriend(p: TypeFriend) {
       return;
     }
     SetT(p.type + "");
-  }, []);
+  }, [p.idFriend]);
 
   var children: React.JSX.Element;
   switch (t) {

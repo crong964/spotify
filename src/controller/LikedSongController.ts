@@ -15,7 +15,7 @@ class LikedSongController {
         temp.id_user_liked = id_user_liked
         var check
         var get = await LikedSongController.likedSongService.Get(temp)
-        
+
 
         if (get == undefined) {
             get = temp
@@ -49,13 +49,13 @@ class LikedSongController {
             err: check == undefined
         })
     }
-    async GetAll(req: Request, res: Response) {
+    async GetAllByIduserAndIdArtise(req: Request, res: Response) {
         var id_user_liked = req.cookies.id
         var user_id = req.params.idartise
         var temp = new LikedSongModel()
         temp.user_id = user_id
         temp.id_user_liked = id_user_liked
-        var check = await LikedSongController.likedSongService.GetAll(temp)
+        var check = await LikedSongController.likedSongService.GetAllByIduserAndIdArtise(temp)
 
         res.json({
             err: check.length == 0,

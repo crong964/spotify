@@ -25,7 +25,7 @@ class SearchControll {
             var liked = new LikedSongModel()
             liked.id_user_liked = req.cookies.id
             liked.user_id = ls[1][0].id
-            songls = await SearchControll.likedSong.GetAll(liked)
+            songls = await SearchControll.likedSong.GetAllByIduserAndIdArtise(liked)
         }
         res.json({
             ls: ls[0],

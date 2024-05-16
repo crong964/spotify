@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import PlayButtom from "../home/PlayButtom";
+import PlayButtom from "./PlayButtom";
 import { NaviPage, RootHome } from "../home/RootRedux";
 import { useDispatch, useSelector } from "react-redux";
 import { post } from "../config/req";
@@ -44,7 +44,7 @@ export function PlayList(d: PlayList) {
         />
         {show ? (
           <div className="absolute bottom-0 right-0">
-            <PlayButtom />
+            <PlayButtom status="pause"/>
           </div>
         ) : (
           <></>

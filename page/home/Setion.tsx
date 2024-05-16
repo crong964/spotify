@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import PlayButtom from "./PlayButtom";
+import PlayButtom from "../component/PlayButtom";
 import React from "react";
 import { get } from "../config/req";
 import { useDispatch, useSelector } from "react-redux";
@@ -55,7 +55,7 @@ export default function SetionData(params: SetionData) {
           <></>
         ) : (
           <div className="absolute right-0 bottom-0">
-            <PlayButtom />
+            <PlayButtom status="pause"/>
           </div>
         )}
       </div>

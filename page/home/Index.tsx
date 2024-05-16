@@ -108,10 +108,10 @@ export default function Index() {
           )}
         </div>
         <div className=" w-full  space-y-1">
-          <div className="relative h-[13%]">
+          <div className="relative h-[10%]">
             <Header></Header>
           </div>
-          <div className="flex h-[87%] w-full ">
+          <div className="flex h-[90%] w-full ">
             {mobiletype == "pc" ? <PcBody /> : <MobileBody />}
           </div>
         </div>
@@ -160,12 +160,9 @@ function Center() {
       children = (
         <>
           <div className="h-full">
-            <RecentList>
-              <RecentPlaylist img="../public/ca.jpg" name="Cà Phê Quán Quen" />
-              <RecentPlaylist img="../public/ca.jpg" name="Cà Phê Quán Quen" />
-            </RecentList>
+            <RecentList/>
             <SetionList name="Danh sách các nghệ sĩ" type="artist" />
-            <SuggestPlaylist></SuggestPlaylist>
+            <SuggestPlaylist/>
           </div>
         </>
       );
@@ -188,6 +185,19 @@ function Center() {
       }}
       className="flex-1 h-full overflow-y-scroll"
     >
+      {page == "home" ? (
+        <div className="text-white flex justify-start space-x-1 items-center sticky top-0 z-[2] bg-black p-2">
+          <button className="px-2 py-1 rounded-2xl bg-white text-black">
+            Tất cả
+          </button>
+          <button className="px-2 py-1 rounded-2xl bg-[#2F2F2F] ">Nhạc</button>
+          <button className="px-2 py-1 rounded-2xl bg-[#2F2F2F] ">
+            Podcast
+          </button>
+        </div>
+      ) : (
+        <></>
+      )}
       <div className=" h-max relative">{children}</div>
       <Foot />
     </div>

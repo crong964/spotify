@@ -15,13 +15,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.LikedSongService = void 0;
 const LikedSongDatabase_1 = __importDefault(require("../database/LikedSongDatabase"));
 const LikedSongModel_1 = __importDefault(require("../model/LikedSongModel"));
+const Config_1 = __importDefault(require("../config/Config"));
 class LikedSongService {
     constructor(likedSongDatabase) {
         this.likedSongDatabase = likedSongDatabase;
     }
     Add(d) {
         return __awaiter(this, void 0, void 0, function* () {
-            var check = yield this.likedSongDatabase.Add(d);
+            var sql = "INSERT INTO `likedsong`(`Id`, `id_user_liked`) VALUES (?,?)";
+            var check = yield Config_1.default.query(sql, [d.Id, d.id_user_liked]);
             return check;
         });
     }
@@ -31,10 +33,13 @@ class LikedSongService {
             return check;
         });
     }
-    GetAll(d) {
+    GetAllByIduserAndIdArtise(d) {
         return __awaiter(this, void 0, void 0, function* () {
-            var ls = yield this.likedSongDatabase.GetAll(d);
-            return this.SetLs(ls);
+            var sql = `SELECT song.Id, song.SongName,song.SongImage, song.Singer,song.Viewer,song.Duration,likedsong.liked 
+        FROM song LEFT JOIN likedsong ON song.Id = likedsong.Id and likedsong.id_user_liked=? 
+        WHERE song.user_id=? And song.status = 1;`;
+            var check = yield Config_1.default.query(sql, [d.id_user_liked, d.user_id]);
+            return this.SetLs(check);
         });
     }
     Update(d) {

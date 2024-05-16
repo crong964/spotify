@@ -22,7 +22,7 @@ module.exports = {
             {
                 test: /\.(woff|woff2|svg|eot|ttf|otf)$/i,
                 type: 'asset/resource',
-              },
+            },
 
         ],
     },
@@ -31,6 +31,6 @@ module.exports = {
     },
     output: {
         filename: '[name].js',
-        path: path.join(process.cwd(),'web', 'static'),
+        path: path.join(process.cwd(), 'web', 'static'),
     },
 }; 

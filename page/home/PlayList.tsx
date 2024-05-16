@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import InforUser from "./Header/InforUser";
-import PlayButtom from "./PlayButtom";
+import PlayButtom from "../component/PlayButtom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootHome, PlaySong, SetCurName } from "./RootRedux";
 import { Duration, get, post } from "../config/req";
@@ -9,16 +9,16 @@ import TypeFriend from "./friend/TypeFriend";
 
 var g = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 6, 7];
 interface artise {
-  id: string;
-  Vertify: string;
-  Nationality: string;
-  ChanalName: string;
-  Account: string;
-  Name: string;
-  description: string;
-  pathImage: string;
-  Password: string;
-  Banner: string;
+  id: string | undefined;
+  Vertify: string | undefined;
+  Nationality: string | undefined;
+  ChanalName: string | undefined;
+  Account: string | undefined;
+  Name: string | undefined;
+  description: string | undefined;
+  pathImage: string | undefined;
+  Password: string | undefined;
+  Banner: string | undefined;
 }
 export interface Song {
   Id: string;
@@ -45,27 +45,31 @@ export function ArtisePage() {
   const [artise, SetaAtist] = useState<artise>();
   const [isfriend, SetIsfriend] = useState<"-1" | "0" | "1" | "2">();
   const [songs, SetSongS] = useState<SongInPlayList[]>([]);
+  const [status, SetStatus] = useState<"play" | "pause">("pause");
+  const [load, SetLoad] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
     get(`/user/artisepage/${idpage}`, (v: any) => {
-      SetaAtist(v.ls);
       SetIsfriend(v.isfriend);
+      SetaAtist(v.ls);
+
       dispatch(SetCurName(v.ls.ChanalName));
     });
     get(`lsong/getall/${idpage}`, (v: any) => {
       SetSongS(v.ls);
     });
   }, [idpage]);
+
   return (
-    <div className="relative">
+    <div className="relative ">
       <div
         className="hidden sm:block bg-no-repeat bg-cover rounded-t-lg absolute top-0 left-0 w-full h-[320px] "
-        style={{ backgroundImage: `url(${artise?.Banner})` }}
+        style={{ backgroundImage: `url(${artise?.Banner || ""})` }}
       ></div>
       <div
         className="block sm:hidden bg-no-repeat bg-cover rounded-t-lg absolute top-0 left-0 w-full h-[320px]"
-        style={{ backgroundImage: `url(${artise?.pathImage})` }}
+        style={{ backgroundImage: `url(${artise?.pathImage||""})` }}
       ></div>
       <div className="opacity-25 bg-black absolute top-0 left-0 w-full h-[320px]"></div>
       <div className="flex flex-col justify-end absolute top-0 left-0 h-[320px] z-10 p-4">
@@ -95,7 +99,28 @@ export function ArtisePage() {
       <div className="h-[320px]"></div>
       <div className="px-4">
         <div className="flex items-center py-4 space-x-4">
-          <PlayButtom></PlayButtom>
+          <button
+            onClick={() => {
+              if (load == true) {
+                return;
+              }
+              post(
+                "recentPlaylist/play",
+                { id: idpage, type: "artise" },
+                (v: any) => {
+                  if (!v.err) {
+                    SetStatus("play");
+                    SetLoad(false);
+                  }
+                }
+              );
+              SetLoad(true);
+            }}
+          >
+            <div className={load ? "cursor-wait" : "cursor-pointer"}>
+              <PlayButtom status={status} />
+            </div>
+          </button>
           <div className="font-bold cursor-pointer text-[14px] border-2 border-white text-white rounded-full px-2 py-1">
             Theo dõi
           </div>
@@ -152,7 +177,7 @@ export function LikedSongListPage() {
       <div className="h-[320px]"></div>
       <div className="px-4">
         <div className="flex items-center py-4 space-x-4">
-          <PlayButtom></PlayButtom>
+          <PlayButtom status="pause" />
           <div className="cursor-pointer">
             <svg
               className="fill-[#C7C7C7] hover:fill-white size-[45px] "
@@ -178,6 +203,9 @@ export default function PlaylistPage() {
   const idPlayList = useSelector(
     (state: RootHome) => state.rootHome.command.param
   );
+
+  const [status, SetStatus] = useState<"play" | "pause">("pause");
+  const [load, SetLoad] = useState(false);
 
   const [songs, SetSongS] = useState<SongInPlayList[]>([]);
   const [playlist, SetPlayList] = useState<PlayList>({
@@ -245,7 +273,26 @@ export default function PlaylistPage() {
       <div className="h-[320px]"></div>
       <div className="px-4">
         <div className="flex items-center py-0 sm:py-4 space-x-4">
-          <PlayButtom></PlayButtom>
+          <button
+            onClick={() => {
+              if (load == true) {
+                return;
+              }
+              post(
+                "recentPlaylist/play",
+                { id: idPlayList, type: "playlist" },
+                (v: any) => {
+                  SetStatus("play");
+                  SetLoad(false);
+                }
+              );
+              SetLoad(true);
+            }}
+          >
+            <button className={load ? "cursor-wait" : "cursor-pointer"}>
+              <PlayButtom status={status} />
+            </button>
+          </button>
           <div className="cursor-pointer">
             <svg
               className="fill-[#C7C7C7] hover:fill-white size-[45px] "

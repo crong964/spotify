@@ -59,14 +59,14 @@ class LikedSongController {
             });
         });
     }
-    GetAll(req, res) {
+    GetAllByIduserAndIdArtise(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             var id_user_liked = req.cookies.id;
             var user_id = req.params.idartise;
             var temp = new LikedSongModel_1.default();
             temp.user_id = user_id;
             temp.id_user_liked = id_user_liked;
-            var check = yield LikedSongController.likedSongService.GetAll(temp);
+            var check = yield LikedSongController.likedSongService.GetAllByIduserAndIdArtise(temp);
             res.json({
                 err: check.length == 0,
                 ls: check

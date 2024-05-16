@@ -29,6 +29,7 @@ import ADMIN from "./config/admin";
 import "dotenv/config"
 import { VertifyJWT } from "./config/Helper";
 import jwt, { JwtPayload } from "jsonwebtoken"
+import RecentPlaylistRoute from "./route/RecentPlaylistRoute";
 const secret = process.env.SECRET || "1"
 const app = express()
 const httpServer = createServer(app);
@@ -99,6 +100,7 @@ app.use("/box", BoxChatRoute)
 app.use("/user", UserRoute)
 app.use("/song", SongRoute)
 app.use("/lsong", LikedSongRoute)
+app.use("/recentPlaylist", RecentPlaylistRoute)
 app.use("/rs", RecentSongRoute)
 app.use("/search", SearchRoute)
 app.use("/discuss", DiscussRoute)

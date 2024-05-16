@@ -3,7 +3,7 @@ import rootHome, { NaviPage, RootHome } from "./RootRedux";
 import { useEffect, useState } from "react";
 import React from "react";
 import { get } from "../config/req";
-import PlayButtom from "./PlayButtom";
+import PlayButtom from "../component/PlayButtom";
 import { PlayList } from "../component/Playlist";
 
 interface Genre {

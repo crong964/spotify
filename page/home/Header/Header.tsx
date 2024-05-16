@@ -12,7 +12,7 @@ import {
 } from "../RootRedux";
 import { get, post } from "../../config/req";
 import NotificationPage, { NotificationList } from "./NotificationList";
-import PlayButtom from "../PlayButtom";
+import PlayButtom from "../../component/PlayButtom";
 
 interface Infor {
   pathImage: string;
@@ -27,7 +27,8 @@ export default function Header() {
   );
   const dispathch = useDispatch();
   const [showNotification, SetShowNotification] = useState(false);
-  const page = useSelector((state: RootHome) => state.rootHome.command.page);
+  const command = useSelector((state: RootHome) => state.rootHome.command);
+
   const update = useSelector((state: RootHome) => state.rootHome.update);
   const isLogin = useSelector((state: RootHome) => state.rootHome.isLogin);
   const dispatch = useDispatch();
@@ -56,14 +57,14 @@ export default function Header() {
           <Forward />
           {topbarcontent ? (
             <button className="flex items-center text-white text-2xl font-bold space-x-2">
-              <PlayButtom />
+              <PlayButtom status="pause" />
               <div className="">{curName}</div>
             </button>
           ) : (
             <></>
           )}
           <>
-            {page == "genre" || page == "search" ? (
+            {command.page == "genre" || command.page == "search" ? (
               <div className="hidden sm:flex items-center border-white border-2 px-3 bg-[#2A2A2A] rounded-lg">
                 <input
                   onChange={(v) => {
@@ -204,19 +205,6 @@ export default function Header() {
           </>
         )}
       </div>
-      {page == "home" ? (
-        <div className="text-white flex justify-start space-x-1 items-center">
-          <button className="px-2 py-1 rounded-2xl bg-white text-black">
-            Tất cả
-          </button>
-          <button className="px-2 py-1 rounded-2xl bg-[#2F2F2F] ">Nhạc</button>
-          <button className="px-2 py-1 rounded-2xl bg-[#2F2F2F] ">
-            Podcast
-          </button>
-        </div>
-      ) : (
-        <></>
-      )}
     </div>
   );
 }
