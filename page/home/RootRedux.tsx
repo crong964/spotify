@@ -173,7 +173,6 @@ var rootslice = createSlice({
     },
     SetDeviceType: (state, action: PayloadAction<"pc" | "mobile">) => {
       state.devicetype = action.payload;
-      state.command.page = "home";
     },
     SetCurName: (state, action: PayloadAction<string>) => {
       state.curName = action.payload;

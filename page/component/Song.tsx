@@ -134,31 +134,33 @@ export function SongInPlayList(v: SongInPlayList) {
 export function SongList(d: SongList) {
   var stt = 0;
   return (
-    <div className="py-2">
-      {d.data.map((v) => {
-        stt += 1;
-        return (
-          <SongInPlayList
-            Duration={v.Duration + ""}
-            Id={v.Id}
-            Singer={v.Singer}
-            SongName={v.SongName}
-            Viewer={v.Viewer}
-            filePath={v.filePath}
-            SongImage={v.SongImage}
-            liked={v.liked}
-            stt={stt}
-            user_id=""
-            key={v.Id}
-          />
-        );
-      })}
-
+    <>
       {d.data.length > 0 ? (
-        <div className="text-white font-bold">Xem thêm</div>
+        <>
+          <div className="py-2">
+            {d.data.map((v) => {
+              stt += 1;
+              return (
+                <SongInPlayList
+                  Duration={v.Duration + ""}
+                  Id={v.Id}
+                  Singer={v.Singer}
+                  SongName={v.SongName}
+                  Viewer={v.Viewer}
+                  filePath={v.filePath}
+                  SongImage={v.SongImage}
+                  liked={v.liked}
+                  stt={stt}
+                  user_id=""
+                  key={v.Id}
+                />
+              );
+            })}
+          </div>
+        </>
       ) : (
         <></>
       )}
-    </div>
+    </>
   );
 }

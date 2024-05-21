@@ -6,7 +6,7 @@ interface SignButtom {
 function SignButtom(d: SignButtom) {
   return (
     <div className="w-full my-5 text-white ">
-      <div className="w-[50%] sm:w-[300px]  border-2 px-3 py-2 rounded-full border-white mx-auto space-y-2">
+      <div className="w-[90%] sm:w-[300px]  border-2 px-3 py-2 rounded-full border-white mx-auto space-y-2">
         {d.children}
       </div>
     </div>

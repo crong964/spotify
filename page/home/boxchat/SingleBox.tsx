@@ -121,7 +121,7 @@ function SendMess(data: SendMessData) {
     );
   };
   return (
-    <div className="chat">
+    <div className="chat h-[10%] sm:h-auto bg-black">
       <form onSubmit={SubmitSendMess} className="flex p-2 ">
         <input
           onClick={(e) => {
@@ -254,7 +254,7 @@ export default function ChatBox(boxInfor: BoxInfor) {
   return boxInfor.idbox != "-1" ? (
     <div
       title={boxInfor.idbox}
-      className=" boxchat w-[300px] rounded-lg h-[400px] border border-white"
+      className=" boxchat w-full h-full sm:w-[300px] sm:h-[400px] rounded-lg  border border-white"
     >
       {boxChatData ? (
         <>
@@ -267,7 +267,7 @@ export default function ChatBox(boxInfor: BoxInfor) {
             type={boxChatData.type}
             permission={boxChatData.permission}
           />
-          <div className=" bg-black  h-[300px] w-full border-y-2 grid grid-cols-1 content-end py-2">
+          <div className=" bg-black h-[80%] sm:h-[300px] w-full border-y-2 grid grid-cols-1 content-end py-2">
             <div
               className={`overflow-x-hidden  overflow-y-scroll boxscroll${boxChatData.idBox}`}
               onScroll={(r) => {

@@ -15,32 +15,35 @@ interface Artists {
 export function Artists(d: Artists) {
   const Right = useSelector((state: RootHome) => state.rootHome.Right);
   return (
-    <div className="mt-8 overflow-auto sm:overflow-hidden">
+    <>
       {d.d.length > 0 ? (
-        <div className="text-white text-[24px] my-5 font-bold">Nghệ sĩ</div>
+        <>
+          <div className="mt-8 overflow-auto sm:overflow-hidden">
+            <div className="text-white text-[24px] my-5 font-bold">Nghệ sĩ</div>
+            <div
+              className={`flex sm:grid gap-3 overflow-x-scroll w-max sm:w-full  ${
+                Right != "" ? "grid-cols-5" : "grid-cols-7 "
+              }`}
+            >
+              {d.d.map((v) => {
+                return (
+                  <Artist
+                    ChanalName={v.ChanalName}
+                    artist={v.artist}
+                    key={v.id}
+                    id={v.id}
+                    pathImage={v.pathImage}
+                    type="nghệ sĩ"
+                  />
+                );
+              })}
+            </div>
+          </div>
+        </>
       ) : (
         <></>
       )}
-      <div
-        className={`flex sm:grid gap-3 overflow-x-scroll w-max sm:w-full  ${
-          Right != "" ? "grid-cols-5" : "grid-cols-7 "
-        }`}
-      >
-        {d.d.map((v) => {
-          return (
-            <Artist
-              ChanalName={v.ChanalName}
-              artist={v.artist}
-              key={v.id}
-              id={v.id}
-              pathImage={v.pathImage}
-              type="nghệ sĩ"
-            />
-          );
-        })}
-        
-      </div>
-    </div>
+    </>
   );
 }
 
@@ -72,7 +75,7 @@ export default function Artist(params: artist) {
           <></>
         ) : (
           <div className="absolute right-0 bottom-0">
-           <PlayButtom status="pause"/>
+            <PlayButtom status="pause" />
           </div>
         )}
       </div>

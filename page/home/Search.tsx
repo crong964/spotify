@@ -35,7 +35,11 @@ export default function Search() {
   const search = useSelector((state: RootHome) => state.rootHome.command.param);
   const [artist, SetArtis] = useState<artist[]>([]);
   const [playlists, SetPlayLists] = useState<PlayList[]>([]);
+  const [name, SetName] = useState("");
   useEffect(() => {
+    if (search.length <= 0) {
+      return;
+    }
     post("/search", { name: search }, (v: any) => {
       SetSongName(v["ls"]);
       SetArtis(v["artise"]);
@@ -45,37 +49,49 @@ export default function Search() {
   }, [search]);
   return (
     <div className="w-full">
-      <form className="flex sm:hidden w-full sticky top-0 left-0 items-center bg-white text-black rounded-2xl my-1 p-2">
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          dispatch(NaviPage({ page: "search", param: name }));
+        }}
+        className="flex sm:hidden w-full sticky top-0 left-0 z-[100] items-center bg-white text-black rounded-2xl my-1 p-2"
+      >
         <input
           className="w-[90%] p-2 focus:outline-none "
           onChange={(v) => {
-            var value = v.currentTarget.value;
-            if (value.length == 2) {
-              dispatch(NaviPage({ page: "genre", param: "" }));
-              return;
-            }
-            dispatch(NaviPage({ page: "search", param: value }));
+            SetName(v.currentTarget.value);
           }}
         />
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth="1.5"
-          stroke="currentColor"
-          className="w-6 h-6"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
-          />
-        </svg>
+        <button type="submit">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth="1.5"
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+            />
+          </svg>
+        </button>
       </form>
-      <SongList data={songname} />
-      <Artists d={artist} />
-      <SongList data={songs} />
-      <PlayLists d={playlists} title="Danh sách phát nhạc" />
+      {search.length <= 0 ? (
+        <div className="text-center font-bold h-full">Bài hát bạn tìm</div>
+      ) : (
+        <>
+          <SongList data={songname} />
+
+          <Artists d={artist} />
+
+          <SongList data={songs} />
+
+          <PlayLists d={playlists} title="Danh sách phát nhạc" />
+        </>
+      )}
     </div>
   );
 }

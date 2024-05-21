@@ -13,6 +13,7 @@ import {
 import { get, post } from "../../config/req";
 import NotificationPage, { NotificationList } from "./NotificationList";
 import PlayButtom from "../../component/PlayButtom";
+import { GenreInHome } from "../Index";
 
 interface Infor {
   pathImage: string;
@@ -20,7 +21,6 @@ interface Infor {
   Vertify: string;
 }
 export default function Header() {
-  const [show, SetShow] = useState(false);
   const curName = useSelector((state: RootHome) => state.rootHome.curName);
   const topbarcontent = useSelector(
     (state: RootHome) => state.rootHome.topbarcontent
@@ -53,6 +53,23 @@ export default function Header() {
     >
       <div className="flex items-center justify-between space-x-2 mx-3">
         <div className="flex space-x-3  items-center">
+          {command.page == "home" || command.page == "search" ? (
+            <div className="flex sm:hidden items-center">
+              <Avatar Name="" Vertify="" pathImage={infor.pathImage} />
+              <GenreInHome />
+            </div>
+          ) : (
+            <></>
+          )}
+          {command.page == "genre" ? (
+            <div className="flex space-x-3 sm:hidden items-center">
+              <Avatar Name="" Vertify="" pathImage={infor.pathImage} />
+              <div className="font-bold text-[30px]">Tìm kiếm</div>
+            </div>
+          ) : (
+            <></>
+          )}
+
           <Back />
           <Forward />
           {topbarcontent ? (
@@ -95,11 +112,11 @@ export default function Header() {
           </>
         </div>
         {isLogin ? (
-          <div className="flex  items-center space-x-3">
-            <div className="cursor-pointer sm:block hidden text-sm font-bold bg-white text-black rounded-3xl px-2 py-1">
+          <div className="hidden sm:flex items-center space-x-3 ">
+            <div className="cursor-pointer  text-sm font-bold bg-white text-black rounded-3xl px-2 py-1">
               Khám phá Premium
             </div>
-            <div className="cursor-pointer sm:block hidden text-sm font-bold bg-black text-white rounded-3xl px-2 py-1">
+            <div className="cursor-pointer text-sm font-bold bg-black text-white rounded-3xl px-2 py-1">
               Cài đặt ứng dụng
             </div>
             <div
@@ -138,49 +155,7 @@ export default function Header() {
               </svg>
               {showNotification ? <NotificationPage /> : <></>}
             </div>
-            <div className="relative cursor-pointer">
-              <div
-                onClick={() => {
-                  SetShow(!show);
-                }}
-                className="text-[14px]"
-              >
-                <img
-                  className="size-[40px] rounded-full cursor-pointer"
-                  src={infor.pathImage}
-                  alt=""
-                  srcSet=""
-                />
-              </div>
-              {show ? (
-                <div className="bg-[#3E3E3E] z-[20] rounded-lg min-w-[200px] text-[16px] absolute top-full right-0">
-                  <div className="text-white  cursor-pointer hover:bg-black">
-                    <div
-                      onClick={() => {
-                        dispatch(NaviPage({ page: "profile", param: "" }));
-                        SetShow(!show);
-                      }}
-                      className="p-2"
-                    >
-                      Tài khoản
-                    </div>
-                  </div>
-
-                  <div
-                    onClick={() => {
-                      get("/auth/logout", (e: any) => {
-                        window.location.replace("/auth");
-                      });
-                    }}
-                    className="text-white cursor-pointer hover:bg-black"
-                  >
-                    <div className="p-2">Đăng xuất </div>
-                  </div>
-                </div>
-              ) : (
-                <></>
-              )}
-            </div>
+            <Avatar Name="" Vertify="" pathImage={infor.pathImage} />
           </div>
         ) : (
           <>
@@ -218,7 +193,7 @@ function Forward() {
       title="forward"
       className={`${
         position < stack.length - 1 ? "bg-[#2A2A2A]" : "bg-black"
-      } rounded-full size-[28px] flex justify-center items-center`}
+      } rounded-full size-[28px] hidden sm:flex justify-center items-center`}
       onClick={() => {
         if (stack.length == 0) {
           return;
@@ -250,7 +225,7 @@ function Back() {
       }}
       className={`${
         position > 0 ? "bg-[#2A2A2A]" : "bg-black"
-      } rounded-full size-[28px] flex justify-center items-center`}
+      } rounded-full size-[28px] hidden sm:flex justify-center items-center `}
     >
       <svg
         data-encore-id="icon"
@@ -262,5 +237,55 @@ function Back() {
         <path d="M11.03.47a.75.75 0 0 1 0 1.06L4.56 8l6.47 6.47a.75.75 0 1 1-1.06 1.06L2.44 8 9.97.47a.75.75 0 0 1 1.06 0z"></path>
       </svg>
     </button>
+  );
+}
+
+function Avatar(p: Infor) {
+  const [show, SetShow] = useState(false);
+  const dispatch = useDispatch();
+  return (
+    <div className="relative cursor-pointer">
+      <div
+        onClick={() => {
+          SetShow(!show);
+        }}
+        className="text-[14px]"
+      >
+        <img
+          className="size-[40px] rounded-full cursor-pointer"
+          src={p.pathImage}
+          alt=""
+          srcSet=""
+        />
+      </div>
+      {show ? (
+        <div className="bg-[#3E3E3E] z-[20] rounded-lg min-w-[200px] text-[16px] absolute top-full  sm:right-0">
+          <div className="text-white  cursor-pointer hover:bg-black">
+            <div
+              onClick={() => {
+                dispatch(NaviPage({ page: "profile", param: "" }));
+                SetShow(!show);
+              }}
+              className="p-2"
+            >
+              Tài khoản
+            </div>
+          </div>
+
+          <div
+            onClick={() => {
+              get("/auth/logout", (e: any) => {
+                window.location.replace("/auth");
+              });
+            }}
+            className="text-white cursor-pointer hover:bg-black"
+          >
+            <div className="p-2">Đăng xuất </div>
+          </div>
+        </div>
+      ) : (
+        <></>
+      )}
+    </div>
   );
 }

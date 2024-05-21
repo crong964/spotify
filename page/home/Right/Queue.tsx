@@ -22,20 +22,22 @@ export default function Queue() {
   const dispatch = useDispatch();
 
   const [recentSongs, SetRecentSongs] = useState<RecentSong[]>([]);
-  
+
   useEffect(() => {
     get("/rs/", (v: any) => {
       SetRecentSongs(v.ls);
     });
   }, []);
   return (
-    <div className="w-full h-full bg-[#121212] rounded-lg  overflow-y-scroll">
-      <div className="sticky bg-[#121212] top-0 left-0 flex space-x-3 h-min w-full px-3 rounded-lg py-4 ">
-        <div className=" cursor-pointer font-bold w-max  text-white  text-[14px]">
-          Danh sách chờ
-        </div>
-        <div className=" cursor-pointer border-b-4 border-green-800 font-bold w-max text-white  text-[14px]">
-          Đã phát gần đây
+    <div className="w-full h-full text-[16px] bg-[#121212] rounded-lg  overflow-y-scroll">
+      <div className="sticky bg-[#121212] top-0 left-0 flex space-x-3 h-min w-full justify-between px-3 rounded-lg py-4 ">
+        <div className="flex space-x-2">
+          <div className=" cursor-pointer font-bold w-max  text-white ">
+            Danh sách chờ
+          </div>
+          <div className=" cursor-pointer border-b-4 border-green-800 font-bold w-max text-white ">
+            Đã phát gần đây
+          </div>
         </div>
         <div
           onClick={() => {

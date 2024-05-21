@@ -62,17 +62,13 @@ export default function Index() {
       dispatch(SetMess(v));
     }
     socket.on("mess", res);
-    window.addEventListener("load", (ev) => {
-      screem();
-    });
+   
     window.addEventListener("resize", (ev) => {
       screem();
     });
     return () => {
       socket.off("mess", res);
-      window.removeEventListener("load", (ev) => {
-        screem();
-      });
+      
       window.removeEventListener("resize", (ev) => {
         screem();
       });
@@ -81,7 +77,7 @@ export default function Index() {
 
   return (
     <div className="h-full w-full p-0 m-0 bg-black CircularSpUIv3T-Book overflow-hidden">
-      <div className="flex h-[88%]  sm:h-[88%] space-x-1 relative">
+      <div className="flex h-[80%] sm:h-[88%] space-x-1 relative">
         <div className="w-[80px] hidden sm:block px-1 space-y-1">
           <div className="h-[20%] bg-[#121212] rounded-lg py-2">
             <div className="h-full  ">
@@ -115,14 +111,18 @@ export default function Index() {
             {mobiletype == "pc" ? <PcBody /> : <MobileBody />}
           </div>
         </div>
-        <div className="absolute right-[400px] z-40 space-x-2 flex bottom-0 ">
+      </div>
+      <PlayingBar />
+      <NaviHomeMobile />
+      {BoxList.length > 0 ? (
+        <div className="absolute right-0 bottom-0 h-full w-full sm:right-[400px] sm:bottom-[100px] sm:h-max sm:w-max z-40 space-x-2 flex  ">
           {BoxList.map((v) => {
             return <ChatBox idbox={v} key={v} />;
           })}
         </div>
-      </div>
-      <PlayingBar />
-      <NaviHomeMobile />
+      ) : (
+        <></>
+      )}
     </div>
   );
 }
@@ -160,9 +160,9 @@ function Center() {
       children = (
         <>
           <div className="h-full">
-            <RecentList/>
+            <RecentList />
             <SetionList name="Danh sách các nghệ sĩ" type="artist" />
-            <SuggestPlaylist/>
+            <SuggestPlaylist />
           </div>
         </>
       );
@@ -186,14 +186,8 @@ function Center() {
       className="flex-1 h-full overflow-y-scroll"
     >
       {page == "home" ? (
-        <div className="text-white flex justify-start space-x-1 items-center sticky top-0 z-[2] bg-black p-2">
-          <button className="px-2 py-1 rounded-2xl bg-white text-black">
-            Tất cả
-          </button>
-          <button className="px-2 py-1 rounded-2xl bg-[#2F2F2F] ">Nhạc</button>
-          <button className="px-2 py-1 rounded-2xl bg-[#2F2F2F] ">
-            Podcast
-          </button>
+        <div className="hidden sm:inline-block ">
+          <GenreInHome></GenreInHome>
         </div>
       ) : (
         <></>
@@ -221,4 +215,16 @@ function MobileBody() {
     default:
       return <Center />;
   }
+}
+
+export function GenreInHome() {
+  return (
+    <div className="text-white flex justify-start space-x-1 items-center sticky top-0 z-[2] bg-black p-2">
+      <button className="px-2 py-1 rounded-2xl bg-[#1FDC62] text-black">
+        Tất cả
+      </button>
+      <button className="px-2 py-1 rounded-2xl bg-[#2F2F2F] ">Nhạc</button>
+      <button className="px-2 py-1 rounded-2xl bg-[#2F2F2F] ">Podcast</button>
+    </div>
+  );
 }
