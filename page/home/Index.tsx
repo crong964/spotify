@@ -66,9 +66,14 @@ export default function Index() {
     window.addEventListener("resize", (ev) => {
       screem();
     });
+    window.addEventListener("load", (ev) => {
+      screem();
+    });
     return () => {
       socket.off("mess", res);
-      
+      window.removeEventListener("load", (ev) => {
+        screem();
+      });
       window.removeEventListener("resize", (ev) => {
         screem();
       });
@@ -104,7 +109,7 @@ export default function Index() {
           )}
         </div>
         <div className=" w-full  space-y-1">
-          <div className="relative h-[10%]">
+          <div className="relative min-h-max max-h-[10%]">
             <Header></Header>
           </div>
           <div className="flex h-[90%] w-full ">

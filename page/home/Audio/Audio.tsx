@@ -151,10 +151,10 @@ export default function Audio(params: Audio) {
         <Time d={duration} key={1} />
         <audio
           src={`idSong?idSong=${params.path}`}
-          onCanPlay={(e) => {
+          onCanPlay={async (e) => {
             var cu = e.currentTarget;
-            cu.play();
-            SetStop(e.currentTarget.paused);
+            await cu.play();
+            dispatch(SetStop(cu.paused));
           }}
           className="g"
           onTimeUpdate={(e) => {

@@ -60,7 +60,7 @@ export function SongInPlayList(v: SongInPlayList) {
   const isLogin = useSelector((state: RootHome) => state.rootHome.isLogin);
   const dispatch = useDispatch();
   return (
-    <div className="grid grid-cols-7 text-[13px] sm:text-[14px]  cursor-pointer sm:space-x-2 hover:bg-[#2D2D2D] text-white font-bold p-4 rounded-lg items-center">
+    <div className="grid grid-cols-7 text-[13px] sm:text-[14px]  cursor-pointer sm:space-x-2 hover:bg-[#2D2D2D] text-white font-bold sm:p-4 rounded-lg items-center">
       <div
         className="col-span-5 grid grid-cols-5"
         onClick={() => {
@@ -71,7 +71,7 @@ export function SongInPlayList(v: SongInPlayList) {
           <div className="sm:inline-block hidden">{v.stt}</div>
           <img className="size-9" src={v.SongImage} alt="" srcSet="" />
         </div>
-        <div className="col-span-3 sm:col-span-2 p-2 ">
+        <div className="col-span-4 sm:col-span-2 p-2 ">
           <div className="block">{v.SongName}</div>
           <div className="block sm:hidden text-stone-500">{v.Viewer}</div>
         </div>

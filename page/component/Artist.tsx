@@ -18,8 +18,8 @@ export function Artists(d: Artists) {
     <>
       {d.d.length > 0 ? (
         <>
-          <div className="mt-8 overflow-auto sm:overflow-hidden">
-            <div className="text-white text-[24px] my-5 font-bold">Nghệ sĩ</div>
+          <div className="mt-1 overflow-auto sm:overflow-hidden">
+            <div className="text-white text-[24px] my-1 font-bold">Nghệ sĩ</div>
             <div
               className={`flex sm:grid gap-3 overflow-x-scroll w-max sm:w-full  ${
                 Right != "" ? "grid-cols-5" : "grid-cols-7 "
