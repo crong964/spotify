@@ -26,9 +26,17 @@ export default function PlayingBar() {
     temp = JSON.parse(localStorage.getItem("song") as string);
   }
 
-  const NextSong = (Song: SongI) => {
-    localStorage.setItem("song", JSON.stringify(Song));
-    SetSong(Song);
+  const NextSong = (idSong: string) => {
+    post("/song/NextSong", { idSong: idSong }, (v: any) => {
+      if (v.err) {
+        return;
+      }
+      if (v.err) {
+        return;
+      }
+      localStorage.setItem("song", JSON.stringify(v.song));
+      SetSong(v.song);
+    });
   };
   const HandelAu = (type: "song" | "pause", d: any) => {
     switch (type) {
@@ -56,7 +64,6 @@ export default function PlayingBar() {
       (v: any) => {
         if (!v.err) {
           SetSong(v.song);
-
           localStorage.setItem("song", JSON.stringify(v.song));
         }
       }

@@ -2,12 +2,12 @@ import { PayloadAction, configureStore, createSlice } from "@reduxjs/toolkit";
 
 interface AudioRedux {
   stop: boolean;
-  typeloop: "infinity" | "onece" | "default";
+  modplay: number;
 }
 
 const initialState: AudioRedux = {
   stop: true,
-  typeloop: "default",
+  modplay: 0,
 };
 
 const audioSlice = createSlice({
@@ -17,8 +17,11 @@ const audioSlice = createSlice({
     SetStop: (state, pay: PayloadAction<boolean>) => {
       state.stop = pay.payload;
     },
+    SetModPlay: (state) => {
+      state.modplay = (state.modplay + 1) % 3;
+    },
   },
 });
 
-export const { SetStop } = audioSlice.actions;
+export const { SetStop, SetModPlay } = audioSlice.actions;
 export default audioSlice;

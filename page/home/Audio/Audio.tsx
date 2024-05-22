@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { post } from "../../config/req";
 import { useDispatch, useSelector } from "react-redux";
 import { RootHome } from "../RootRedux";
-import { SetStop } from "./AudioRedux";
+import { SetModPlay, SetStop } from "./AudioRedux";
 
 interface Audio {
   path: string;
@@ -12,6 +12,7 @@ interface Audio {
 }
 export default function Audio(params: Audio) {
   const stop = useSelector((state: RootHome) => state.audioroot.stop);
+  const modplay = useSelector((state: RootHome) => state.audioroot.modplay);
   const dispatch = useDispatch();
   const [duration, SetDuration] = useState(0);
   const [curTime, SetCurTime] = useState(0);
@@ -48,12 +49,7 @@ export default function Audio(params: Audio) {
 
         <button
           onClick={() => {
-            post("/song/NextSong", { idSong: params.id }, (v: any) => {
-              if (v.err) {
-                return;
-              }
-              params.next("song", v.song);
-            });
+            params.next("song", params.id);
           }}
         >
           <svg
@@ -99,12 +95,7 @@ export default function Audio(params: Audio) {
 
         <button
           onClick={() => {
-            post("/song/NextSong", { idSong: params.id }, (v: any) => {
-              if (v.err) {
-                return;
-              }
-              params.next("song", v.song);
-            });
+            params.next("song", params.id);
           }}
         >
           <svg
@@ -118,17 +109,7 @@ export default function Audio(params: Audio) {
             <path d="M12.7 1a.7.7 0 0 0-.7.7v5.15L2.05 1.107A.7.7 0 0 0 1 1.712v12.575a.7.7 0 0 0 1.05.607L12 9.149V14.3a.7.7 0 0 0 .7.7h1.6a.7.7 0 0 0 .7-.7V1.7a.7.7 0 0 0-.7-.7h-1.6z"></path>
           </svg>
         </button>
-
-        <button>
-          <svg
-            aria-hidden="true"
-            viewBox="0 0 16 16"
-            className="fill-white size-4"
-          >
-            <path d="M0 4.75A3.75 3.75 0 0 1 3.75 1h.75v1.5h-.75A2.25 2.25 0 0 0 1.5 4.75v5A2.25 2.25 0 0 0 3.75 12H5v1.5H3.75A3.75 3.75 0 0 1 0 9.75v-5zM12.25 2.5h-.75V1h.75A3.75 3.75 0 0 1 16 4.75v5a3.75 3.75 0 0 1-3.75 3.75H9.81l1.018 1.018a.75.75 0 1 1-1.06 1.06L6.939 12.75l2.829-2.828a.75.75 0 1 1 1.06 1.06L9.811 12h2.439a2.25 2.25 0 0 0 2.25-2.25v-5a2.25 2.25 0 0 0-2.25-2.25z"></path>
-            <path d="M9.12 8V1H7.787c-.128.72-.76 1.293-1.787 1.313V3.36h1.57V8h1.55z"></path>
-          </svg>
-        </button>
+        <ModPlay></ModPlay>
       </div>
 
       <div className="flex justify-center items-center space-x-2 ">
@@ -158,17 +139,16 @@ export default function Audio(params: Audio) {
           }}
           className="g"
           onTimeUpdate={(e) => {
-            if (
-              e.currentTarget.duration - e.currentTarget.currentTime <
-              0.001
-            ) {
-              post("/song/NextSong", { idSong: params.id }, (v: any) => {
-                if (v.err) {
-                  return;
-                }
-                params.next("song", v.song);
-              });
+            var time =
+              e.currentTarget.duration - e.currentTarget.currentTime < 0.001;
+            if (time && (modplay == 1 || modplay == 0)) {
+              params.next("song", params.id);
             }
+            if (time && modplay == 2) {
+              var mu = document.querySelector(".g") as HTMLAudioElement;
+              mu.currentTime = 0;
+            }
+
             if (timeUpdate) {
               SetCurTime(e.currentTarget.currentTime);
             }
@@ -200,5 +180,74 @@ function Time(params: Time) {
     <div className="text-[12px] text-[#a7a7a7] hidden sm:inline-block ">
       {minute}:{second < 10 ? `0${second}` : `${second}`}
     </div>
+  );
+}
+
+function ModPlay() {
+  const modplay = useSelector((state: RootHome) => state.audioroot.modplay);
+  var chilred = <></>;
+  switch (modplay) {
+    case 2:
+      chilred = (
+        <ButtonModPlay>
+          <svg
+            aria-hidden="true"
+            viewBox="0 0 16 16"
+            className="fill-green-500 size-4"
+          >
+            <path d="M0 4.75A3.75 3.75 0 0 1 3.75 1h.75v1.5h-.75A2.25 2.25 0 0 0 1.5 4.75v5A2.25 2.25 0 0 0 3.75 12H5v1.5H3.75A3.75 3.75 0 0 1 0 9.75v-5zM12.25 2.5h-.75V1h.75A3.75 3.75 0 0 1 16 4.75v5a3.75 3.75 0 0 1-3.75 3.75H9.81l1.018 1.018a.75.75 0 1 1-1.06 1.06L6.939 12.75l2.829-2.828a.75.75 0 1 1 1.06 1.06L9.811 12h2.439a2.25 2.25 0 0 0 2.25-2.25v-5a2.25 2.25 0 0 0-2.25-2.25z"></path>
+            <path d="M9.12 8V1H7.787c-.128.72-.76 1.293-1.787 1.313V3.36h1.57V8h1.55z"></path>
+          </svg>
+        </ButtonModPlay>
+      );
+      break;
+    case 1:
+      chilred = (
+        <ButtonModPlay>
+          <svg
+            data-encore-id="icon"
+            role="img"
+            aria-hidden="true"
+            viewBox="0 0 16 16"
+            className="fill-green-500 size-4"
+          >
+            <path d="M0 4.75A3.75 3.75 0 0 1 3.75 1h8.5A3.75 3.75 0 0 1 16 4.75v5a3.75 3.75 0 0 1-3.75 3.75H9.81l1.018 1.018a.75.75 0 1 1-1.06 1.06L6.939 12.75l2.829-2.828a.75.75 0 1 1 1.06 1.06L9.811 12h2.439a2.25 2.25 0 0 0 2.25-2.25v-5a2.25 2.25 0 0 0-2.25-2.25h-8.5A2.25 2.25 0 0 0 1.5 4.75v5A2.25 2.25 0 0 0 3.75 12H5v1.5H3.75A3.75 3.75 0 0 1 0 9.75v-5z"></path>
+          </svg>
+        </ButtonModPlay>
+      );
+      break;
+    default:
+      chilred = (
+        <ButtonModPlay>
+          <svg
+            data-encore-id="icon"
+            role="img"
+            aria-hidden="true"
+            viewBox="0 0 16 16"
+            className="fill-white size-4"
+          >
+            <path d="M0 4.75A3.75 3.75 0 0 1 3.75 1h8.5A3.75 3.75 0 0 1 16 4.75v5a3.75 3.75 0 0 1-3.75 3.75H9.81l1.018 1.018a.75.75 0 1 1-1.06 1.06L6.939 12.75l2.829-2.828a.75.75 0 1 1 1.06 1.06L9.811 12h2.439a2.25 2.25 0 0 0 2.25-2.25v-5a2.25 2.25 0 0 0-2.25-2.25h-8.5A2.25 2.25 0 0 0 1.5 4.75v5A2.25 2.25 0 0 0 3.75 12H5v1.5H3.75A3.75 3.75 0 0 1 0 9.75v-5z"></path>
+          </svg>
+        </ButtonModPlay>
+      );
+      break;
+  }
+  return chilred;
+}
+
+interface iButtonModPlay {
+  children: React.JSX.Element;
+}
+
+function ButtonModPlay(params: iButtonModPlay) {
+  const dispatch = useDispatch();
+  return (
+    <button
+      onClick={() => {
+        dispatch(SetModPlay());
+      }}
+    >
+      {params.children}
+    </button>
   );
 }
