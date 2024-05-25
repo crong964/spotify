@@ -31,6 +31,8 @@ import { NaviHomeMobile } from "./NaviHome/NaviHome";
 import Foot from "./Foot";
 import { SuggestPlaylist } from "../component/Playlist";
 import NaviLoveSong from "./NaviHome/NaviLoveSong";
+import CarouselSlide from "../component/CarouselSlide";
+import { version } from "process";
 
 function useIndex() {
   const [queue, SetQueue] = useState(false);
@@ -124,6 +126,23 @@ export default function Index() {
 }
 
 function Center() {
+  var color = [
+    "#E8115B",
+    "#DC148C",
+    "#006450",
+    "#8400E7",
+    "#1E3264",
+    "#E8115B",
+    "#27856A",
+    "#608108",
+    "#148A08",
+    "#D84000",
+    "#7D4B32",
+    "#E91429",
+  ];
+  var carou = color.map((v) => {
+    return <div className={`size-full bg-[${v}] `}></div>;
+  });
   const page = useSelector((state: RootHome) => state.rootHome.command.page);
   const topbarcontent = useSelector(
     (state: RootHome) => state.rootHome.topbarcontent
@@ -188,6 +207,7 @@ function Center() {
       ) : (
         <></>
       )}
+      <CarouselSlide l={carou} /> 
       <div className=" h-max relative">{children}</div>
       <Foot />
     </div>
