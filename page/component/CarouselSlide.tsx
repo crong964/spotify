@@ -1,5 +1,7 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
+import "../../public/css/index.css";
+
 var color = [
   "#E8115B",
   "#DC148C",
@@ -41,7 +43,7 @@ export default function CarouselSlide(p: iCarouselSlide) {
   }, [index, stop]);
   return (
     <div className="w-full h-[350px] overflow-hidden bg-white m-auto relative">
-       <div
+      <div
         key={key + 1}
         className="w-full h-full absolute disappearRighttoLeft "
       >
@@ -50,22 +52,28 @@ export default function CarouselSlide(p: iCarouselSlide) {
       <div key={key} className="w-full h-full absolute apearRightToLeft">
         {p.l[index]}
       </div>
-     
-      <div className="w-full absolute bottom-0 left-0 flex justify-center space-x-3 p-2">
-        <div
-          onClick={() => {
-            SetIndex(index + 1);
-            Stop(true);
-          }}
-          className="size-[20px] rounded-full bg-red-600"
-        ></div>
-        <div
-          onClick={() => {
-            SetIndex(index + 1);
-            Stop(true);
-          }}
-          className="size-[20px] rounded-full bg-blue-600"
-        ></div>
+
+      <div className="w-full absolute bottom-0 left-0 flex justify-center p-2">
+        <div className="w-max bg-white flex items-center rounded-2xl space-x-3 p-2 h-[20px]">
+          {p.l.map((v, i) => {
+            if (i == index) {
+              return (
+                <div
+                  className={`expend w-[40px] h-[15px] border border-black rounded-full bg-[${color[index]}]`}
+                ></div>
+              );
+            }
+            return (
+              <div
+                onClick={() => {
+                  SetIndex(i);
+                  Stop(true);
+                }}
+                className={`size-[15px] border border-black rounded-full bg-[${color[i]}]`}
+              ></div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
