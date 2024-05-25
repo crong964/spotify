@@ -16,7 +16,7 @@ export default function Navi(params: navi) {
       onClick={() => {
         params.onclick();
       }}
-      className="w-full h-full grid place-items-center grid-cols-1 sm:h-1/2 sm:flex sm:justify-center sm:items-center"
+      className="w-full h-full grid place-items-center grid-cols-1 sm:h-[60px] sm:flex sm:justify-center sm:items-center"
     >
       {params.curpage != params.page ? params.ortherpage : params.samepage}
       <div className="block sm:hidden">{params.namepage}</div>

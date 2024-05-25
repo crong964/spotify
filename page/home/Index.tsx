@@ -24,12 +24,13 @@ import IdGenre from "./IdGenre";
 import Right from "./Right/Right";
 import ChatBox from "./boxchat/SingleBox";
 import { socket } from "../socket/Socket";
-import { Home } from "./NaviHome/Home";
-import { SearchButtom } from "./NaviHome/SearchButtom";
+import { Home, NewHome } from "./NaviHome/Home";
+import { MobileSearchButtom, SearchButtom } from "./NaviHome/SearchButtom";
 import { SetTypeMobile } from "./NaviHome/NaviRedux";
 import { NaviHomeMobile } from "./NaviHome/NaviHome";
 import Foot from "./Foot";
 import { SuggestPlaylist } from "../component/Playlist";
+import NaviLoveSong from "./NaviHome/NaviLoveSong";
 
 function useIndex() {
   const [queue, SetQueue] = useState(false);
@@ -62,7 +63,7 @@ export default function Index() {
       dispatch(SetMess(v));
     }
     socket.on("mess", res);
-   
+
     window.addEventListener("resize", (ev) => {
       screem();
     });
@@ -86,23 +87,13 @@ export default function Index() {
         <div className="w-[80px] hidden sm:block px-1 space-y-1">
           <div className="h-[20%] bg-[#121212] rounded-lg py-2">
             <div className="h-full  ">
-              <Home />
-              <SearchButtom />
+              <NewHome />
+              <MobileSearchButtom />
             </div>
           </div>
           {isLogin ? (
             <div className="h-[80%] bg-[#121212] rounded-lg py-2 flex justify-center">
-              <div className="w-2/3 ">
-                <img
-                  onClick={() => {
-                    dispatch(NaviPage({ page: "likedsongs", param: "" }));
-                  }}
-                  src="../public/liked-songs-640.png"
-                  className="rounded-lg"
-                  alt=""
-                  srcSet=""
-                />
-              </div>
+              <NaviLoveSong />
             </div>
           ) : (
             <></>

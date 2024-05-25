@@ -53,7 +53,7 @@ export default function Foot() {
           Spotify Free
         </div>
       </div>
-      <div className="col-span-2 flex justify-end space-x-4">
+      <div className="col-span-2 flex justify-end space-x-4 my-6 sm:my-0">
         <div className=" p-2 bg-[#A4A4A4] rounded-full self-start">
           <svg
             className="size-[16px] fill-black"

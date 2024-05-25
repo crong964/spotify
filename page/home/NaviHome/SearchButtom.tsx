@@ -2,7 +2,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { NaviPage, NaviRight, RootHome } from "../RootRedux";
 import React from "react";
 import Navi from "./Navi";
-import { NaviPageMobile } from "./NaviRedux";
 
 export function SearchButtom() {
   const dispatch = useDispatch();
