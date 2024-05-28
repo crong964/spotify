@@ -13,34 +13,41 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ContainService = void 0;
-const ContainDatabse_1 = __importDefault(require("../database/ContainDatabse"));
 const ContainModel_1 = __importDefault(require("../model/ContainModel"));
+const Config_1 = __importDefault(require("../config/Config"));
 class ContainService {
-    constructor(i) {
-        this.containdatabase = i;
+    constructor() {
     }
     Add(d) {
         return __awaiter(this, void 0, void 0, function* () {
-            var check = yield this.containdatabase.Add(d);
+            var sql = " INSERT INTO contain(Song_id, PlayList_id) VALUES (?,?) ";
+            var check;
+            check = (yield Config_1.default.query(sql, [d.Song_id, d.PlayList_id]));
             return check;
         });
     }
     Get(d) {
         return __awaiter(this, void 0, void 0, function* () {
-            var check = yield this.containdatabase.Get(d);
+            var sql = ` SELECT * FROM contain WHERE Song_id=? AND PlayList_id=? `;
+            var check;
+            check = yield Config_1.default.query(sql, [d.Song_id, d.PlayList_id]);
             var ls = this.Setls(check);
             return ls.length > 0 ? ls[0] : undefined;
         });
     }
     Delete(d) {
         return __awaiter(this, void 0, void 0, function* () {
-            var check = yield this.containdatabase.Delete(d);
+            var sql = `DELETE FROM contain WHERE Song_id=? AND PlayList_id=? `;
+            var check;
+            check = yield Config_1.default.query(sql, [d.Song_id, d.PlayList_id]);
             return check;
         });
     }
     GetAllByPlayList(PlayList_id) {
         return __awaiter(this, void 0, void 0, function* () {
-            var check = yield this.containdatabase.GetAllByPlayList(PlayList_id);
+            var sql = "SELECT song.Id,song.SongName,song.Viewer,song.Singer,song.Duration,song.filePath,song.SongImage, contain.TimeCreate FROM contain,song WHERE contain.Song_ID=song.Id AND contain.PlayList_id=?";
+            var check;
+            check = yield Config_1.default.query(sql, [PlayList_id]);
             return this.Setls(check);
         });
     }
@@ -59,5 +66,5 @@ class ContainService {
     }
 }
 exports.ContainService = ContainService;
-var containService = new ContainService(new ContainDatabse_1.default());
+var containService = new ContainService();
 exports.default = containService;

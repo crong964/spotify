@@ -37,6 +37,7 @@ import { version } from "process";
 function useIndex() {
   const [queue, SetQueue] = useState(false);
   const [scroll, SetSroll] = useState(0);
+
   function Set(type: "page" | "scroll" | "playlist", va: any) {
     switch (type) {
       default:
@@ -48,6 +49,7 @@ function useIndex() {
   return { Set, queue, SetQueue, scroll };
 }
 export default function Index() {
+ 
   const { Set, queue, SetQueue, scroll } = useIndex();
   const mobiletype = useSelector((state: RootHome) => state.mobile.type);
   const BoxList = useSelector((state: RootHome) => state.rootHome.BoxList);
@@ -140,6 +142,7 @@ function Center() {
     "#7D4B32",
     "#E91429",
   ];
+  const [n, SetN] = useState(0);
   var carou = color.map((v) => {
     return <div className={`size-full bg-[${v}] `}></div>;
   });
@@ -207,7 +210,13 @@ function Center() {
       ) : (
         <></>
       )}
-      <CarouselSlide l={carou} /> 
+      <CarouselSlide l={carou} />
+      <div className="text-white">{n}</div>
+      <div onScroll={(ev)=>{
+        SetN(ev.currentTarget.scrollTop)
+      }} className="my-[100px] h-[300px] bg-white overflow-y-auto">
+        <div className="h-[2000px]"></div>
+      </div>
       <div className=" h-max relative">{children}</div>
       <Foot />
     </div>

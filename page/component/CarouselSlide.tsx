@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect, useId } from "react";
 import { useState } from "react";
 import "../../public/css/index.css";
 
@@ -22,14 +22,15 @@ interface iCarouselSlide {
 export default function CarouselSlide(p: iCarouselSlide) {
   const [index, SetIndex] = useState(0);
   const [stop, Stop] = useState(true);
-
-  var key = Math.random();
+  const [key, SetKey] = useState(0);
+  
   useEffect(() => {
     if (stop) {
       Stop(false);
       return;
     }
     var time = setTimeout(() => {
+      SetKey(Math.random())
       if (index == p.l.length) {
         SetIndex(0);
       } else {
@@ -42,7 +43,12 @@ export default function CarouselSlide(p: iCarouselSlide) {
     };
   }, [index, stop]);
   return (
-    <div className="w-full h-[350px] overflow-hidden bg-white m-auto relative">
+    <div
+      onClick={(ev) => {
+        alert(ev.currentTarget);
+      }}
+      className="w-full h-[350px] overflow-hidden bg-white m-auto relative"
+    >
       <div
         key={key + 1}
         className="w-full h-full absolute disappearRighttoLeft "
