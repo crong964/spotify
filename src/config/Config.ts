@@ -1,12 +1,19 @@
 import mysql2 from "mysql2/promise"
 import "dotenv/config"
 const LOCALHOST = process.env.LOCALHOST;
+const USER = process.env.USER
+const DATABASE = process.env.DATABASE
+const PASSWORD = process.env.PASSWORD || ""
+const PORT = process.env.PORT 
 const DockerDB = process.env.DockerDB;
+
 const pool = mysql2.createPool({
     host: DockerDB || LOCALHOST,
-    user: 'root',
-    database: 'spotify',
+    user: USER,
+    database: DATABASE,
+    password: PASSWORD,
     waitForConnections: true,
+    port: parseInt(PORT + "" || "3306"),
     connectionLimit: 10,
     maxIdle: 10, // max idle connections, the default value is the same as `connectionLimit`
     idleTimeout: 60000, // idle connections timeout, in milliseconds, the default value 60000

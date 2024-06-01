@@ -2,10 +2,24 @@ CLIENT_SECRET_SI=
 CLIENT_ID_SI=
 CLIENT_SECRET_SU=
 CLIENT_ID_SU=
+
+
 EMAIL=
 EMAILPSAPP=
 SECRET=
-HOST=
+
+LOCALHOST=
+USER=
+DATABASE=
+PASSWORD=
+
+apiKey=
+authDomain= 
+projectId= 
+storageBucket= 
+messagingSenderId= 
+appId= 1=911638813327=web=
+measurementId= 
 
 
 http://localhost:8000/

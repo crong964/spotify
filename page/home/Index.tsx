@@ -210,13 +210,7 @@ function Center() {
       ) : (
         <></>
       )}
-      <CarouselSlide l={carou} />
-      <div className="text-white">{n}</div>
-      <div onScroll={(ev)=>{
-        SetN(ev.currentTarget.scrollTop)
-      }} className="my-[100px] h-[300px] bg-white overflow-y-auto">
-        <div className="h-[2000px]"></div>
-      </div>
+      
       <div className=" h-max relative">{children}</div>
       <Foot />
     </div>
