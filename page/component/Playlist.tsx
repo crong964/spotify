@@ -44,7 +44,7 @@ export function PlayList(d: PlayList) {
         />
         {show ? (
           <div className="absolute bottom-0 right-0">
-            <PlayButtom status="pause" />
+            <PlayButtom id={d.id} page="playlist" />
           </div>
         ) : (
           <></>

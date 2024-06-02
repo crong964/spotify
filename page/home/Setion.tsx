@@ -55,7 +55,7 @@ export default function SetionData(params: SetionData) {
           <></>
         ) : (
           <div className="absolute right-0 bottom-0">
-            <PlayButtom status="pause"/>
+            <PlayButtom id={params.id} page="artise"/>
           </div>
         )}
       </div>

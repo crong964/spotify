@@ -60,12 +60,10 @@ class RecentPlaylistController {
         }
 
 
-        setTimeout(() => {
-            res.json({
-                err: false,
-                ls: ls
-            })
-        }, 10000)
+        res.json({
+            err: false,
+            ls: ls
+        })
 
     }
     async GetAllByIdUser(req: Request, res: Response) {

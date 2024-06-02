@@ -43,7 +43,7 @@ export function RecentPlaylist(params: RecentPlaylist) {
         <></>
       ) : (
         <div className="absolute right-0 bottom-0 sm:block hidden">
-          <PlayButtom status="pause" />
+          <PlayButtom id={params.ID} page={params.type} />
         </div>
       )}
     </div>

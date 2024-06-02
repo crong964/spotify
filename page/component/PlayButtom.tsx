@@ -1,14 +1,17 @@
 import React from "react";
+import { Playing, RootHome } from "../home/RootRedux";
+import { useSelector } from "react-redux";
 
-interface PlayButtom {
-  status: "play" | "pause";
-}
-export default function PlayButtom(p: PlayButtom) {
+export default function PlayButtom(p: Playing) {
+  const playing = useSelector((state: RootHome) => state.rootHome.playing);
+  const stopAudio = useSelector((state: RootHome) => state.audioroot.stop);
+  
+  
   return (
     <div className="size-12 rounded-full hover:bg-[#1ED760] bg-[#1FDC62] flex justify-center items-center">
-      {p.status == "pause" ? (
+      {stopAudio || playing.id != p.id || p.page != playing.page ? (
         <svg
-          xmlns="http://www.w3.org/2000/svg" 
+          xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
           className="size-6 fill-black"
         >

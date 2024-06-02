@@ -18,24 +18,40 @@ interface RecentSong {
   publicDate: string;
   filePath: string;
 }
+interface MenberQueue {
+  type: string;
+  cur: string;
+}
 export default function Queue() {
   const dispatch = useDispatch();
-
-  const [recentSongs, SetRecentSongs] = useState<RecentSong[]>([]);
-
-  useEffect(() => {
-    get("/rs/", (v: any) => {
-      SetRecentSongs(v.ls);
-    });
-  }, []);
+  const [navi, SetNaVi] = useState("1");
+  function Han(params: string) {
+    SetNaVi(params);
+  }
   return (
     <div className="w-full h-full text-[16px] bg-[#121212] rounded-lg  overflow-y-scroll">
       <div className="sticky bg-[#121212] top-0 left-0 flex space-x-3 h-min w-full justify-between px-3 rounded-lg py-4 ">
         <div className="flex space-x-2">
-          <div className=" cursor-pointer font-bold w-max  text-white ">
+          <div
+            onClick={() => {
+              Han("1");
+            }}
+            className={
+              `${navi == "1" ? "border-b-4 border-green-800" : ""}` +
+              " cursor-pointer font-bold w-max  text-white "
+            }
+          >
             Danh sách chờ
           </div>
-          <div className=" cursor-pointer border-b-4 border-green-800 font-bold w-max text-white ">
+          <div
+            onClick={() => {
+              Han("2");
+            }}
+            className={
+              `${navi == "2" ? "border-b-4 border-green-800" : ""}` +
+              " cursor-pointer  font-bold w-max text-white"
+            }
+          >
             Đã phát gần đây
           </div>
         </div>
@@ -56,19 +72,52 @@ export default function Queue() {
         </div>
       </div>
       <div className="bg-[#121212] text-white font-bold mt-1 rounded-lg space-y-3 pb-3">
-        <div className="px-2">Đang phát</div>
-        {recentSongs.map((v) => {
-          return (
-            <Song
-              image={v.SongImage}
-              name={v.SongName}
-              singer={v.Singer}
-              Id={v.Id}
-              key={v.Id}
-            ></Song>
-          );
-        })}
+        <RecentPlaySongs cur={navi} type="1" />
+        <SongQueueInplayList cur={navi} type="2" />
       </div>
     </div>
+  );
+}
+function RecentPlaySongs(p: MenberQueue) {
+  const [recentSongs, SetRecentSongs] = useState<RecentSong[]>([]);
+
+  useEffect(() => {
+    get("/rs/", (v: any) => {
+      SetRecentSongs(v.ls);
+    });
+  }, []);
+  return (
+    <>
+      {p.cur == p.type ? (
+        <>
+          <div className="px-2">Đang phát</div>
+          {recentSongs.map((v) => {
+            return (
+              <Song
+                image={v.SongImage}
+                name={v.SongName}
+                singer={v.Singer}
+                Id={v.Id}
+                key={v.Id}
+              ></Song>
+            );
+          })}
+        </>
+      ) : (
+        <></>
+      )}
+    </>
+  );
+}
+function SongQueueInplayList(p: MenberQueue) {
+  const [recentSongs, SetRecentSongs] = useState<RecentSong[]>([]);
+
+  useEffect(() => {
+    // get("/rs/", (v: any) => {
+    //   SetRecentSongs(v.ls);
+    // });
+  }, []);
+  return (
+    <>{p.cur == p.type ? <div className="px-2">Đang phát từ</div> : <></>}</>
   );
 }

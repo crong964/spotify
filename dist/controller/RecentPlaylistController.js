@@ -56,12 +56,10 @@ class RecentPlaylistController {
             if (check == undefined) {
                 check1 = yield RecentPlaylistService_1.default.Add(d);
             }
-            setTimeout(() => {
-                res.json({
-                    err: false,
-                    ls: ls
-                });
-            }, 10000);
+            res.json({
+                err: false,
+                ls: ls
+            });
         });
     }
     GetAllByIdUser(req, res) {

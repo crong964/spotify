@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import InforUser from "./Header/InforUser";
 import PlayButtom from "../component/PlayButtom";
 import { useDispatch, useSelector } from "react-redux";
-import { RootHome, PlaySong, SetCurName } from "./RootRedux";
+import { RootHome, PlaySong, SetCurName, SetPlaying } from "./RootRedux";
 import { Duration, get, post } from "../config/req";
 import { SongInPlayList, SongList } from "../component/Song";
 import TypeFriend from "./friend/TypeFriend";
@@ -111,6 +111,7 @@ export function ArtisePage() {
                   if (!v.err) {
                     SetStatus("play");
                     SetLoad(false);
+                    dispatch(SetPlaying({ id: idpage, page: "artise" }));
                   }
                 }
               );
@@ -118,7 +119,7 @@ export function ArtisePage() {
             }}
           >
             <div className={load ? "cursor-wait" : "cursor-pointer"}>
-              <PlayButtom status={status} />
+              <PlayButtom id={idpage} page="artise" />
             </div>
           </button>
           <div className="font-bold cursor-pointer text-[14px] border-2 border-white text-white rounded-full px-2 py-1">
@@ -150,6 +151,7 @@ interface SongList {
 }
 
 export function LikedSongListPage() {
+  const dispatch = useDispatch();
   const [songs, SetSongS] = useState<SongInPlayList[]>([]);
   useEffect(() => {
     get(`lsong/likedsongs`, (v: any) => {
@@ -185,8 +187,14 @@ export function LikedSongListPage() {
       <div className="h-[320px]"></div>
       <div className="px-4">
         <div className="flex items-center py-4 space-x-4">
-          <PlayButtom status="pause" />
-          
+          <div
+            onClick={() => {
+              dispatch(SetPlaying({ id: "", page: "likesong" }));
+            }}
+          >
+            <PlayButtom id="" page="likesong" />
+          </div>
+
           <div className="cursor-pointer">
             <svg
               className="fill-[#C7C7C7] hover:fill-white size-[45px] "
@@ -240,6 +248,7 @@ export default function PlaylistPage() {
         v.playlist.Songs = song;
         SetPlayList(v.playlist);
         dispatch(SetCurName(v.playlist.PlayListName));
+        dispatch(SetPlaying({ id: idPlayList, page: "playlist" }));
       }
     });
   }, [idPlayList]);
@@ -299,7 +308,7 @@ export default function PlaylistPage() {
             }}
           >
             <button className={load ? "cursor-wait" : "cursor-pointer"}>
-              <PlayButtom status={status} />
+              <PlayButtom id={idPlayList} page="playlist" />
             </button>
           </button>
           <div className="cursor-pointer">

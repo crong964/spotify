@@ -57,7 +57,7 @@ export default function Header() {
           <Forward />
           {topbarcontent ? (
             <button className="flex items-center text-white text-2xl font-bold space-x-2">
-              <PlayButtom status="pause" />
+              <PlayButtom id="" page="" />
               <div className="">{curName}</div>
             </button>
           ) : (

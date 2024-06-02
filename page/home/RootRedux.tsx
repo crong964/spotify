@@ -12,7 +12,10 @@ interface mess {
   ngay: string;
   type: string;
 }
-
+export interface Playing {
+  page: string;
+  id: string;
+}
 interface Commamd {
   page:
     | "genre"
@@ -27,6 +30,7 @@ interface Commamd {
   param: string;
 }
 interface Root {
+  playing: Playing;
   topbarcontent: boolean;
   curName: string;
   devicetype: "pc" | "mobile";
@@ -47,6 +51,7 @@ interface Root {
   SearchName: string;
 }
 const initialState: Root = {
+  playing: JSON.parse(localStorage.getItem("playing") || "{}"),
   topbarcontent: false,
   curName: "",
   devicetype: "pc",
@@ -180,6 +185,10 @@ var rootslice = createSlice({
     ShowTopbarContent: (state, action: PayloadAction<boolean>) => {
       state.topbarcontent = action.payload;
     },
+    SetPlaying: (state, action: PayloadAction<Playing>) => {
+      localStorage.setItem("queue", JSON.stringify(action.payload));
+      state.playing = action.payload;
+    },
   },
 });
 
@@ -211,6 +220,7 @@ export const {
   SetMess,
   RemoveRight,
   SetDeviceType,
+  SetPlaying,
 } = rootslice.actions;
 
 export default rootHome;

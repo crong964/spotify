@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 
 import { SetionList } from "./Setion";
-import RecentList, { RecentPlaylist } from "./Right/RecentPlaylist";
+import RecentList from "./Right/RecentPlaylist";
 import Genre from "./Genre";
-import Queue from "./Right/Queue";
+
 
 import PlaylistPage, { ArtisePage, LikedSongListPage } from "./PlayList";
 
@@ -24,15 +24,14 @@ import IdGenre from "./IdGenre";
 import Right from "./Right/Right";
 import ChatBox from "./boxchat/SingleBox";
 import { socket } from "../socket/Socket";
-import { Home, NewHome } from "./NaviHome/Home";
-import { MobileSearchButtom, SearchButtom } from "./NaviHome/SearchButtom";
-import { SetTypeMobile } from "./NaviHome/NaviRedux";
+import { NewHome } from "./NaviHome/Home";
+import { MobileSearchButtom } from "./NaviHome/SearchButtom";
+
 import { NaviHomeMobile } from "./NaviHome/NaviHome";
 import Foot from "./Foot";
 import { SuggestPlaylist } from "../component/Playlist";
 import NaviLoveSong from "./NaviHome/NaviLoveSong";
-import CarouselSlide from "../component/CarouselSlide";
-import { version } from "process";
+
 
 function useIndex() {
   const [queue, SetQueue] = useState(false);
