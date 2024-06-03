@@ -4,8 +4,9 @@ const LOCALHOST = process.env.LOCALHOST;
 const USER = process.env.USER
 const DATABASE = process.env.DATABASE
 const PASSWORD = process.env.PASSWORD || ""
-const PORT = process.env.PORT 
+const PORTDATABAE = process.env.PORTDATABAE 
 const DockerDB = process.env.DockerDB;
+console.log(PORTDATABAE);
 
 const pool = mysql2.createPool({
     host: DockerDB || LOCALHOST,
@@ -13,7 +14,7 @@ const pool = mysql2.createPool({
     database: DATABASE,
     password: PASSWORD,
     waitForConnections: true,
-    port: parseInt(PORT + "" || "3306"),
+    port: parseInt(PORTDATABAE + "" || "3306"),
     connectionLimit: 10,
     maxIdle: 10, // max idle connections, the default value is the same as `connectionLimit`
     idleTimeout: 60000, // idle connections timeout, in milliseconds, the default value 60000

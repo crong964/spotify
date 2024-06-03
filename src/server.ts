@@ -113,15 +113,8 @@ app.get("/dashboard", (req, res) => {
 app.use("/auth", Account)
 app.get("/idSong", (req, res) => {
     var start = parseInt(req.headers.range?.replace("bytes=", "").split("-")[0] || "0")
-
-
-
     var music = req.cookies.music
     var idSong = req.query.idSong as string
-
-
-
-
     var id = req.cookies.id
     if (idSong == undefined) {
         res.end()
@@ -135,7 +128,7 @@ app.get("/idSong", (req, res) => {
     try {
         var pathg = path.join(process.cwd(), "public/music", idSong)
         var videoSize = fs.statSync(pathg).size
-        var chuck = 10000
+        var chuck = 160000
         var end = Math.min(start + chuck, videoSize - 1)
 
         var s = fs.createReadStream(pathg, {
@@ -160,18 +153,11 @@ app.get("/idSong", (req, res) => {
     }
 })
 app.get("/s", (req, res) => {
-    var start = req.headers.range?.replace("bytes=", "").split("-")[0] || "0"
-
 
     var namestrong = req.query.id as string
     try {
         var pathg = path.join(process.cwd(), "public/music", namestrong)
-        var end = parseInt(start) + 1000
-
-        var s = fs.createReadStream(pathg, {
-            start: parseInt(start),
-            highWaterMark: 1000, end: end
-        })
+        var s = fs.createReadStream(pathg)
         s.on("error", (err) => {
         })
         fs.stat(pathg, (err, stats) => {
@@ -180,10 +166,10 @@ app.get("/s", (req, res) => {
                 res.end()
                 return
             }
-            res.setHeader("Content-Range", `bytes ${start}-${(parseInt(start) + 1000 > stats.size) ? stats.size : start + 1000}/${stats.size}`)
-            res.setHeader("Content-Length", (parseInt(start) + 1000))
-
+            res.setHeader("Content-Range", `bytes 0-${stats.size}/${stats.size}`)
+            res.setHeader("Content-Length", stats.size)
             res.setHeader("Accept-Ranges", "bytes")
+            res.statusCode = 206
             s.pipe(res)
 
         })
@@ -210,7 +196,7 @@ app.get("/admin", ADMIN, (req, res) => {
 })
 
 httpServer.listen(8000, () => {
-    console.log("http://localhost:8000/");
+
     console.log("http://localhost:8000/");
     console.log("http://localhost:8000/swagger");
     console.log("http://localhost:8000/gg");
