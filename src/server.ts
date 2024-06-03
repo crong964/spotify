@@ -112,9 +112,13 @@ app.get("/dashboard", (req, res) => {
 
 app.use("/auth", Account)
 app.get("/idSong", (req, res) => {
-    var start = req.headers.range?.replace("bytes=", "").split("-")
+    var start = parseInt(req.headers.range?.replace("bytes=", "").split("-")[0] || "0")
+
+
+
     var music = req.cookies.music
     var idSong = req.query.idSong as string
+
 
 
 
@@ -130,23 +134,23 @@ app.get("/idSong", (req, res) => {
     }
     try {
         var pathg = path.join(process.cwd(), "public/music", idSong)
+        var videoSize = fs.statSync(pathg).size
+        var chuck = 10000
+        var end = Math.min(start + chuck, videoSize - 1)
 
-        var s = fs.createReadStream(pathg)
+        var s = fs.createReadStream(pathg, {
+            start, end
+        })
         s.on("error", (err) => {
         })
-        fs.stat(pathg, (err, stats) => {
-            if (err) {
-                console.log(err);
-                res.end()
-                return
-            }
-            res.setHeader("Content-Range", `bytes 0 -${stats.size}/${stats.size}`)
-            res.setHeader("Content-Length", stats.size)
-            res.setHeader("Content-Type", "audio/mp3")
-            res.setHeader("Accept-Ranges", "bytes")
-            s.pipe(res)
 
+        res.writeHead(206, {
+            "accept-ranges": "bytes",
+            "content-range": `bytes ${start}-${end}/${videoSize}`,
+            "content-type": "audio/mp3",
+            "content-length": end - start + 1
         })
+        s.pipe(res)
     } catch (error) {
         console.log(error);
 
@@ -156,12 +160,18 @@ app.get("/idSong", (req, res) => {
     }
 })
 app.get("/s", (req, res) => {
-    var start = req.headers.range?.replace("bytes=", "").split("-")
+    var start = req.headers.range?.replace("bytes=", "").split("-")[0] || "0"
+
+
     var namestrong = req.query.id as string
     try {
         var pathg = path.join(process.cwd(), "public/music", namestrong)
+        var end = parseInt(start) + 1000
 
-        var s = fs.createReadStream(pathg)
+        var s = fs.createReadStream(pathg, {
+            start: parseInt(start),
+            highWaterMark: 1000, end: end
+        })
         s.on("error", (err) => {
         })
         fs.stat(pathg, (err, stats) => {
@@ -170,9 +180,9 @@ app.get("/s", (req, res) => {
                 res.end()
                 return
             }
-            res.setHeader("Content-Range", `bytes 0 -${stats.size}/${stats.size}`)
-            res.setHeader("Content-Length", stats.size)
-            res.setHeader("Content-Type", "audio/mp3")
+            res.setHeader("Content-Range", `bytes ${start}-${(parseInt(start) + 1000 > stats.size) ? stats.size : start + 1000}/${stats.size}`)
+            res.setHeader("Content-Length", (parseInt(start) + 1000))
+
             res.setHeader("Accept-Ranges", "bytes")
             s.pipe(res)
 
