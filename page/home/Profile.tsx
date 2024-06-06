@@ -24,7 +24,7 @@ export default function Profile() {
     ChanalName: "",
   });
   useEffect(() => {
-    get("/user", (v: any) => {
+    get("user", (v: any) => {
       if (!v.err) {
         SetProFile(v.u);
       }

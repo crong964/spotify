@@ -1,11 +1,12 @@
 import React from "react";
-import { useDispatch } from "react-redux";
-import { Page } from "./Redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Page, RootState } from "./Redux";
 import Dropdown from "./componnt/Dropdow";
+import { NavLink, Outlet } from "react-router-dom";
 
 export default function Navi() {
   const dispatch = useDispatch();
-
+  const page = useSelector((state: RootState) => state.navi.page);
   return (
     <aside className="relative bg-sidebar h-screen w-64 hidden sm:block shadow-xl">
       <div className="p-6">
@@ -14,48 +15,59 @@ export default function Navi() {
         </a>
       </div>
       <nav className="text-white text-base font-semibold pt-3">
-        <a
-          onClick={() => {
-            dispatch(Page("genre"));
-          }}
-          className="flex items-center  hover:opacity-100 text-white py-4 pl-6 nav-item cursor-pointer "
-        >
-          <i className="fas fa-sticky-note mr-3"></i>
-          Thể loại
-        </a>
-
-        <a
-          onClick={() => {
-            dispatch(Page("songlist"));
-          }}
-          className="flex items-center active-nav-link text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item cursor-pointer"
+        <NavLink
+          to="/songlist"
+          className={({ isActive, isPending }) =>
+            [isActive ? "active-nav-link" : "", ""].join(
+              " flex items-center hover:opacity-100 text-white py-4 pl-6 nav-item cursor-pointer"
+            )
+          }
         >
           <i className="fas fa-tachometer-alt mr-3"></i>
           Danh sách nhạc
-        </a>
+        </NavLink>
+        <NavLink
+          to="/genre"
+          end
+          className={({ isActive, isPending }) =>
+            [isActive ? "active-nav-link" : "", ""].join(
+              " flex items-center hover:opacity-100 text-white py-4 pl-6 nav-item cursor-pointer"
+            )
+          }
+        >
+          <i className="fas fa-sticky-note mr-3"></i>
+          Thê loại
+        </NavLink>
+
         <Dropdown>
           <a className="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item cursor-pointer">
             <i className="fas fa-align-left mr-3"></i>
             Playlist
           </a>
-          <a
-            onClick={() => {
-              dispatch(Page("playlists"));
-            }}
-            className="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item cursor-pointer"
+          <NavLink
+            to="/playlist"
+            end
+            className={({ isActive, isPending }) =>
+              [isActive ? "active-nav-link" : "", ""].join(
+                " flex items-center hover:opacity-100 text-white py-4 pl-6 nav-item cursor-pointer"
+              )
+            }
           >
             <div className="mr-4"></div>
             Danh sách Playlist
-          </a>
-          <a
-            onClick={() => {
-              dispatch(Page("playlist"));
-            }}
-            className="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item cursor-pointer"
+          </NavLink>
+          <NavLink
+            to="/playlist/add"
+            end
+            className={({ isActive, isPending }) =>
+              [isActive ? "active-nav-link" : "", ""].join(
+                " flex items-center hover:opacity-100 text-white py-4 pl-6 nav-item cursor-pointer"
+              )
+            }
           >
             <div className="mr-4"></div>
             Thêm mới play list
-          </a>
+          </NavLink>
         </Dropdown>
         <Dropdown>
           <div className="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item cursor-pointer">
@@ -73,26 +85,44 @@ export default function Navi() {
             </svg>
             Danh sách tài khoản
           </div>
-          <div
-            onClick={() => {
-              dispatch(Page("userlist"));
-            }}
-            className="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item cursor-pointer"
+          <NavLink
+            to="/user/userlist"
+            end
+            className={({ isActive, isPending }) =>
+              [isActive ? "active-nav-link" : "", ""].join(
+                " flex items-center hover:opacity-100 text-white py-4 pl-6 nav-item cursor-pointer"
+              )
+            }
           >
             <div className="mr-6"></div>
             Danh sách người dùng
-          </div>
-          <div
-            onClick={() => {
-              dispatch(Page("employls"));
-            }}
-            className="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item cursor-pointer"
+          </NavLink>
+          <NavLink
+            to="/user/employls"
+            end
+            className={({ isActive, isPending }) =>
+              [isActive ? "active-nav-link" : "", ""].join(
+                " flex items-center hover:opacity-100 text-white py-4 pl-6 nav-item cursor-pointer"
+              )
+            }
           >
             <div className="mr-6"></div>
             Danh sách nhân viên
-          </div>
-        </Dropdown>
+          </NavLink>
 
+          <NavLink
+            to="/user/artist"
+            end
+            className={({ isActive, isPending }) =>
+              [isActive ? "active-nav-link" : "", ""].join(
+                " flex items-center hover:opacity-100 text-white py-4 pl-6 nav-item cursor-pointer"
+              )
+            }
+          >
+            <div className="mr-6"></div>
+            Quản lý ca sĩ
+          </NavLink>
+        </Dropdown>
         <a
           href="/auth/logout"
           className="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item cursor-pointer"

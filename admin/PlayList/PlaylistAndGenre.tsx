@@ -65,7 +65,12 @@ function PlayList(d: PlayList) {
         ) : (
           <></>
         )}
-        <img src={d.ImagePath} className="rounded-2xl" alt="" srcSet="" />
+        <img
+          src={d.ImagePath}
+          className="rounded-2xl"
+          alt=""
+          srcSet=""
+        />
       </div>
       <div className="text-[16px] ">{d.PlayListName}</div>
     </div>
@@ -77,7 +82,7 @@ function PlayLists() {
   const [playlists, SetPlaylists] = useState<PlayList[]>([]);
   useEffect(() => {
     post(
-      "/playlist/GetAllPlayList",
+      "playlist/GetAllPlayList",
       { Genre_ID: slectGenre[floor] },
       (v: any) => {
         SetPlaylists(v.ls);

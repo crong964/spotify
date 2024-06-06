@@ -16,10 +16,12 @@ interface SongI {
 }
 export default function PlayingBar() {
   const stop = useSelector((state: RootHome) => state.audioroot.stop);
-  const dispatch = useDispatch();
-
   const idsong = useSelector((state: RootHome) => state.rootHome.idSong);
   const isLogin = useSelector((state: RootHome) => state.rootHome.isLogin);
+
+  const lsSong = useSelector((state: RootHome) => state.audioroot.lsSong);
+  const mark = useSelector((state: RootHome) => state.audioroot.mark);
+  const dispatch = useDispatch();
 
   var temp: SongI | undefined = undefined;
   if (localStorage.getItem("song") != null) {
@@ -27,16 +29,21 @@ export default function PlayingBar() {
   }
 
   const NextSong = (idSong: string) => {
-    post("/song/NextSong", { idSong: idSong }, (v: any) => {
-      if (v.err) {
+    if (lsSong.length < mark) {
+      post("/song/NextSong", { idSong: idSong }, (v: any) => {
+        if (v.err) {
+          return;
+        }
+        if (v.err) {
+          return;
+        }
+        localStorage.setItem("song", JSON.stringify(v.song));
+        SetSong(v.song);
         return;
-      }
-      if (v.err) {
-        return;
-      }
-      localStorage.setItem("song", JSON.stringify(v.song));
-      SetSong(v.song);
-    });
+      });
+      localStorage.setItem("song", JSON.stringify(lsSong[mark]));
+      SetSong(lsSong[mark] as any);
+    }
   };
   const HandelAu = (type: "song" | "pause", d: any) => {
     switch (type) {

@@ -18,7 +18,7 @@ export default function SongList() {
   const slectGenre = useSelector((state: RootState) => state.navi.slectGenre);
   const floor = useSelector((state: RootState) => state.navi.floor);
   useEffect(() => {
-    post("/song/GetSongByGenre", { idGenre: slectGenre[floor] }, (v: any) => {
+    post("song/GetSongByGenre", { idGenre: slectGenre[floor] }, (v: any) => {
       SetSongs(v.ls);
     });
   }, [slectGenre[floor]]);
@@ -60,7 +60,12 @@ export function Song(d: Song) {
     >
       <div className="col-span-3 flex items-center space-x-2">
         <div className="">{d.stt}</div>
-        <img className="size-9" src={d.SongImage} alt="" srcSet="" />
+        <img
+          className="size-9"
+          src={d.SongImage}
+          alt=""
+          srcSet=""
+        />
       </div>
       <div className="col-span-2">{d.SongName}</div>
       <div className="col-span-1 flex items-center space-x-4">

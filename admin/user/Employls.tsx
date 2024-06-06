@@ -41,7 +41,7 @@ function Employ(d: User) {
             if (!confirm("bạn muốn thức hiện ko")) {
               return;
             }
-            post("/admin/UserRouteAdmin/deE", { id: d.id }, (v: any) => {
+            post("admin/UserRouteAdmin/deE", { id: d.id }, (v: any) => {
               alert(v.err);
               dp(SetLoad());
             });
@@ -66,7 +66,7 @@ export default function Employls() {
     SetAdd(true);
   }
   useEffect(() => {
-    post("/admin/UserRouteAdmin/getE", {}, (v: any) => {
+    post("admin/UserRouteAdmin/getE", {}, (v: any) => {
       SetUserList(v.ls);
     });
   }, [load]);
@@ -225,7 +225,7 @@ export function AddE() {
 
         <button
           onClick={() => {
-            post("/admin/UserRouteAdmin/addE", data, (v: any) => {
+            post("admin/UserRouteAdmin/addE", data, (v: any) => {
               alert(v.err);
               dp(Page("employls"));
               dp(SetLoad());
@@ -253,7 +253,7 @@ function EditE(d: EditE) {
   });
 
   useEffect(() => {
-    get(`/admin/UserRouteAdmin/edit/${d.id}`, (v: any) => {
+    get(`admin/UserRouteAdmin/edit/${d.id}`, (v: any) => {
       SetData(v.data);
     });
   }, [d.id]);
@@ -325,7 +325,7 @@ function EditE(d: EditE) {
 
         <button
           onClick={() => {
-            post("/admin/UserRouteAdmin/edit", data, (v: any) => {
+            post("admin/UserRouteAdmin/edit", data, (v: any) => {
               alert(v.err);
               dp(Page("employls"));
               dp(SetLoad());

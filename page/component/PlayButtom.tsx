@@ -1,14 +1,28 @@
-import React from "react";
-import { Playing, RootHome } from "../home/RootRedux";
-import { useSelector } from "react-redux";
+import React, { useState } from "react";
+import { Playing, RootHome, SetPlaying } from "../home/RootRedux";
+import { useDispatch, useSelector } from "react-redux";
+import { post } from "../config/req";
+import { SetSong } from "../home/Audio/AudioRedux";
 
 export default function PlayButtom(p: Playing) {
   const playing = useSelector((state: RootHome) => state.rootHome.playing);
   const stopAudio = useSelector((state: RootHome) => state.audioroot.stop);
-  
-  
+  const [status, SetStatus] = useState<"play" | "pause">("pause");
+  const [load, SetLoad] = useState(false);
+  const dispatch = useDispatch();
   return (
-    <div className="size-12 rounded-full hover:bg-[#1ED760] bg-[#1FDC62] flex justify-center items-center">
+    <div
+      onClick={() => {
+        post("recentPlaylist/play", { id: p.id, type: p.page }, (v: any) => {
+          if (!v.err) {
+            SetStatus("play");
+            dispatch(SetPlaying({ id: p.id, page: p.page }));
+            dispatch(SetSong(v.ls));
+          }
+        });
+      }}
+      className="size-12 rounded-full hover:bg-[#1ED760] bg-[#1FDC62] flex justify-center items-center"
+    >
       {stopAudio || playing.id != p.id || p.page != playing.page ? (
         <svg
           xmlns="http://www.w3.org/2000/svg"

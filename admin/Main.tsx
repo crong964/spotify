@@ -1,4 +1,5 @@
 import React from "react";
+import { Outlet } from "react-router-dom";
 
 interface Main {
   children: React.JSX.Element;
@@ -11,6 +12,7 @@ export default function Main(d: Main) {
       <div className="w-full  relative bg-[#F6F6F6] overflow-x-scroll overflow-y-auto h-full">
         {d.children}
       </div>
+      <Outlet />
     </main>
   );
 }

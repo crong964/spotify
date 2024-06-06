@@ -24,7 +24,7 @@ var initialState: CounterState = {
   slectGenre: { 0: 0 },
   value: 0,
   load: false,
-  page: "",
+  page: "genre",
   SelectList: {},
   idPlaylistEdit: "",
 };
@@ -52,6 +52,7 @@ export const counterSlice = createSlice({
         | "playlistedit"
         | "userlist"
         | "employls"
+        | "artist"
       >
     ) => {
       state.page = action.payload;

@@ -6,24 +6,18 @@ const SECRET = process.env.SECRET;
 function ADMIN(req, res, next) {
     var apikey = req.headers.apikey || req.cookies.apikey;
     if (!apikey) {
-        res.status(403).send({
-            mess: "ko có quyền "
-        });
+        res.redirect("/auth");
         return;
     }
     var decode = (0, Helper_1.VertifyJWT)(apikey);
     if (decode == undefined) {
-        res.status(403).send({
-            mess: "ko có quyền "
-        });
+        res.redirect("/auth");
         return;
     }
     if (decode.role == "master") {
         next();
         return;
     }
-    res.status(403).send({
-        mess: "ko có quyền "
-    });
+    res.redirect("/auth");
 }
 exports.default = ADMIN;

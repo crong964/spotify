@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { post } from "../../config/req";
 import { useDispatch, useSelector } from "react-redux";
 import { RootHome } from "../RootRedux";
-import { SetModPlay, SetStop } from "./AudioRedux";
+import { NextSong, SetModPlay, SetStop } from "./AudioRedux";
 
 interface Audio {
   path: string;
@@ -50,6 +50,7 @@ export default function Audio(params: Audio) {
         <button
           onClick={() => {
             params.next("song", params.id);
+            dispatch(NextSong(-1));
           }}
         >
           <svg
@@ -96,6 +97,7 @@ export default function Audio(params: Audio) {
         <button
           onClick={() => {
             params.next("song", params.id);
+            dispatch(NextSong(1));
           }}
         >
           <svg

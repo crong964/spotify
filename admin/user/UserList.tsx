@@ -22,7 +22,7 @@ export default function UserList() {
   const [vertify, SetVertify] = useState("");
   const [userList, SetUserList] = useState<User[]>([]);
   useEffect(() => {
-    post("/admin/UserRouteAdmin/userlist", { Vertify: vertify }, (v: any) => {
+    post("admin/UserRouteAdmin/userlist", { Vertify: vertify }, (v: any) => {
       SetUserList(v.ls);
     });
   }, [vertify]);
@@ -79,7 +79,7 @@ interface Buttom {
 function Buttom(p: Buttom) {
   return (
     <div
-      className={`flex-1 p-1  rounded-2xl text-center text-[24px] cursor-pointer ${
+      className={`flex-1 p-1  rounded-2xl text-center text-[20px] cursor-pointer ${
         p.curva == p.va ? "bg-[#3D68FF] text-white" : ""
       }`}
       onClick={() => {

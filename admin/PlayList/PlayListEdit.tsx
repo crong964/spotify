@@ -178,7 +178,7 @@ function PlayListFormData() {
             form.set(key, element);
           }
           form.set("Genre_ID", slectGenre[floor]);
-          post("/playlist/UpdatePlayList", form, (v: any) => {
+          post("playlist/UpdatePlayList", form, (v: any) => {
             if (!v.err) {
               dispatch(Page("songlist"));
               dispatch(ReSetSelectSong());
@@ -248,7 +248,7 @@ function OldSong(d: OldSong) {
           <svg
             onClick={() => {
               post(
-                "/contain/delete",
+                "contain/delete",
                 { Song_id: d.Id, PlayList_id: d.idPlaylist },
                 (v: any) => {
                   if (!v.err) {
@@ -269,7 +269,7 @@ function OldSong(d: OldSong) {
           <svg
             onClick={() => {
               post(
-                "/contain/add",
+                "contain/add",
                 { Song_id: d.Id, PlayList_id: d.idPlaylist },
                 (v: any) => {
                   if (!v.err) {

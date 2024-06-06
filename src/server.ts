@@ -30,6 +30,7 @@ import "dotenv/config"
 import { VertifyJWT } from "./config/Helper";
 import jwt, { JwtPayload } from "jsonwebtoken"
 import RecentPlaylistRoute from "./route/RecentPlaylistRoute";
+
 const secret = process.env.SECRET || "1"
 const app = express()
 const httpServer = createServer(app);
@@ -83,7 +84,7 @@ app.use((req, res, next) => {
     }
     next()
 })
-app.use(bodyParser.urlencoded({ extended: false, limit: "500mb" }))
+app.use(bodyParser.urlencoded({ extended: false, limit: "50mb" }))
 app.use(bodyParser.json())
 
 
@@ -191,7 +192,7 @@ app.use("/genre", ADMIN, GenreRouteAdmin)
 app.use("/playlist", ADMIN, PlayListRouteAdmin)
 app.use("/contain", ADMIN, ContainRouteAdmin)
 app.use("/admin/UserRouteAdmin", ADMIN, UserRouteAdmin)
-app.get("/admin", ADMIN, (req, res) => {
+app.get(/admin*/, ADMIN, (req, res) => {
     res.sendFile(join(process.cwd(), "web/admin.html"))
 })
 

@@ -20,5 +20,10 @@ class PlayListModel extends BaseModel_1.default {
         this.Status = "";
         this.Discripition = "";
     }
+    setAll(d) {
+        super.setAll(d);
+        this.ImagePath = this.ImagePath || "public/avatar/avatar.jpg";
+        this.ImagePath = this.ImagePath.indexOf("http") >= 0 ? this.ImagePath : `/${this.ImagePath}`;
+    }
 }
 exports.PlayListModel = PlayListModel;

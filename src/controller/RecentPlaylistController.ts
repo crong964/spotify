@@ -59,7 +59,6 @@ class RecentPlaylistController {
             check1 = await recentPlaylistService.Add(d)
         }
 
-
         res.json({
             err: false,
             ls: ls

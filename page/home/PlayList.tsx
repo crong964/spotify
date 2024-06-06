@@ -3,7 +3,7 @@ import InforUser from "./Header/InforUser";
 import PlayButtom from "../component/PlayButtom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootHome, PlaySong, SetCurName, SetPlaying } from "./RootRedux";
-import { Duration, get, post } from "../config/req";
+import { get, post } from "../config/req";
 import { SongInPlayList, SongList } from "../component/Song";
 import TypeFriend from "./friend/TypeFriend";
 
@@ -45,12 +45,11 @@ export function ArtisePage() {
   const [artise, SetaAtist] = useState<artise>();
   const [isfriend, SetIsfriend] = useState<"-1" | "0" | "1" | "2">();
   const [songs, SetSongS] = useState<SongInPlayList[]>([]);
-  const [status, SetStatus] = useState<"play" | "pause">("pause");
-  const [load, SetLoad] = useState(false);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
-    get(`/user/artisepage/${idpage}`, (v: any) => {
+    get(`user/artisepage/${idpage}`, (v: any) => {
       SetIsfriend(v.isfriend);
       SetaAtist(v.ls);
 
@@ -99,29 +98,7 @@ export function ArtisePage() {
       <div className="h-[320px]"></div>
       <div className="px-4">
         <div className="flex items-center py-4 space-x-4">
-          <button
-            onClick={() => {
-              if (load == true) {
-                return;
-              }
-              post(
-                "recentPlaylist/play",
-                { id: idpage, type: "artise" },
-                (v: any) => {
-                  if (!v.err) {
-                    SetStatus("play");
-                    SetLoad(false);
-                    dispatch(SetPlaying({ id: idpage, page: "artise" }));
-                  }
-                }
-              );
-              SetLoad(true);
-            }}
-          >
-            <div className={load ? "cursor-wait" : "cursor-pointer"}>
-              <PlayButtom id={idpage} page="artise" />
-            </div>
-          </button>
+          <PlayButtom id={idpage} page="artise" />
           <div className="font-bold cursor-pointer text-[14px] border-2 border-white text-white rounded-full px-2 py-1">
             Theo dõi
           </div>

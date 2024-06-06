@@ -105,7 +105,7 @@ app.use((req, res, next) => {
     }
     next();
 });
-app.use(body_parser_1.default.urlencoded({ extended: false, limit: "500mb" }));
+app.use(body_parser_1.default.urlencoded({ extended: false, limit: "50mb" }));
 app.use(body_parser_1.default.json());
 app.get("/", (req, res) => {
     var apikey = req.headers.apikey || req.cookies.apikey;
@@ -202,7 +202,7 @@ app.use("/genre", admin_1.default, GenreRouteAdmin_1.default);
 app.use("/playlist", admin_1.default, PlayListRouteAdmin_1.default);
 app.use("/contain", admin_1.default, ContainRouteAdmin_1.default);
 app.use("/admin/UserRouteAdmin", admin_1.default, UserRouteAdmin_1.default);
-app.get("/admin", admin_1.default, (req, res) => {
+app.get(/admin*/, admin_1.default, (req, res) => {
     res.sendFile((0, path_1.join)(process.cwd(), "web/admin.html"));
 });
 httpServer.listen(8000, () => {

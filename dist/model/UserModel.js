@@ -24,6 +24,7 @@ class UserModel extends BaseModel_1.default {
         super.setAll(d);
         this.Password = "";
         this.pathImage = this.pathImage || "public/avatar/avatar.jpg";
+        this.pathImage = this.pathImage.indexOf("http") >= 0 ? this.pathImage : `/${this.pathImage}`;
     }
 }
 exports.default = UserModel;

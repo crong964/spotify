@@ -175,7 +175,7 @@ function Genre(params: Genre) {
           <svg
             onClick={() => {
               post(
-                "/genre/UpdateName",
+                "genre/UpdateName",
                 {
                   Name: name,
                   id: params.Id,
@@ -225,7 +225,7 @@ function Genre(params: Genre) {
           <svg
             onClick={() => {
               post(
-                "/genre/Delete",
+                "genre/Delete",
                 {
                   id: params.Id,
                 },
