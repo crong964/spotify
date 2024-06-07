@@ -4,7 +4,7 @@ export class PlayListModel extends BaseModel {
     id: string
     User_id: string
     Genre_ID: string
-    Type: number
+    Type: string
     ImagePath: string
     PlayListName: string
     Likes: number
@@ -17,7 +17,7 @@ export class PlayListModel extends BaseModel {
         this.id = ""
         this.User_id = ""
         this.Genre_ID = ""
-        this.Type = 0
+        this.Type = "nono"
         this.ImagePath = ""
         this.PlayListName = ""
         this.Likes = 0

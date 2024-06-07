@@ -3,13 +3,15 @@ import React from "react";
 
 export function post(url: string, body: any, cb: any) {
   axios
-    .post(url, body,{
-      headers:{
-        "type":"web"
-      }
+    .post(url, body, {
+      headers: {
+        type: "web",
+      },
     })
     .then((v) => {
-      cb(v.data);
+      if (v.data) {
+        cb(v.data);
+      }
     })
     .catch((v) => {
       cb(null);

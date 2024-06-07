@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { NaviRight, RootHome } from "../RootRedux";
 import Audio from "./Audio";
 import { post } from "../../config/req";
-import { SetStop } from "./AudioRedux";
+import { NextSong, SetSongs, SetStop } from "./AudioRedux";
 
 interface SongI {
   Id: string;
@@ -28,49 +28,29 @@ export default function PlayingBar() {
     temp = JSON.parse(localStorage.getItem("song") as string);
   }
 
-  const NextSong = (idSong: string) => {
-    if (lsSong.length < mark) {
-      post("/song/NextSong", { idSong: idSong }, (v: any) => {
-        if (v.err) {
-          return;
-        }
-        if (v.err) {
-          return;
-        }
-        localStorage.setItem("song", JSON.stringify(v.song));
-        SetSong(v.song);
+  const RandomNext = (n: number) => {
+    if (mark + n >= 0 && mark + n < lsSong.length) {
+      dispatch(NextSong(n));
+      return;
+    }
+
+    post("song/NextSong", { idSong: lsSong[mark].Id }, (v: any) => {
+      if (v.err) {
         return;
-      });
-      localStorage.setItem("song", JSON.stringify(lsSong[mark]));
-      SetSong(lsSong[mark] as any);
-    }
+      }
+      localStorage.setItem("song", JSON.stringify(v.song));
+      dispatch(SetSongs([v.song]));
+    });
   };
-  const HandelAu = (type: "song" | "pause", d: any) => {
-    switch (type) {
-      case "song":
-        NextSong(d);
-        break;
-      default:
-        break;
-    }
-  };
-  const [song, SetSong] = useState<SongI>({
-    Duration: temp?.Duration ? temp.Duration : "",
-    filePath: temp?.filePath ? temp.filePath : "",
-    Id: temp?.Id ? temp.Id : "",
-    SongImage: temp?.SongImage ? temp.SongImage : "",
-    Singer: temp?.Singer ? temp.Singer : "",
-    SongName: temp?.SongName ? temp.SongName : "",
-  });
   useEffect(() => {
     post(
-      "/song/get",
+      "song/get",
       {
         idsong: idsong,
       },
       (v: any) => {
-        if (!v.err) {
-          SetSong(v.song);
+        if (v && !v.err) {
+          dispatch(SetSongs([v.song]));
           localStorage.setItem("song", JSON.stringify(v.song));
         }
       }
@@ -80,10 +60,10 @@ export default function PlayingBar() {
     <div className="w-full bg-[#121212] h-[10%] sm:h-[12%] grid items-center grid-cols-1 sm:grid-cols-4 mt-0 ">
       <div className="flex sm:inline-block justify-between items-center px-2 sm:px-0">
         <Song
-          Id={song.Id}
-          image={song.SongImage}
-          name={song.SongName}
-          singer={song.Singer}
+          Id={lsSong[mark]?.Id || "0"}
+          image={lsSong[mark]?.SongImage}
+          name={lsSong[mark]?.SongName}
+          singer={lsSong[mark]?.Singer}
         />
         <div>
           <button
@@ -119,7 +99,11 @@ export default function PlayingBar() {
           </button>
         </div>
       </div>
-      <Audio path={song.filePath} next={HandelAu} id={song.Id} />
+      <Audio
+        RandomNext={RandomNext}
+        path={lsSong[mark]?.filePath}
+        id={lsSong[mark]?.Id}
+      />
       <div className="hidden sm:flex space-x-2  justify-center items-center">
         {isLogin ? (
           <>

@@ -2,22 +2,33 @@ import React, { useState } from "react";
 import { Playing, RootHome, SetPlaying } from "../home/RootRedux";
 import { useDispatch, useSelector } from "react-redux";
 import { post } from "../config/req";
-import { SetSong } from "../home/Audio/AudioRedux";
+import { SetSongs, SetStop } from "../home/Audio/AudioRedux";
 
 export default function PlayButtom(p: Playing) {
   const playing = useSelector((state: RootHome) => state.rootHome.playing);
   const stopAudio = useSelector((state: RootHome) => state.audioroot.stop);
-  const [status, SetStatus] = useState<"play" | "pause">("pause");
+
   const [load, SetLoad] = useState(false);
   const dispatch = useDispatch();
   return (
     <div
       onClick={() => {
+        if (playing.id == p.id && p.page == playing.page) {
+          dispatch(SetStop(!stopAudio));
+          var mu = document.querySelector(".g") as HTMLAudioElement;
+          if (mu.paused) {
+            mu.play();
+            dispatch(SetStop(!stopAudio));
+          } else {
+            mu.pause();
+            dispatch(SetStop(!stopAudio));
+          }
+          return;
+        }
         post("recentPlaylist/play", { id: p.id, type: p.page }, (v: any) => {
           if (!v.err) {
-            SetStatus("play");
             dispatch(SetPlaying({ id: p.id, page: p.page }));
-            dispatch(SetSong(v.ls));
+            dispatch(SetSongs(v.ls));
           }
         });
       }}

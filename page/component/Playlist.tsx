@@ -27,16 +27,16 @@ export function PlayList(d: PlayList) {
         onMouseLeave={() => {
           SetShow(false);
         }}
-        onClick={() => {
-          dispatch(
-            NaviPage({
-              page: "playlist",
-              param: d.id,
-            })
-          );
-        }}
       >
         <img
+          onClick={() => {
+            dispatch(
+              NaviPage({
+                page: "playlist",
+                param: d.id,
+              })
+            );
+          }}
           src={d.ImagePath}
           className="rounded-2xl size-[150px] sm:size-full "
           alt=""

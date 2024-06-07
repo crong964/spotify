@@ -1,4 +1,6 @@
 import { PayloadAction, configureStore, createSlice } from "@reduxjs/toolkit";
+import { post } from "../../config/req";
+import { useDispatch } from "react-redux";
 
 interface AudioRedux {
   stop: boolean;
@@ -32,15 +34,18 @@ const audioSlice = createSlice({
     SetModPlay: (state) => {
       state.modplay = (state.modplay + 1) % 3;
     },
-    SetSong: (state, pay: PayloadAction<Song[]>) => {
+    SetSongs: (state, pay: PayloadAction<Song[]>) => {
       state.lsSong = pay.payload;
       state.mark = 0;
     },
     NextSong: (state, pay: PayloadAction<number>) => {
       state.mark = state.mark + pay.payload;
+      localStorage.setItem("song", JSON.stringify(state.lsSong[state.mark]));
     },
+    RandomSong: (state, pay: PayloadAction<string>) => {},
   },
+  extraReducers(builder) {},
 });
 
-export const { SetStop, SetModPlay, SetSong, NextSong } = audioSlice.actions;
+export const { SetStop, SetModPlay, SetSongs, NextSong } = audioSlice.actions;
 export default audioSlice;

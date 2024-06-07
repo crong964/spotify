@@ -21,7 +21,7 @@ export class PlayListService {
         return ls.length > 0 ? ls[0] : undefined;
     }
     async GetByGenre(Genre_ID: string, s: number, f: number) {
-        var sql = `SELECT * FROM playlist WHERE Genre_ID in (SELECT g1.Id FROM genre g1, genre g2   WHERE g2.Id =? AND g1.LeftGenre >= g2.LeftGenre AND g1.RightGenre <= g2.RightGenre ) AND Type = 1 LIMIT ?,? `
+        var sql = `SELECT * FROM playlist WHERE Genre_ID in (SELECT g1.Id FROM genre g1, genre g2   WHERE g2.Id =? AND g1.LeftGenre >= g2.LeftGenre AND g1.RightGenre <= g2.RightGenre ) AND Type = "playlist" LIMIT ?,? `
         var check = await Mysql2.query(sql, [Genre_ID, s, f])
         return this.SetLs(check)
     }

@@ -62,7 +62,7 @@ class LikedSongDatabase {
     }
     SearchName(name, iduser) {
         return __awaiter(this, void 0, void 0, function* () {
-            var sql = `SELECT song.Id, song.SongName,song.SongImage, song.Singer,song.Viewer,song.Duration,likedsong.liked 
+            var sql = `SELECT song.Id, song.SongName,song.SongImage, song.Singer,song.Viewer,song.Duration,likedsong.liked
     FROM song LEFT JOIN likedsong ON song.Id = likedsong.Id and likedsong.id_user_liked= ? 
     WHERE  song.status = 1 AND song.SongName like ?;`;
             var check;
@@ -73,7 +73,7 @@ class LikedSongDatabase {
     GetAllByIdPlayList(id_user_liked, id_playlist) {
         return __awaiter(this, void 0, void 0, function* () {
             var sql = `
-     SELECT song.Id, song.SongName,song.SongImage, song.Singer,song.Viewer,song.Duration,likedsong.liked 
+    SELECT song.Id, song.SongName,song.SongImage, song.Singer,song.Viewer,song.Duration,likedsong.liked ,song.filePath
     FROM 
     song LEFT JOIN likedsong ON song.Id = likedsong.Id and likedsong.id_user_liked=?      
     LEFT JOIN contain on contain.Song_ID=song.Id

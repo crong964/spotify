@@ -19,32 +19,36 @@ export function RecentPlaylist(params: RecentPlaylist) {
   const [hidden, SetHidden] = useState(true);
   return (
     <div
-      className="flex items-center space-x-1 sm:space-x-2 p-1 mx-1 cursor-pointer bg-[#414854] relative"
-      onMouseEnter={() => {
-        SetHidden(false);
-      }}
+      className="relative"
       onMouseLeave={() => {
         SetHidden(true);
       }}
-      onClick={() => {
-        dispatch(NaviPage({ page: params.type, param: params.ID }));
+      onMouseEnter={() => {
+        SetHidden(false);
       }}
     >
-      <div className="size-10 sm:size-[64px]">
-        {params.type == "artise" ? (
-          <img className="rounded-full" src={params.image} alt="" srcSet="" />
-        ) : (
-          <img src={params.image} alt="" srcSet="" />
-        )}
+      <div
+        className="flex items-center space-x-1 sm:space-x-2 p-1 mx-1 cursor-pointer bg-[#414854] "
+        onClick={() => {
+          dispatch(NaviPage({ page: params.type, param: params.ID }));
+        }}
+      >
+        <div className="size-10 sm:size-[64px]">
+          {params.type == "artise" ? (
+            <img className="rounded-full" src={params.image} alt="" srcSet="" />
+          ) : (
+            <img src={params.image} alt="" srcSet="" />
+          )}
+        </div>
+        <div className="text-white text-[16px] font-bold ">{params.name}</div>
+        <div className="hidden sm:block size-6"></div>
       </div>
-      <div className="text-white text-[16px] font-bold ">{params.name}</div>
-      <div className="hidden sm:block size-6"></div>
       {hidden ? (
         <></>
       ) : (
-        <div className="absolute right-0 bottom-0 sm:block hidden">
+        <button className="absolute right-2 bottom-2 sm:block hidden">
           <PlayButtom id={params.ID} page={params.type} />
-        </div>
+        </button>
       )}
     </div>
   );

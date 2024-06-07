@@ -3,12 +3,12 @@ import { useEffect, useState } from "react";
 import { post } from "../../config/req";
 import { useDispatch, useSelector } from "react-redux";
 import { RootHome } from "../RootRedux";
-import { NextSong, SetModPlay, SetStop } from "./AudioRedux";
+import { NextSong, SetModPlay, SetSongs, SetStop } from "./AudioRedux";
 
 interface Audio {
   path: string;
-  next(a: "song" | "pause", d: any): void;
   id: string;
+  RandomNext(n: number): void;
 }
 export default function Audio(params: Audio) {
   const stop = useSelector((state: RootHome) => state.audioroot.stop);
@@ -27,6 +27,7 @@ export default function Audio(params: Audio) {
     }
     set();
   });
+
   return (
     <div className="col-span-full sm:col-span-2 flex flex-col space-y-0 sm:space-y-2">
       <div className="hidden sm:flex space-x-9 justify-center items-center">
@@ -49,8 +50,7 @@ export default function Audio(params: Audio) {
 
         <button
           onClick={() => {
-            params.next("song", params.id);
-            dispatch(NextSong(-1));
+            params.RandomNext(-1);
           }}
         >
           <svg
@@ -96,8 +96,7 @@ export default function Audio(params: Audio) {
 
         <button
           onClick={() => {
-            params.next("song", params.id);
-            dispatch(NextSong(1));
+            params.RandomNext(1);
           }}
         >
           <svg
@@ -144,7 +143,7 @@ export default function Audio(params: Audio) {
             var time =
               e.currentTarget.duration - e.currentTarget.currentTime < 0.001;
             if (time && (modplay == 1 || modplay == 0)) {
-              params.next("song", params.id);
+              params.RandomNext(1);
             }
             if (time && modplay == 2) {
               var mu = document.querySelector(".g") as HTMLAudioElement;

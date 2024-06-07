@@ -54,9 +54,6 @@ export default function Artist(params: artist) {
   return (
     <div
       className="w-full cursor-pointer"
-      onClick={() => {
-        dispatch(NaviPage({ page: "artise", param: params.id }));
-      }}
       onMouseEnter={() => {
         SetHidden(false);
       }}
@@ -66,6 +63,9 @@ export default function Artist(params: artist) {
     >
       <div className="relative">
         <img
+          onClick={() => {
+            dispatch(NaviPage({ page: "artise", param: params.id }));
+          }}
           src={params.pathImage}
           className="size-[150px] sm:size-full rounded-full"
           alt=""
@@ -75,7 +75,7 @@ export default function Artist(params: artist) {
           <></>
         ) : (
           <div className="absolute right-0 bottom-0">
-            <PlayButtom id={params.id} page="artise" />
+            <PlayButtom id={params.id} page={params.type} />
           </div>
         )}
       </div>

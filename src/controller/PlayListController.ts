@@ -22,7 +22,7 @@ export class PlayListController {
         playlistmodel.setAll(req.body)
         playlistmodel.id = uuidv4()
         playlistmodel.User_id = req.cookies.id
-        playlistmodel.Type = 1
+        playlistmodel.Type = "playlist"
         playlistmodel.Songs = req.body.ls.length
         playlistmodel.ImagePath = join("public/playlist", file)
 
@@ -85,7 +85,7 @@ export class PlayListController {
         }
         playlistmodel.id = oldplaylist.id
         playlistmodel.User_id = req.cookies.id
-        playlistmodel.Type = 1
+        playlistmodel.Type = "playlist"
         if (req.body.ls) {
             playlistmodel.Songs = req.body.ls.length + oldplaylist.Songs
             var ls = req.body.ls as string[]

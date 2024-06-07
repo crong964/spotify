@@ -117,7 +117,7 @@ app.get("/idSong", (req, res) => {
     var music = req.cookies.music
     var idSong = req.query.idSong as string
     var id = req.cookies.id
-    if (idSong == undefined) {
+    if (idSong == undefined || idSong == "undefined") {
         res.end()
         return
     }

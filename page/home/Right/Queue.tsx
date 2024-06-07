@@ -111,6 +111,8 @@ function RecentPlaySongs(p: MenberQueue) {
 }
 function SongQueueInplayList(p: MenberQueue) {
   const [recentSongs, SetRecentSongs] = useState<RecentSong[]>([]);
+  const lsSong = useSelector((state: RootHome) => state.audioroot.lsSong);
+  const mark = useSelector((state: RootHome) => state.audioroot.mark);
 
   useEffect(() => {
     // get("/rs/", (v: any) => {
@@ -118,6 +120,29 @@ function SongQueueInplayList(p: MenberQueue) {
     // });
   }, []);
   return (
-    <>{p.cur == p.type ? <div className="px-2">Đang phát từ</div> : <></>}</>
+    <>
+      {p.cur == p.type ? (
+        <>
+          <div className="px-2">Đang phát từ</div>
+          {lsSong
+            .filter((v, i) => {
+              return mark <= i;
+            })
+            .map((v) => {
+              return (
+                <Song
+                  image={v.SongImage}
+                  name={v.SongName}
+                  singer={v.Singer}
+                  Id={v.Id}
+                  key={v.Id}
+                />
+              );
+            })}
+        </>
+      ) : (
+        <></>
+      )}
+    </>
   );
 }

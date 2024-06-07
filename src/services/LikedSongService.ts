@@ -16,7 +16,7 @@ export class LikedSongService {
         return check;
     }
     async GetAllByIduserAndIdArtise(d: LikedSongModel) {
-        var sql = `SELECT song.Id, song.SongName,song.SongImage, song.Singer,song.Viewer,song.Duration,likedsong.liked 
+        var sql = `SELECT song.Id, song.SongName,song.SongImage, song.Singer,song.Viewer,song.Duration,likedsong.liked ,song.filePath
         FROM song LEFT JOIN likedsong ON song.Id = likedsong.Id and likedsong.id_user_liked=? 
         WHERE song.user_id=? And song.status = 1;`
 
