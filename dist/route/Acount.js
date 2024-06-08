@@ -24,6 +24,8 @@ const nodemailer_1 = __importDefault(require("nodemailer"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 require("dotenv/config");
 const Helper_1 = require("../config/Helper");
+const PlayListService_1 = __importDefault(require("../services/PlayListService"));
+const PlayListModel_1 = require("../model/PlayListModel");
 const client_secret_si = process.env.CLIENT_SECRET_SI;
 const client_id_si = process.env.CLIENT_ID_SI;
 const client_secret_su = process.env.CLIENT_SECRET_SU;
@@ -198,6 +200,11 @@ Account.get("/githubsu", (req, res) => __awaiter(void 0, void 0, void 0, functio
     //   },
     // ];
     //avatar_url: 'https://avatars.githubusercontent.com/u/71593544?v=4'
+    var acc = yield UserService_1.default.GetByAccount(c[0].data[0].email);
+    if (acc) {
+        res.redirect("/auth");
+        return;
+    }
     var hash = Hash_1.Hash.CreateHas({
         outNumber: undefined,
         salt: undefined,
@@ -313,17 +320,21 @@ Account.post("/getdata", (req, res) => {
         });
         return;
     }
-    res.clearCookie("Name");
+    res.clearCookie("name");
     res.clearCookie("image");
     res.clearCookie("email");
-    res.json({
-        err: false,
-        page: "signup",
+    var sign = (0, Helper_1.SignJWT)(JSON.stringify({
         Name: req.cookies.name,
         pathImage: req.cookies.image,
         Account: req.cookies.email,
-        idgithug: req.cookies.idgithug,
-        type: req.cookies.githug
+    }));
+    console.log(sign);
+    res.json({
+        err: false,
+        Name: req.cookies.name,
+        pathImage: req.cookies.image,
+        Account: req.cookies.email,
+        Sign: sign
     });
 });
 Account.post("/create", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -331,8 +342,22 @@ Account.post("/create", (req, res) => __awaiter(void 0, void 0, void 0, function
     d.setAll(req.body);
     d.Account = req.body.Account;
     d.Password = req.body.Password;
-    d.id = (0, uuid_1.v4)();
+    console.log(req.body);
+    if ((0, Helper_1.VertifyJWT)(req.body.sign) == undefined) {
+        res.json({
+            err: true
+        });
+        return;
+    }
+    d.id = `user-${(0, uuid_1.v4)()}-${Date.now()}`;
     yield UserService_1.default.AddAccount(d);
+    var pl = new PlayListModel_1.PlayListModel();
+    pl.User_id = d.id;
+    pl.ImagePath = d.pathImage;
+    pl.id = `artists-${(0, uuid_1.v4)()}-${Date.now()}`;
+    pl.Status = "0";
+    pl.PlayListName = d.Name;
+    yield PlayListService_1.default.AddArtists(pl);
     res.json({
         err: false
     });
@@ -494,7 +519,7 @@ Account.post("/createACC", (req, res) => __awaiter(void 0, void 0, void 0, funct
     var u = new UserModel_1.default();
     u.setAll(req.body);
     u.Password = req.body.Password;
-    u.id = (0, uuid_1.v4)();
+    u.id = `user-${(0, uuid_1.v4)()}`;
     var check = yield UserService_1.default.AddAccount(u);
     res.json({
         err: check == undefined,

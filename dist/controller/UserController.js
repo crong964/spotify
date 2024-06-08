@@ -18,6 +18,9 @@ const UserService_1 = __importDefault(require("../services/UserService"));
 const promises_1 = require("fs/promises");
 const uuid_1 = require("uuid");
 const HaveListFriendsService_1 = __importDefault(require("../services/HaveListFriendsService"));
+const PlayListService_1 = __importDefault(require("../services/PlayListService"));
+const LikedSongService_1 = __importDefault(require("../services/LikedSongService"));
+const LikedSongModel_1 = __importDefault(require("../model/LikedSongModel"));
 class UserController {
     constructor() {
     }
@@ -60,22 +63,27 @@ class UserController {
     }
     getArtisePage(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            var idartise = req.params.artisepage;
+            var idplaylist = req.params.artistpage;
             var id = req.cookies.id;
-            if (id == idartise) {
-                var ls = yield UserController.user.Get(idartise);
+            var playlist = yield UserController.playlist.Get(idplaylist);
+            if (playlist == undefined) {
                 res.json({
-                    ls: ls,
-                    isfriend: undefined
+                    err: true,
+                    mess: "ko có danh sách phát này"
                 });
                 return;
             }
-            var l = yield Promise.all([UserController.user.Get(idartise),
-                UserController.HaveListFriends.Get(id, idartise)]);
+            var temp = new LikedSongModel_1.default();
+            temp.user_id = playlist.User_id;
+            temp.id_user_liked = id;
+            var l = yield Promise.all([UserController.user.Get(playlist.User_id),
+                UserController.HaveListFriends.Get(id, playlist.User_id),
+                UserController.likedSong.GetAllByIduserAndIdArtise(temp)]);
             res.json({
                 err: false,
-                ls: l[0],
-                isfriend: l[1] ? l[1].IsFriend : "-1"
+                atist: l[0],
+                isfriend: l[1] ? l[1].IsFriend : "-1",
+                lsong: l[2]
             });
         });
     }
@@ -186,5 +194,7 @@ class UserController {
 }
 UserController.user = UserService_1.default;
 UserController.HaveListFriends = HaveListFriendsService_1.default;
+UserController.likedSong = LikedSongService_1.default;
+UserController.playlist = PlayListService_1.default;
 var userController = new UserController();
 exports.default = userController;

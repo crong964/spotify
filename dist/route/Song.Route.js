@@ -59,7 +59,6 @@ SongRoute.post("/FileSong", isArtist, uploadSongFile.single("songfile"), SongCon
 SongRoute.post("/SongList", SongController_1.default.SongList); //0k
 SongRoute.post("/get", SongController_1.default.GetSong); //0k
 SongRoute.post("/NewUpdate", upload.single("avatar"), SongController_1.default.NewUpdate); //0k
-SongRoute.post("/newupload", SongController_1.default.NewUpload);
 SongRoute.post("/upStatus", SongController_1.default.UpStatus); //0k
 SongRoute.get("/valisong/:idpage", SongController_1.default.GetValidateAll);
 SongRoute.post("/NextSong", SongController_1.default.NextSong);

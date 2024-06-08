@@ -28,6 +28,23 @@ class PlayListService {
             return check;
         });
     }
+    AddArtists(d) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var sql = "INSERT INTO playlist(id, User_id, Genre_ID, Type, ImagePath, PlayListName, Likes, Songs, Duration, Status, Discripition) VALUES (?,?,?,'artists',?,?,?,?,?,?,?)";
+            var check;
+            check = yield Config_1.default.query(sql, [d.id, d.User_id, d.Genre_ID, d.ImagePath, d.PlayListName, d.Likes, d.Songs, d.Duration, d.Status, d.Discripition]);
+            return check;
+        });
+    }
+    GetArtists(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var sql = "SELECT * FROM playlist WHERE id = ? AND Type='artists'";
+            var check;
+            check = yield Config_1.default.query(sql, [id]);
+            var ls = this.SetLs(check);
+            return ls.length > 0 ? ls[0] : undefined;
+        });
+    }
     Get(id) {
         return __awaiter(this, void 0, void 0, function* () {
             var sql = "SELECT * FROM playlist WHERE id=?";
@@ -81,9 +98,23 @@ class PlayListService {
     }
     GetPlayListLimit(start, count) {
         return __awaiter(this, void 0, void 0, function* () {
-            var sql = "SELECT * FROM playlist LIMIT ?,?";
+            var sql = "SELECT * FROM playlist where Type='playlist' LIMIT ?,?";
             var ls = yield Config_1.default.query(sql, [start, count]);
             return this.SetLs(ls);
+        });
+    }
+    GetPlayListArtistLimit(start, count) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var sql = `SELECT * FROM playlist where Type="artist" AND status=1 LIMIT ?,?`;
+            var ls = yield Config_1.default.query(sql, [start, count]);
+            return this.SetLs(ls);
+        });
+    }
+    GetPlayListArtist(User_id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var sql = `SELECT * FROM playlist where User_id=? AND Type="artist"`;
+            var ls = yield Config_1.default.query(sql, [User_id]);
+            return this.SetLs(ls)[0];
         });
     }
     DeletePlaylist(id) {

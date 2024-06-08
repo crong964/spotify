@@ -20,7 +20,6 @@ const DATABASE = process.env.DATABASE;
 const PASSWORD = process.env.PASSWORD || "";
 const PORTDATABAE = process.env.PORTDATABAE;
 const DockerDB = process.env.DockerDB;
-console.log(PORTDATABAE);
 const pool = promise_1.default.createPool({
     host: DockerDB || LOCALHOST,
     user: USER,

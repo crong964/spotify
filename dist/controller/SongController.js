@@ -42,6 +42,9 @@ const path_1 = __importStar(require("path"));
 const uuid_1 = require("uuid");
 const UserService_1 = __importDefault(require("../services/UserService"));
 const fs_1 = require("fs");
+const PlayListService_1 = __importDefault(require("../services/PlayListService"));
+const ContainService_1 = __importDefault(require("../services/ContainService"));
+const ContainModel_1 = __importDefault(require("../model/ContainModel"));
 class SongController {
     Update(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -85,6 +88,7 @@ class SongController {
             if (req.body.name == undefined) {
                 var id = req.cookies.id;
                 let check = yield SongController.user.Get(id);
+                let check1 = yield SongController.playlist.GetPlayListArtist(id);
                 if (check == undefined) {
                     res.json({
                         err: true,
@@ -92,16 +96,19 @@ class SongController {
                     });
                     return;
                 }
-                f = (0, uuid_1.v4)();
+                f = `song-${(0, uuid_1.v4)()}`;
                 var song = new SongModel_1.default();
+                var contain = new ContainModel_1.default();
                 song.Genre_id = "";
                 song.Id = f;
                 song.Singer = check.ChanalName;
                 song.user_id = check.id;
                 song.SongImage = check.pathImage;
                 song.filePath = f;
-                var fcheck = yield SongController.song.Add(song);
-                if (fcheck == undefined) {
+                contain.Song_id = f;
+                contain.Id = id;
+                var fcheck = yield Promise.all([SongController.song.Add(song), SongController.contain.Add(contain)]);
+                if (fcheck[0] == undefined || fcheck[1] == undefined) {
                     res.json({
                         err: true,
                         name: f,
@@ -239,42 +246,6 @@ class SongController {
             });
         });
     }
-    NewUpload(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            var d = req.body.d.trim().split(" ");
-            var f = "";
-            var idSong = "";
-            if (req.body.name == undefined) {
-                var id = req.cookies.id;
-                let check = yield SongController.user.Get(id);
-                if (check == undefined) {
-                    res.json({
-                        err: true,
-                        name: f
-                    });
-                    return;
-                }
-                f = (0, uuid_1.v4)();
-            }
-            else {
-                f = req.body.name;
-            }
-            var write = (0, fs_1.createWriteStream)(path_1.default.join(process.cwd(), "/public/music", `${f}`), {
-                flags: "as+"
-            });
-            var s = Buffer.from(d.map((v) => {
-                return parseInt(v);
-            }));
-            write.write(s);
-            write.end(() => {
-            });
-            res.json({
-                name: f,
-                err: false,
-                idSong: idSong
-            });
-        });
-    }
     UpStatus(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             var idSong = req.body.idSong;
@@ -341,5 +312,7 @@ class SongController {
 }
 SongController.song = SongService_1.default;
 SongController.user = UserService_1.default;
+SongController.playlist = PlayListService_1.default;
+SongController.contain = ContainService_1.default;
 var songController = new SongController();
 exports.default = songController;

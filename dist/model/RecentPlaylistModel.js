@@ -10,9 +10,9 @@ class RecentPlaylistModel extends BaseModel_1.default {
         this.User_ID = "";
         this.ID = "";
         this.CreateTime = "";
-        this.name = "";
-        this.type = "";
-        this.image = "";
+        this.PlayListName = "";
+        this.Type = "";
+        this.ImagePath = "";
     }
 }
 exports.default = RecentPlaylistModel;

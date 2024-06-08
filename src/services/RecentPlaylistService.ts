@@ -7,8 +7,8 @@ export class RecentPlaylistService {
     }
 
     async Add(d: RecentPlaylistModel) {
-        var sql = `INSERT INTO recentplaylist(User_ID, ID, name, type,image) VALUES (?,?,?,?,?)`
-        var ls = await Mysql2.query(sql, [d.User_ID, d.ID, d.name, d.type, d.image])
+        var sql = `INSERT INTO recentplaylist(User_ID, ID) VALUES (?,?)`
+        var ls = await Mysql2.query(sql, [d.User_ID, d.ID])
         return ls
     }
     async Get(User_ID: string, ID: string) {
@@ -17,7 +17,10 @@ export class RecentPlaylistService {
         return this.SetLs(ls)[0]
     }
     async GetByUser(User_ID: string, s: number, count: number) {
-        var sql = `SELECT * FROM recentplaylist WHERE User_ID=? ORDER BY CreateTime DESC LIMIT ?,?`
+        var sql = `SELECT playlist.*, recentplaylist.* 
+        FROM recentplaylist, playlist 
+        WHERE recentplaylist.ID=playlist.id AND recentplaylist.User_ID=? 
+        ORDER BY CreateTime DESC LIMIT ?,?`
         var ls = await Mysql2.query(sql, [User_ID, s, count])
         return this.SetLs(ls)
     }

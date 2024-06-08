@@ -9,6 +9,7 @@ export interface PlayList {
   Genre_ID: string;
   ImagePath: string;
   PlayListName: string;
+  Type: string;
 }
 interface PlayLists {
   d: PlayList[];
@@ -32,19 +33,21 @@ export function PlayList(d: PlayList) {
           onClick={() => {
             dispatch(
               NaviPage({
-                page: "playlist",
+                page: d.Type as any,
                 param: d.id,
               })
             );
           }}
           src={d.ImagePath}
-          className="rounded-2xl size-[150px] sm:size-full "
+          className={`${
+            d.Type == "artist" ? "rounded-full" : " rounded-2xl"
+          }`.concat(" size-[150px] sm:size-full")}
           alt=""
           srcSet=""
         />
         {show ? (
           <div className="absolute bottom-0 right-0">
-            <PlayButtom id={d.id} page="playlist" />
+            <PlayButtom id={d.id} page={d.Type} />
           </div>
         ) : (
           <></>
@@ -62,6 +65,7 @@ export default function PlayLists(p: PlayLists) {
   var children = p.d.map((v) => {
     return (
       <PlayList
+        Type={v.Type}
         Genre_ID={v.Genre_ID}
         ImagePath={v.ImagePath}
         PlayListName={v.PlayListName}

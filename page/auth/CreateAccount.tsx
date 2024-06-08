@@ -79,13 +79,13 @@ export default function CreateAccount() {
                     pathImage: int.pathImage,
                     Account: int.Account,
                     Password: Password,
+                    sign: int.Sign,
                   },
                   (v: any) => {
                     if (!v.err) {
                       dispatch(Page("signin"));
-                    }
-                    else{
-                      alert("lỗi")
+                    } else {
+                      alert("lỗi");
                     }
                   }
                 );

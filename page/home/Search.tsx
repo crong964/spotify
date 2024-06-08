@@ -42,7 +42,7 @@ export default function Search() {
     }
     post("/search", { name: search }, (v: any) => {
       SetSongName(v["ls"]);
-      SetArtis(v["artise"]);
+      SetArtis(v["artist"]);
       SetSongS(v["songls"]);
       SetPlayLists(v["playlists"]);
     });

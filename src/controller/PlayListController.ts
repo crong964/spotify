@@ -9,12 +9,19 @@ import { v4 as uuidv4 } from 'uuid';
 import genreService, { GenreService } from "../services/GenreService";
 import { unlink } from "fs/promises";
 import likedSongService, { LikedSongService } from "../services/LikedSongService";
+import userService, { UserService } from "../services/UserService";
+import haveListFriendsService, { HaveListFriendsService } from "../services/HaveListFriendsService";
+import LikedSongModel from "../model/LikedSongModel";
 
 export class PlayListController {
+
     static playlist: PlayListService = playListService
     static contain: ContainService = containService
     static genre: GenreService = genreService
     static likedSong: LikedSongService = likedSongService
+    static user: UserService = userService
+    static HaveListFriends: HaveListFriendsService = haveListFriendsService
+
     async AddPlayListByAdmin(req: Request, res: Response) {
         var file = req.file?.filename as any as string
 
@@ -125,6 +132,16 @@ export class PlayListController {
             ls: ls
         })
     }
+    async NextPlayArtistListLimit(req: Request, res: Response) {
+        var start = req.body.start || 0
+        var count = req.body.count || 7
+        var ls = await PlayListController.playlist.GetPlayListArtistLimit(start, count)
+        res.json({
+            err: false,
+            ls: ls
+        })
+    }
+
 }
 
 var playListController: PlayListController = new PlayListController()

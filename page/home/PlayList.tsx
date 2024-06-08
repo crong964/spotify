@@ -8,7 +8,7 @@ import { SongInPlayList, SongList } from "../component/Song";
 import TypeFriend from "./friend/TypeFriend";
 
 var g = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 6, 7];
-interface artise {
+interface artist {
   id: string | undefined;
   Vertify: string | undefined;
   Nationality: string | undefined;
@@ -40,23 +40,20 @@ interface PlayList {
   Songs: number;
   Duration: string;
 }
-export function ArtisePage() {
+export function ArtistPage() {
   const idpage = useSelector((state: RootHome) => state.rootHome.command.param);
-  const [artise, SetaAtist] = useState<artise>();
+  const [artist, SetaAtist] = useState<artist>();
   const [isfriend, SetIsfriend] = useState<"-1" | "0" | "1" | "2">();
   const [songs, SetSongS] = useState<SongInPlayList[]>([]);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    get(`user/artisepage/${idpage}`, (v: any) => {
+    get(`user/artistpage/${idpage}`, (v: any) => {
       SetIsfriend(v.isfriend);
-      SetaAtist(v.ls);
-
-      dispatch(SetCurName(v.ls.ChanalName));
-    });
-    get(`lsong/getall/${idpage}`, (v: any) => {
-      SetSongS(v.ls);
+      SetaAtist(v.atist);
+      SetSongS(v.lsong);
+      dispatch(SetCurName(v.atist.ChanalName));
     });
   }, [idpage]);
 
@@ -64,11 +61,11 @@ export function ArtisePage() {
     <div className="relative ">
       <div
         className="hidden sm:block bg-no-repeat bg-cover rounded-t-lg absolute top-0 left-0 w-full h-[320px] "
-        style={{ backgroundImage: `url(${artise?.Banner || ""})` }}
+        style={{ backgroundImage: `url(${artist?.Banner || ""})` }}
       ></div>
       <div
         className="block sm:hidden bg-no-repeat bg-cover rounded-t-lg absolute top-0 left-0 w-full h-[320px]"
-        style={{ backgroundImage: `url(${artise?.pathImage || ""})` }}
+        style={{ backgroundImage: `url(${artist?.pathImage || ""})` }}
       ></div>
       <div className="opacity-25 bg-black absolute top-0 left-0 w-full h-[320px]"></div>
       <div className="flex flex-col justify-end absolute top-0 left-0 h-[320px] z-10 p-4">
@@ -87,7 +84,7 @@ export function ArtisePage() {
         </div>
         <h1>
           <span className="text-white font-bol text-[40px] sm:text-[96px] font-black">
-            {artise?.ChanalName}
+            {artist?.ChanalName}
           </span>
         </h1>
         <span className="text-[16px] font-bold text-white">
@@ -98,7 +95,7 @@ export function ArtisePage() {
       <div className="h-[320px]"></div>
       <div className="px-4">
         <div className="flex items-center py-4 space-x-4">
-          <PlayButtom id={idpage} page="artise" />
+          <PlayButtom id={idpage} page="artist" />
           <div className="font-bold cursor-pointer text-[14px] border-2 border-white text-white rounded-full px-2 py-1">
             Theo dõi
           </div>
@@ -111,7 +108,7 @@ export function ArtisePage() {
               <path d="M4.5 13.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm15 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm-7.5 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"></path>
             </svg>
           </div>
-          <TypeFriend idFriend={artise?.id} type={isfriend} />
+          <TypeFriend idFriend={artist?.id} type={isfriend} />
         </div>
         <div className="py-3 font-bold text-[24px]  text-white">
           Các bài hát

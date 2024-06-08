@@ -8,7 +8,9 @@ import { v4 as uuidv4 } from 'uuid';
 import nodemailer from "nodemailer"
 import jwt from "jsonwebtoken"
 import "dotenv/config"
-import { VertifyJWT } from "../config/Helper";
+import { SignJWT, VertifyJWT } from "../config/Helper";
+import playListService from "../services/PlayListService";
+import { PlayListModel } from "../model/PlayListModel";
 interface google {
   email: string;
   name: string;
@@ -217,7 +219,13 @@ Account.get("/githubsu", async (req, res) => {
 
   //avatar_url: 'https://avatars.githubusercontent.com/u/71593544?v=4'
 
+  var acc = await userService.GetByAccount(c[0].data[0].email)
 
+
+  if (acc) {
+    res.redirect("/auth")
+    return
+  }
   var hash = Hash.CreateHas({
     outNumber: undefined,
     salt: undefined,
@@ -340,24 +348,31 @@ Account.post("/getdata", (req, res) => {
   }
   var time = parseInt(req.cookies.time);
   var time1 = new Date().getTime();
-  if (time1 - time > 60000) {
+  if (time1 - time > 60000 ) {
     res.json({
       err: true,
     });
     return;
   }
 
-  res.clearCookie("Name")
+  res.clearCookie("name")
   res.clearCookie("image")
   res.clearCookie("email")
-  res.json({
-    err: false,
-    page: "signup",
+
+  var sign = SignJWT(JSON.stringify({
     Name: req.cookies.name,
     pathImage: req.cookies.image,
     Account: req.cookies.email,
-    idgithug: req.cookies.idgithug,
-    type: req.cookies.githug
+  }))
+
+  console.log(sign);
+  
+  res.json({
+    err: false,
+    Name: req.cookies.name,
+    pathImage: req.cookies.image,
+    Account: req.cookies.email,
+    Sign: sign
   });
 });
 Account.post("/create", async (req, res) => {
@@ -366,8 +381,26 @@ Account.post("/create", async (req, res) => {
   d.Account = req.body.Account
   d.Password = req.body.Password
 
-  d.id = uuidv4()
+  console.log(req.body);
+  
+  if (VertifyJWT(req.body.sign) == undefined) {
+    res.json({
+      err: true
+    })
+    return
+  }
+
+  d.id = `user-${uuidv4()}-${Date.now()}`
   await userService.AddAccount(d)
+  var pl = new PlayListModel()
+
+  pl.User_id = d.id
+  pl.ImagePath = d.pathImage
+  pl.id = `artists-${uuidv4()}-${Date.now()}`
+  pl.Status = "0"
+  pl.PlayListName=d.Name
+
+  await playListService.AddArtists(pl)
   res.json({
     err: false
   })
@@ -554,7 +587,7 @@ Account.post("/createACC", async (req, res) => {
   var u = new UserModel()
   u.setAll(req.body)
   u.Password = req.body.Password
-  u.id = uuidv4()
+  u.id = `user-${uuidv4()}`
   var check = await userService.AddAccount(u)
   res.json({
     err: check == undefined,

@@ -53,7 +53,7 @@ class SongService {
     }
     Update(d) {
         return __awaiter(this, void 0, void 0, function* () {
-            var sql = `UPDATE song Set genre_id =?, SongName=?, Duration=?, publicDate=?, description=?,SongImage=?, Singer=?
+            var sql = `UPDATE song Set genre_id =?,SongName=?, Duration=?, publicDate=?, description=?,SongImage=?, Singer=?
         WHERE Id =?`;
             var check;
             check = yield Config_1.default.query(sql, [d.Genre_id, d.SongName, d.Duration, d.publicDate, d.description, d.SongImage, d.Singer, d.Id]);

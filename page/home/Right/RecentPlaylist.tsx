@@ -6,10 +6,12 @@ import { useDispatch } from "react-redux";
 import { NaviPage } from "../RootRedux";
 
 interface RecentPlaylist {
+  User_ID: string;
   ID: string;
-  name: string;
-  type: "artise" | "playlist";
-  image: string;
+  CreateTime: string;
+  PlayListName: string;
+  Type: string;
+  ImagePath: string;
 }
 interface List {
   children: React.JSX.Element[];
@@ -30,24 +32,36 @@ export function RecentPlaylist(params: RecentPlaylist) {
       <div
         className="flex items-center space-x-1 sm:space-x-2 p-1 mx-1 cursor-pointer bg-[#414854] "
         onClick={() => {
-          dispatch(NaviPage({ page: params.type, param: params.ID }));
+          dispatch(
+            NaviPage({
+              page: params.Type as any,
+              param: params.ID,
+            })
+          );
         }}
       >
         <div className="size-10 sm:size-[64px]">
-          {params.type == "artise" ? (
-            <img className="rounded-full" src={params.image} alt="" srcSet="" />
+          {params.Type == "artist" ? (
+            <img
+              className="rounded-full"
+              src={params.ImagePath}
+              alt=""
+              srcSet=""
+            />
           ) : (
-            <img src={params.image} alt="" srcSet="" />
+            <img src={params.ImagePath} alt="" srcSet="" />
           )}
         </div>
-        <div className="text-white text-[16px] font-bold ">{params.name}</div>
+        <div className="text-white text-[16px] font-bold ">
+          {params.PlayListName}
+        </div>
         <div className="hidden sm:block size-6"></div>
       </div>
       {hidden ? (
         <></>
       ) : (
         <button className="absolute right-2 bottom-2 sm:block hidden">
-          <PlayButtom id={params.ID} page={params.type} />
+          <PlayButtom id={params.ID} page={params.Type} />
         </button>
       )}
     </div>
@@ -68,11 +82,13 @@ export default function RecentList() {
       {recentList.map((v) => {
         return (
           <RecentPlaylist
+            CreateTime=""
+            User_ID=""
             ID={v.ID}
             key={v.ID}
-            image={v.image}
-            name={v.name}
-            type={v.type}
+            ImagePath={v.ImagePath}
+            PlayListName={v.PlayListName}
+            Type={v.Type}
           />
         );
       })}

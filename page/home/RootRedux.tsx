@@ -20,7 +20,7 @@ interface Commamd {
   page:
     | "genre"
     | "playlist"
-    | "artise"
+    | "artist"
     | "likedsongs"
     | "home"
     | "search"
@@ -227,5 +227,5 @@ export default rootHome;
 
 export function Check() {
   const page = useSelector((state: RootHome) => state.rootHome.command.page);
-  return page == "artise" || page == "playlist";
+  return page == "artist" || page == "playlist";
 }

@@ -7,11 +7,16 @@ import { v4 as uuidv4 } from 'uuid';
 import userService, { UserService } from "../services/UserService";
 import { createWriteStream } from "fs";
 import { limit } from "../config/Helper";
+import playListService, { PlayListService } from "../services/PlayListService";
+import containService, { ContainService } from "../services/ContainService";
+import ContainModel from "../model/ContainModel";
 
 
 class SongController {
     static song: SongService = songService
     static user: UserService = userService
+    static playlist: PlayListService = playListService
+    static contain: ContainService = containService
     async Update(req: Request, res: Response) {
         var id = req.cookies.id
         var u = await SongController.user.Get(id)
@@ -51,6 +56,7 @@ class SongController {
         if (req.body.name == undefined) {
             var id = req.cookies.id
             let check = await SongController.user.Get(id)
+            let check1 = await SongController.playlist.GetPlayListArtist(id)
             if (check == undefined) {
                 res.json({
                     err: true,
@@ -58,16 +64,23 @@ class SongController {
                 })
                 return
             }
-            f = uuidv4()
+            f = `song-${uuidv4()}`
+
             var song = new SongModel()
+            var contain = new ContainModel()
             song.Genre_id = ""
             song.Id = f
             song.Singer = check.ChanalName
             song.user_id = check.id
             song.SongImage = check.pathImage
             song.filePath = f
-            var fcheck = await SongController.song.Add(song)
-            if (fcheck == undefined) {
+
+            contain.Song_id = f
+            contain.Id = id
+
+            var fcheck = await Promise.all([SongController.song.Add(song), SongController.contain.Add(contain)])
+
+            if (fcheck[0] == undefined || fcheck[1] == undefined) {
                 res.json({
                     err: true,
                     name: f,
@@ -159,7 +172,7 @@ class SongController {
     }
     async NewUpdate(req: Request, res: Response) {
         var song = new SongModel();
-
+        
         song.setAll(req.body);
         var id = req.cookies.id
         var u = await SongController.user.Get(id)
@@ -198,6 +211,8 @@ class SongController {
             }
 
         }
+        
+        
         var c = await SongController.song.Update(song)
         if (c) {
             res.json({
@@ -209,43 +224,7 @@ class SongController {
             err: true
         })
     }
-    async NewUpload(req: Request, res: Response) {
-        var d = (req.body.d as string).trim().split(" ")
-        var f = ""
-        var idSong = ""
-        if (req.body.name == undefined) {
-            var id = req.cookies.id
-            let check = await SongController.user.Get(id)
-            if (check == undefined) {
-                res.json({
-                    err: true,
-                    name: f
-                })
-                return
-            }
-            f = uuidv4()
-
-        } else {
-            f = req.body.name
-        }
-
-
-        var write = createWriteStream(path.join(process.cwd(), "/public/music", `${f}`), {
-            flags: "as+"
-        })
-        var s = Buffer.from(d.map((v) => {
-            return parseInt(v)
-        }))
-        write.write(s)
-        write.end(() => {
-
-        })
-        res.json({
-            name: f,
-            err: false,
-            idSong: idSong
-        })
-    }
+   
     async UpStatus(req: Request, res: Response) {
         var idSong = req.body.idSong
         var status = req.body.status

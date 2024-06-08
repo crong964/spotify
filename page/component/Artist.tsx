@@ -64,7 +64,7 @@ export default function Artist(params: artist) {
       <div className="relative">
         <img
           onClick={() => {
-            dispatch(NaviPage({ page: "artise", param: params.id }));
+            dispatch(NaviPage({ page: "artist", param: params.id }));
           }}
           src={params.pathImage}
           className="size-[150px] sm:size-full rounded-full"

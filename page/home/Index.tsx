@@ -5,7 +5,7 @@ import RecentList from "./Right/RecentPlaylist";
 import Genre from "./Genre";
 
 
-import PlaylistPage, { ArtisePage, LikedSongListPage } from "./PlayList";
+import PlaylistPage, { ArtistPage, LikedSongListPage } from "./PlayList";
 
 import { useDispatch, useSelector } from "react-redux";
 import PlayingBar from "./Audio/PlayingBar";
@@ -161,8 +161,8 @@ function Center() {
     case "likedsongs":
       children = <LikedSongListPage></LikedSongListPage>;
       break;
-    case "artise":
-      children = <ArtisePage></ArtisePage>;
+    case "artist":
+      children = <ArtistPage></ArtistPage>;
       break;
     case "search":
       children = <Search></Search>;
@@ -193,7 +193,7 @@ function Center() {
           return;
         }
         if (
-          (page == "artise" || page == "playlist") &&
+          (page == "artist" || page == "playlist") &&
           e.currentTarget.scrollTop >= 320 &&
           !topbarcontent
         ) {

@@ -98,7 +98,7 @@ export default function Header() {
           <>
             {isLogin ? (
               <>
-                {command.page == "home" || command.page == "artise" ? (
+                {command.page == "home" || command.page == "artist" ? (
                   <div className="flex sm:hidden items-center">
                     <Avatar Name="" Vertify="" pathImage={infor.pathImage} />
                     <GenreInHome />

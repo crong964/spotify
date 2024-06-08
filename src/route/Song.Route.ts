@@ -47,7 +47,6 @@ SongRoute.post("/FileSong", isArtist, uploadSongFile.single("songfile"), songCon
 SongRoute.post("/SongList", songController.SongList)//0k
 SongRoute.post("/get", songController.GetSong)//0k
 SongRoute.post("/NewUpdate", upload.single("avatar"), songController.NewUpdate)//0k
-SongRoute.post("/newupload", songController.NewUpload)
 SongRoute.post("/upStatus", songController.UpStatus)//0k
 SongRoute.get("/valisong/:idpage", songController.GetValidateAll)
 

@@ -58,47 +58,11 @@ export default function SongForm() {
       (v: any) => {
         if (!v.err) {
           SetSong(v.song);
-          console.log(v);
         }
       }
     );
   }, [idSong]);
 
-  function upload(params: Uint8Array, i: number, pa?: string) {
-    var n = 10000;
-
-    if (i < params.length) {
-      var element = "";
-      for (let j = i; j < i + n && j < params.length; j++) {
-        element += params[j] + " ";
-      }
-      var data = {
-        d: element,
-        name: pa,
-      };
-      fetch("/song/newupload", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      })
-        .then((v) => {
-          return v.json();
-        })
-        .then((v) => {
-          SetConut(i + n);
-          SetSong({
-            ...song,
-            filePath: v.name,
-          });
-
-          upload(params, i + n, v.name);
-        });
-    } else {
-      SetFish(true);
-    }
-  }
   return (
     <div className="w-[70%] mx-auto py-[72px] px-[42px] text-[16px] font-bold space-y-4">
       <div className="text-center text-[40px] font-bold">
@@ -214,63 +178,22 @@ export default function SongForm() {
                 d="m9 9 10.5-3m0 6.553v3.75a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 1 1-.99-3.467l2.31-.66a2.25 2.25 0 0 0 1.632-2.163Zm0 0V2.25L9 5.25v10.303m0 0v3.75a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 0 1-.99-3.467l2.31-.66A2.25 2.25 0 0 0 9 15.553Z"
               />
             </svg>
-            {!finsih ? (
-              <>
-                <input
-                  id="music"
-                  onChange={(e) => {
-                    var file = e.currentTarget.files?.[0];
-                    file?.arrayBuffer().then((v) => {
-                      console.log(v);
-                      
-                      var ut = new Uint8Array(v);
-                      SetTotal(ut.length);
-                      SetFish(false)
-                      upload(ut, 0);
-                    });
-                  }}
-                  type="file"
-                  className="border-2 invisible border-[#404040] rounded-lg  p-2 w-full"
-                />
-                {total != 0 ? (
-                  <div className="w-[80%] mx-auto border p-4">
-                    <div>{(conut / total) * 100}</div>
-                    <input
-                      type="range"
-                      className="w-full"
-                      max={total}
-                      value={conut}
-                    />
-                  </div>
-                ) : (
-                  ""
-                )}
-              </>
-            ) : (
-              <>
-                <audio
-                  controls
-                  onCanPlay={(e) => {
-                    SetSong({
-                      ...song,
-                    });
-                  }}
-                >
-                  {song.filePath == "" ? (
-                    <></>
-                  ) : (
-                    <source src={`s?id=${song.filePath}`} />
-                  )}
-                </audio>
-                <div
-                  onClick={() => {
-                    SetFish(false);
-                  }}
-                >
-                  Thay thế
-                </div>
-              </>
-            )}
+
+            <audio
+              controls
+              onCanPlay={(e) => {
+                SetSong({
+                  ...song,
+                  Duration: e.currentTarget.duration,
+                });
+              }}
+            >
+              {song.filePath == "" ? (
+                <></>
+              ) : (
+                <source src={`s?id=${song.filePath}`} />
+              )}
+            </audio>
           </label>
         </div>
       </div>
@@ -292,7 +215,7 @@ export default function SongForm() {
 
             for (const key in myObj) {
               const element = myObj[key];
-              form.append(key, element);
+              form.set(key, element);
             }
             post("song/NewUpdate", form, (v: any) => {
               if (!v.err) {

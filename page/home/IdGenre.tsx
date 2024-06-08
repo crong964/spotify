@@ -45,6 +45,8 @@ function PlayListByGenre(d: PlayListByGenre) {
     .map((v) => {
       return (
         <PlayList
+          
+          Type={v.Type}
           Genre_ID={v.Genre_ID}
           ImagePath={v.ImagePath}
           PlayListName={v.PlayListName}

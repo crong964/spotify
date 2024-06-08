@@ -20,8 +20,8 @@ class RecentPlaylistService {
     }
     Add(d) {
         return __awaiter(this, void 0, void 0, function* () {
-            var sql = `INSERT INTO recentplaylist(User_ID, ID, name, type,image) VALUES (?,?,?,?,?)`;
-            var ls = yield Config_1.default.query(sql, [d.User_ID, d.ID, d.name, d.type, d.image]);
+            var sql = `INSERT INTO recentplaylist(User_ID, ID) VALUES (?,?)`;
+            var ls = yield Config_1.default.query(sql, [d.User_ID, d.ID]);
             return ls;
         });
     }
@@ -34,7 +34,10 @@ class RecentPlaylistService {
     }
     GetByUser(User_ID, s, count) {
         return __awaiter(this, void 0, void 0, function* () {
-            var sql = `SELECT * FROM recentplaylist WHERE User_ID=? ORDER BY CreateTime DESC LIMIT ?,?`;
+            var sql = `SELECT playlist.*, recentplaylist.* 
+        FROM recentplaylist, playlist 
+        WHERE recentplaylist.ID=playlist.id AND recentplaylist.User_ID=? 
+        ORDER BY CreateTime DESC LIMIT ?,?`;
             var ls = yield Config_1.default.query(sql, [User_ID, s, count]);
             return this.SetLs(ls);
         });

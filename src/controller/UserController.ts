@@ -5,9 +5,15 @@ import { Request, Response } from "express";
 import { unlink } from "fs/promises";
 import { v4 as uuidv4 } from 'uuid';
 import haveListFriendsService, { HaveListFriendsService } from "../services/HaveListFriendsService";
+import playListService, { PlayListService } from "../services/PlayListService";
+import likedSongService, { LikedSongService } from "../services/LikedSongService";
+import LikedSongModel from "../model/LikedSongModel";
+
 class UserController {
     static user: UserService = userService
     static HaveListFriends: HaveListFriendsService = haveListFriendsService
+    static likedSong: LikedSongService = likedSongService
+    static playlist: PlayListService = playListService
     constructor() {
 
 
@@ -24,7 +30,7 @@ class UserController {
     async Get(req: Request, res: Response) {
         var id = req.cookies.id
         var use = await UserController.user.Get(id)
-        
+
         if (use) {
             use.Account = ""
             res.json({
@@ -46,24 +52,31 @@ class UserController {
         })
     }
     async getArtisePage(req: Request, res: Response) {
-        var idartise = req.params.artisepage
+
+        var idplaylist = req.params.artistpage
         var id = req.cookies.id
-        if (id == idartise) {
-            var ls = await UserController.user.Get(idartise)
+        var playlist = await UserController.playlist.Get(idplaylist)
+        if (playlist == undefined) {
             res.json({
-                ls: ls,
-                isfriend: undefined
+                err: true,
+                mess: "ko có danh sách phát này"
             })
             return
         }
-        var l = await Promise.all([UserController.user.Get(idartise),
-        UserController.HaveListFriends.Get(id, idartise)])
+        var temp = new LikedSongModel()
+        temp.user_id = playlist.User_id
+        temp.id_user_liked = id
+        var l = await Promise.all([UserController.user.Get(playlist.User_id),
+        UserController.HaveListFriends.Get(id, playlist.User_id),
+        UserController.likedSong.GetAllByIduserAndIdArtise(temp)],
+        )
 
 
         res.json({
             err: false,
-            ls: l[0],
-            isfriend: l[1] ? l[1].IsFriend : "-1"
+            atist: l[0],
+            isfriend: l[1] ? l[1].IsFriend : "-1",
+            lsong: l[2]
         })
     }
     async update(req: Request, res: Response) {

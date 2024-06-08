@@ -24,6 +24,6 @@ UserRoute.get("/", UserController_1.default.Get); //0k
 UserRoute.get("/artist", (req, res) => {
     UserController_1.default.getAllArtist(req, res);
 }); //0k
-UserRoute.get("/artisepage/:artisepage", UserController_1.default.getArtisePage); //0k
+UserRoute.get("/artistpage/:artistpage", UserController_1.default.getArtisePage); //0k
 UserRoute.post("/update", upload.single("avatar"), UserController_1.default.update);
 exports.default = UserRoute;

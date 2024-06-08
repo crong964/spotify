@@ -184,7 +184,8 @@ app.get("/s", (req, res) => {
             res.setHeader("Content-Range", `bytes 0-${stats.size}/${stats.size}`);
             res.setHeader("Content-Length", stats.size);
             res.setHeader("Accept-Ranges", "bytes");
-            res.statusCode = 206;
+            res.setHeader("content-type", "audio/mp3");
+            res.statusCode = 200;
             s.pipe(res);
         });
     }

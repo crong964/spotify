@@ -138,6 +138,7 @@ app.get("/idSong", (req, res) => {
         s.on("error", (err) => {
         })
 
+
         res.writeHead(206, {
             "accept-ranges": "bytes",
             "content-range": `bytes ${start}-${end}/${videoSize}`,
@@ -154,10 +155,13 @@ app.get("/idSong", (req, res) => {
     }
 })
 app.get("/s", (req, res) => {
+    
 
     var namestrong = req.query.id as string
     try {
         var pathg = path.join(process.cwd(), "public/music", namestrong)
+        
+        
         var s = fs.createReadStream(pathg)
         s.on("error", (err) => {
         })
@@ -170,7 +174,9 @@ app.get("/s", (req, res) => {
             res.setHeader("Content-Range", `bytes 0-${stats.size}/${stats.size}`)
             res.setHeader("Content-Length", stats.size)
             res.setHeader("Accept-Ranges", "bytes")
-            res.statusCode = 206
+
+            res.setHeader("content-type", "audio/mp3")
+            res.statusCode = 200
             s.pipe(res)
 
         })

@@ -5,7 +5,7 @@ interface iMobileRedux {
   pageMobie:
     | "genre"
     | "playlist"
-    | "artise"
+    | "artist"
     | "likedsongs"
     | "home"
     | "search"
@@ -29,7 +29,7 @@ const mobileRedux = createSlice({
       action: PayloadAction<
         | "genre"
         | "playlist"
-        | "artise"
+        | "artist"
         | "likedsongs"
         | "home"
         | "search"

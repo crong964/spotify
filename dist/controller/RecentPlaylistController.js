@@ -12,7 +12,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const LikedSongModel_1 = __importDefault(require("../model/LikedSongModel"));
 const RecentPlaylistModel_1 = __importDefault(require("../model/RecentPlaylistModel"));
 const LikedSongService_1 = __importDefault(require("../services/LikedSongService"));
 const PlayListService_1 = __importDefault(require("../services/PlayListService"));
@@ -28,28 +27,11 @@ class RecentPlaylistController {
             var d = new RecentPlaylistModel_1.default();
             d.User_ID = User_ID;
             d.ID = req.body.id;
-            d.type = req.body.type;
+            d.Type = req.body.type;
             var ls = [];
-            switch (d.type) {
-                case "playlist":
-                    let s = yield RecentPlaylistController.playlist.Get(d.ID);
-                    if (s != undefined) {
-                        d.image = s.ImagePath;
-                        d.name = s.PlayListName;
-                        ls = yield RecentPlaylistController.likesong.GetAllByIdPlayList(d.User_ID, s.id);
-                    }
-                    break;
-                case "artise":
-                    let s2 = yield RecentPlaylistController.user.Get(d.ID);
-                    if (s2 != undefined) {
-                        d.image = s2.pathImage;
-                        d.name = s2.ChanalName;
-                        var d2 = new LikedSongModel_1.default();
-                        d2.user_id = d.ID;
-                        d2.id_user_liked = d.User_ID;
-                        ls = yield RecentPlaylistController.likesong.GetAllByIduserAndIdArtise(d2);
-                    }
-                    break;
+            let s = yield RecentPlaylistController.playlist.Get(d.ID);
+            if (s != undefined) {
+                ls = yield RecentPlaylistController.likesong.GetAllByIdPlayList(d.User_ID, s.id);
             }
             var check = yield RecentPlaylistService_1.default.Get(d.User_ID, d.ID);
             var check1 = undefined;

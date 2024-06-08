@@ -9,4 +9,5 @@ const PlayListRoute = (0, express_1.Router)();
 PlayListRoute.post("/GetAllPlayList", PlayListController_1.default.GetByGenreAdmin); //0k
 PlayListRoute.get("/:idplaylist", PlayListController_1.default.GetPlayListById); //0k
 PlayListRoute.post("/Nextplaylist", PlayListController_1.default.NextPlayListLimit);
+PlayListRoute.post("/NextPlaylistArtist", PlayListController_1.default.NextPlayArtistListLimit);
 exports.default = PlayListRoute;

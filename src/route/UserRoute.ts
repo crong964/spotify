@@ -23,6 +23,6 @@ UserRoute.get("/", userController.Get)//0k
 UserRoute.get("/artist", (req, res) => {
     userController.getAllArtist(req, res)
 })//0k
-UserRoute.get("/artisepage/:artisepage", userController.getArtisePage)//0k
+UserRoute.get("/artistpage/:artistpage", userController.getArtisePage)//0k
 UserRoute.post("/update", upload.single("avatar"), userController.update)
 export default UserRoute 

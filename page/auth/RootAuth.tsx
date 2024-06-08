@@ -5,17 +5,20 @@ export interface initialState {
   Account: string;
   pathImage: string;
   Name: string;
+  Sign: string;
 }
 interface Infor {
   Account: string;
   pathImage: string;
   Name: string;
+  Sign: string;
 }
 var initialState: initialState = {
   page: "signin",
   Account: "",
   pathImage: "",
   Name: "",
+  Sign: "",
 };
 
 export const counterSlice = createSlice({
@@ -34,6 +37,7 @@ export const counterSlice = createSlice({
       state.Account = action.payload.Account;
       state.pathImage = action.payload.pathImage;
       state.Name = action.payload.Name;
+      state.Sign = action.payload.Sign;
     },
   },
 });

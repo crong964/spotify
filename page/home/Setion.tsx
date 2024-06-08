@@ -1,24 +1,25 @@
 import { useEffect, useState } from "react";
 import PlayButtom from "../component/PlayButtom";
 import React from "react";
-import { get } from "../config/req";
+import { get, post } from "../config/req";
 import { useDispatch, useSelector } from "react-redux";
 import { NaviPage, RootHome } from "./RootRedux";
 import { Artists } from "../component/Artist";
+import PlayLists, { PlayList } from "../component/Playlist";
 
 interface SetionList {
   name: string;
   type: "artist" | "album" | "normal";
 }
 export function SetionList(params: SetionList) {
-  const [artist, SetaAtist] = useState<SetionData[]>([]);
+  const [artist, SetaAtist] = useState<PlayList[]>([]);
   const Right = useSelector((state: RootHome) => state.rootHome.Right);
   useEffect(() => {
-    get("/user/artist", (v: any) => {
+    post("/playlist/NextPlaylistArtist", {}, (v: any) => {
       SetaAtist(v.ls);
     });
   }, []);
-  return <Artists d={artist}></Artists>;
+  return <PlayLists d={artist} title="Danh sách nghệ sĩ"></PlayLists>;
 }
 interface SetionData {
   pathImage: string;
@@ -35,7 +36,7 @@ export default function SetionData(params: SetionData) {
     <div
       className="w-[200px] sm:w-full cursor-pointer"
       onClick={() => {
-        dispatch(NaviPage({ page: "artise", param: params.id }));
+        dispatch(NaviPage({ page: "artist", param: params.id }));
       }}
       onMouseEnter={() => {
         SetHidden(false);
@@ -55,7 +56,7 @@ export default function SetionData(params: SetionData) {
           <></>
         ) : (
           <div className="absolute right-0 bottom-0">
-            <PlayButtom id={params.id} page="artise"/>
+            <PlayButtom id={params.id} page="artist" />
           </div>
         )}
       </div>

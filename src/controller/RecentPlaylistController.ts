@@ -25,32 +25,13 @@ class RecentPlaylistController {
 
         d.User_ID = User_ID
         d.ID = req.body.id
-        d.type = req.body.type
+        d.Type = req.body.type
 
         var ls: SongModel[] = []
-        switch (d.type) {
-            case "playlist":
-                let s = await RecentPlaylistController.playlist.Get(d.ID)
-                if (s != undefined) {
-                    d.image = s.ImagePath
-                    d.name = s.PlayListName
-                    ls = await RecentPlaylistController.likesong.GetAllByIdPlayList(d.User_ID, s.id)
-                }
-                break;
-            case "artise":
-                let s2 = await RecentPlaylistController.user.Get(d.ID)
-                if (s2 != undefined) {
-                    d.image = s2.pathImage
-                    d.name = s2.ChanalName
-                    var d2 = new LikedSongModel()
-                    d2.user_id = d.ID
-                    d2.id_user_liked = d.User_ID
-                    ls = await RecentPlaylistController.likesong.GetAllByIduserAndIdArtise(d2)
-                }
-                break
+        let s = await RecentPlaylistController.playlist.Get(d.ID)
+        if (s != undefined) {
+            ls = await RecentPlaylistController.likesong.GetAllByIdPlayList(d.User_ID, s.id)
         }
-
-
         var check = await recentPlaylistService.Get(d.User_ID, d.ID)
 
 

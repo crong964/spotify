@@ -165,7 +165,7 @@ function HeadChatBox(data: boxChat) {
     <div className="pl-2 h-[44px] py-2 flex bg-black cursor-pointer items-center justify-between">
       <div
         onClick={() => {
-          dispatch(NaviPage({ page: "artise", param: data.id }));
+          dispatch(NaviPage({ page: "artist", param: data.id }));
         }}
         className="flex items-center"
       >

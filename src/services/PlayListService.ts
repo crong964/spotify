@@ -13,6 +13,19 @@ export class PlayListService {
         check = await Mysql2.query(sql, [d.id, d.User_id, d.Genre_ID, d.Type, d.ImagePath, d.PlayListName, d.Likes, d.Songs, d.Duration, d.Status, d.Discripition])
         return check
     }
+    async AddArtists(d: PlayListModel) {
+        var sql = "INSERT INTO playlist(id, User_id, Genre_ID, Type, ImagePath, PlayListName, Likes, Songs, Duration, Status, Discripition) VALUES (?,?,?,'artists',?,?,?,?,?,?,?)"
+        var check
+        check = await Mysql2.query(sql, [d.id, d.User_id, d.Genre_ID, d.ImagePath, d.PlayListName, d.Likes, d.Songs, d.Duration, d.Status, d.Discripition])
+        return check
+    }
+    async GetArtists(id: string) {
+        var sql = "SELECT * FROM playlist WHERE id = ? AND Type='artists'"
+        var check
+        check = await Mysql2.query(sql, [id])
+        var ls = this.SetLs(check)
+        return ls.length > 0 ? ls[0] : undefined;
+    }
     async Get(id: string) {
         var sql = "SELECT * FROM playlist WHERE id=?"
         var check
@@ -56,9 +69,19 @@ export class PlayListService {
     }
 
     async GetPlayListLimit(start: number, count: number) {
-        var sql = "SELECT * FROM playlist LIMIT ?,?"
+        var sql = "SELECT * FROM playlist where Type='playlist' LIMIT ?,?"
         var ls = await Mysql2.query(sql, [start, count])
         return this.SetLs(ls)
+    }
+    async GetPlayListArtistLimit(start: number, count: number) {
+        var sql = `SELECT * FROM playlist where Type="artist" AND status=1 LIMIT ?,?`
+        var ls = await Mysql2.query(sql, [start, count])
+        return this.SetLs(ls)
+    }
+    async GetPlayListArtist(User_id: string) {
+        var sql = `SELECT * FROM playlist where User_id=? AND Type="artist"`
+        var ls = await Mysql2.query(sql, [User_id])
+        return this.SetLs(ls)[0]
     }
     async DeletePlaylist(id: string) {
         var sql = `Delete from playlist where id=?`

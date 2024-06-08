@@ -16,6 +16,10 @@ export function VertifyJWT(apikey: string, secret?: string) {
     return decode
 }
 
+export function SignJWT(payload: string, secret?: string) {
+    return jwt.sign(payload, SECRET || "1")
+}
+
 export function IdUser(p: Request) {
 
 }
