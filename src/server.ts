@@ -30,6 +30,7 @@ import "dotenv/config"
 import { VertifyJWT } from "./config/Helper";
 import jwt, { JwtPayload } from "jsonwebtoken"
 import RecentPlaylistRoute from "./route/RecentPlaylistRoute";
+import firebase from "./config/Firebase";
 
 const secret = process.env.SECRET || "1"
 const app = express()
@@ -65,23 +66,7 @@ app.get("/swagger", (req, res) => {
 })
 
 app.use((req, res, next) => {
-    //eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0ZW5Mb3AiOiJCb290Y2FtcCA2MSIsIkhldEhhblN0cmluZyI6IjI4LzA5LzIwMjQiLCJIZXRIYW5UaW1lIjoiMTcyNzQ4MTYwMDAwMCIsIm5iZiI6MTY5ODUxMjQwMCwiZXhwIjoxNzI3NjI5MjAwfQ.uWn4XmIr3aGBNm4QCi5Q5RFxVqNTwws8-EDFxQQud_I
-    var TokenCybersoft = req.headers.tokencybersoft as string
-
-    if (TokenCybersoft) {
-        var now = new Date().getTime() + ""
-        var decode = jwt.decode(TokenCybersoft) as jwt.JwtPayload
-        if (decode == null || !decode.HetHanTime || decode.HetHanTime + "" < now) {
-            res.status(403).send({
-                "statusCode": 403,
-                "message": "Không đủ quyền truy cập!",
-                "content": "Token không cybersoft không hợp lệ hoặc đã hết hạn truy cập !",
-                "dateTime": new Date().toISOString(),
-                "messageConstants": null
-            })
-            return
-        }
-    }
+    res.setHeader("Cache-Control", "max-age=315360000, no-transform, must-revalidate")
     next()
 })
 app.use(bodyParser.urlencoded({ extended: false, limit: "50mb" }))
@@ -112,7 +97,49 @@ app.get("/dashboard", (req, res) => {
 })
 
 app.use("/auth", Account)
-app.get("/idSong", (req, res) => {
+// app.get("/idSong", (req, res) => {
+//     var start = parseInt(req.headers.range?.replace("bytes=", "").split("-")[0] || "0")
+//     var music = req.cookies.music
+//     var idSong = req.query.idSong as string
+//     var id = req.cookies.id
+//     if (idSong == undefined || idSong == "undefined") {
+//         res.end()
+//         return
+//     }
+//     res.cookie("music", idSong, { httpOnly: true, maxAge: 1000 * 60 * 60 * 24 * 365 })
+
+//     if (!music && music != idSong && id != undefined) {
+//         recentSongService.Add(id, idSong)
+//     }
+//     try {
+//         var pathg = path.join(process.cwd(), "public/music", idSong)
+//         var videoSize = fs.statSync(pathg).size
+//         var chuck = 160000
+//         var end = Math.min(start + chuck, videoSize - 1)
+
+//         var s = fs.createReadStream(pathg, {
+//             start, end
+//         })
+//         s.on("error", (err) => {
+//         })
+
+
+//         res.writeHead(206, {
+//             "accept-ranges": "bytes",
+//             "content-range": `bytes ${start}-${end}/${videoSize}`,
+//             "content-type": "audio/mp3",
+//             "content-length": end - start + 1
+//         })
+//         s.pipe(res)
+//     } catch (error) {
+//         console.log(error);
+
+//         res.json({
+//             err: true
+//         })
+//     }
+// })
+app.get("/idSong", async (req, res) => {
     var start = parseInt(req.headers.range?.replace("bytes=", "").split("-")[0] || "0")
     var music = req.cookies.music
     var idSong = req.query.idSong as string
@@ -121,31 +148,38 @@ app.get("/idSong", (req, res) => {
         res.end()
         return
     }
-    res.cookie("music", idSong, { httpOnly: true, maxAge: 1000 * 60 * 60 * 24 * 365 })
 
-    if (!music && music != idSong && id != undefined) {
-        recentSongService.Add(id, idSong)
-    }
+
+    var patsong = `song/${idSong}`
     try {
-        var pathg = path.join(process.cwd(), "public/music", idSong)
-        var videoSize = fs.statSync(pathg).size
-        var chuck = 160000
+        var videoSize = parseInt(req.cookies.videoSize || "0")
+
+        if (music != idSong && id != undefined) {
+            recentSongService.Add(id, idSong)
+
+            videoSize = parseInt(((await firebase.GetMeta(patsong))?.size + "") || "0")
+
+
+            res.cookie("music", idSong, { httpOnly: true, maxAge: 1000 * 60 * 60 * 24 * 365 })
+            res.cookie("videoSize", videoSize, { httpOnly: true, maxAge: 1000 * 60 * 60 * 24 * 365 })
+        }
+        var chuck = 10 ** 6
+
         var end = Math.min(start + chuck, videoSize - 1)
+        var read = firebase.DownloadStreamFile(patsong, start, end)
+            .on("error", (err) => {
+                console.log(err);
 
-        var s = fs.createReadStream(pathg, {
-            start, end
-        })
-        s.on("error", (err) => {
-        })
-
-
+            })
         res.writeHead(206, {
             "accept-ranges": "bytes",
             "content-range": `bytes ${start}-${end}/${videoSize}`,
             "content-type": "audio/mp3",
             "content-length": end - start + 1
+
         })
-        s.pipe(res)
+        read.pipe(res)
+
     } catch (error) {
         console.log(error);
 
@@ -155,13 +189,9 @@ app.get("/idSong", (req, res) => {
     }
 })
 app.get("/s", (req, res) => {
-    
-
     var namestrong = req.query.id as string
     try {
         var pathg = path.join(process.cwd(), "public/music", namestrong)
-        
-        
         var s = fs.createReadStream(pathg)
         s.on("error", (err) => {
         })
@@ -187,8 +217,6 @@ app.get("/s", (req, res) => {
             err: true
         })
     }
-
-
 })
 
 app.use("/genre", GenreRoute)

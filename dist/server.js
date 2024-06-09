@@ -22,6 +22,15 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -55,8 +64,8 @@ const UserRouteAdmin_1 = __importDefault(require("./admin/UserRouteAdmin"));
 const admin_1 = __importDefault(require("./config/admin"));
 require("dotenv/config");
 const Helper_1 = require("./config/Helper");
-const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const RecentPlaylistRoute_1 = __importDefault(require("./route/RecentPlaylistRoute"));
+const Firebase_1 = __importDefault(require("./config/Firebase"));
 const secret = process.env.SECRET || "1";
 const app = (0, express_1.default)();
 const httpServer = (0, http_1.createServer)(app);
@@ -87,22 +96,7 @@ app.get("/swagger", (req, res) => {
     res.sendFile((0, path_1.join)(process.cwd(), "web/swagger.html"));
 });
 app.use((req, res, next) => {
-    //eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0ZW5Mb3AiOiJCb290Y2FtcCA2MSIsIkhldEhhblN0cmluZyI6IjI4LzA5LzIwMjQiLCJIZXRIYW5UaW1lIjoiMTcyNzQ4MTYwMDAwMCIsIm5iZiI6MTY5ODUxMjQwMCwiZXhwIjoxNzI3NjI5MjAwfQ.uWn4XmIr3aGBNm4QCi5Q5RFxVqNTwws8-EDFxQQud_I
-    var TokenCybersoft = req.headers.tokencybersoft;
-    if (TokenCybersoft) {
-        var now = new Date().getTime() + "";
-        var decode = jsonwebtoken_1.default.decode(TokenCybersoft);
-        if (decode == null || !decode.HetHanTime || decode.HetHanTime + "" < now) {
-            res.status(403).send({
-                "statusCode": 403,
-                "message": "Không đủ quyền truy cập!",
-                "content": "Token không cybersoft không hợp lệ hoặc đã hết hạn truy cập !",
-                "dateTime": new Date().toISOString(),
-                "messageConstants": null
-            });
-            return;
-        }
-    }
+    res.setHeader("Cache-Control", "max-age=315360000, no-transform, must-revalidate");
     next();
 });
 app.use(body_parser_1.default.urlencoded({ extended: false, limit: "50mb" }));
@@ -129,8 +123,45 @@ app.get("/dashboard", (req, res) => {
     res.sendFile(path_1.default.join(process.cwd(), "web/dashboard.html"));
 });
 app.use("/auth", Acount_1.default);
-app.get("/idSong", (req, res) => {
-    var _a;
+// app.get("/idSong", (req, res) => {
+//     var start = parseInt(req.headers.range?.replace("bytes=", "").split("-")[0] || "0")
+//     var music = req.cookies.music
+//     var idSong = req.query.idSong as string
+//     var id = req.cookies.id
+//     if (idSong == undefined || idSong == "undefined") {
+//         res.end()
+//         return
+//     }
+//     res.cookie("music", idSong, { httpOnly: true, maxAge: 1000 * 60 * 60 * 24 * 365 })
+//     if (!music && music != idSong && id != undefined) {
+//         recentSongService.Add(id, idSong)
+//     }
+//     try {
+//         var pathg = path.join(process.cwd(), "public/music", idSong)
+//         var videoSize = fs.statSync(pathg).size
+//         var chuck = 160000
+//         var end = Math.min(start + chuck, videoSize - 1)
+//         var s = fs.createReadStream(pathg, {
+//             start, end
+//         })
+//         s.on("error", (err) => {
+//         })
+//         res.writeHead(206, {
+//             "accept-ranges": "bytes",
+//             "content-range": `bytes ${start}-${end}/${videoSize}`,
+//             "content-type": "audio/mp3",
+//             "content-length": end - start + 1
+//         })
+//         s.pipe(res)
+//     } catch (error) {
+//         console.log(error);
+//         res.json({
+//             err: true
+//         })
+//     }
+// })
+app.get("/idSong", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a, _b;
     var start = parseInt(((_a = req.headers.range) === null || _a === void 0 ? void 0 : _a.replace("bytes=", "").split("-")[0]) || "0");
     var music = req.cookies.music;
     var idSong = req.query.idSong;
@@ -139,19 +170,20 @@ app.get("/idSong", (req, res) => {
         res.end();
         return;
     }
-    res.cookie("music", idSong, { httpOnly: true, maxAge: 1000 * 60 * 60 * 24 * 365 });
-    if (!music && music != idSong && id != undefined) {
-        RecentSongService_1.default.Add(id, idSong);
-    }
+    var patsong = `song/${idSong}`;
     try {
-        var pathg = path_1.default.join(process.cwd(), "public/music", idSong);
-        var videoSize = fs_1.default.statSync(pathg).size;
-        var chuck = 160000;
+        var videoSize = parseInt(req.cookies.videoSize || "0");
+        if (music != idSong && id != undefined) {
+            RecentSongService_1.default.Add(id, idSong);
+            videoSize = parseInt((((_b = (yield Firebase_1.default.GetMeta(patsong))) === null || _b === void 0 ? void 0 : _b.size) + "") || "0");
+            res.cookie("music", idSong, { httpOnly: true, maxAge: 1000 * 60 * 60 * 24 * 365 });
+            res.cookie("videoSize", videoSize, { httpOnly: true, maxAge: 1000 * 60 * 60 * 24 * 365 });
+        }
+        var chuck = 10 ** 6;
         var end = Math.min(start + chuck, videoSize - 1);
-        var s = fs_1.default.createReadStream(pathg, {
-            start, end
-        });
-        s.on("error", (err) => {
+        var read = Firebase_1.default.DownloadStreamFile(patsong, start, end)
+            .on("error", (err) => {
+            console.log(err);
         });
         res.writeHead(206, {
             "accept-ranges": "bytes",
@@ -159,7 +191,7 @@ app.get("/idSong", (req, res) => {
             "content-type": "audio/mp3",
             "content-length": end - start + 1
         });
-        s.pipe(res);
+        read.pipe(res);
     }
     catch (error) {
         console.log(error);
@@ -167,7 +199,7 @@ app.get("/idSong", (req, res) => {
             err: true
         });
     }
-});
+}));
 app.get("/s", (req, res) => {
     var namestrong = req.query.id;
     try {

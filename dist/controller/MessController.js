@@ -150,7 +150,7 @@ class MessController {
                 catch (error) {
                     console.log(error);
                 }
-                return `${v.filename}.jpg`;
+                return `${v.filename}.jpeg`;
             }));
             var ls = yield Promise.all(s);
             files.map((v) => __awaiter(this, void 0, void 0, function* () {

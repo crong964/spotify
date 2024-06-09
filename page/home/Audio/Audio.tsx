@@ -170,9 +170,9 @@ interface Time {
   d: number;
 }
 function Time(params: Time) {
-  var data = parseInt(params.d + "");
-  var minute = parseInt(data / 60 + "");
-  var second = data % 60;
+  let data = parseInt(params.d + "");
+  let minute = parseInt(data / 60 + "");
+  let second = data % 60;
 
   if (isNaN(data)) {
     return <div></div>;

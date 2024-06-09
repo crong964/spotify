@@ -143,7 +143,7 @@ export class MessController {
             } catch (error) {
                 console.log(error);
             }
-            return `${v.filename}.jpg`
+            return `${v.filename}.jpeg`
         })
         var ls = await Promise.all(s)
 

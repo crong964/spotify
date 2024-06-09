@@ -18,9 +18,13 @@ export default function PlayingBar() {
   const stop = useSelector((state: RootHome) => state.audioroot.stop);
   const idsong = useSelector((state: RootHome) => state.rootHome.idSong);
   const isLogin = useSelector((state: RootHome) => state.rootHome.isLogin);
-
   const lsSong = useSelector((state: RootHome) => state.audioroot.lsSong);
   const mark = useSelector((state: RootHome) => state.audioroot.mark);
+  const [volume, SetVolume] = useState(
+    parseInt(localStorage.getItem("volume") || "100")
+  );
+
+  localStorage.setItem("volume", volume + "");
   const dispatch = useDispatch();
 
   var temp: SongI | undefined = undefined;
@@ -144,24 +148,139 @@ export default function PlayingBar() {
         ) : (
           <></>
         )}
-        <button>
-          <svg
-            aria-label="Âm lượng trung bình"
-            aria-hidden="true"
-            id="volume-icon"
-            viewBox="0 0 16 16"
-            className="fill-white size-4"
-          >
-            <path d="M9.741.85a.75.75 0 0 1 .375.65v13a.75.75 0 0 1-1.125.65l-6.925-4a3.642 3.642 0 0 1-1.33-4.967 3.639 3.639 0 0 1 1.33-1.332l6.925-4a.75.75 0 0 1 .75 0zm-6.924 5.3a2.139 2.139 0 0 0 0 3.7l5.8 3.35V2.8l-5.8 3.35zm8.683 6.087a4.502 4.502 0 0 0 0-8.474v1.65a2.999 2.999 0 0 1 0 5.175v1.649z"></path>
-          </svg>
-        </button>
-        <input
-          type="range"
-          max={1}
-          step={1 / 10}
-          className="rounded-lg overflow-hidden appearance-none bg-gray-400 h-1"
-        />
+        <div
+          className="flex items-center cursor-pointer space-x-2 hover:border-2 hover:border-gray-400 p-2 rounded-xl"
+          onWheel={(e) => {
+            var cur = e.deltaY;
+            var o = 8;
+            if (cur < 0) {
+              if (volume >= 100) {
+                return;
+              }
+              SetVolume(volume + o);
+            } else {
+              if (volume > 0) {
+                SetVolume(volume - o);
+              }
+            }
+          }}
+        >
+          <button>
+            <Volume value={volume} />
+          </button>
+          <input
+            onChange={(e) => {
+              SetVolume(parseInt(e.currentTarget.value));
+            }}
+            type="range"
+            value={volume}
+            max={100}
+            step={1}
+            className="rounded-lg overflow-hidden appearance-none bg-gray-400 h-[4px]"
+          />
+        </div>
       </div>
     </div>
+  );
+}
+interface Volume {
+  value: number;
+}
+function Volume(p: Volume) {
+  return (
+    <>
+      <MuteVolume value={p.value} />
+      <SmallVolume value={p.value} />
+      <MediumVolume value={p.value} />
+      <BigVolume value={p.value} />
+    </>
+  );
+}
+
+function MuteVolume(p: Volume) {
+  return (
+    <>
+      {p.value <= 0 ? (
+        <svg
+          data-encore-id="icon"
+          role="presentation"
+          aria-label="Đang tắt tiếng"
+          aria-hidden="true"
+          id="volume-icon"
+          viewBox="0 0 16 16"
+          className="fill-white size-4"
+        >
+          <path d="M13.86 5.47a.75.75 0 0 0-1.061 0l-1.47 1.47-1.47-1.47A.75.75 0 0 0 8.8 6.53L10.269 8l-1.47 1.47a.75.75 0 1 0 1.06 1.06l1.47-1.47 1.47 1.47a.75.75 0 0 0 1.06-1.06L12.39 8l1.47-1.47a.75.75 0 0 0 0-1.06z"></path>
+          <path d="M10.116 1.5A.75.75 0 0 0 8.991.85l-6.925 4a3.642 3.642 0 0 0-1.33 4.967 3.639 3.639 0 0 0 1.33 1.332l6.925 4a.75.75 0 0 0 1.125-.649v-1.906a4.73 4.73 0 0 1-1.5-.694v1.3L2.817 9.852a2.141 2.141 0 0 1-.781-2.92c.187-.324.456-.594.78-.782l5.8-3.35v1.3c.45-.313.956-.55 1.5-.694V1.5z"></path>
+        </svg>
+      ) : (
+        <></>
+      )}
+    </>
+  );
+}
+
+function SmallVolume(p: Volume) {
+  return (
+    <>
+      {1 <= p.value && p.value < 33 ? (
+        <svg
+          data-encore-id="icon"
+          role="presentation"
+          aria-label="Âm lượng thấp"
+          aria-hidden="true"
+          id="volume-icon"
+          viewBox="0 0 16 16"
+          className="fill-white size-4"
+        >
+          <path d="M9.741.85a.75.75 0 0 1 .375.65v13a.75.75 0 0 1-1.125.65l-6.925-4a3.642 3.642 0 0 1-1.33-4.967 3.639 3.639 0 0 1 1.33-1.332l6.925-4a.75.75 0 0 1 .75 0zm-6.924 5.3a2.139 2.139 0 0 0 0 3.7l5.8 3.35V2.8l-5.8 3.35zm8.683 4.29V5.56a2.75 2.75 0 0 1 0 4.88z"></path>
+        </svg>
+      ) : (
+        <></>
+      )}
+    </>
+  );
+}
+function MediumVolume(p: Volume) {
+  return (
+    <>
+      {33 <= p.value && p.value < 66 ? (
+        <svg
+          data-encore-id="icon"
+          role="presentation"
+          aria-label="Âm lượng trung bình"
+          aria-hidden="true"
+          id="volume-icon"
+          viewBox="0 0 16 16"
+          className="fill-white size-4"
+        >
+          <path d="M9.741.85a.75.75 0 0 1 .375.65v13a.75.75 0 0 1-1.125.65l-6.925-4a3.642 3.642 0 0 1-1.33-4.967 3.639 3.639 0 0 1 1.33-1.332l6.925-4a.75.75 0 0 1 .75 0zm-6.924 5.3a2.139 2.139 0 0 0 0 3.7l5.8 3.35V2.8l-5.8 3.35zm8.683 6.087a4.502 4.502 0 0 0 0-8.474v1.65a2.999 2.999 0 0 1 0 5.175v1.649z"></path>
+        </svg>
+      ) : (
+        <></>
+      )}
+    </>
+  );
+}
+function BigVolume(p: Volume) {
+  return (
+    <>
+      {66 <= p.value ? (
+        <svg
+          data-encore-id="icon"
+          role="presentation"
+          aria-label="Âm lượng cao"
+          aria-hidden="true"
+          id="volume-icon"
+          viewBox="0 0 16 16"
+          className="fill-white size-4"
+        >
+          <path d="M9.741.85a.75.75 0 0 1 .375.65v13a.75.75 0 0 1-1.125.65l-6.925-4a3.642 3.642 0 0 1-1.33-4.967 3.639 3.639 0 0 1 1.33-1.332l6.925-4a.75.75 0 0 1 .75 0zm-6.924 5.3a2.139 2.139 0 0 0 0 3.7l5.8 3.35V2.8l-5.8 3.35zm8.683 4.29V5.56a2.75 2.75 0 0 1 0 4.88z"></path>
+          <path d="M11.5 13.614a5.752 5.752 0 0 0 0-11.228v1.55a4.252 4.252 0 0 1 0 8.127v1.55z"></path>
+        </svg>
+      ) : (
+        <></>
+      )}
+    </>
   );
 }
