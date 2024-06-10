@@ -5,6 +5,7 @@ import { NaviRight, RootHome } from "../RootRedux";
 import Audio from "./Audio";
 import { post } from "../../config/req";
 import { NextSong, SetSongs, SetStop } from "./AudioRedux";
+import { VolumeAudio } from "../../socket/Socket";
 
 interface SongI {
   Id: string;
@@ -60,6 +61,9 @@ export default function PlayingBar() {
       }
     );
   }, [idsong]);
+  useEffect(()=>{
+    VolumeAudio(volume)
+  },[volume])
   return (
     <div className="w-full bg-[#121212] h-[10%] sm:h-[12%] grid items-center grid-cols-1 sm:grid-cols-4 mt-0 ">
       <div className="flex sm:inline-block justify-between items-center px-2 sm:px-0">
@@ -159,9 +163,11 @@ export default function PlayingBar() {
                 return;
               }
               SetVolume(volume + o);
+              
             } else {
               if (volume > 0) {
                 SetVolume(volume - o);
+                
               }
             }
           }}

@@ -39,10 +39,10 @@ export default function Queue() {
             }}
             className={
               `${navi == "1" ? "border-b-4 border-green-800" : ""}` +
-              " cursor-pointer font-bold w-max  text-white "
+              " cursor-pointer  font-bold w-max text-white"
             }
           >
-            Danh sách chờ
+            Đã phát gần đây
           </div>
           <div
             onClick={() => {
@@ -50,10 +50,10 @@ export default function Queue() {
             }}
             className={
               `${navi == "2" ? "border-b-4 border-green-800" : ""}` +
-              " cursor-pointer  font-bold w-max text-white"
+              " cursor-pointer font-bold w-max  text-white "
             }
           >
-            Đã phát gần đây
+            Danh sách chờ
           </div>
         </div>
         <div
@@ -73,8 +73,8 @@ export default function Queue() {
         </div>
       </div>
       <div className="bg-[#121212] text-white font-bold mt-1 rounded-lg space-y-3 pb-3">
-        <RecentPlaySongs cur={navi} type="1" />
-        <SongQueueInplayList cur={navi} type="2" />
+        <RecentPlaySongs cur={navi} type="2" />
+        <SongQueueInplayList cur={navi} type="1" />
       </div>
     </div>
   );
@@ -114,7 +114,6 @@ function RecentPlaySongs(p: MenberQueue) {
   );
 }
 function SongQueueInplayList(p: MenberQueue) {
-  
   const lsSong = useSelector((state: RootHome) => state.audioroot.lsSong);
   const mark = useSelector((state: RootHome) => state.audioroot.mark);
   const dispatch = useDispatch();
