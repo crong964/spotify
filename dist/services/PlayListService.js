@@ -105,7 +105,7 @@ class PlayListService {
     }
     GetPlayListArtistLimit(start, count) {
         return __awaiter(this, void 0, void 0, function* () {
-            var sql = `SELECT * FROM playlist where Type="artist" AND status=1 LIMIT ?,?`;
+            var sql = `SELECT * FROM playlist where Type='artist' AND status=1 LIMIT ?,?`;
             var ls = yield Config_1.default.query(sql, [start, count]);
             return this.SetLs(ls);
         });

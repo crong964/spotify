@@ -37,6 +37,7 @@ const audioSlice = createSlice({
     SetSongs: (state, pay: PayloadAction<Song[]>) => {
       state.lsSong = pay.payload;
       state.mark = 0;
+      localStorage.setItem("song", JSON.stringify(state.lsSong[state.mark]));
     },
     NextSong: (state, pay: PayloadAction<number>) => {
       state.mark = state.mark + pay.payload;

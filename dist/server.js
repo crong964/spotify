@@ -105,7 +105,7 @@ app.use("/box", admin_1.USER, BoxChatRoute_1.default);
 app.use("/user", admin_1.USER, UserRoute_1.default);
 app.use("/song", Song_Route_1.default);
 app.use("/lsong", admin_1.USER, LikedSongRoute_1.default);
-app.use("/recentPlaylist", admin_1.USER, RecentPlaylistRoute_1.default);
+app.use("/recentPlaylist", RecentPlaylistRoute_1.default);
 app.use("/rs", admin_1.USER, RecentSongRoute_1.default);
 app.use("/search", SearchRoute_1.default);
 app.use("/discuss", admin_1.USER, DiscussRoute_1.default);
@@ -162,12 +162,9 @@ app.use("/admin/UserRouteAdmin", admin_1.default, UserRouteAdmin_1.default);
 app.get(/admin*/, admin_1.default, (req, res) => {
     res.sendFile((0, path_1.join)(process.cwd(), "web/admin.html"));
 });
-app.use((req, res, next) => {
-    res.setHeader("Cache-Control", "max-age=315360000, no-transform, must-revalidate");
-    next();
-});
 app.get("/idSong", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b;
+    res.setHeader("Cache-Control", "max-age=315360000, no-transform, must-revalidate");
     var start = parseInt(((_a = req.headers.range) === null || _a === void 0 ? void 0 : _a.replace("bytes=", "").split("-")[0]) || "0");
     var music = req.cookies.music;
     var idSong = req.query.idSong;
@@ -207,6 +204,7 @@ app.get("/idSong", (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 }));
 app.get("/s", (req, res) => {
+    res.setHeader("Cache-Control", "max-age=315360000, no-transform, must-revalidate");
     var namestrong = req.query.id;
     try {
         var pathg = path_1.default.join(process.cwd(), "public/music", namestrong);

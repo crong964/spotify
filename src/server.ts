@@ -80,7 +80,7 @@ app.use("/box", USER, BoxChatRoute)
 app.use("/user", USER, UserRoute)
 app.use("/song", SongRoute)
 app.use("/lsong", USER, LikedSongRoute)
-app.use("/recentPlaylist", USER, RecentPlaylistRoute)
+app.use("/recentPlaylist", RecentPlaylistRoute)
 app.use("/rs", USER, RecentSongRoute)
 app.use("/search", SearchRoute)
 app.use("/discuss", USER, DiscussRoute)
@@ -145,11 +145,9 @@ app.use("/admin/UserRouteAdmin", ADMIN, UserRouteAdmin)
 app.get(/admin*/, ADMIN, (req, res) => {
     res.sendFile(join(process.cwd(), "web/admin.html"))
 })
-app.use((req, res, next) => {
-    res.setHeader("Cache-Control", "max-age=315360000, no-transform, must-revalidate")
-    next()
-})
+
 app.get("/idSong", async (req, res) => {
+    res.setHeader("Cache-Control", "max-age=315360000, no-transform, must-revalidate")
     var start = parseInt(req.headers.range?.replace("bytes=", "").split("-")[0] || "0")
     var music = req.cookies.music
     var idSong = req.query.idSong as string
@@ -199,6 +197,7 @@ app.get("/idSong", async (req, res) => {
     }
 })
 app.get("/s", (req, res) => {
+    res.setHeader("Cache-Control", "max-age=315360000, no-transform, must-revalidate")
     var namestrong = req.query.id as string
     try {
         var pathg = path.join(process.cwd(), "public/music", namestrong)

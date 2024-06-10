@@ -54,7 +54,7 @@ Account.post("/signin", (req, res) => __awaiter(void 0, void 0, void 0, function
         return;
     }
     res.redirect("/");
-})); //0k
+})); //0k 
 Account.get("/github", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var code = req.query.code;
     var url = `https://github.com/login/oauth/access_token?client_id=${client_id_si}&client_secret=${client_secret_si}&code=${code}`;
@@ -303,7 +303,6 @@ Account.post("/ggup", (req, res) => {
 });
 Account.get("/logout", (req, res) => {
     clearCookie(res);
-    console.log("vaf");
     res.redirect("/auth");
 });
 Account.post("/getdata", (req, res) => {

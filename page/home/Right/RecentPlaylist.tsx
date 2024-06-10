@@ -71,7 +71,9 @@ export default function RecentList() {
   const [recentList, SetRecentList] = useState<RecentPlaylist[]>([]);
   useEffect(() => {
     post("recentPlaylist/getAll", {}, (v: any) => {
-      if (!v.err) {
+      
+
+      if (v && !v.err) {
         SetRecentList(v.ls);
       }
     });

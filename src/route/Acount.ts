@@ -49,7 +49,7 @@ Account.post("/signin", async (req, res) => {
     return
   }
   res.redirect("/")
-});//0k
+});//0k 
 Account.get("/github", async (req, res) => {
   var code = req.query.code;
 
@@ -337,7 +337,7 @@ Account.post("/ggup", (req, res) => {
 });
 Account.get("/logout", (req, res) => {
   clearCookie(res)
-  console.log("vaf");
+  
   
   res.redirect("/auth")
 })
