@@ -95,10 +95,6 @@ app.use("/i", express_1.default.static(path_1.default.join(process.cwd(), "publi
 app.get("/swagger", (req, res) => {
     res.sendFile((0, path_1.join)(process.cwd(), "web/swagger.html"));
 });
-// app.use((req, res, next) => {
-//     res.setHeader("Cache-Control", "max-age=315360000, no-transform, must-revalidate")
-//     next()
-// })
 app.use(body_parser_1.default.urlencoded({ extended: false, limit: "50mb" }));
 app.use(body_parser_1.default.json());
 app.get("/", (req, res) => {
@@ -156,6 +152,20 @@ app.use("/auth", Acount_1.default);
 //         })
 //     }
 // })
+app.use("/genre", GenreRoute_1.default);
+app.use("/playlist", PlayListRoute_1.default);
+//admin
+app.use("/genre", admin_1.default, GenreRouteAdmin_1.default);
+app.use("/playlist", admin_1.default, PlayListRouteAdmin_1.default);
+app.use("/contain", admin_1.default, ContainRouteAdmin_1.default);
+app.use("/admin/UserRouteAdmin", admin_1.default, UserRouteAdmin_1.default);
+app.get(/admin*/, admin_1.default, (req, res) => {
+    res.sendFile((0, path_1.join)(process.cwd(), "web/admin.html"));
+});
+app.use((req, res, next) => {
+    res.setHeader("Cache-Control", "max-age=315360000, no-transform, must-revalidate");
+    next();
+});
 app.get("/idSong", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b;
     var start = parseInt(((_a = req.headers.range) === null || _a === void 0 ? void 0 : _a.replace("bytes=", "").split("-")[0]) || "0");
@@ -223,16 +233,6 @@ app.get("/s", (req, res) => {
             err: true
         });
     }
-});
-app.use("/genre", GenreRoute_1.default);
-app.use("/playlist", PlayListRoute_1.default);
-//admin
-app.use("/genre", admin_1.default, GenreRouteAdmin_1.default);
-app.use("/playlist", admin_1.default, PlayListRouteAdmin_1.default);
-app.use("/contain", admin_1.default, ContainRouteAdmin_1.default);
-app.use("/admin/UserRouteAdmin", admin_1.default, UserRouteAdmin_1.default);
-app.get(/admin*/, admin_1.default, (req, res) => {
-    res.sendFile((0, path_1.join)(process.cwd(), "web/admin.html"));
 });
 httpServer.listen(8000, () => {
     console.log("http://localhost:8000/");

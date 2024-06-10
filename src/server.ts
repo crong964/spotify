@@ -65,10 +65,7 @@ app.get("/swagger", (req, res) => {
     res.sendFile(join(process.cwd(), "web/swagger.html"))
 })
 
-// app.use((req, res, next) => {
-//     res.setHeader("Cache-Control", "max-age=315360000, no-transform, must-revalidate")
-//     next()
-// })
+
 app.use(bodyParser.urlencoded({ extended: false, limit: "50mb" }))
 app.use(bodyParser.json())
 
@@ -136,6 +133,22 @@ app.use("/auth", Account)
 //         })
 //     }
 // })
+
+
+app.use("/genre", GenreRoute)
+app.use("/playlist", PlayListRoute)
+//admin
+app.use("/genre", ADMIN, GenreRouteAdmin)
+app.use("/playlist", ADMIN, PlayListRouteAdmin)
+app.use("/contain", ADMIN, ContainRouteAdmin)
+app.use("/admin/UserRouteAdmin", ADMIN, UserRouteAdmin)
+app.get(/admin*/, ADMIN, (req, res) => {
+    res.sendFile(join(process.cwd(), "web/admin.html"))
+})
+app.use((req, res, next) => {
+    res.setHeader("Cache-Control", "max-age=315360000, no-transform, must-revalidate")
+    next()
+})
 app.get("/idSong", async (req, res) => {
     var start = parseInt(req.headers.range?.replace("bytes=", "").split("-")[0] || "0")
     var music = req.cookies.music
@@ -214,17 +227,6 @@ app.get("/s", (req, res) => {
             err: true
         })
     }
-})
-
-app.use("/genre", GenreRoute)
-app.use("/playlist", PlayListRoute)
-//admin
-app.use("/genre", ADMIN, GenreRouteAdmin)
-app.use("/playlist", ADMIN, PlayListRouteAdmin)
-app.use("/contain", ADMIN, ContainRouteAdmin)
-app.use("/admin/UserRouteAdmin", ADMIN, UserRouteAdmin)
-app.get(/admin*/, ADMIN, (req, res) => {
-    res.sendFile(join(process.cwd(), "web/admin.html"))
 })
 
 httpServer.listen(8000, () => {
