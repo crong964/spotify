@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import Song from "../../component/Song";
 import { useDispatch, useSelector } from "react-redux";
 import RecentList from "./RecentPlaylist";
-import { RemoveRight, RootHome } from "../RootRedux";
+import { PlaySong, RemoveRight, RootHome } from "../RootRedux";
 import { get } from "../../config/req";
+import { JumpingSong } from "../Audio/AudioRedux";
 interface RecentSong {
   Id: string;
   user_id: string;
@@ -80,7 +81,7 @@ export default function Queue() {
 }
 function RecentPlaySongs(p: MenberQueue) {
   const [recentSongs, SetRecentSongs] = useState<RecentSong[]>([]);
-
+  const dispatch = useDispatch();
   useEffect(() => {
     get("/rs/", (v: any) => {
       SetRecentSongs(v.ls);
@@ -94,12 +95,15 @@ function RecentPlaySongs(p: MenberQueue) {
           {recentSongs.map((v) => {
             return (
               <Song
+                onClick={() => {
+                  dispatch(PlaySong(v.Id));
+                }}
                 image={v.SongImage}
                 name={v.SongName}
                 singer={v.Singer}
                 Id={v.Id}
                 key={v.Id}
-              ></Song>
+              />
             );
           })}
         </>
@@ -110,10 +114,10 @@ function RecentPlaySongs(p: MenberQueue) {
   );
 }
 function SongQueueInplayList(p: MenberQueue) {
-  const [recentSongs, SetRecentSongs] = useState<RecentSong[]>([]);
+  
   const lsSong = useSelector((state: RootHome) => state.audioroot.lsSong);
   const mark = useSelector((state: RootHome) => state.audioroot.mark);
-
+  const dispatch = useDispatch();
   useEffect(() => {
     // get("/rs/", (v: any) => {
     //   SetRecentSongs(v.ls);
@@ -131,6 +135,9 @@ function SongQueueInplayList(p: MenberQueue) {
             .map((v) => {
               return (
                 <Song
+                  onClick={() => {
+                    dispatch(JumpingSong(v.Id));
+                  }}
                   image={v.SongImage}
                   name={v.SongName}
                   singer={v.Singer}

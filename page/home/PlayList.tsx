@@ -222,7 +222,7 @@ export default function PlaylistPage() {
         v.playlist.Songs = song;
         SetPlayList(v.playlist);
         dispatch(SetCurName(v.playlist.PlayListName));
-        dispatch(SetPlaying({ id: idPlayList, page: "playlist" }));
+       
       }
     });
   }, [idPlayList]);

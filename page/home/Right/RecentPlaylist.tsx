@@ -30,7 +30,7 @@ export function RecentPlaylist(params: RecentPlaylist) {
       }}
     >
       <div
-        className="flex items-center space-x-1 sm:space-x-2 p-1 mx-1 cursor-pointer bg-[#414854] "
+        className="flex items-center space-x-1 sm:space-x-2 p-1 mx-1 cursor-pointer bg-[#1A1A1A] "
         onClick={() => {
           dispatch(
             NaviPage({

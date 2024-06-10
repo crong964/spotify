@@ -19,7 +19,7 @@ export function PlayList(d: PlayList) {
   const [show, SetShow] = useState(false);
   const dispatch = useDispatch();
   return (
-    <div className=" overflow-hidden">
+    <div className=" overflow-hidden bg-black hover:bg-[#1A1A1A] p-3 rounded-lg">
       <div
         className="cursor-pointer relative"
         onMouseEnter={() => {
@@ -79,7 +79,7 @@ export default function PlayLists(p: PlayLists) {
     <>
       {children.length > 0 ? (
         <>
-          <div className="w-full overflow-auto sm:overflow-hidden relative">
+          <div className="w-full overflow-auto sm:overflow-hidden relative ">
             <div className="text-[24px] font-bold my-5 sticky top-0 left-0">
               {p.title}
             </div>

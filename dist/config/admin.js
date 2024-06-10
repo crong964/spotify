@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.USER = void 0;
 require("dotenv/config");
 const Helper_1 = require("./Helper");
 const SECRET = process.env.SECRET;
@@ -21,3 +22,21 @@ function ADMIN(req, res, next) {
     res.redirect("/auth");
 }
 exports.default = ADMIN;
+function USER(req, res, next) {
+    var apikey = req.headers.apikey || req.cookies.apikey;
+    if (!apikey) {
+        res.redirect("/auth");
+        return;
+    }
+    var decode = (0, Helper_1.VertifyJWT)(apikey);
+    if (decode == undefined) {
+        res.json({ err: true });
+        return;
+    }
+    if (decode.id == undefined) {
+        res.json({ err: true });
+        return;
+    }
+    next();
+}
+exports.USER = USER;

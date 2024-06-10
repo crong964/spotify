@@ -18,5 +18,21 @@ export default function ADMIN(req: Request, res: Response, next: NextFunction) {
         return
     }
     res.redirect("/auth")
-
+}
+export function USER(req: Request, res: Response, next: NextFunction) {
+    var apikey = req.headers.apikey as string || req.cookies.apikey
+    if (!apikey) {
+        res.redirect("/auth")
+        return
+    }
+    var decode = VertifyJWT(apikey)
+    if (decode == undefined) {
+        res.json({ err: true })
+        return
+    }
+    if (decode.id == undefined) {
+        res.json({ err: true })
+        return
+    }
+    next()
 }

@@ -33,10 +33,10 @@ class RecentPlaylistController {
             if (s != undefined) {
                 ls = yield RecentPlaylistController.likesong.GetAllByIdPlayList(d.User_ID, s.id);
             }
-            var check = yield RecentPlaylistService_1.default.Get(d.User_ID, d.ID);
+            var check = yield RecentPlaylistController.r.Get7FirstRecentPlaylist(d.User_ID, d.ID);
             var check1 = undefined;
             if (check == undefined) {
-                check1 = yield RecentPlaylistService_1.default.Add(d);
+                RecentPlaylistController.r.Add(d);
             }
             res.json({
                 err: false,

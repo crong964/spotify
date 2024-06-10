@@ -43,9 +43,19 @@ const audioSlice = createSlice({
       localStorage.setItem("song", JSON.stringify(state.lsSong[state.mark]));
     },
     RandomSong: (state, pay: PayloadAction<string>) => {},
+    JumpingSong: (state, action: PayloadAction<string>) => {
+      for (let i = 0; i < state.lsSong.length; i++) {
+        const element = state.lsSong[i];
+        if (element.Id == action.payload) {
+          state.mark = i;
+          break;
+        }
+      }
+    },
   },
   extraReducers(builder) {},
 });
 
-export const { SetStop, SetModPlay, SetSongs, NextSong } = audioSlice.actions;
+export const { SetStop, SetModPlay, SetSongs, NextSong, JumpingSong } =
+  audioSlice.actions;
 export default audioSlice;

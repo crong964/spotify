@@ -25,7 +25,7 @@ import { createServer } from "http";
 import { parse } from "cookie";
 import FriendRoute from "./route/FriendRoute";
 import UserRouteAdmin from "./admin/UserRouteAdmin";
-import ADMIN from "./config/admin";
+import ADMIN, { USER } from "./config/admin";
 import "dotenv/config"
 import { VertifyJWT } from "./config/Helper";
 import jwt, { JwtPayload } from "jsonwebtoken"
@@ -65,34 +65,31 @@ app.get("/swagger", (req, res) => {
     res.sendFile(join(process.cwd(), "web/swagger.html"))
 })
 
-app.use((req, res, next) => {
-    res.setHeader("Cache-Control", "max-age=315360000, no-transform, must-revalidate")
-    next()
-})
+// app.use((req, res, next) => {
+//     res.setHeader("Cache-Control", "max-age=315360000, no-transform, must-revalidate")
+//     next()
+// })
 app.use(bodyParser.urlencoded({ extended: false, limit: "50mb" }))
 app.use(bodyParser.json())
 
 
 
 app.get("/", (req, res) => {
-    var apikey = (req.headers.apikey as any) || req.cookies.apikey
-    if (VertifyJWT(apikey) != undefined) {
-        req.cookies.id = (VertifyJWT(apikey) as JwtPayload).id
-    }
+
     res.sendFile(path.join(process.cwd(), "web/home.html"))
 })
-app.use("/mess", MessRoute)
-app.use("/box", BoxChatRoute)
-app.use("/user", UserRoute)
+app.use("/mess", USER, MessRoute)
+app.use("/box", USER, BoxChatRoute)
+app.use("/user", USER, UserRoute)
 app.use("/song", SongRoute)
-app.use("/lsong", LikedSongRoute)
-app.use("/recentPlaylist", RecentPlaylistRoute)
-app.use("/rs", RecentSongRoute)
+app.use("/lsong", USER, LikedSongRoute)
+app.use("/recentPlaylist", USER, RecentPlaylistRoute)
+app.use("/rs", USER, RecentSongRoute)
 app.use("/search", SearchRoute)
-app.use("/discuss", DiscussRoute)
-app.use("/notification", NotificationRoute)
-app.use("/friend", FriendRoute)
-app.get("/dashboard", (req, res) => {
+app.use("/discuss", USER, DiscussRoute)
+app.use("/notification", USER, NotificationRoute)
+app.use("/friend", USER, FriendRoute)
+app.get("/dashboard", USER, (req, res) => {
     res.sendFile(path.join(process.cwd(), "web/dashboard.html"))
 })
 

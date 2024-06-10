@@ -2,12 +2,14 @@ import React, { useState } from "react";
 import { Duration, post } from "../config/req";
 import { useDispatch, useSelector } from "react-redux";
 import { PlaySong, RootHome } from "../home/RootRedux";
+import { JumpingSong } from "../home/Audio/AudioRedux";
 
 interface Song {
   image: string;
   name: string;
   singer: string;
   Id: string;
+  onClick(): void;
 }
 interface SongList {
   data: SongInPlayList[];
@@ -17,9 +19,7 @@ export default function Song(d: Song) {
 
   return (
     <div
-      onClick={() => {
-        dispatch(PlaySong(d.Id));
-      }}
+      onClick={d.onClick}
       className="flex justify-center items-center px-1 cursor-pointer"
     >
       {d.image != "" ? (

@@ -61,7 +61,7 @@ const http_1 = require("http");
 const cookie_1 = require("cookie");
 const FriendRoute_1 = __importDefault(require("./route/FriendRoute"));
 const UserRouteAdmin_1 = __importDefault(require("./admin/UserRouteAdmin"));
-const admin_1 = __importDefault(require("./config/admin"));
+const admin_1 = __importStar(require("./config/admin"));
 require("dotenv/config");
 const Helper_1 = require("./config/Helper");
 const RecentPlaylistRoute_1 = __importDefault(require("./route/RecentPlaylistRoute"));
@@ -95,31 +95,27 @@ app.use("/i", express_1.default.static(path_1.default.join(process.cwd(), "publi
 app.get("/swagger", (req, res) => {
     res.sendFile((0, path_1.join)(process.cwd(), "web/swagger.html"));
 });
-app.use((req, res, next) => {
-    res.setHeader("Cache-Control", "max-age=315360000, no-transform, must-revalidate");
-    next();
-});
+// app.use((req, res, next) => {
+//     res.setHeader("Cache-Control", "max-age=315360000, no-transform, must-revalidate")
+//     next()
+// })
 app.use(body_parser_1.default.urlencoded({ extended: false, limit: "50mb" }));
 app.use(body_parser_1.default.json());
 app.get("/", (req, res) => {
-    var apikey = req.headers.apikey || req.cookies.apikey;
-    if ((0, Helper_1.VertifyJWT)(apikey) != undefined) {
-        req.cookies.id = (0, Helper_1.VertifyJWT)(apikey).id;
-    }
     res.sendFile(path_1.default.join(process.cwd(), "web/home.html"));
 });
-app.use("/mess", MessRoute_1.default);
-app.use("/box", BoxChatRoute_1.default);
-app.use("/user", UserRoute_1.default);
+app.use("/mess", admin_1.USER, MessRoute_1.default);
+app.use("/box", admin_1.USER, BoxChatRoute_1.default);
+app.use("/user", admin_1.USER, UserRoute_1.default);
 app.use("/song", Song_Route_1.default);
-app.use("/lsong", LikedSongRoute_1.default);
-app.use("/recentPlaylist", RecentPlaylistRoute_1.default);
-app.use("/rs", RecentSongRoute_1.default);
+app.use("/lsong", admin_1.USER, LikedSongRoute_1.default);
+app.use("/recentPlaylist", admin_1.USER, RecentPlaylistRoute_1.default);
+app.use("/rs", admin_1.USER, RecentSongRoute_1.default);
 app.use("/search", SearchRoute_1.default);
-app.use("/discuss", DiscussRoute_1.default);
-app.use("/notification", NotificationRoute_1.default);
-app.use("/friend", FriendRoute_1.default);
-app.get("/dashboard", (req, res) => {
+app.use("/discuss", admin_1.USER, DiscussRoute_1.default);
+app.use("/notification", admin_1.USER, NotificationRoute_1.default);
+app.use("/friend", admin_1.USER, FriendRoute_1.default);
+app.get("/dashboard", admin_1.USER, (req, res) => {
     res.sendFile(path_1.default.join(process.cwd(), "web/dashboard.html"));
 });
 app.use("/auth", Acount_1.default);

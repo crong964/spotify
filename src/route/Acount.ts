@@ -337,6 +337,8 @@ Account.post("/ggup", (req, res) => {
 });
 Account.get("/logout", (req, res) => {
   clearCookie(res)
+  console.log("vaf");
+  
   res.redirect("/auth")
 })
 Account.post("/getdata", (req, res) => {

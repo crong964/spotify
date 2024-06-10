@@ -51,7 +51,7 @@ interface Root {
   SearchName: string;
 }
 const initialState: Root = {
-  playing: JSON.parse(localStorage.getItem("playing") || "{}"),
+  playing: {id:"",page:""},
   topbarcontent: false,
   curName: "",
   devicetype: "pc",
@@ -188,6 +188,7 @@ var rootslice = createSlice({
     SetPlaying: (state, action: PayloadAction<Playing>) => {
       localStorage.setItem("queue", JSON.stringify(action.payload));
       state.playing = action.payload;
+      
     },
   },
 });

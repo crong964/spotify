@@ -1,10 +1,10 @@
 import React from "react";
-import { Home, NewHome } from "./Home";
 import { SearchButtom } from "./SearchButtom";
 import { MobileMessButtom } from "./Mess";
 import NaviLoveSong from "./NaviLoveSong";
 import { RootHome } from "../RootRedux";
 import { useSelector } from "react-redux";
+import Home from "./Home";
 
 export function NaviHomeMobile() {
   const isLogin = useSelector((state: RootHome) => state.rootHome.isLogin);
@@ -15,7 +15,7 @@ export function NaviHomeMobile() {
         "sticky top-0 bottom-0 text-[10px] sm:hidden"
       }
     >
-      <NewHome />
+      <Home />
       <SearchButtom />
 
       {isLogin ? (

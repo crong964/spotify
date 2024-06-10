@@ -64,6 +64,7 @@ export default function PlayingBar() {
     <div className="w-full bg-[#121212] h-[10%] sm:h-[12%] grid items-center grid-cols-1 sm:grid-cols-4 mt-0 ">
       <div className="flex sm:inline-block justify-between items-center px-2 sm:px-0">
         <Song
+          onClick={() => {}}
           Id={lsSong[mark]?.Id || "0"}
           image={lsSong[mark]?.SongImage}
           name={lsSong[mark]?.SongName}

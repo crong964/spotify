@@ -24,13 +24,13 @@ import IdGenre from "./IdGenre";
 import Right from "./Right/Right";
 import ChatBox from "./boxchat/SingleBox";
 import { socket } from "../socket/Socket";
-import { NewHome } from "./NaviHome/Home";
 import { MobileSearchButtom } from "./NaviHome/SearchButtom";
 
 import { NaviHomeMobile } from "./NaviHome/NaviHome";
 import Foot from "./Foot";
 import { SuggestPlaylist } from "../component/Playlist";
 import NaviLoveSong from "./NaviHome/NaviLoveSong";
+import Home from "./NaviHome/Home";
 
 
 function useIndex() {
@@ -90,7 +90,7 @@ export default function Index() {
         <div className="w-[80px] hidden sm:block px-1 space-y-1">
           <div className="h-[20%] bg-[#121212] rounded-lg py-2">
             <div className="h-full  ">
-              <NewHome />
+              <Home />
               <MobileSearchButtom />
             </div>
           </div>

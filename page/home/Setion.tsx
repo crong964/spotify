@@ -34,7 +34,7 @@ export default function SetionData(params: SetionData) {
   const dispatch = useDispatch();
   return (
     <div
-      className="w-[200px] sm:w-full cursor-pointer"
+      className="w-[200px] sm:w-full cursor-pointer "
       onClick={() => {
         dispatch(NaviPage({ page: "artist", param: params.id }));
       }}
@@ -55,9 +55,9 @@ export default function SetionData(params: SetionData) {
         {hidden ? (
           <></>
         ) : (
-          <div className="absolute right-0 bottom-0">
+          <>
             <PlayButtom id={params.id} page="artist" />
-          </div>
+          </>
         )}
       </div>
       <div className="text-[16px] text-white font-bold line-clamp-1">
