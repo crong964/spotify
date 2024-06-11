@@ -21,16 +21,12 @@ export default function ADMIN(req: Request, res: Response, next: NextFunction) {
 }
 export function USER(req: Request, res: Response, next: NextFunction) {
     var apikey = req.headers.apikey as string || req.cookies.apikey
-    if (!apikey) {
-        res.redirect("/auth")
-        return
-    }
-    var decode = VertifyJWT(apikey)
-    if (decode == undefined) {
+    if (!apikey || !VertifyJWT(apikey)) {
         res.json({ err: true })
         return
     }
-    if (decode.id == undefined) {
+    var decode = VertifyJWT(apikey)
+    if (!decode || !decode.id ) {
         res.json({ err: true })
         return
     }

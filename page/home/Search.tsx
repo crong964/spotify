@@ -41,10 +41,13 @@ export default function Search() {
       return;
     }
     post("/search", { name: search }, (v: any) => {
-      SetSongName(v["ls"]);
-      SetArtis(v["artist"]);
-      SetSongS(v["songls"]);
-      SetPlayLists(v["playlists"]);
+      if (!v || v.err) {
+        return;
+      }
+      SetSongName(v["ls"] || []);
+      SetArtis(v["artist"] || []);
+      SetSongS(v["songls"] || []);
+      SetPlayLists(v["playlists"] || []);
     });
   }, [search]);
   return (

@@ -25,7 +25,7 @@ export default function Profile() {
   });
   useEffect(() => {
     get("user", (v: any) => {
-      if (!v.err) {
+      if (v && !v.err) {
         SetProFile(v.u);
       }
     });

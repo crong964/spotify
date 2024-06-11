@@ -20,12 +20,14 @@ export default function GenreForm() {
     return state.navi.load;
   });
   const slectGenre = useSelector((s: RootState) => s.navi.slectGenre);
-  
-  
+
   const [genres, SetGenres] = useState<Genre[]>([]);
 
   useEffect(() => {
     get("genre/GetAll", (v: any) => {
+      if (!v && v.err) {
+        return;
+      }
       SetGenres(v.ls);
     });
   }, [load]);
@@ -203,7 +205,7 @@ function Genre(params: Genre) {
               dispatch(SetFloor(params.Floor));
               dispatch(
                 addGenre({
-                  Floor: params.Floor ,
+                  Floor: params.Floor,
                   Id: params.Id,
                   name: params.Name,
                 })

@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { Socket, io } from "socket.io-client";
 import audioSlice from "./Audio/AudioRedux";
 import mobileRedux from "./NaviHome/NaviRedux";
+import { ParseJson } from "../socket/Socket";
 
 interface mess {
   idMess: string;
@@ -51,7 +52,7 @@ interface Root {
   SearchName: string;
 }
 const initialState: Root = {
-  playing: {id:"",page:""},
+  playing: { id: "", page: "" },
   topbarcontent: false,
   curName: "",
   devicetype: "pc",
@@ -65,7 +66,7 @@ const initialState: Root = {
   },
   NotificationPageIdSong: "",
   NotificationPage: "list",
-  idSong: JSON.parse(localStorage.getItem("song") || "{}").Id || "",
+  idSong: ParseJson(localStorage.getItem("song") || "{}").Id || "",
   isLogin: false,
   update: true,
   Right: "",
@@ -188,7 +189,6 @@ var rootslice = createSlice({
     SetPlaying: (state, action: PayloadAction<Playing>) => {
       localStorage.setItem("queue", JSON.stringify(action.payload));
       state.playing = action.payload;
-      
     },
   },
 });

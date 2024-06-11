@@ -22,7 +22,7 @@ export default function Song(d: Song) {
       onClick={d.onClick}
       className="flex justify-center items-center px-1 cursor-pointer"
     >
-      {d.image != "" ? (
+      {d.image != "" && d.image ? (
         <img
           src={d.image}
           alt=""

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Playing, RootHome, SetPlaying } from "../home/RootRedux";
 import { useDispatch, useSelector } from "react-redux";
-import { post } from "../config/req";
+import { get, post } from "../config/req";
 import { SetSongs, SetStop } from "../home/Audio/AudioRedux";
 
 export default function PlayButtom(p: Playing) {
@@ -10,27 +10,40 @@ export default function PlayButtom(p: Playing) {
 
   const [load, SetLoad] = useState(false);
   const dispatch = useDispatch();
+
+  const PlayingPlaylist = () => {
+    if (playing.id == p.id && p.page == playing.page) {
+      dispatch(SetStop(!stopAudio));
+      var mu = document.querySelector(".g") as HTMLAudioElement;
+      if (mu.paused) {
+        mu.play();
+        dispatch(SetStop(!stopAudio));
+      } else {
+        mu.pause();
+        dispatch(SetStop(!stopAudio));
+      }
+      return;
+    }
+    if (p.page != "likesong") {
+      post("recentPlaylist/play", { id: p.id, type: p.page }, (v: any) => {
+        if (!v.err) {
+          dispatch(SetPlaying({ id: p.id, page: p.page }));
+          dispatch(SetSongs(v.ls));
+        }
+      });
+      return;
+    }
+    get("lsong/likedsongs", (v: any) => {
+      if (v && !v.err) {
+        dispatch(SetPlaying({ id: p.id, page: p.page }));
+        dispatch(SetSongs(v.ls));
+      }
+    });
+  };
   return (
     <div
       onClick={() => {
-        if (playing.id == p.id && p.page == playing.page) {
-          dispatch(SetStop(!stopAudio));
-          var mu = document.querySelector(".g") as HTMLAudioElement;
-          if (mu.paused) {
-            mu.play();
-            dispatch(SetStop(!stopAudio));
-          } else {
-            mu.pause();
-            dispatch(SetStop(!stopAudio));
-          }
-          return;
-        }
-        post("recentPlaylist/play", { id: p.id, type: p.page }, (v: any) => {
-          if (!v.err) {
-            dispatch(SetPlaying({ id: p.id, page: p.page }));
-            dispatch(SetSongs(v.ls));
-          }
-        });
+        PlayingPlaylist();
       }}
       className="size-12 rounded-full hover:bg-[#1ED760] bg-[#1FDC62] flex justify-center items-center"
     >

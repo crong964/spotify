@@ -30,14 +30,14 @@ export default class LikedSongDatabase {
     return check;
   }
   async GetAllLikedSong(d: LikedSongModel) {
-    var sql = `SELECT song.Id, song.SongName,song.SongImage, song.Singer,song.Viewer,song.Duration,likedsong.liked 
+    var sql = `SELECT song.Id, song.SongName,song.SongImage, song.Singer,song.Viewer,song.Duration,likedsong.liked ,song.filePath
     FROM song, likedsong where likedsong.id_user_liked =? AND song.Id=likedsong.Id AND likedsong.liked=1
     `;
     var check = await Mysql2.query(sql, [d.id_user_liked]);
     return check;
   }
   async SearchName(name: string, iduser: string) {
-    var sql = `SELECT song.Id, song.SongName,song.SongImage, song.Singer,song.Viewer,song.Duration,likedsong.liked
+    var sql = `SELECT song.Id, song.SongName,song.SongImage, song.Singer,song.Viewer,song.Duration,likedsong.liked,song.filePath
     FROM song LEFT JOIN likedsong ON song.Id = likedsong.Id and likedsong.id_user_liked= ? 
     WHERE  song.status = 1 AND song.SongName like ?;`;
     var check

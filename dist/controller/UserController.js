@@ -37,6 +37,7 @@ class UserController {
     Get(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             var id = req.cookies.id;
+            console.log(id);
             var use = yield UserController.user.Get(id);
             if (use) {
                 use.Account = "";

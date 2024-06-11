@@ -50,6 +50,9 @@ export function ArtistPage() {
 
   useEffect(() => {
     get(`user/artistpage/${idpage}`, (v: any) => {
+      if (!v || v.err) {
+        return;
+      }
       SetIsfriend(v.isfriend);
       SetaAtist(v.atist);
       SetSongS(v.lsong);
@@ -129,6 +132,9 @@ export function LikedSongListPage() {
   const [songs, SetSongS] = useState<SongInPlayList[]>([]);
   useEffect(() => {
     get(`lsong/likedsongs`, (v: any) => {
+      if (!v || v.err) {
+        return;
+      }
       SetSongS(v.ls);
     });
   }, []);
@@ -161,11 +167,7 @@ export function LikedSongListPage() {
       <div className="h-[320px]"></div>
       <div className="px-4">
         <div className="flex items-center py-4 space-x-4">
-          <div
-            onClick={() => {
-              dispatch(SetPlaying({ id: "", page: "likesong" }));
-            }}
-          >
+          <div>
             <PlayButtom id="" page="likesong" />
           </div>
 
@@ -222,7 +224,6 @@ export default function PlaylistPage() {
         v.playlist.Songs = song;
         SetPlayList(v.playlist);
         dispatch(SetCurName(v.playlist.PlayListName));
-       
       }
     });
   }, [idPlayList]);

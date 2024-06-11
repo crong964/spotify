@@ -102,10 +102,10 @@ app.get("/", (req, res) => {
 });
 app.use("/mess", admin_1.USER, MessRoute_1.default);
 app.use("/box", admin_1.USER, BoxChatRoute_1.default);
-app.use("/user", admin_1.USER, UserRoute_1.default);
+app.use("/user", UserRoute_1.default);
 app.use("/song", Song_Route_1.default);
-app.use("/lsong", admin_1.USER, LikedSongRoute_1.default);
-app.use("/recentPlaylist", RecentPlaylistRoute_1.default);
+app.use("/lsong", LikedSongRoute_1.default);
+app.use("/recentPlaylist", admin_1.USER, RecentPlaylistRoute_1.default);
 app.use("/rs", admin_1.USER, RecentSongRoute_1.default);
 app.use("/search", SearchRoute_1.default);
 app.use("/discuss", admin_1.USER, DiscussRoute_1.default);

@@ -3,6 +3,7 @@ import { RootHome, SetdeleteDiscuss, RemoveRight } from "../RootRedux";
 import { useDispatch, useSelector } from "react-redux";
 import { post } from "../../config/req";
 import Time from "../../config/hepler";
+import { ParseJson } from "../../socket/Socket";
 
 interface MainDiscuss {
   Discuss_Id: string;
@@ -27,7 +28,7 @@ interface Replay {
 interface Discuss {
   idsong: string;
 }
-export default function  Discuss(data: Discuss) {
+export default function Discuss(data: Discuss) {
   const delateDiscuss = useSelector(
     (state: RootHome) => state.rootHome.DeleteDiscuss
   );
@@ -143,7 +144,7 @@ function MainDiscuss(d: MainDiscuss) {
           contentRef.current.scrollHeight > contentRef.current.clientHeight
         );
         SetAvatar(
-          JSON.parse(localStorage.getItem("userinfor") as any).pathImage
+          ParseJson(localStorage.getItem("userinfor") as any).pathImage
         );
       }
     }
@@ -390,7 +391,7 @@ function Replay(d: Replay) {
       SetClamped(
         contentRef.current.scrollHeight > contentRef.current.clientHeight
       );
-      SetAvatar(JSON.parse(localStorage.getItem("userinfor") as any).pathImage);
+      SetAvatar(ParseJson(localStorage.getItem("userinfor") as any).pathImage);
     }
   }
   useEffect(() => {

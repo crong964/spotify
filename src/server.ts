@@ -51,7 +51,7 @@ app.use((req, res, next) => {
         if (cookie != undefined) {
             req.cookies.id = cookie.id
         }
-
+        
     }
     if (req.headers.iduser) {
         req.cookies.id = req.headers.iduser
@@ -77,10 +77,10 @@ app.get("/", (req, res) => {
 })
 app.use("/mess", USER, MessRoute)
 app.use("/box", USER, BoxChatRoute)
-app.use("/user", USER, UserRoute)
+app.use("/user", UserRoute)
 app.use("/song", SongRoute)
-app.use("/lsong", USER, LikedSongRoute)
-app.use("/recentPlaylist", RecentPlaylistRoute)
+app.use("/lsong", LikedSongRoute)
+app.use("/recentPlaylist", USER,RecentPlaylistRoute)
 app.use("/rs", USER, RecentSongRoute)
 app.use("/search", SearchRoute)
 app.use("/discuss", USER, DiscussRoute)

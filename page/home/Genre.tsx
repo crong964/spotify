@@ -28,7 +28,9 @@ export default function Genre() {
   const [genre, SetGenre] = useState<Genre[]>([]);
   useEffect(() => {
     get("genre/GetLimitFloor", (v: any) => {
-      SetGenre(v.ls);
+      if (v && !v.err) {
+        SetGenre(v.ls);
+      }
     });
   }, []);
   return (

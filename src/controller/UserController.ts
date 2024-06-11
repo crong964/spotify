@@ -29,6 +29,8 @@ class UserController {
     }
     async Get(req: Request, res: Response) {
         var id = req.cookies.id
+        console.log(id);
+        
         var use = await UserController.user.Get(id)
 
         if (use) {

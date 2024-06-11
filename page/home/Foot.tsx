@@ -30,7 +30,6 @@ export default function Foot() {
           Nhà đầu tư
         </div>
         <div className="text-[#818181] hover:text-white cursor-pointer">
-          {" "}
           Nhà cung cấp
         </div>
       </div>

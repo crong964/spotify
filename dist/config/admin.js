@@ -24,16 +24,12 @@ function ADMIN(req, res, next) {
 exports.default = ADMIN;
 function USER(req, res, next) {
     var apikey = req.headers.apikey || req.cookies.apikey;
-    if (!apikey) {
-        res.redirect("/auth");
-        return;
-    }
-    var decode = (0, Helper_1.VertifyJWT)(apikey);
-    if (decode == undefined) {
+    if (!apikey || !(0, Helper_1.VertifyJWT)(apikey)) {
         res.json({ err: true });
         return;
     }
-    if (decode.id == undefined) {
+    var decode = (0, Helper_1.VertifyJWT)(apikey);
+    if (!decode || !decode.id) {
         res.json({ err: true });
         return;
     }

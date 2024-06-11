@@ -7,8 +7,10 @@ interface AudioRedux {
   modplay: number;
   lsSong: Song[];
   mark: number;
+  random: boolean;
 }
 interface Song {
+  oldindex: number;
   Id: string;
   user_id: string;
   SongName: string;
@@ -18,6 +20,7 @@ interface Song {
   filePath: string;
 }
 const initialState: AudioRedux = {
+  random: false,
   lsSong: [],
   stop: true,
   modplay: 0,
@@ -36,14 +39,43 @@ const audioSlice = createSlice({
     },
     SetSongs: (state, pay: PayloadAction<Song[]>) => {
       state.lsSong = pay.payload;
+      state.lsSong = state.lsSong.map((v, i) => {
+        v.oldindex = i;
+        return v;
+      });
       state.mark = 0;
-      localStorage.setItem("song", JSON.stringify(state.lsSong[state.mark]));
+      if (state.lsSong[state.mark]) {
+        localStorage.setItem("song", JSON.stringify(state.lsSong[state.mark]));
+      }
     },
     NextSong: (state, pay: PayloadAction<number>) => {
       state.mark = state.mark + pay.payload;
-      localStorage.setItem("song", JSON.stringify(state.lsSong[state.mark]));
+      if (state.lsSong[state.mark]) {
+        localStorage.setItem("song", JSON.stringify(state.lsSong[state.mark]));
+      }
     },
-    RandomSong: (state, pay: PayloadAction<string>) => {},
+    RepeatPlaylist: (state) => {
+      state.mark = state.mark + 1;
+      if (state.mark == state.lsSong.length) {
+        state.mark = 0;
+      }
+      if (state.lsSong[state.mark]) {
+        localStorage.setItem("song", JSON.stringify(state.lsSong[state.mark]));
+      }
+    },
+    RandomSong: (state) => {
+      state.random = !state.random;
+      state.mark = 0;
+      var newSongList: any[] = [];
+      while (state.lsSong.length > 0) {
+        let i = parseInt(`${(Math.random() * 100) % state.lsSong.length}`);
+
+        newSongList.push(state.lsSong[i]);
+        state.lsSong.splice(i, 1);
+      }
+
+      state.lsSong = newSongList;
+    },
     JumpingSong: (state, action: PayloadAction<string>) => {
       for (let i = 0; i < state.lsSong.length; i++) {
         const element = state.lsSong[i];
@@ -57,6 +89,13 @@ const audioSlice = createSlice({
   extraReducers(builder) {},
 });
 
-export const { SetStop, SetModPlay, SetSongs, NextSong, JumpingSong } =
-  audioSlice.actions;
+export const {
+  SetStop,
+  SetModPlay,
+  SetSongs,
+  NextSong,
+  JumpingSong,
+  RepeatPlaylist,
+  RandomSong,
+} = audioSlice.actions;
 export default audioSlice;
