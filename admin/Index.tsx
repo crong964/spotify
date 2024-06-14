@@ -71,7 +71,7 @@ export default function App() {
   return (
     <div className="w-full h-full border-t flex flex-row">
       <Navi />
-      
+
       <Center />
     </div>
   );
@@ -80,14 +80,24 @@ export default function App() {
 function Center() {
   return (
     <Routes>
-      <Route
-        path="/"
-        element={
-          <Main title="Danh sách nhạc">
-            <SongAndGenre />
-          </Main>
-        }
-      />
+      <Route path="" element={<Outlet></Outlet>}>
+        <Route
+          path="/"
+          element={
+            <Main title="Danh sách nhạc">
+              <SongAndGenre />
+            </Main>
+          }
+        />
+        <Route
+          path="songlist"
+          element={
+            <Main title="Danh sách nhạc">
+              <SongAndGenre />
+            </Main>
+          }
+        />
+      </Route>
       <Route
         path="genre"
         element={
@@ -105,14 +115,17 @@ function Center() {
             </Main>
           }
         />
-        <Route
-          path="edit"
-          element={
-            <Main title="Chỉnh sửa danh sách">
-              <PlayListEdit />
-            </Main>
-          }
-        />
+        <Route path="edit">
+          <Route
+            path=":idPlaylistEdit"
+            element={
+              <Main title="Chỉnh sửa danh sách">
+                <PlayListEdit />
+              </Main>
+            }
+          />
+        </Route>
+
         <Route
           path="add"
           element={

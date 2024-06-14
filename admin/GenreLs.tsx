@@ -95,7 +95,7 @@ export default function IndexGenres() {
   const floor = useSelector((state: RootState) => state.navi.floor);
 
   useEffect(() => {
-    get("genre/GetAll", (v: any) => {
+    get("/genre/GetAll", (v: any) => {
       SetGenres(v.ls);
     });
   }, []);

@@ -27,11 +27,11 @@ export class PlayListController {
 
         var playlistmodel = new PlayListModel()
         playlistmodel.setAll(req.body)
-        playlistmodel.id = uuidv4()
+        playlistmodel.id = `playlist-${uuidv4()}`
         playlistmodel.User_id = req.cookies.id
         playlistmodel.Type = "playlist"
         playlistmodel.Songs = req.body.ls.length
-        playlistmodel.ImagePath = join("public/playlist", file)
+        playlistmodel.ImagePath = join("/public/playlist", file)
 
 
 
@@ -82,7 +82,7 @@ export class PlayListController {
         var playlistmodel = new PlayListModel()
         playlistmodel.setAll(req.body)
         if (req.file) {
-            playlistmodel.ImagePath = join("public/playlist", req.file.filename)
+            playlistmodel.ImagePath = join("/public/playlist", req.file.filename)
             try {
                 await unlink(join(process.cwd(), oldplaylist.ImagePath))
             } catch (error) {

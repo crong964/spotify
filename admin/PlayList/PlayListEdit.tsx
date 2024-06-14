@@ -8,6 +8,7 @@ import {
   SetFloor,
   addGenre,
 } from "../Redux";
+import { redirect, useParams } from "react-router-dom";
 import { Song } from "../SongList";
 import IndexGenres from "../GenreLs";
 import { get, post } from "../../page/config/req";
@@ -48,9 +49,8 @@ function PlayListFormData() {
   const slectGenre = useSelector((state: RootState) => state.navi.slectGenre);
   const SelectList = useSelector((state: RootState) => state.navi.SelectList);
   const [song, SetSongs] = useState<SongForm[]>([]);
-  const idPlaylistEdit = useSelector(
-    (state: RootState) => state.navi.idPlaylistEdit
-  );
+  let { idPlaylistEdit } = useParams();
+
   const [file, SetFile] = useState<File>();
   const [newSongImage, SetNewSongImage] = useState("");
 
@@ -62,7 +62,7 @@ function PlayListFormData() {
     PlayListName: "",
   });
   useEffect(() => {
-    get(`playlist/playListDetailAdmin/${idPlaylistEdit}`, (v: any) => {
+    get(`/playlist/playListDetailAdmin/${idPlaylistEdit}`, (v: any) => {
       if (!v.err) {
         SetPlayList(v.playlist);
         for (let i = 0; i < v.genre.length; i++) {
@@ -86,7 +86,7 @@ function PlayListFormData() {
     stt += 1;
     return (
       <OldSong
-        idPlaylist={idPlaylistEdit}
+        idPlaylist={idPlaylistEdit || ""}
         Duration={element.Duration}
         Id={element.Id}
         Singer={element.Singer}
@@ -178,10 +178,10 @@ function PlayListFormData() {
             form.set(key, element);
           }
           form.set("Genre_ID", slectGenre[floor]);
-          post("playlist/UpdatePlayList", form, (v: any) => {
+          post("/playlist/UpdatePlayList", form, (v: any) => {
             if (!v.err) {
-              dispatch(Page("songlist"));
-              dispatch(ReSetSelectSong());
+             alert("cập nhật thành công")
+             window.location.href=`/admin/playlist/edit/${idPlaylistEdit}`
             }
           });
         }}
@@ -248,7 +248,7 @@ function OldSong(d: OldSong) {
           <svg
             onClick={() => {
               post(
-                "contain/delete",
+                "/contain/delete",
                 { Song_id: d.Id, PlayList_id: d.idPlaylist },
                 (v: any) => {
                   if (!v.err) {
@@ -269,7 +269,7 @@ function OldSong(d: OldSong) {
           <svg
             onClick={() => {
               post(
-                "contain/add",
+                "/contain/add",
                 { Song_id: d.Id, PlayList_id: d.idPlaylist },
                 (v: any) => {
                   if (!v.err) {

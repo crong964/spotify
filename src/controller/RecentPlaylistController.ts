@@ -32,7 +32,7 @@ class RecentPlaylistController {
         if (s != undefined) {
             ls = await RecentPlaylistController.likesong.GetAllByIdPlayList(d.User_ID, s.id)
         }
-        var check = await RecentPlaylistController.r.Get7FirstRecentPlaylist(d.User_ID, d.ID)
+        var check = await RecentPlaylistController.r.Get8FirstRecentPlaylist(d.User_ID, d.ID)
 
 
         var check1 = undefined

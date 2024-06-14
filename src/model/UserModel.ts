@@ -32,8 +32,8 @@ class UserModel extends BaseModel {
     setAll(d: any): void {
         super.setAll(d)
         this.Password = ""
-        this.pathImage = this.pathImage || "public/avatar/avatar.jpg"
-        this.pathImage = this.pathImage.indexOf("http") >= 0 ? this.pathImage : `/${this.pathImage}`
+        this.pathImage = this.pathImage || "/public/avatar/avatar.jpg"
+        this.pathImage = this.pathImage.indexOf("http") >= 0 ? this.pathImage : `${this.pathImage}`
     }
 }
 

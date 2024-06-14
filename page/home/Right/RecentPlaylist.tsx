@@ -71,8 +71,6 @@ export default function RecentList() {
   const [recentList, SetRecentList] = useState<RecentPlaylist[]>([]);
   useEffect(() => {
     post("recentPlaylist/getAll", {}, (v: any) => {
-      
-
       if (v && !v.err) {
         SetRecentList(v.ls);
       }
@@ -81,13 +79,13 @@ export default function RecentList() {
 
   return (
     <div className="grid grid-cols-2 sm:grid-cols-4 gap-1 py-2">
-      {recentList.map((v) => {
+      {recentList.map((v, i) => {
         return (
           <RecentPlaylist
             CreateTime=""
             User_ID=""
             ID={v.ID}
-            key={v.ID}
+            key={v.ID + i}
             ImagePath={v.ImagePath}
             PlayListName={v.PlayListName}
             Type={v.Type}

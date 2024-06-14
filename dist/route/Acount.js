@@ -342,7 +342,6 @@ Account.post("/create", (req, res) => __awaiter(void 0, void 0, void 0, function
     d.setAll(req.body);
     d.Account = req.body.Account;
     d.Password = req.body.Password;
-    console.log(req.body);
     if ((0, Helper_1.VertifyJWT)(req.body.sign) == undefined) {
         res.json({
             err: true

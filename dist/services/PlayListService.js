@@ -56,7 +56,7 @@ class PlayListService {
     }
     GetByGenre(Genre_ID, s, f) {
         return __awaiter(this, void 0, void 0, function* () {
-            var sql = `SELECT * FROM playlist WHERE Genre_ID in (SELECT g1.Id FROM genre g1, genre g2   WHERE g2.Id =? AND g1.LeftGenre >= g2.LeftGenre AND g1.RightGenre <= g2.RightGenre ) AND Type = "playlist" LIMIT ?,? `;
+            var sql = `SELECT * FROM playlist WHERE Genre_ID in (SELECT g1.Id FROM genre g1, genre g2   WHERE g2.Id =? AND g1.LeftGenre >= g2.LeftGenre AND g1.RightGenre <= g2.RightGenre ) AND Type = 'playlist' LIMIT ?,? `;
             var check = yield Config_1.default.query(sql, [Genre_ID, s, f]);
             return this.SetLs(check);
         });

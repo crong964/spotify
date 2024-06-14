@@ -11,7 +11,7 @@ export class RecentPlaylistService {
         var ls = await Mysql2.query(sql, [d.User_ID, d.ID])
         return ls
     }
-    async Get7FirstRecentPlaylist(User_ID: string, ID: string) {
+    async Get8FirstRecentPlaylist(User_ID: string, ID: string) {
         var sql = `SELECT * FROM recentplaylist WHERE User_ID=? AND ID=? ORDER BY CreateTime DESC LIMIT 0,8`
         var ls = await Mysql2.query(sql, [User_ID, ID])
         return this.SetLs(ls)[0]

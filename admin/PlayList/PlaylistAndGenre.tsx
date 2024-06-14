@@ -3,6 +3,7 @@ import IndexGenres from "../GenreLs";
 import { post } from "../../page/config/req";
 import { useDispatch, useSelector } from "react-redux";
 import { EditPlayList, Page, RootState } from "../Redux";
+import { NavLink, Navigate } from "react-router-dom";
 
 export default function PlaylistAndGenre() {
   return (
@@ -40,13 +41,14 @@ function PlayList(d: PlayList) {
         {show ? (
           <div>
             <div className=" bg-black opacity-65 rounded-2xl absolute top-0 left-0 w-full h-full"></div>
-            <div
+            <NavLink
+              to={`/playlist/edit/${d.id}`}
               onMouseLeave={() => {
                 SetShow(false);
               }}
               onClick={() => {
-                dispatch(EditPlayList(d.id));
-                dispatch(Page("playlistedit"));
+                // dispatch(EditPlayList(d.id));
+                // dispatch(Page("playlistedit"));
               }}
               className="absolute cursor-pointer flex-col top-0 left-0 w-full h-full flex justify-center items-center"
             >
@@ -60,17 +62,12 @@ function PlayList(d: PlayList) {
                 <path d="M17.318 1.975a3.329 3.329 0 1 1 4.707 4.707L8.451 20.256c-.49.49-1.082.867-1.735 1.103L2.34 22.94a1 1 0 0 1-1.28-1.28l1.581-4.376a4.726 4.726 0 0 1 1.103-1.735L17.318 1.975zm3.293 1.414a1.329 1.329 0 0 0-1.88 0L5.159 16.963c-.283.283-.5.624-.636 1l-.857 2.372 2.371-.857a2.726 2.726 0 0 0 1.001-.636L20.611 5.268a1.329 1.329 0 0 0 0-1.879z"></path>
               </svg>
               <div className="text-white text-[16px]">Chỉnh Sửa </div>
-            </div>
+            </NavLink>
           </div>
         ) : (
           <></>
         )}
-        <img
-          src={d.ImagePath}
-          className="rounded-2xl"
-          alt=""
-          srcSet=""
-        />
+        <img src={d.ImagePath} className="rounded-2xl" alt="" srcSet="" />
       </div>
       <div className="text-[16px] ">{d.PlayListName}</div>
     </div>
@@ -82,7 +79,7 @@ function PlayLists() {
   const [playlists, SetPlaylists] = useState<PlayList[]>([]);
   useEffect(() => {
     post(
-      "playlist/GetAllPlayList",
+      "/playlist/GetAllPlayList",
       { Genre_ID: slectGenre[floor] },
       (v: any) => {
         SetPlaylists(v.ls);

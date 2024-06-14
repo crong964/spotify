@@ -24,7 +24,7 @@ export default function GenreForm() {
   const [genres, SetGenres] = useState<Genre[]>([]);
 
   useEffect(() => {
-    get("genre/GetAll", (v: any) => {
+    get("/genre/GetAll", (v: any) => {
       if (!v && v.err) {
         return;
       }

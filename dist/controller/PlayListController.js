@@ -31,11 +31,11 @@ class PlayListController {
             var file = (_a = req.file) === null || _a === void 0 ? void 0 : _a.filename;
             var playlistmodel = new PlayListModel_1.PlayListModel();
             playlistmodel.setAll(req.body);
-            playlistmodel.id = (0, uuid_1.v4)();
+            playlistmodel.id = `playlist-${(0, uuid_1.v4)()}`;
             playlistmodel.User_id = req.cookies.id;
             playlistmodel.Type = "playlist";
             playlistmodel.Songs = req.body.ls.length;
-            playlistmodel.ImagePath = (0, path_1.join)("public/playlist", file);
+            playlistmodel.ImagePath = (0, path_1.join)("/public/playlist", file);
             var check = yield PlayListService_1.default.Add(playlistmodel);
             var ls = req.body.ls;
             var list = ls.map((Song_id) => __awaiter(this, void 0, void 0, function* () {
@@ -85,7 +85,7 @@ class PlayListController {
             var playlistmodel = new PlayListModel_1.PlayListModel();
             playlistmodel.setAll(req.body);
             if (req.file) {
-                playlistmodel.ImagePath = (0, path_1.join)("public/playlist", req.file.filename);
+                playlistmodel.ImagePath = (0, path_1.join)("/public/playlist", req.file.filename);
                 try {
                     yield (0, promises_1.unlink)((0, path_1.join)(process.cwd(), oldplaylist.ImagePath));
                 }

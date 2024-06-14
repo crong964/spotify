@@ -383,7 +383,7 @@ Account.post("/create", async (req, res) => {
   d.Account = req.body.Account
   d.Password = req.body.Password
 
-  console.log(req.body);
+ 
   
   if (VertifyJWT(req.body.sign) == undefined) {
     res.json({

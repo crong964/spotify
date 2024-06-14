@@ -18,7 +18,7 @@ export default function SongList() {
   const slectGenre = useSelector((state: RootState) => state.navi.slectGenre);
   const floor = useSelector((state: RootState) => state.navi.floor);
   useEffect(() => {
-    post("song/GetSongByGenre", { idGenre: slectGenre[floor] }, (v: any) => {
+    post("/song/GetSongByGenre", { idGenre: slectGenre[floor] }, (v: any) => {
       SetSongs(v.ls);
     });
   }, [slectGenre[floor]]);

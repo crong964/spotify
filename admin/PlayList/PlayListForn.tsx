@@ -154,7 +154,7 @@ function PlayListFormData() {
             form.set(key, element);
           }
           form.set("Genre_ID", slectGenre[floor]);
-          post("playlist/AddNewPlayList", form, (v: any) => {
+          post("/playlist/AddNewPlayList", form, (v: any) => {
             if (!v.err) {
               dispatch(Page("songlist"));
               dispatch(ReSetSelectSong());

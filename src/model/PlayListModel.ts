@@ -29,8 +29,8 @@ export class PlayListModel extends BaseModel {
     setAll(d: any): void {
         super.setAll(d)
 
-        this.ImagePath = this.ImagePath || "public/avatar/avatar.jpg"
-        this.ImagePath = this.ImagePath.indexOf("http") >= 0 ? this.ImagePath : `/${this.ImagePath}`
+        this.ImagePath = this.ImagePath || "/public/avatar/avatar.jpg"
+        this.ImagePath = this.ImagePath.indexOf("http") >= 0 ? this.ImagePath : `${this.ImagePath}`
     }
 }
 

@@ -32,7 +32,7 @@ export default function Queue() {
   return (
     <div className="w-full h-full text-[16px] bg-[#121212] rounded-lg  overflow-y-scroll">
       <div className="sticky bg-[#121212] top-0 left-0 flex space-x-3 h-min w-full justify-between px-3 rounded-lg py-4 ">
-        <div className="flex space-x-2">
+        <div className="flex space-x-4">
           <div
             onClick={() => {
               Han("1");
@@ -42,7 +42,7 @@ export default function Queue() {
               " cursor-pointer  font-bold w-max text-white"
             }
           >
-            Đã phát gần đây
+            Danh sách chờ
           </div>
           <div
             onClick={() => {
@@ -53,7 +53,7 @@ export default function Queue() {
               " cursor-pointer font-bold w-max  text-white "
             }
           >
-            Danh sách chờ
+            Danh sách gần đây
           </div>
         </div>
         <div
@@ -73,8 +73,8 @@ export default function Queue() {
         </div>
       </div>
       <div className="bg-[#121212] text-white font-bold mt-1 rounded-lg space-y-3 pb-3">
-        <RecentPlaySongs cur={navi} type="2" />
-        <SongQueueInplayList cur={navi} type="1" />
+        <RecentPlaySongs cur={navi} key={"RecentPlaySongs"} type="2" />
+        <SongQueueInplayList cur={navi} key={"SongQueueInplayList"} type="1" />
       </div>
     </div>
   );
@@ -102,7 +102,7 @@ function RecentPlaySongs(p: MenberQueue) {
                 name={v.SongName}
                 singer={v.Singer}
                 Id={v.Id}
-                key={v.Id}
+                key={v.Id + parseInt("" + Math.random() * 10000)}
               />
             );
           })}

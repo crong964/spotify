@@ -25,7 +25,7 @@ class RecentPlaylistService {
             return ls;
         });
     }
-    Get7FirstRecentPlaylist(User_ID, ID) {
+    Get8FirstRecentPlaylist(User_ID, ID) {
         return __awaiter(this, void 0, void 0, function* () {
             var sql = `SELECT * FROM recentplaylist WHERE User_ID=? AND ID=? ORDER BY CreateTime DESC LIMIT 0,8`;
             var ls = yield Config_1.default.query(sql, [User_ID, ID]);
