@@ -65,6 +65,35 @@ class Firebase {
             });
         });
     }
+    UploadImageBufferNoZip(name, data) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return new Promise((res, rej) => {
+                (0, sharp_1.default)(data).jpeg({ force: true, progressive: true }).png({ palette: true, progressive: true, force: false })
+                    .toBuffer((err, buffer, infor) => {
+                    if (err) {
+                        console.log(err);
+                        rej("err");
+                        return;
+                    }
+                    var g = `${name}.jpeg`;
+                    let w = Firebase.bucket.file(g || "image")
+                        .createWriteStream().on("finish", () => __awaiter(this, void 0, void 0, function* () {
+                        var nameURL = yield (0, storage_1.getDownloadURL)(Firebase.bucket.file(g));
+                        res(nameURL);
+                    }));
+                    w.write(buffer, (err) => {
+                        console.log(err);
+                        if (err) {
+                            console.log(err);
+                            rej("err");
+                            return;
+                        }
+                    });
+                    w.end();
+                });
+            });
+        });
+    }
     UploadStream(path, name) {
         return __awaiter(this, void 0, void 0, function* () {
             return new Promise((res, rej) => {
@@ -94,6 +123,12 @@ class Firebase {
     }
     DownloadStreamFile(name, start, end) {
         return Firebase.bucket.file(name).createReadStream({ start: start, end: end });
+    }
+    Move(source, dist) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let check = yield Firebase.bucket.file(source).move(dist);
+            return check;
+        });
     }
 }
 Firebase.bucket = defaultApp.storage().bucket(STORAGEBUCKET);

@@ -60,6 +60,34 @@ class Firebase {
         })
 
     }
+    async UploadImageBufferNoZip(name: string, data: Buffer) {
+        return new Promise((res, rej) => {
+            sharp(data).jpeg({ force: true, progressive: true }).png({ palette: true, progressive: true, force: false })
+                .toBuffer((err, buffer, infor) => {
+                    if (err) {
+                        console.log(err);
+                        rej("err")
+                        return
+                    }
+                    var g = `${name}.jpeg`
+                    let w = Firebase.bucket.file(g || "image")
+                        .createWriteStream().on("finish", async () => {
+                            var nameURL = await getDownloadURL(Firebase.bucket.file(g))
+                            res(nameURL)
+                        })
+                    w.write(buffer, (err) => {
+                        console.log(err);
+                        if (err) {
+                            console.log(err);
+                            rej("err")
+                            return
+                        }
+                    })
+                    w.end()
+                })
+        })
+
+    }
     async UploadStream(path: string, name: string) {
         return new Promise((res, rej) => {
             var r = createReadStream(path)
@@ -85,6 +113,10 @@ class Firebase {
     }
     DownloadStreamFile(name: string, start: number, end: number) {
         return Firebase.bucket.file(name).createReadStream({ start: start, end: end })
+    }
+    async Move(source: string, dist: string) {
+        let check = await Firebase.bucket.file(source).move(dist)
+        return check
     }
 }
 

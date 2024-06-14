@@ -13,17 +13,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PlayListController = void 0;
-const path_1 = require("path");
 const ContainModel_1 = __importDefault(require("../model/ContainModel"));
 const PlayListModel_1 = require("../model/PlayListModel");
 const ContainService_1 = __importDefault(require("../services/ContainService"));
 const PlayListService_1 = __importDefault(require("../services/PlayListService"));
 const uuid_1 = require("uuid");
 const GenreService_1 = __importDefault(require("../services/GenreService"));
-const promises_1 = require("fs/promises");
 const LikedSongService_1 = __importDefault(require("../services/LikedSongService"));
 const UserService_1 = __importDefault(require("../services/UserService"));
 const HaveListFriendsService_1 = __importDefault(require("../services/HaveListFriendsService"));
+const Firebase_1 = __importDefault(require("../config/Firebase"));
 class PlayListController {
     AddPlayListByAdmin(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -35,7 +34,14 @@ class PlayListController {
             playlistmodel.User_id = req.cookies.id;
             playlistmodel.Type = "playlist";
             playlistmodel.Songs = req.body.ls.length;
-            playlistmodel.ImagePath = (0, path_1.join)("/public/playlist", file);
+            if (req.file) {
+                try {
+                    playlistmodel.ImagePath = (yield Firebase_1.default.UploadImageBufferNoZip(`playlist/${playlistmodel.id}`, req.file.buffer));
+                }
+                catch (error) {
+                    console.log(error);
+                }
+            }
             var check = yield PlayListService_1.default.Add(playlistmodel);
             var ls = req.body.ls;
             var list = ls.map((Song_id) => __awaiter(this, void 0, void 0, function* () {
@@ -85,9 +91,9 @@ class PlayListController {
             var playlistmodel = new PlayListModel_1.PlayListModel();
             playlistmodel.setAll(req.body);
             if (req.file) {
-                playlistmodel.ImagePath = (0, path_1.join)("/public/playlist", req.file.filename);
                 try {
-                    yield (0, promises_1.unlink)((0, path_1.join)(process.cwd(), oldplaylist.ImagePath));
+                    yield Firebase_1.default.Move(`playlist/${playlistmodel.id}.jpeg`, `deletePlaylist/playlist/${playlistmodel.id}.jpeg`);
+                    playlistmodel.ImagePath = (yield Firebase_1.default.UploadImageBufferNoZip(`playlist/${playlistmodel.id}`, req.file.buffer));
                 }
                 catch (error) {
                     console.log(error);

@@ -12,6 +12,7 @@ import likedSongService, { LikedSongService } from "../services/LikedSongService
 import userService, { UserService } from "../services/UserService";
 import haveListFriendsService, { HaveListFriendsService } from "../services/HaveListFriendsService";
 import LikedSongModel from "../model/LikedSongModel";
+import firebase from "../config/Firebase";
 
 export class PlayListController {
 
@@ -31,8 +32,15 @@ export class PlayListController {
         playlistmodel.User_id = req.cookies.id
         playlistmodel.Type = "playlist"
         playlistmodel.Songs = req.body.ls.length
-        playlistmodel.ImagePath = join("/public/playlist", file)
+        if (req.file) {
 
+            try {
+                playlistmodel.ImagePath = await firebase.UploadImageBufferNoZip(`playlist/${playlistmodel.id}`, req.file.buffer) as string
+            } catch (error) {
+                console.log(error);
+
+            }
+        }
 
 
         var check = await playListService.Add(playlistmodel)
@@ -81,13 +89,13 @@ export class PlayListController {
         }
         var playlistmodel = new PlayListModel()
         playlistmodel.setAll(req.body)
+
         if (req.file) {
-            playlistmodel.ImagePath = join("/public/playlist", req.file.filename)
             try {
-                await unlink(join(process.cwd(), oldplaylist.ImagePath))
+                await firebase.Move(`playlist/${playlistmodel.id}.jpeg`, `deletePlaylist/playlist/${playlistmodel.id}.jpeg`)
+                playlistmodel.ImagePath = await firebase.UploadImageBufferNoZip(`playlist/${playlistmodel.id}`, req.file.buffer) as string
             } catch (error) {
                 console.log(error);
-
             }
         }
         playlistmodel.id = oldplaylist.id

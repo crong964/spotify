@@ -18,7 +18,8 @@ const storage = multer_1.default.diskStorage({
         cb(null, `playlist-${file.fieldname}-${uniqueSuffix}.${f}`);
     }
 });
-const upload = (0, multer_1.default)({ storage: storage });
+const memory = multer_1.default.memoryStorage();
+const upload = (0, multer_1.default)({ storage: memory });
 PlayListRouteAdmin.post("/AddNewPlayList", upload.single("avatar"), PlayListController_1.default.AddPlayListByAdmin); //0k
 PlayListRouteAdmin.get("/playListDetailAdmin/:idplaylist", PlayListController_1.default.PlayListDetailAdmin); //0k
 PlayListRouteAdmin.post("/UpdatePlayList", upload.single("avatar"), PlayListController_1.default.UpdatePlayListDetailAdmin); //0k

@@ -17,7 +17,8 @@ const storage = multer.diskStorage({
     }
 })
 
-const upload = multer({ storage: storage })
+const memory = multer.memoryStorage()
+const upload = multer({ storage: memory })
 PlayListRouteAdmin.post("/AddNewPlayList", upload.single("avatar"), playListController.AddPlayListByAdmin)//0k
 PlayListRouteAdmin.get("/playListDetailAdmin/:idplaylist", playListController.PlayListDetailAdmin)//0k
 PlayListRouteAdmin.post("/UpdatePlayList", upload.single("avatar"), playListController.UpdatePlayListDetailAdmin)//0k
