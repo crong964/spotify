@@ -88,7 +88,7 @@ function Genres(d: Genres) {
           <button
             onClick={() => {
               post(
-                "genre/Add",
+                "/genre/Add",
                 {
                   Floor: d.Floor,
                   Name: vu,

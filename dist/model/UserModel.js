@@ -9,20 +9,17 @@ class UserModel extends BaseModel_1.default {
         super();
         this.role = "user";
         this.RefeshToken = "";
-        this.Password = "";
         this.Name = "";
         this.id = "";
         this.Vertify = 0;
         this.Nationality = "";
         this.ChanalName = "";
-        this.Account = "";
         this.description = "";
         this.pathImage = "";
         this.Banner = "";
     }
     setAll(d) {
         super.setAll(d);
-        this.Password = "";
         this.pathImage = this.pathImage || "/public/avatar/avatar.jpg";
         this.pathImage = this.pathImage.indexOf("http") >= 0 ? this.pathImage : `${this.pathImage}`;
     }

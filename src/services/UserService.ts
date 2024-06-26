@@ -8,9 +8,16 @@ export class UserService {
         this.userDatabae = i
     }
     async Add(d: UserModel) {
-        var check
-        await this.userDatabae.Add(d)
+        console.log(d);
 
+        let check
+        try {
+            check = await this.userDatabae.AddAccount(d)
+
+        } catch (error) {
+            console.log(error);
+
+        }
         return check
     }
     async Get(id: string) {
@@ -23,36 +30,17 @@ export class UserService {
         return user
     }
     async VertifyAccount(user_id: string, Vertify: string) {
-        var check = await this.userDatabae.VertifyAccount(user_id, "1")
+        var check = await this.userDatabae.VertifyAccount(user_id, Vertify)
         return check
     }
-    async GetByAccount(account: string) {
-        var user: UserModel | undefined
-        var check = await this.userDatabae.GetByAccount(account) as UserModel[]
-        if (check && check.length > 0) {
-            user = new UserModel()
-            user.setAll(check[0])
-        }
-        return user
-    }
+
     async getAllArtist(Vertify: string) {
         var check
         check = await this.userDatabae.getAllArtist(Vertify)
         var ls = this.SetList(check)
         return ls
     }
-    async GetAccountByAccAndPass(acc: string, pass: string) {
-        var user: UserModel | undefined
-        var sql = "SELECT * FROM user WHERE Account=? AND Password =? "
-        var check
-        check = await Mysql2.query(sql, [acc, pass]) as UserModel[]
 
-        if (check && check.length > 0) {
-            user = new UserModel()
-            user.setAll(check[0])
-        }
-        return user
-    }
     SetList(ls: any) {
         if (ls == undefined) {
             return []
@@ -68,25 +56,21 @@ export class UserService {
         return check
     }
     async AddAccount(d: UserModel) {
-        var sql = "INSERT INTO user(id, Account, Name, Vertify, Nationality, ChanalName, pathImage, description, RefeshToken, Password, Banner,role) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)"
+        var sql = "INSERT INTO user(id, Name, Vertify, Nationality, ChanalName, pathImage, description, RefeshToken, Banner,role) VALUES (?,?,?,?,?,?,?,?,?,?)"
         var check
-        check = await Mysql2.query(sql, [d.id, d.Account, d.Name, d.Vertify, d.Nationality, d.ChanalName, d.pathImage, d.description, d.RefeshToken, d.Password, d.Banner, d.role])
+        check = await Mysql2.query(sql, [d.id, d.Name, d.Vertify, d.Nationality, d.ChanalName, d.pathImage, d.description, d.RefeshToken, d.Banner, d.role])
         return check
 
     }
-    async UpdatePassword(d: UserModel) {
-        var check
-        check = await this.userDatabae.UpdatePassword(d)
-        return check
-    }
+
     async SearchNameArtist(name: string) {
         var ls = await this.userDatabae.SearchNameArtist(name)
         return this.SetList(ls)
     }
     async Update(d: UserModel) {
-        var sql = "UPDATE `user` SET `Name`=?,`Nationality`=?,`ChanalName`=?,`pathImage`=? WHERE id=? "
+        var sql = "UPDATE user SET Name=?,Nationality=?,ChanalName=?,pathImage=? ,Banner=? WHERE id=? "
         var check
-        check = await Mysql2.query(sql, [d.Name, d.Nationality, d.ChanalName, d.pathImage, d.id])
+        check = await Mysql2.query(sql, [d.Name, d.Nationality, d.ChanalName, d.pathImage, d.Banner, d.id])
         return check
     }
     async GetAllUserByType(Vertify: "" | "0" | "1") {

@@ -5,11 +5,9 @@ class UserModel extends BaseModel {
     Vertify: number
     Nationality: string
     ChanalName: string
-    Account: string
     Name: string
     description: string
     pathImage: string
-    Password: string
     Banner: string
     RefeshToken: string
     role: string
@@ -17,13 +15,11 @@ class UserModel extends BaseModel {
         super()
         this.role = "user"
         this.RefeshToken = ""
-        this.Password = ""
         this.Name = ""
         this.id = ""
         this.Vertify = 0
         this.Nationality = ""
         this.ChanalName = ""
-        this.Account = ""
         this.description = ""
         this.pathImage = ""
         this.Banner = ""
@@ -31,7 +27,6 @@ class UserModel extends BaseModel {
     }
     setAll(d: any): void {
         super.setAll(d)
-        this.Password = ""
         this.pathImage = this.pathImage || "/public/avatar/avatar.jpg"
         this.pathImage = this.pathImage.indexOf("http") >= 0 ? this.pathImage : `${this.pathImage}`
     }

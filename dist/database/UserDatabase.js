@@ -16,14 +16,12 @@ const Config_1 = __importDefault(require("../config/Config"));
 class UserDatabase {
     constructor() {
     }
-    Add(d) {
-        return __awaiter(this, void 0, void 0, function* () {
-            var sql = "INSERT INTO user(id, Account, Name, Nationality) VALUES (?,?,?,?) ";
-            var check;
-            check = yield Config_1.default.query(sql, [d.id, d.Account, d.Name, d.Nationality]);
-            return check;
-        });
-    }
+    // async Add(d: UserModel) {
+    //     var sql = "INSERT INTO user(id, Name, Nationality) VALUES (?,?,?) "
+    //     var check
+    //     check = await Mysql2.query(sql, [d.id, d.Name, d.Nationality])
+    //     return check
+    // }
     Get(id) {
         return __awaiter(this, void 0, void 0, function* () {
             var sql = "SELECT * FROM user WHERE id=?";
@@ -58,17 +56,9 @@ class UserDatabase {
     }
     AddAccount(d) {
         return __awaiter(this, void 0, void 0, function* () {
-            var sql = "INSERT INTO user(id, Account, Name, Vertify, Nationality, ChanalName, pathImage, description, RefeshToken, Password, Banner,role) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+            var sql = "INSERT INTO user(id, Name, Vertify, Nationality, ChanalName, pathImage, description, RefeshToken, Banner,role) VALUES (?,?,?,?,?,?,?,?,?,?)";
             var check;
-            check = yield Config_1.default.query(sql, [d.id, d.Account, d.Name, d.Vertify, d.Nationality, d.ChanalName, d.pathImage, d.description, d.RefeshToken, d.Password, d.Banner, d.role]);
-            return check;
-        });
-    }
-    UpdatePassword(d) {
-        return __awaiter(this, void 0, void 0, function* () {
-            var sql = "UPDATE user SET RefeshToken='',Password= ? WHERE Account=?";
-            var check;
-            check = yield Config_1.default.query(sql, [d.Password, d.Account]);
+            check = yield Config_1.default.query(sql, [d.id, d.Name, d.Vertify, d.Nationality, d.ChanalName, d.pathImage, d.description, d.RefeshToken, d.Banner, d.role]);
             return check;
         });
     }

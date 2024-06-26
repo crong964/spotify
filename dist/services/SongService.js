@@ -47,7 +47,9 @@ class SongService {
     }
     Delete(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            var check = yield this.songDatabase.Delete(id);
+            var sql = "DELETE FROM song WHERE Id=?";
+            var check;
+            check = yield Config_1.default.query(sql, [id]);
             return check;
         });
     }
@@ -76,7 +78,7 @@ class SongService {
     GetSongByGenre(idGenre, p) {
         return __awaiter(this, void 0, void 0, function* () {
             p.start = p.start | 0;
-            p.end = p.end | 10;
+            p.end = p.end | 100;
             var check;
             check = (yield this.songDatabase.GetSongByGenre(idGenre, p));
             return this.SetLs(check);

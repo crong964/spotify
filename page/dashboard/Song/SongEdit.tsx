@@ -201,22 +201,24 @@ export default function SongForm() {
         <div
           onClick={() => {
             var form = new FormData();
-            if (floor == 0) {
-              form.append("Genre_id", song.Genre_id);
-            } else {
-              form.append("Genre_id", slectGenre[floor]);
-            }
-
-            if (newImage != undefined) {
-              form.append("avatar", newImage);
-            }
-
             const myObj: { [key: string]: any } = song;
-
             for (const key in myObj) {
               const element = myObj[key];
               form.set(key, element);
             }
+            if (floor == 0) {
+              form.set("Genre_id", song.Genre_id);
+            } else {
+              form.set("Genre_id", slectGenre[floor]);
+            }
+
+            if (newImage != undefined) {
+              form.set("avatar", newImage);
+            }
+
+          
+
+            
             post("song/NewUpdate", form, (v: any) => {
               if (!v.err) {
                 dispatch(Navi("songlist"));

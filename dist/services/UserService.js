@@ -22,8 +22,14 @@ class UserService {
     }
     Add(d) {
         return __awaiter(this, void 0, void 0, function* () {
-            var check;
-            yield this.userDatabae.Add(d);
+            console.log(d);
+            let check;
+            try {
+                check = yield this.userDatabae.AddAccount(d);
+            }
+            catch (error) {
+                console.log(error);
+            }
             return check;
         });
     }
@@ -40,19 +46,8 @@ class UserService {
     }
     VertifyAccount(user_id, Vertify) {
         return __awaiter(this, void 0, void 0, function* () {
-            var check = yield this.userDatabae.VertifyAccount(user_id, "1");
+            var check = yield this.userDatabae.VertifyAccount(user_id, Vertify);
             return check;
-        });
-    }
-    GetByAccount(account) {
-        return __awaiter(this, void 0, void 0, function* () {
-            var user;
-            var check = yield this.userDatabae.GetByAccount(account);
-            if (check && check.length > 0) {
-                user = new UserModel_1.default();
-                user.setAll(check[0]);
-            }
-            return user;
         });
     }
     getAllArtist(Vertify) {
@@ -61,19 +56,6 @@ class UserService {
             check = yield this.userDatabae.getAllArtist(Vertify);
             var ls = this.SetList(check);
             return ls;
-        });
-    }
-    GetAccountByAccAndPass(acc, pass) {
-        return __awaiter(this, void 0, void 0, function* () {
-            var user;
-            var sql = "SELECT * FROM user WHERE Account=? AND Password =? ";
-            var check;
-            check = (yield Config_1.default.query(sql, [acc, pass]));
-            if (check && check.length > 0) {
-                user = new UserModel_1.default();
-                user.setAll(check[0]);
-            }
-            return user;
         });
     }
     SetList(ls) {
@@ -91,16 +73,9 @@ class UserService {
     }
     AddAccount(d) {
         return __awaiter(this, void 0, void 0, function* () {
-            var sql = "INSERT INTO user(id, Account, Name, Vertify, Nationality, ChanalName, pathImage, description, RefeshToken, Password, Banner,role) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+            var sql = "INSERT INTO user(id, Name, Vertify, Nationality, ChanalName, pathImage, description, RefeshToken, Banner,role) VALUES (?,?,?,?,?,?,?,?,?,?)";
             var check;
-            check = yield Config_1.default.query(sql, [d.id, d.Account, d.Name, d.Vertify, d.Nationality, d.ChanalName, d.pathImage, d.description, d.RefeshToken, d.Password, d.Banner, d.role]);
-            return check;
-        });
-    }
-    UpdatePassword(d) {
-        return __awaiter(this, void 0, void 0, function* () {
-            var check;
-            check = yield this.userDatabae.UpdatePassword(d);
+            check = yield Config_1.default.query(sql, [d.id, d.Name, d.Vertify, d.Nationality, d.ChanalName, d.pathImage, d.description, d.RefeshToken, d.Banner, d.role]);
             return check;
         });
     }
@@ -112,9 +87,9 @@ class UserService {
     }
     Update(d) {
         return __awaiter(this, void 0, void 0, function* () {
-            var sql = "UPDATE `user` SET `Name`=?,`Nationality`=?,`ChanalName`=?,`pathImage`=? WHERE id=? ";
+            var sql = "UPDATE user SET Name=?,Nationality=?,ChanalName=?,pathImage=? ,Banner=? WHERE id=? ";
             var check;
-            check = yield Config_1.default.query(sql, [d.Name, d.Nationality, d.ChanalName, d.pathImage, d.id]);
+            check = yield Config_1.default.query(sql, [d.Name, d.Nationality, d.ChanalName, d.pathImage, d.Banner, d.id]);
             return check;
         });
     }

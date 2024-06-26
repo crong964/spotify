@@ -48,13 +48,12 @@ class Firebase {
                         return;
                     }
                     var g = `${name}.jpeg`;
-                    let w = Firebase.bucket.file(g || "image")
+                    let w = Firebase.bucket.file(g)
                         .createWriteStream().on("finish", () => __awaiter(this, void 0, void 0, function* () {
                         var nameURL = yield (0, storage_1.getDownloadURL)(Firebase.bucket.file(g));
                         res(nameURL);
                     }));
                     w.write(buffer, (err) => {
-                        console.log(err);
                         if (err) {
                             rea(err);
                             return;
@@ -76,13 +75,12 @@ class Firebase {
                         return;
                     }
                     var g = `${name}.jpeg`;
-                    let w = Firebase.bucket.file(g || "image")
+                    let w = Firebase.bucket.file(g)
                         .createWriteStream().on("finish", () => __awaiter(this, void 0, void 0, function* () {
                         var nameURL = yield (0, storage_1.getDownloadURL)(Firebase.bucket.file(g));
                         res(nameURL);
                     }));
                     w.write(buffer, (err) => {
-                        console.log(err);
                         if (err) {
                             console.log(err);
                             rej("err");
@@ -124,9 +122,27 @@ class Firebase {
     DownloadStreamFile(name, start, end) {
         return Firebase.bucket.file(name).createReadStream({ start: start, end: end });
     }
+    MoveImage(source, dist) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let check;
+            try {
+                check = yield Firebase.bucket.file(`${source}.jpeg`).move(`${dist}.jpeg`);
+            }
+            catch (error) {
+                console.log(error);
+            }
+            return check;
+        });
+    }
     Move(source, dist) {
         return __awaiter(this, void 0, void 0, function* () {
-            let check = yield Firebase.bucket.file(source).move(dist);
+            let check;
+            try {
+                check = yield Firebase.bucket.file(`${source}`).move(`${dist}`);
+            }
+            catch (error) {
+                console.log(error);
+            }
             return check;
         });
     }

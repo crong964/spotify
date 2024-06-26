@@ -11,7 +11,9 @@ import PlayListEdit from "./PlayList/PlayListEdit";
 import UserList from "./user/UserList";
 import Employls from "./user/Employls";
 import { Outlet, Route, Routes } from "react-router-dom";
-import Artist from "./user/Artist";
+import Artist, { AddArtist, ArtistDetail } from "./artist/Artist";
+import ArtistList from "./artist/Artist";
+import SongListAndInforArtist from "./artist/SongListAndInforArtist";
 
 export default function App() {
   var children: React.JSX.Element;
@@ -80,9 +82,9 @@ export default function App() {
 function Center() {
   return (
     <Routes>
-      <Route path="" element={<Outlet></Outlet>}>
+      <Route path="/" element={<Outlet></Outlet>}>
         <Route
-          path="/"
+          index
           element={
             <Main title="Danh sách nhạc">
               <SongAndGenre />
@@ -152,11 +154,37 @@ function Center() {
             </Main>
           }
         />
+      </Route>
+      <Route path="artist" element={<Outlet></Outlet>}>
         <Route
-          path="artist"
+          path=""
           element={
             <Main title="Danh sách ca sĩ công ty quản lý">
-              <Artist />
+              <ArtistList />
+            </Main>
+          }
+        />
+        <Route
+          path="add"
+          element={
+            <Main title="Thêm ca sĩ công ty quản lý">
+              <AddArtist />
+            </Main>
+          }
+        />
+        <Route
+          path=":idArtist"
+          element={
+            <Main title="Chỉnh sửa ca sĩ">
+              <ArtistDetail />
+            </Main>
+          }
+        />
+        <Route
+          path="songlist/:idArtist"
+          element={
+            <Main title="Danh sách nhạc của ca sĩ">
+              <SongListAndInforArtist></SongListAndInforArtist>
             </Main>
           }
         />

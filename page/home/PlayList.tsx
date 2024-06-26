@@ -49,7 +49,7 @@ export function ArtistPage() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    get(`user/artistpage/${idpage}`, (v: any) => {
+    get(`/user/artistpage/${idpage}`, (v: any) => {
       if (!v || v.err) {
         return;
       }
@@ -131,7 +131,7 @@ export function LikedSongListPage() {
   const dispatch = useDispatch();
   const [songs, SetSongS] = useState<SongInPlayList[]>([]);
   useEffect(() => {
-    get(`lsong/likedsongs`, (v: any) => {
+    get(`/lsong/likedsongs`, (v: any) => {
       if (!v || v.err) {
         return;
       }

@@ -40,14 +40,13 @@ class Firebase {
                         return
                     }
                     var g = `${name}.jpeg`
-                    let w = Firebase.bucket.file(g || "image")
+                    let w = Firebase.bucket.file(g)
                         .createWriteStream().on("finish", async () => {
                             var nameURL = await getDownloadURL(Firebase.bucket.file(g))
                             res(nameURL)
                         })
 
                     w.write(buffer, (err) => {
-                        console.log(err);
                         if (err) {
                             rea(err)
                             return
@@ -70,13 +69,12 @@ class Firebase {
                         return
                     }
                     var g = `${name}.jpeg`
-                    let w = Firebase.bucket.file(g || "image")
+                    let w = Firebase.bucket.file(g)
                         .createWriteStream().on("finish", async () => {
                             var nameURL = await getDownloadURL(Firebase.bucket.file(g))
                             res(nameURL)
                         })
                     w.write(buffer, (err) => {
-                        console.log(err);
                         if (err) {
                             console.log(err);
                             rej("err")
@@ -114,8 +112,24 @@ class Firebase {
     DownloadStreamFile(name: string, start: number, end: number) {
         return Firebase.bucket.file(name).createReadStream({ start: start, end: end })
     }
+    async MoveImage(source: string, dist: string) {
+        let check
+        try {
+            check = await Firebase.bucket.file(`${source}.jpeg`).move(`${dist}.jpeg`)
+        } catch (error) {
+            console.log(error);
+
+        }
+        return check
+    }
     async Move(source: string, dist: string) {
-        let check = await Firebase.bucket.file(source).move(dist)
+        let check
+        try {
+            check = await Firebase.bucket.file(`${source}`).move(`${dist}`)
+        } catch (error) {
+            console.log(error);
+
+        }
         return check
     }
 }

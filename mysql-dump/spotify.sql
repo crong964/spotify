@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th5 05, 2024 lúc 05:59 AM
+-- Thời gian đã tạo: Th6 10, 2024 lúc 11:26 AM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -26,7 +26,7 @@ SET time_zone = "+00:00";
 --
 -- Cấu trúc bảng cho bảng `boxchat`
 --
-
+set sql_require_primary_key = OFF;
 CREATE TABLE `boxchat` (
   `idBox` varchar(100) NOT NULL,
   `Ngay` datetime NOT NULL DEFAULT current_timestamp(),
@@ -45,7 +45,7 @@ CREATE TABLE `boxchat` (
 INSERT INTO `boxchat` (`idBox`, `Ngay`, `content`, `id`, `boxtype`, `boxiamge`, `updateDay`, `messType`) VALUES
 ('idbox-6acf7197-951e-45ca-bfc2-a984997d6501', '2024-04-11 09:05:30', '', 'c9a79c22-8546-4540-8d16-92c01c4a6a23', 'noFriend', NULL, '2024-04-14 19:56:02', 'Mess'),
 ('idbox-deae105f-13a3-4656-bd1e-d2c669c238ff', '2024-04-10 10:00:08', '', 'c9a79c22-8546-4540-8d16-92c01c4a6a23', 'noFriend', NULL, '2024-04-14 19:55:59', 'Mess'),
-('idbox-ff455627-b907-4ede-b7a0-f9371a20703d', '2024-04-11 09:15:28', 'i/image-1714881571915-613140972.jpeg.jpg@', '42a9314d-5f14-4786-88ab-604359aa75e1', 'noFriend', NULL, '2024-05-05 10:59:31', 'Image');
+('idbox-ff455627-b907-4ede-b7a0-f9371a20703d', '2024-04-11 09:15:28', 'đâs', '42a9314d-5f14-4786-88ab-604359aa75e1', 'noFriend', NULL, '2024-06-09 20:52:04', 'Mess');
 
 -- --------------------------------------------------------
 
@@ -75,6 +75,20 @@ INSERT INTO `contain` (`Song_ID`, `PlayList_id`, `TimeCreate`) VALUES
 ('b50e07a9-f2ea-4626-8b14-f9ef213ad8fc', 'a1a46dc3-cd88-4aeb-9ae0-276962d22922', '2024-04-02 15:04:21'),
 ('b53c3193-7a3f-4005-861b-52eca46f9381', 'a1a46dc3-cd88-4aeb-9ae0-276962d22922', '2024-04-02 15:06:07'),
 ('e17363fa-82d8-4ca4-8dee-ce1b62bcf995', 'a1a46dc3-cd88-4aeb-9ae0-276962d22922', '2024-04-02 15:06:07'),
+('1aa8ac68-dce5-4ad0-a34d-9bd0b7df00cc', 'artist-386a-400d-a34d-2ee585fbdf3b', '2024-06-07 21:42:05'),
+('1f78e78f-18c0-405c-abe3-71ffd1fc0397', 'artist-386a-400d-a34d-2ee585fbdf3b', '2024-06-07 21:42:05'),
+('50d8169a-a6da-4856-bb75-c0283f9849ae', 'artist-386a-400d-a34d-2ee585fbdf3b', '2024-06-07 21:42:05'),
+('82a0e146-1b63-4194-a0f8-cfb1913f50dc', 'artist-386a-400d-a34d-2ee585fbdf3b', '2024-06-07 21:42:05'),
+('f6e0a637-d439-49d2-b720-edb8f9c750f5', 'artist-386a-400d-a34d-2ee585fbdf3b', '2024-06-07 21:42:05'),
+('381b6b5e-305f-4cbc-a3bf-7707147c8804', 'artist-3d43a7e6-a1a1-41a2-80d1-0d2bc4343d95', '2024-06-07 21:44:15'),
+('837b3000-7ec2-4c85-a8fa-bc088cc0074e', 'artist-3d43a7e6-a1a1-41a2-80d1-0d2bc4343d95', '2024-06-07 21:44:15'),
+('e17363fa-82d8-4ca4-8dee-ce1b62bcf995', 'artist-3d43a7e6-a1a1-41a2-80d1-0d2bc4343d95', '2024-06-07 21:44:15'),
+('67a81238-3348-4cdf-b953-5096df977e27', 'artist-fb6d-45c6-942a-79462788fd91', '2024-06-07 21:43:44'),
+('9bb2ddba-abfa-474a-ac84-d7952a51ad7e', 'artist-fb6d-45c6-942a-79462788fd91', '2024-06-07 21:43:44'),
+('b50e07a9-f2ea-4626-8b14-f9ef213ad8fc', 'artist-fb6d-45c6-942a-79462788fd91', '2024-06-07 21:43:44'),
+('b53c3193-7a3f-4005-861b-52eca46f9381', 'artist-fb6d-45c6-942a-79462788fd91', '2024-06-07 21:43:44'),
+('ecdba929-6516-46b3-b507-36d2c854b947', 'artist-fb6d-45c6-942a-79462788fd91', '2024-06-07 21:43:44'),
+('ef9012fd-f635-49b5-918b-874c806a6b40', 'artist-fb6d-45c6-942a-79462788fd91', '2024-06-07 21:43:44'),
 ('1aa8ac68-dce5-4ad0-a34d-9bd0b7df00cc', 'cf345c59-5079-452e-b1de-c829f774e7f2', '2024-04-02 14:44:56'),
 ('381b6b5e-305f-4cbc-a3bf-7707147c8804', 'cf345c59-5079-452e-b1de-c829f774e7f2', '2024-04-02 14:45:18'),
 ('50d8169a-a6da-4856-bb75-c0283f9849ae', 'cf345c59-5079-452e-b1de-c829f774e7f2', '2024-04-02 14:45:59'),
@@ -100,21 +114,6 @@ CREATE TABLE `discuss` (
   `Song_Id` varchar(100) NOT NULL,
   `createtime` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_vietnamese_ci;
-
---
--- Đang đổ dữ liệu cho bảng `discuss`
---
-
-INSERT INTO `discuss` (`User_Id`, `Discuss_Id`, `Parent_discuss_Id`, `Replay_Discuss_Id`, `Replay_quality`, `Content`, `Type`, `Song_Id`, `createtime`) VALUES
-('c9a79c22-8546-4540-8d16-92c01c4a6a23', 'discuss-1b6aaacf-d6a1-4766-a5fe-c54176ed0ceb', '', '', 2, 'bình luận', 0, '50d8169a-a6da-4856-bb75-c0283f9849ae', '2024-04-08 14:06:51'),
-('c9a79c22-8546-4540-8d16-92c01c4a6a23', 'discuss-270de3ac-9107-41ca-bfcf-c0a2095918cc', 'discuss-1b6aaacf-d6a1-4766-a5fe-c54176ed0ceb', 'discuss-1b6aaacf-d6a1-4766-a5fe-c54176ed0ceb', 0, 'chaof chaof', 1, '50d8169a-a6da-4856-bb75-c0283f9849ae', '2024-04-14 09:30:59'),
-('c9a79c22-8546-4540-8d16-92c01c4a6a23', 'discuss-4e1ad060-d12a-4585-8420-8b2af08db23d', '', '', 0, 'đâsdasd', 0, 'f6e0a637-d439-49d2-b720-edb8f9c750f5', '2024-04-14 09:46:35'),
-('42a9314d-5f14-4786-88ab-604359aa75e1', 'discuss-8a8e0818-7d5c-4a36-aef6-78d86e5b57a0', 'discuss-1b6aaacf-d6a1-4766-a5fe-c54176ed0ceb', 'discuss-1b6aaacf-d6a1-4766-a5fe-c54176ed0ceb', 0, 'trả lời', 1, '50d8169a-a6da-4856-bb75-c0283f9849ae', '2024-04-08 14:07:35'),
-('c9a79c22-8546-4540-8d16-92c01c4a6a23', 'discuss-8c4e99b8-7700-41dc-bdce-90fe8103a6c0', '', '', 0, 'đáasda', 0, 'f6e0a637-d439-49d2-b720-edb8f9c750f5', '2024-04-14 09:46:33'),
-('c9a79c22-8546-4540-8d16-92c01c4a6a23', 'discuss-abfac760-617f-46b6-aa15-ec4e83244a6e', '', '', 0, 'đâsdasdasd', 0, '50d8169a-a6da-4856-bb75-c0283f9849ae', '2024-04-14 09:33:46'),
-('c9a79c22-8546-4540-8d16-92c01c4a6a23', 'discuss-bb43c7c6-ad86-49e2-aa12-9d3ff87986ca', '', '', 0, 'asd dadas dsadasd dsada dsada jlkasjd jkdasjd jkdjsa jjqiwoj j  jijdioajd djaiwjd jdaiowjdi djiowjad diajwidjjd jwadojw iajdiaow ', 0, '50d8169a-a6da-4856-bb75-c0283f9849ae', '2024-04-14 09:13:56'),
-('c9a79c22-8546-4540-8d16-92c01c4a6a23', 'discuss-c398c0be-1ae8-4873-9b86-15225e29f7b5', '', '', 0, 'dấdasdas', 0, '50d8169a-a6da-4856-bb75-c0283f9849ae', '2024-04-14 09:33:42'),
-('c9a79c22-8546-4540-8d16-92c01c4a6a23', 'discuss-e76fa0ad-73b5-489d-bb5d-582a4874ebb8', '', '', 0, 'dasd dhaskdhd hadhkjashd hdajs jsahdaj jashd jashd khda s dashdk akhduwad  kuwd hadjkshd uwud huah ds wdhjkhwadhad hfifh  fhhfi  uwh fu i fie ', 0, '50d8169a-a6da-4856-bb75-c0283f9849ae', '2024-04-14 09:14:51');
 
 -- --------------------------------------------------------
 
@@ -236,13 +235,18 @@ CREATE TABLE `likedsong` (
 --
 
 INSERT INTO `likedsong` (`Id`, `id_user_liked`, `liked`) VALUES
-('1aa8ac68-dce5-4ad0-a34d-9bd0b7df00cc', 'c9a79c22-8546-4540-8d16-92c01c4a6a23', 1),
+('1aa8ac68-dce5-4ad0-a34d-9bd0b7df00cc', 'c9a79c22-8546-4540-8d16-92c01c4a6a23', 0),
 ('1f78e78f-18c0-405c-abe3-71ffd1fc0397', 'c9a79c22-8546-4540-8d16-92c01c4a6a23', 1),
+('381b6b5e-305f-4cbc-a3bf-7707147c8804', 'c9a79c22-8546-4540-8d16-92c01c4a6a23', 1),
 ('50d8169a-a6da-4856-bb75-c0283f9849ae', 'c9a79c22-8546-4540-8d16-92c01c4a6a23', 1),
 ('67a81238-3348-4cdf-b953-5096df977e27', 'c9a79c22-8546-4540-8d16-92c01c4a6a23', 0),
-('837b3000-7ec2-4c85-a8fa-bc088cc0074e', 'c9a79c22-8546-4540-8d16-92c01c4a6a23', 1),
+('82a0e146-1b63-4194-a0f8-cfb1913f50dc', 'c9a79c22-8546-4540-8d16-92c01c4a6a23', 1),
+('837b3000-7ec2-4c85-a8fa-bc088cc0074e', 'c9a79c22-8546-4540-8d16-92c01c4a6a23', 0),
 ('9bb2ddba-abfa-474a-ac84-d7952a51ad7e', 'c9a79c22-8546-4540-8d16-92c01c4a6a23', 1),
-('b53c3193-7a3f-4005-861b-52eca46f9381', 'c9a79c22-8546-4540-8d16-92c01c4a6a23', 1);
+('b50e07a9-f2ea-4626-8b14-f9ef213ad8fc', 'c9a79c22-8546-4540-8d16-92c01c4a6a23', 0),
+('b53c3193-7a3f-4005-861b-52eca46f9381', 'c9a79c22-8546-4540-8d16-92c01c4a6a23', 0),
+('ef9012fd-f635-49b5-918b-874c806a6b40', 'c9a79c22-8546-4540-8d16-92c01c4a6a23', 0),
+('f6e0a637-d439-49d2-b720-edb8f9c750f5', 'c9a79c22-8546-4540-8d16-92c01c4a6a23', 0);
 
 -- --------------------------------------------------------
 
@@ -264,7 +268,10 @@ CREATE TABLE `messenge` (
 --
 
 INSERT INTO `messenge` (`idMess`, `idBox`, `content`, `type`, `idUser`, `ngay`) VALUES
+('Mess-21293d51-a572-428e-8275-176fbab4c565', 'idbox-ff455627-b907-4ede-b7a0-f9371a20703d', 'đâs', 'Mess', '42a9314d-5f14-4786-88ab-604359aa75e1', '2024-06-09 20:52:04'),
 ('Mess-4c0a445d-73c9-4a71-8336-df90a796e424', 'idbox-ff455627-b907-4ede-b7a0-f9371a20703d', 'i/image-1714881565879-870849810.jpeg.jpg@', 'image', '42a9314d-5f14-4786-88ab-604359aa75e1', '2024-05-05 10:59:25'),
+('Mess-9371bda4-93d7-4dba-afbb-8f58bac035ea', 'idbox-ff455627-b907-4ede-b7a0-f9371a20703d', 'dddd', 'Mess', 'c9a79c22-8546-4540-8d16-92c01c4a6a23', '2024-05-12 10:45:37'),
+('Mess-d0f8f86e-bec0-4562-a918-21b5c35f1bd2', 'idbox-ff455627-b907-4ede-b7a0-f9371a20703d', 'đâsd', 'Mess', 'c9a79c22-8546-4540-8d16-92c01c4a6a23', '2024-05-12 10:45:35'),
 ('Mess-db290f45-ad1c-41bb-8a6c-0dbb5426495d', 'idbox-ff455627-b907-4ede-b7a0-f9371a20703d', 'i/image-1714881571915-613140972.jpeg.jpg@', 'image', '42a9314d-5f14-4786-88ab-604359aa75e1', '2024-05-05 10:59:31'),
 ('Mess-fc00c5da-5bb1-4a5f-bc75-f0d4628d2a8e', 'idbox-ff455627-b907-4ede-b7a0-f9371a20703d', 'i/image-1714881568664-7437403.png.jpg@', 'image', '42a9314d-5f14-4786-88ab-604359aa75e1', '2024-05-05 10:59:28');
 
@@ -300,13 +307,13 @@ CREATE TABLE `playlist` (
   `id` varchar(100) NOT NULL,
   `User_id` varchar(100) NOT NULL,
   `Genre_ID` varchar(100) NOT NULL,
-  `Type` int(2) NOT NULL DEFAULT 0,
+  `Type` varchar(50) NOT NULL DEFAULT 'nono',
   `ImagePath` varchar(100) NOT NULL,
   `PlayListName` varchar(100) NOT NULL,
   `Likes` int(100) NOT NULL,
   `Songs` int(30) NOT NULL,
   `Duration` int(100) NOT NULL,
-  `Status` int(2) NOT NULL,
+  `Status` int(2) NOT NULL DEFAULT 0,
   `Discripition` varchar(150) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_vietnamese_ci;
 
@@ -315,10 +322,13 @@ CREATE TABLE `playlist` (
 --
 
 INSERT INTO `playlist` (`id`, `User_id`, `Genre_ID`, `Type`, `ImagePath`, `PlayListName`, `Likes`, `Songs`, `Duration`, `Status`, `Discripition`) VALUES
-('12a2b6d1-9684-4ffd-8b26-f593ad302ca7', 'c9a79c22-8546-4540-8d16-92c01c4a6a23', 'a7b77b1c-902b-4417-9609-eb596aa187e4', 1, 'public/playlist/playlist-avatar-1711981590640-718853768.jpeg', 'Nhạc Không Thể Thiêu', 0, 3, 0, 0, ''),
-('8f23b4e3-85f2-48ef-a865-9797a7100862', 'c9a79c22-8546-4540-8d16-92c01c4a6a23', 'b30d08cd-d161-4cf7-ab92-bd445d212896', 1, 'public/playlist/playlist-avatar-1711979780192-601050903.jpeg', 'Hot Hit VN', 0, 3, 0, 0, ''),
-('a1a46dc3-cd88-4aeb-9ae0-276962d22922', 'c9a79c22-8546-4540-8d16-92c01c4a6a23', 'b30d08cd-d161-4cf7-ab92-bd445d212896', 1, 'public/playlist/playlist-avatar-1712045519005-846117435.jpeg', 'Anh Hào Nhạc Việt', 0, 2, 0, 0, ''),
-('cf345c59-5079-452e-b1de-c829f774e7f2', 'c9a79c22-8546-4540-8d16-92c01c4a6a23', 'b30d08cd-d161-4cf7-ab92-bd445d212896', 1, 'public/playlist/playlist-avatar-1711982014513-407478995.jpeg', 'Best of V-Pop Không Thể Thiếu 2023', 0, 7, 0, 0, '');
+('12a2b6d1-9684-4ffd-8b26-f593ad302ca7', 'c9a79c22-8546-4540-8d16-92c01c4a6a23', 'a7b77b1c-902b-4417-9609-eb596aa187e4', 'playlist', 'public/playlist/playlist-avatar-1711981590640-718853768.jpeg', 'Nhạc Không Thể Thiêu', 0, 3, 0, 1, ''),
+('8f23b4e3-85f2-48ef-a865-9797a7100862', 'c9a79c22-8546-4540-8d16-92c01c4a6a23', 'b30d08cd-d161-4cf7-ab92-bd445d212896', 'playlist', 'public/playlist/playlist-avatar-1711979780192-601050903.jpeg', 'Hot Hit VN', 0, 3, 0, 1, ''),
+('a1a46dc3-cd88-4aeb-9ae0-276962d22922', 'c9a79c22-8546-4540-8d16-92c01c4a6a23', 'b30d08cd-d161-4cf7-ab92-bd445d212896', 'playlist', 'public/playlist/playlist-avatar-1712045519005-846117435.jpeg', 'Anh Hào Nhạc Việt', 0, 2, 0, 1, ''),
+('artist-386a-400d-a34d-2ee585fbdf3b', '42a9314d-5f14-4786-88ab-604359aa75e1', '', 'artist', 'public/avatar/pmq.jpg', 'Phan Manh Quỳnh', 0, 0, 0, 1, '[value-11]'),
+('artist-3d43a7e6-a1a1-41a2-80d1-0d2bc4343d95', '9e3aadcb-23b1-4540-8ec3-4bbb6892f3e1', '', 'artist', 'public/avatar/denvau.jpg', 'Đen Vâu', 0, 0, 0, 1, '[value-11]'),
+('artist-fb6d-45c6-942a-79462788fd91', '51925ca6-74c6-418d-9273-793061b05aa6', '', 'artist', 'https://i.scdn.co/image/ab676161000051747afc6ecdb9102abd1e10d338', 'Sơn Tùng M-TP', 0, 0, 0, 1, '[value-11]'),
+('cf345c59-5079-452e-b1de-c829f774e7f2', 'c9a79c22-8546-4540-8d16-92c01c4a6a23', 'b30d08cd-d161-4cf7-ab92-bd445d212896', 'playlist', 'public/playlist/playlist-avatar-1711982014513-407478995.jpeg', 'Best of V-Pop Không Thể Thiếu 2023', 0, 7, 0, 1, '');
 
 -- --------------------------------------------------------
 
@@ -339,9 +349,22 @@ CREATE TABLE `playlistlikes` (
 
 CREATE TABLE `recentplaylist` (
   `User_ID` varchar(100) NOT NULL,
-  `PlayList_ID` varchar(100) NOT NULL,
+  `ID` varchar(100) NOT NULL,
   `CreateTime` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_vietnamese_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `recentplaylist`
+--
+
+INSERT INTO `recentplaylist` (`User_ID`, `ID`, `CreateTime`) VALUES
+('c9a79c22-8546-4540-8d16-92c01c4a6a23', 'artist-3d43a7e6-a1a1-41a2-80d1-0d2bc4343d95', '2024-06-08 10:45:08'),
+('c9a79c22-8546-4540-8d16-92c01c4a6a23', '8f23b4e3-85f2-48ef-a865-9797a7100862', '2024-06-08 10:45:18'),
+('42a9314d-5f14-4786-88ab-604359aa75e1', 'artist-3d43a7e6-a1a1-41a2-80d1-0d2bc4343d95', '2024-06-09 16:28:16'),
+('42a9314d-5f14-4786-88ab-604359aa75e1', 'a1a46dc3-cd88-4aeb-9ae0-276962d22922', '2024-06-10 11:52:57'),
+('42a9314d-5f14-4786-88ab-604359aa75e1', 'artist-386a-400d-a34d-2ee585fbdf3b', '2024-06-10 11:59:58'),
+('42a9314d-5f14-4786-88ab-604359aa75e1', '12a2b6d1-9684-4ffd-8b26-f593ad302ca7', '2024-06-10 12:00:26'),
+('42a9314d-5f14-4786-88ab-604359aa75e1', 'artist-fb6d-45c6-942a-79462788fd91', '2024-06-10 12:09:56');
 
 -- --------------------------------------------------------
 
@@ -360,43 +383,40 @@ CREATE TABLE `recentsong` (
 --
 
 INSERT INTO `recentsong` (`user_id`, `Id`, `Time`) VALUES
-('c9a79c22-8546-4540-8d16-92c01c4a6a23', '67a81238-3348-4cdf-b953-5096df977e27', '2024-03-28 21:29:55'),
-('c9a79c22-8546-4540-8d16-92c01c4a6a23', 'b53c3193-7a3f-4005-861b-52eca46f9381', '2024-04-02 15:59:19'),
-('c9a79c22-8546-4540-8d16-92c01c4a6a23', '1aa8ac68-dce5-4ad0-a34d-9bd0b7df00cc', '2024-04-02 21:00:04'),
-('c9a79c22-8546-4540-8d16-92c01c4a6a23', '381b6b5e-305f-4cbc-a3bf-7707147c8804', '2024-04-04 21:12:51'),
-('c9a79c22-8546-4540-8d16-92c01c4a6a23', 'e17363fa-82d8-4ca4-8dee-ce1b62bcf995', '2024-04-04 21:12:58'),
-('c9a79c22-8546-4540-8d16-92c01c4a6a23', '1aa8ac68-dce5-4ad0-a34d-9bd0b7df00cc', '2024-04-04 21:13:04'),
-('c9a79c22-8546-4540-8d16-92c01c4a6a23', '50d8169a-a6da-4856-bb75-c0283f9849ae', '2024-04-05 20:15:18'),
-('c9a79c22-8546-4540-8d16-92c01c4a6a23', 'f6e0a637-d439-49d2-b720-edb8f9c750f5', '2024-04-05 20:15:19'),
-('c9a79c22-8546-4540-8d16-92c01c4a6a23', '50d8169a-a6da-4856-bb75-c0283f9849ae', '2024-04-05 20:15:23'),
-('42a9314d-5f14-4786-88ab-604359aa75e1', '50d8169a-a6da-4856-bb75-c0283f9849ae', '2024-04-05 20:17:11'),
-('42a9314d-5f14-4786-88ab-604359aa75e1', '67a81238-3348-4cdf-b953-5096df977e27', '2024-04-06 16:03:27'),
-('42a9314d-5f14-4786-88ab-604359aa75e1', '50d8169a-a6da-4856-bb75-c0283f9849ae', '2024-04-06 16:43:05'),
-('c9a79c22-8546-4540-8d16-92c01c4a6a23', '381b6b5e-305f-4cbc-a3bf-7707147c8804', '2024-04-08 14:12:55'),
-('c9a79c22-8546-4540-8d16-92c01c4a6a23', '50d8169a-a6da-4856-bb75-c0283f9849ae', '2024-04-11 09:39:38'),
-('c9a79c22-8546-4540-8d16-92c01c4a6a23', 'f6e0a637-d439-49d2-b720-edb8f9c750f5', '2024-04-14 09:46:28'),
-('c9a79c22-8546-4540-8d16-92c01c4a6a23', '1aa8ac68-dce5-4ad0-a34d-9bd0b7df00cc', '2024-04-14 09:47:20'),
-('c9a79c22-8546-4540-8d16-92c01c4a6a23', '50d8169a-a6da-4856-bb75-c0283f9849ae', '2024-04-14 09:47:27'),
-('c9a79c22-8546-4540-8d16-92c01c4a6a23', '837b3000-7ec2-4c85-a8fa-bc088cc0074e', '2024-04-14 20:48:00'),
-('c9a79c22-8546-4540-8d16-92c01c4a6a23', 'ef9012fd-f635-49b5-918b-874c806a6b40', '2024-04-15 09:38:10'),
-('c9a79c22-8546-4540-8d16-92c01c4a6a23', '381b6b5e-305f-4cbc-a3bf-7707147c8804', '2024-04-15 14:14:10'),
-('c9a79c22-8546-4540-8d16-92c01c4a6a23', '50d8169a-a6da-4856-bb75-c0283f9849ae', '2024-04-15 14:14:15'),
-('c9a79c22-8546-4540-8d16-92c01c4a6a23', '1aa8ac68-dce5-4ad0-a34d-9bd0b7df00cc', '2024-04-20 15:47:50'),
-('c9a79c22-8546-4540-8d16-92c01c4a6a23', '50d8169a-a6da-4856-bb75-c0283f9849ae', '2024-04-20 15:55:38'),
-('admine88e7421-a0d4-48f2-a221-b30cfc54a7dc]', '837b3000-7ec2-4c85-a8fa-bc088cc0074e', '2024-04-26 11:32:36'),
-('admine88e7421-a0d4-48f2-a221-b30cfc54a7dc]', '67a81238-3348-4cdf-b953-5096df977e27', '2024-04-26 11:33:13'),
-('c9a79c22-8546-4540-8d16-92c01c4a6a23', '67a81238-3348-4cdf-b953-5096df977e27', '2024-05-03 21:35:19'),
-('c9a79c22-8546-4540-8d16-92c01c4a6a23', '', '2024-05-03 21:37:20'),
-('c9a79c22-8546-4540-8d16-92c01c4a6a23', '', '2024-05-03 21:38:29'),
-('c9a79c22-8546-4540-8d16-92c01c4a6a23', '', '2024-05-03 21:40:15'),
-('c9a79c22-8546-4540-8d16-92c01c4a6a23', 'f6e0a637-d439-49d2-b720-edb8f9c750f5', '2024-05-03 21:40:20'),
-('c9a79c22-8546-4540-8d16-92c01c4a6a23', '', '2024-05-03 21:57:43'),
-('c9a79c22-8546-4540-8d16-92c01c4a6a23', '', '2024-05-03 22:00:52'),
-('c9a79c22-8546-4540-8d16-92c01c4a6a23', '', '2024-05-03 22:06:27'),
-('c9a79c22-8546-4540-8d16-92c01c4a6a23', '', '2024-05-03 22:07:21'),
-('c9a79c22-8546-4540-8d16-92c01c4a6a23', 'music-7a354a3e-e82c-46a2-b8d0-7d5868e3e847', '2024-05-03 22:07:24'),
-('42a9314d-5f14-4786-88ab-604359aa75e1', '82a0e146-1b63-4194-a0f8-cfb1913f50dc', '2024-05-03 22:10:22'),
-('c9a79c22-8546-4540-8d16-92c01c4a6a23', 'music-7a354a3e-e82c-46a2-b8d0-7d5868e3e847', '2024-05-05 10:10:33');
+('42a9314d-5f14-4786-88ab-604359aa75e1', 'music-7a354a3e-e82c-46a2-b8d0-7d5868e3e847', '2024-06-09 16:32:43'),
+('42a9314d-5f14-4786-88ab-604359aa75e1', 'b53c3193-7a3f-4005-861b-52eca46f9381', '2024-06-09 16:39:40'),
+('42a9314d-5f14-4786-88ab-604359aa75e1', '381b6b5e-305f-4cbc-a3bf-7707147c8804', '2024-06-09 16:47:11'),
+('42a9314d-5f14-4786-88ab-604359aa75e1', '1aa8ac68-dce5-4ad0-a34d-9bd0b7df00cc', '2024-06-09 16:53:30'),
+('42a9314d-5f14-4786-88ab-604359aa75e1', '8faae5ad-8c01-4636-8b25-ecaee2eb94ab', '2024-06-09 16:53:39'),
+('42a9314d-5f14-4786-88ab-604359aa75e1', '8faae5ad-8c01-4636-8b25-ecaee2eb94ab', '2024-06-09 17:01:56'),
+('42a9314d-5f14-4786-88ab-604359aa75e1', '9bb2ddba-abfa-474a-ac84-d7952a51ad7e', '2024-06-09 17:02:10'),
+('42a9314d-5f14-4786-88ab-604359aa75e1', 'b50e07a9-f2ea-4626-8b14-f9ef213ad8fc', '2024-06-09 17:07:13'),
+('42a9314d-5f14-4786-88ab-604359aa75e1', 'b53c3193-7a3f-4005-861b-52eca46f9381', '2024-06-09 17:08:54'),
+('42a9314d-5f14-4786-88ab-604359aa75e1', '67a81238-3348-4cdf-b953-5096df977e27', '2024-06-09 20:38:09'),
+('42a9314d-5f14-4786-88ab-604359aa75e1', '837b3000-7ec2-4c85-a8fa-bc088cc0074e', '2024-06-09 20:42:32'),
+('42a9314d-5f14-4786-88ab-604359aa75e1', 'b53c3193-7a3f-4005-861b-52eca46f9381', '2024-06-09 20:52:18'),
+('42a9314d-5f14-4786-88ab-604359aa75e1', 'ecdba929-6516-46b3-b507-36d2c854b947', '2024-06-09 20:56:13'),
+('42a9314d-5f14-4786-88ab-604359aa75e1', 'e17363fa-82d8-4ca4-8dee-ce1b62bcf995', '2024-06-09 21:00:20'),
+('42a9314d-5f14-4786-88ab-604359aa75e1', 'music-7a354a3e-e82c-46a2-b8d0-7d5868e3e847', '2024-06-09 21:03:59'),
+('42a9314d-5f14-4786-88ab-604359aa75e1', '1aa8ac68-dce5-4ad0-a34d-9bd0b7df00cc', '2024-06-10 11:53:13'),
+('42a9314d-5f14-4786-88ab-604359aa75e1', 'b50e07a9-f2ea-4626-8b14-f9ef213ad8fc', '2024-06-10 11:53:25'),
+('42a9314d-5f14-4786-88ab-604359aa75e1', '381b6b5e-305f-4cbc-a3bf-7707147c8804', '2024-06-10 11:53:33'),
+('42a9314d-5f14-4786-88ab-604359aa75e1', 'b50e07a9-f2ea-4626-8b14-f9ef213ad8fc', '2024-06-10 11:59:54'),
+('42a9314d-5f14-4786-88ab-604359aa75e1', '1aa8ac68-dce5-4ad0-a34d-9bd0b7df00cc', '2024-06-10 11:59:58'),
+('42a9314d-5f14-4786-88ab-604359aa75e1', 'b50e07a9-f2ea-4626-8b14-f9ef213ad8fc', '2024-06-10 12:00:20'),
+('42a9314d-5f14-4786-88ab-604359aa75e1', '1aa8ac68-dce5-4ad0-a34d-9bd0b7df00cc', '2024-06-10 12:00:23'),
+('42a9314d-5f14-4786-88ab-604359aa75e1', 'b50e07a9-f2ea-4626-8b14-f9ef213ad8fc', '2024-06-10 12:01:28'),
+('42a9314d-5f14-4786-88ab-604359aa75e1', '1aa8ac68-dce5-4ad0-a34d-9bd0b7df00cc', '2024-06-10 12:01:33'),
+('42a9314d-5f14-4786-88ab-604359aa75e1', 'b50e07a9-f2ea-4626-8b14-f9ef213ad8fc', '2024-06-10 12:09:54'),
+('42a9314d-5f14-4786-88ab-604359aa75e1', '67a81238-3348-4cdf-b953-5096df977e27', '2024-06-10 12:09:56'),
+('42a9314d-5f14-4786-88ab-604359aa75e1', '9bb2ddba-abfa-474a-ac84-d7952a51ad7e', '2024-06-10 12:10:09'),
+('42a9314d-5f14-4786-88ab-604359aa75e1', '67a81238-3348-4cdf-b953-5096df977e27', '2024-06-10 12:10:34'),
+('42a9314d-5f14-4786-88ab-604359aa75e1', 'b50e07a9-f2ea-4626-8b14-f9ef213ad8fc', '2024-06-10 12:10:40'),
+('42a9314d-5f14-4786-88ab-604359aa75e1', 'b53c3193-7a3f-4005-861b-52eca46f9381', '2024-06-10 12:15:15'),
+('42a9314d-5f14-4786-88ab-604359aa75e1', '67a81238-3348-4cdf-b953-5096df977e27', '2024-06-10 12:16:36'),
+('42a9314d-5f14-4786-88ab-604359aa75e1', 'b50e07a9-f2ea-4626-8b14-f9ef213ad8fc', '2024-06-10 12:16:40'),
+('42a9314d-5f14-4786-88ab-604359aa75e1', '381b6b5e-305f-4cbc-a3bf-7707147c8804', '2024-06-10 12:16:44'),
+('c9a79c22-8546-4540-8d16-92c01c4a6a23', '381b6b5e-305f-4cbc-a3bf-7707147c8804', '2024-06-10 16:15:28');
 
 -- --------------------------------------------------------
 
@@ -426,19 +446,20 @@ CREATE TABLE `song` (
 
 INSERT INTO `song` (`Id`, `user_id`, `genre_id`, `SongName`, `Viewer`, `Singer`, `Duration`, `status`, `description`, `SongImage`, `publicDate`, `filePath`, `dicussquality`) VALUES
 ('1aa8ac68-dce5-4ad0-a34d-9bd0b7df00cc', '42a9314d-5f14-4786-88ab-604359aa75e1', 'c2c8e9b7-b5c0-47b9-a990-348e803a9058', 'hãy ra khỏi người đó đi', 0, 'Phan Mạnh Quỳnh', 190, 1, '', 'public/image/avatar-1711332268132-928382065.jpeg', '0000-00-00 00:00:00', '1aa8ac68-dce5-4ad0-a34d-9bd0b7df00cc', 0),
-('1f78e78f-18c0-405c-abe3-71ffd1fc0397', '42a9314d-5f14-4786-88ab-604359aa75e1', 'c2c8e9b7-b5c0-47b9-a990-348e803a9058', 'Xuất sơn', 0, 'Phan Mạnh Quỳnh', 1233, 1, 'a', 'public/image/avatar-1714748780919-644838342.jpeg', '0000-00-00 00:00:00', 'music-7a354a3e-e82c-46a2-b8d0-7d5868e3e847', 0),
+('1f78e78f-18c0-405c-abe3-71ffd1fc0397', '42a9314d-5f14-4786-88ab-604359aa75e1', '', 'Xuất sơn', 0, 'Phan Mạnh Quỳnh', 201, 1, 'a', 'public/image/avatar-1714748780919-644838342.jpeg', '0000-00-00 00:00:00', 'music-7a354a3e-e82c-46a2-b8d0-7d5868e3e847', 0),
 ('381b6b5e-305f-4cbc-a3bf-7707147c8804', '9e3aadcb-23b1-4540-8ec3-4bbb6892f3e1', 'c2c8e9b7-b5c0-47b9-a990-348e803a9058', 'Đi Về Nhà', 0, 'Đen Vâu, JustaTee', 206, 1, '', 'public/image/avatar-1711977353391-140999932.jpeg', '0000-00-00 00:00:00', '381b6b5e-305f-4cbc-a3bf-7707147c8804', 0),
-('50d8169a-a6da-4856-bb75-c0283f9849ae', '42a9314d-5f14-4786-88ab-604359aa75e1', 'c2c8e9b7-b5c0-47b9-a990-348e803a9058', 'vơ người ta', 0, 'Phan Mạnh Quỳnh', 197, 1, '', 'public/image/avatar-1711332228038-776879475.jpeg', '0000-00-00 00:00:00', '50d8169a-a6da-4856-bb75-c0283f9849ae', 7),
+('50d8169a-a6da-4856-bb75-c0283f9849ae', '42a9314d-5f14-4786-88ab-604359aa75e1', 'c2c8e9b7-b5c0-47b9-a990-348e803a9058', 'vơ người ta', 0, 'Phan Mạnh Quỳnh', 197, 1, '', 'public/image/avatar-1711332228038-776879475.jpeg', '0000-00-00 00:00:00', '50d8169a-a6da-4856-bb75-c0283f9849ae', 0),
 ('67a81238-3348-4cdf-b953-5096df977e27', '51925ca6-74c6-418d-9273-793061b05aa6', 'c2c8e9b7-b5c0-47b9-a990-348e803a9058', 'Nơi này có anh', 0, 'Sơn Tùng M-TP', 262, 1, '', 'public/image/avatar-1711272410077-676924021.jpeg', '0000-00-00 00:00:00', '67a81238-3348-4cdf-b953-5096df977e27', 0),
-('82a0e146-1b63-4194-a0f8-cfb1913f50dc', '42a9314d-5f14-4786-88ab-604359aa75e1', '34c696c6-e129-4a7b-93c2-e887daf485f6', 'wc', 0, 'Phan Mạnh Quỳnh', 225, 1, '3123', 'public/image/avatar-1714749010345-298928302.jpeg', '0000-00-00 00:00:00', '82a0e146-1b63-4194-a0f8-cfb1913f50dc', 0),
+('82a0e146-1b63-4194-a0f8-cfb1913f50dc', '42a9314d-5f14-4786-88ab-604359aa75e1', '', 'wc', 0, 'Phan Mạnh Quỳnh', 225, 1, '3123', 'public/image/avatar-1714749010345-298928302.jpeg', '0000-00-00 00:00:00', '82a0e146-1b63-4194-a0f8-cfb1913f50dc', 0),
 ('837b3000-7ec2-4c85-a8fa-bc088cc0074e', '9e3aadcb-23b1-4540-8ec3-4bbb6892f3e1', 'c2c8e9b7-b5c0-47b9-a990-348e803a9058', 'Nhạc Này Chill Phết', 0, 'Đen Vâu, Min', 273, 1, '', 'public/image/avatar-1711977387771-118609622.jpeg', '0000-00-00 00:00:00', '837b3000-7ec2-4c85-a8fa-bc088cc0074e', 0),
 ('9bb2ddba-abfa-474a-ac84-d7952a51ad7e', '51925ca6-74c6-418d-9273-793061b05aa6', 'c2c8e9b7-b5c0-47b9-a990-348e803a9058', 'Chúng ta của hiện tại', 0, 'Sơn Tùng M-TP', 302, 1, '', 'public/image/avatar-1711272707603-723681858.jpeg', '0000-00-00 00:00:00', '9bb2ddba-abfa-474a-ac84-d7952a51ad7e', 0),
+('aaa', '9e3aadcb-23b1-4540-8ec3-4bbb6892f3e1', '', 'Đưa nhau đi trốn', 0, 'Đen Vâu', 194, 1, '', 'public/image/avatar-1711718096295-138445857.jpeg', '0000-00-00 00:00:00', '8faae5ad-8c01-4636-8b25-ecaee2eb94ab', 0),
 ('b50e07a9-f2ea-4626-8b14-f9ef213ad8fc', '51925ca6-74c6-418d-9273-793061b05aa6', 'c2c8e9b7-b5c0-47b9-a990-348e803a9058', 'MUỘN RỒI MÀ SAO CÒN ', 0, 'SƠN TÙNG M-TP ', 274, 1, '', 'public/image/avatar-1711977508087-423908970.jpeg', '0000-00-00 00:00:00', 'b50e07a9-f2ea-4626-8b14-f9ef213ad8fc', 0),
 ('b53c3193-7a3f-4005-861b-52eca46f9381', '51925ca6-74c6-418d-9273-793061b05aa6', 'c2c8e9b7-b5c0-47b9-a990-348e803a9058', 'Em của ngày hôm qua', 0, 'Sơn Tùng M-TP', 232, 1, '', 'public/image/avatar-1711272494063-507340757.jpeg', '0000-00-00 00:00:00', 'b53c3193-7a3f-4005-861b-52eca46f9381', 0),
 ('e17363fa-82d8-4ca4-8dee-ce1b62bcf995', '9e3aadcb-23b1-4540-8ec3-4bbb6892f3e1', 'c2c8e9b7-b5c0-47b9-a990-348e803a9058', '2 Triệu Năm', 0, 'Đen Vâu,Biên', 217, 1, '', 'public/image/avatar-1711977307658-644167533.jpeg', '0000-00-00 00:00:00', 'e17363fa-82d8-4ca4-8dee-ce1b62bcf995', 0),
 ('ecdba929-6516-46b3-b507-36d2c854b947', '51925ca6-74c6-418d-9273-793061b05aa6', 'c2c8e9b7-b5c0-47b9-a990-348e803a9058', 'Hãy Trao Cho Anh', 0, 'Sơn Tùng MTP', 246, 1, '', 'public/image/avatar-1711977452681-373494792.jpeg', '0000-00-00 00:00:00', 'ecdba929-6516-46b3-b507-36d2c854b947', 0),
 ('ef9012fd-f635-49b5-918b-874c806a6b40', '51925ca6-74c6-418d-9273-793061b05aa6', 'c2c8e9b7-b5c0-47b9-a990-348e803a9058', 'Buông đôi tay nhau ra', 0, 'Sơn Tùng M-TP', 0, 1, '', 'public/image/avatar-1711272331371-587600195.jpeg', '0000-00-00 00:00:00', 'ef9012fd-f635-49b5-918b-874c806a6b40', 0),
-('f6e0a637-d439-49d2-b720-edb8f9c750f5', '42a9314d-5f14-4786-88ab-604359aa75e1', 'c2c8e9b7-b5c0-47b9-a990-348e803a9058', 'Khi phải quên người đó đi', 0, 'Phan Mạnh Quỳnh', 324, 1, '', 'public/image/avatar-1711332305669-701321911.jpeg', '0000-00-00 00:00:00', 'f6e0a637-d439-49d2-b720-edb8f9c750f5', 2);
+('f6e0a637-d439-49d2-b720-edb8f9c750f5', '42a9314d-5f14-4786-88ab-604359aa75e1', 'c2c8e9b7-b5c0-47b9-a990-348e803a9058', 'Khi phải quên người đó đi', 0, 'Phan Mạnh Quỳnh', 324, 1, '', 'public/image/avatar-1711332305669-701321911.jpeg', '0000-00-00 00:00:00', 'f6e0a637-d439-49d2-b720-edb8f9c750f5', 0);
 
 -- --------------------------------------------------------
 
@@ -466,14 +487,14 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `Account`, `Name`, `Vertify`, `Nationality`, `ChanalName`, `pathImage`, `description`, `RefeshToken`, `Password`, `Banner`, `role`) VALUES
-('42a9314d-5f14-4786-88ab-604359aa75e1', 'PhanManhQuynh@pmq.com', 'Phan Manh Quỳnh', 1, 'Phan Mạnh Quỳnh', 'Phan Mạnh Quỳnh', 'public\\avatar\\pmq.jpg', '', '', '123456', 'public/banner/phanmanhquynhf.jpg', 'user'),
-('51925ca6-74c6-418d-9273-793061b05aa6', 'sontungmtp@enter.com', 'Sơn Tùng M-TP', 1, 'Việt Nam', 'Sơn Tùng M-TP', 'https://i.scdn.co/image/ab676161000051747afc6ecdb9102abd1e10d338', '', '', '123456', 'https://i.scdn.co/image/ab6761860000101698929fc24f88d6481cf2a7a5', 'user'),
-('9e3aadcb-23b1-4540-8ec3-4bbb6892f3e1', 'DenVau@pmq.com', 'Đen Vâu', 1, 'Đen Vâu', 'Đen Vâu', 'public\\avatar\\denvau.jpg', '', '', '123456', 'public/banner/denvau.jpg', 'user'),
+('42a9314d-5f14-4786-88ab-604359aa75e1', 'PhanManhQuynh@pmq.com', 'Phan Manh Quỳnh', 1, 'Phan Mạnh Quỳnh', 'Phan Mạnh Quỳnh', 'public/avatar/pmq.jpg', '', '', 'huy@huy123', 'public/banner/phanmanhquynhf.jpg', 'user'),
+('51925ca6-74c6-418d-9273-793061b05aa6', 'sontungmtp@enter.com', 'Sơn Tùng M-TP', 1, 'Việt Nam', 'Sơn Tùng M-TP', 'https://i.scdn.co/image/ab676161000051747afc6ecdb9102abd1e10d338', '', '', 'huy@huy123', 'https://i.scdn.co/image/ab6761860000101698929fc24f88d6481cf2a7a5', 'user'),
+('9e3aadcb-23b1-4540-8ec3-4bbb6892f3e1', 'DenVau@pmq.com', 'Đen Vâu', 1, 'Đen Vâu', 'Đen Vâu', 'public/avatar/denvau.jpg', '', '', 'huy@huy123', 'public/banner/denvau.jpg', 'user'),
 ('admine88e7421-a0d4-48f2-a221-b30cfc54a7dc]', 'admin', 'admin', 3, '', '', '', '', '', 'admin@admin', '', 'master'),
-('c9a79c22-8546-4540-8d16-92c01c4a6a23', 'huy91027@gmail.com', 'huy', 0, '', '', 'https://avatars.githubusercontent.com/u/71593544?v=4', '', '', '123456789', '', 'user'),
-('user-7364e787-c5e0-495f-852c-9d7850b817ef', 'nhanvien3', 'nhân viên 3', 0, '', '', 'public/avatar/avatar.jpg', '', '', '', '', 'employee'),
-('user-9a6bf20a-dcee-4adf-81cf-e18a524a98b9', 'nhanvien2', 'nhân viên 2', 0, '', '', 'public/avatar/avatar.jpg', '', '', '', '', 'employee'),
-('user-c7438792-5c68-466d-ae19-25aef6856bc2', 'nhanvien', 'nhân viên', 0, '', '', 'public/avatar/avatar.jpg', '', '', '', '', 'employee');
+('c9a79c22-8546-4540-8d16-92c01c4a6a23', 'huy91027@gmail.com', 'huy', 0, '', '', 'https://avatars.githubusercontent.com/u/71593544?v=4', '', '', 'huy@huy123', '', 'user'),
+('user-7364e787-c5e0-495f-852c-9d7850b817ef', 'nhanvien3', 'nhân viên 3', 0, '', '', 'public/avatar/avatar.jpg', '', '', 'huy@huy123', '', 'employee'),
+('user-9a6bf20a-dcee-4adf-81cf-e18a524a98b9', 'nhanvien2', 'nhân viên 2', 0, '', '', 'public/avatar/avatar.jpg', '', '', 'huy@huy123', '', 'employee'),
+('user-c7438792-5c68-466d-ae19-25aef6856bc2', 'nhanvien', 'nhân viên', 0, '', '', 'public/avatar/avatar.jpg', '', '', 'huy@huy123', '', 'employee');
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -527,6 +548,18 @@ ALTER TABLE `messenge`
 --
 ALTER TABLE `playlist`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Chỉ mục cho bảng `recentplaylist`
+--
+ALTER TABLE `recentplaylist`
+  ADD KEY `User_ID` (`User_ID`,`ID`);
+
+--
+-- Chỉ mục cho bảng `recentsong`
+--
+ALTER TABLE `recentsong`
+  ADD KEY `user_id` (`user_id`,`Id`);
 
 --
 -- Chỉ mục cho bảng `song`

@@ -5,7 +5,7 @@ import { PlayListModel } from "../model/PlayListModel"
 export class PlayListService {
     playlist: PlayListDatabase
     constructor(playlist: PlayListDatabase) {
-        this.playlist = playlist
+        this.playlist = playlist 
     }
     async Add(d: PlayListModel) {
         var sql = "INSERT INTO playlist(id, User_id, Genre_ID, Type, ImagePath, PlayListName, Likes, Songs, Duration, Status, Discripition) VALUES (?,?,?,?,?,?,?,?,?,?,?)"
@@ -14,17 +14,17 @@ export class PlayListService {
         return check
     }
     async AddArtists(d: PlayListModel) {
-        var sql = "INSERT INTO playlist(id, User_id, Genre_ID, Type, ImagePath, PlayListName, Likes, Songs, Duration, Status, Discripition) VALUES (?,?,?,'artists',?,?,?,?,?,?,?)"
+        var sql = "INSERT INTO playlist(id, User_id, Genre_ID, Type, ImagePath, PlayListName, Likes, Songs, Duration, Status, Discripition) VALUES (?,?,?,'artist',?,?,?,?,?,?,?)"
         var check
         check = await Mysql2.query(sql, [d.id, d.User_id, d.Genre_ID, d.ImagePath, d.PlayListName, d.Likes, d.Songs, d.Duration, d.Status, d.Discripition])
         return check
     }
-    async GetArtists(id: string) {
-        var sql = "SELECT * FROM playlist WHERE id = ? AND Type='artists'"
+    async GetArtistsByUserid(id: string) {
+        var sql = "SELECT * FROM playlist WHERE User_id = ? AND Type='artist'"
         var check
         check = await Mysql2.query(sql, [id])
-        var ls = this.SetLs(check)
-        return ls.length > 0 ? ls[0] : undefined;
+
+        return this.SetLs(check)[0]
     }
     async Get(id: string) {
         var sql = "SELECT * FROM playlist WHERE id=?"
@@ -47,6 +47,12 @@ export class PlayListService {
         var sql = "UPDATE playlist SET ImagePath=?,PlayListName=?,Likes=?,Songs=?,Duration=?,Status=?,Discripition=? WHERE id =?"
         var check
         check = await Mysql2.query(sql, [d.ImagePath, d.PlayListName, d.Likes, d.Songs, d.Duration, d.Status, d.Discripition, d.id])
+        return check
+    }
+    async VertifyPlaylist(idArtist: string, status: string) {
+        var sql = "UPDATE playlist SET Status=? WHERE User_id =? AND Type='artist'"
+        var check
+        check = await Mysql2.query(sql, [status, idArtist])
         return check
     }
     SetLs(ls: any) {

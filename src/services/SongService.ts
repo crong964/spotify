@@ -29,12 +29,14 @@ export class SongService {
         return ls
     }
     async Delete(id: string) {
-        var check = await this.songDatabase.Delete(id)
+        var sql = "DELETE FROM song WHERE Id=?"
+        var check
+        check = await Mysql2.query(sql, [id])
         return check
     }
     async Update(d: SongModel) {
-        
-        
+
+
         var sql = `UPDATE song Set genre_id =?,SongName=?, Duration=?, publicDate=?, description=?,SongImage=?, Singer=?
         WHERE Id =?`
         var check
@@ -53,7 +55,7 @@ export class SongService {
 
     async GetSongByGenre(idGenre: string, p: limit) {
         p.start = p.start | 0
-        p.end = p.end | 10
+        p.end = p.end | 100
         var check
         check = await this.songDatabase.GetSongByGenre(idGenre, p) as []
         return this.SetLs(check)

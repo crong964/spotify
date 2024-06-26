@@ -25,7 +25,6 @@ function Employ(d: User) {
       <th className="flex justify-center">
         <img className="size-[100px]" src={d.pathImage} alt="" srcSet="" />
       </th>
-      <th>{d.Account}</th>
       <th>{d.Name}</th>
       <th className="fex justify-around items-center space-x-2">
         <button
@@ -95,7 +94,7 @@ export default function Employls() {
           >
             Thoát
           </button>
-          {id == "" ? <AddE /> : <EditE id={id}/>}
+          {id == "" ? <AddE /> : <EditE id={id} />}
         </>
       ) : (
         <>
@@ -115,7 +114,6 @@ export default function Employls() {
               <tr>
                 <th>Id</th>
                 <th>Ảnh</th>
-                <th>Tài khoản</th>
                 <th>Tên</th>
                 <th>Tháo tác</th>
               </tr>

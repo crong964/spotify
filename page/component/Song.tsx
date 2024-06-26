@@ -137,6 +137,20 @@ export function SongList(d: SongList) {
     <>
       {d.data.length > 0 ? (
         <>
+          <div className="hidden sm:grid grid-cols-7 text-[13px] sm:text-[14px]  cursor-pointer sm:space-x-2 hover:bg-[#2D2D2D] text-white font-bold p-2 rounded-lg items-center">
+            <div className="col-span-1 flex items-center space-x-2">
+              <div className="inline-block">Số thứ tự</div>
+            </div>
+            <div className="col-span-2 p-2 ">
+              <div className="block">Tên nhạc</div>
+            </div>
+            <div className="sm:block hidden col-span-2 text-[14px] ">
+              Lượt xem
+            </div>
+            <div className="sm:block hidden col-span-1 text-[14px] ">
+              thời gian
+            </div>
+          </div>
           <div className="py-2">
             {d.data.map((v) => {
               stt += 1;

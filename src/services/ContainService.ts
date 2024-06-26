@@ -20,10 +20,10 @@ export class ContainService {
         var ls = this.Setls(check)
         return ls.length > 0 ? ls[0] : undefined;
     }
-    async Delete(d: ContainModel) {
+    async Delete(Song_id: string, PlayList_id: string) {
         var sql = `DELETE FROM contain WHERE Song_id=? AND PlayList_id=? `
         var check
-        check = await Mysql2.query(sql, [d.Song_id, d.PlayList_id])
+        check = await Mysql2.query(sql, [Song_id, PlayList_id])
         return check
     }
     async GetAllByPlayList(PlayList_id: string) {

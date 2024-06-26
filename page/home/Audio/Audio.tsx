@@ -11,6 +11,7 @@ import {
   SetSongs,
   SetStop,
 } from "./AudioRedux";
+import Time from "../../component/Time";
 
 interface Audio {
   path: string;
@@ -38,9 +39,11 @@ export default function Audio(params: Audio) {
   return (
     <div className="col-span-full sm:col-span-2 flex flex-col space-y-0 sm:space-y-2">
       <div className="hidden sm:flex space-x-9 justify-center items-center">
-        <button onClick={()=>{
-          dispatch(RandomSong())
-        }}>
+        <button
+          onClick={() => {
+            dispatch(RandomSong());
+          }}
+        >
           <ButtonRandomPlay />
         </button>
 
@@ -161,24 +164,6 @@ export default function Audio(params: Audio) {
           )}
         </audio>
       </div>
-    </div>
-  );
-}
-
-interface Time {
-  d: number;
-}
-function Time(params: Time) {
-  let data = parseInt(params.d + "");
-  let minute = parseInt(data / 60 + "");
-  let second = data % 60;
-
-  if (isNaN(data)) {
-    return <div></div>;
-  }
-  return (
-    <div className="text-[12px] text-[#a7a7a7] hidden sm:inline-block ">
-      {minute}:{second < 10 ? `0${second}` : `${second}`}
     </div>
   );
 }

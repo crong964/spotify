@@ -5,12 +5,12 @@ class UserDatabase {
     constructor() {
 
     }
-    async Add(d: UserModel) {
-        var sql = "INSERT INTO user(id, Account, Name, Nationality) VALUES (?,?,?,?) "
-        var check
-        check = await Mysql2.query(sql, [d.id, d.Account, d.Name, d.Nationality])
-        return check
-    }
+    // async Add(d: UserModel) {
+    //     var sql = "INSERT INTO user(id, Name, Nationality) VALUES (?,?,?) "
+    //     var check
+    //     check = await Mysql2.query(sql, [d.id, d.Name, d.Nationality])
+    //     return check
+    // }
     async Get(id: string) {
         var sql = "SELECT * FROM user WHERE id=?"
         var check
@@ -36,17 +36,12 @@ class UserDatabase {
         return check
     }
     async AddAccount(d: UserModel) {
-        var sql = "INSERT INTO user(id, Account, Name, Vertify, Nationality, ChanalName, pathImage, description, RefeshToken, Password, Banner,role) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)"
+        var sql = "INSERT INTO user(id, Name, Vertify, Nationality, ChanalName, pathImage, description, RefeshToken, Banner,role) VALUES (?,?,?,?,?,?,?,?,?,?)"
         var check
-        check = await Mysql2.query(sql, [d.id, d.Account, d.Name, d.Vertify, d.Nationality, d.ChanalName, d.pathImage, d.description, d.RefeshToken, d.Password, d.Banner, d.role])
+        check = await Mysql2.query(sql, [d.id, d.Name, d.Vertify, d.Nationality, d.ChanalName, d.pathImage, d.description, d.RefeshToken, d.Banner, d.role])
         return check
     }
-    async UpdatePassword(d: UserModel) {
-        var sql = "UPDATE user SET RefeshToken='',Password= ? WHERE Account=?"
-        var check
-        check = await Mysql2.query(sql, [d.Password, d.Account])
-        return check
-    }
+
     async SearchNameArtist(name: string) {
         var sql = "SELECT * FROM user WHERE user.role ='user' AND Name like ? AND Vertify <> 0 "
         var check

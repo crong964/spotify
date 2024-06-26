@@ -30,19 +30,18 @@ class PlayListService {
     }
     AddArtists(d) {
         return __awaiter(this, void 0, void 0, function* () {
-            var sql = "INSERT INTO playlist(id, User_id, Genre_ID, Type, ImagePath, PlayListName, Likes, Songs, Duration, Status, Discripition) VALUES (?,?,?,'artists',?,?,?,?,?,?,?)";
+            var sql = "INSERT INTO playlist(id, User_id, Genre_ID, Type, ImagePath, PlayListName, Likes, Songs, Duration, Status, Discripition) VALUES (?,?,?,'artist',?,?,?,?,?,?,?)";
             var check;
             check = yield Config_1.default.query(sql, [d.id, d.User_id, d.Genre_ID, d.ImagePath, d.PlayListName, d.Likes, d.Songs, d.Duration, d.Status, d.Discripition]);
             return check;
         });
     }
-    GetArtists(id) {
+    GetArtistsByUserid(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            var sql = "SELECT * FROM playlist WHERE id = ? AND Type='artists'";
+            var sql = "SELECT * FROM playlist WHERE User_id = ? AND Type='artist'";
             var check;
             check = yield Config_1.default.query(sql, [id]);
-            var ls = this.SetLs(check);
-            return ls.length > 0 ? ls[0] : undefined;
+            return this.SetLs(check)[0];
         });
     }
     Get(id) {
@@ -73,6 +72,14 @@ class PlayListService {
             var sql = "UPDATE playlist SET ImagePath=?,PlayListName=?,Likes=?,Songs=?,Duration=?,Status=?,Discripition=? WHERE id =?";
             var check;
             check = yield Config_1.default.query(sql, [d.ImagePath, d.PlayListName, d.Likes, d.Songs, d.Duration, d.Status, d.Discripition, d.id]);
+            return check;
+        });
+    }
+    VertifyPlaylist(idArtist, status) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var sql = "UPDATE playlist SET Status=? WHERE User_id =? AND Type='artist'";
+            var check;
+            check = yield Config_1.default.query(sql, [status, idArtist]);
             return check;
         });
     }

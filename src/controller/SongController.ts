@@ -33,7 +33,7 @@ class SongController {
             song.Singer = u.ChanalName
         }
         if (req.file != undefined) {
-            song.SongImage = "public/image/" + req.file.filename
+            song.SongImage = "/public/image/" + req.file.filename
         }
         else {
             song.SongImage = u.pathImage
@@ -76,9 +76,10 @@ class SongController {
             song.filePath = f
 
             contain.Song_id = f
-            contain.Id = id
+            contain.PlayList_id = check1.id
 
-            var fcheck = await Promise.all([SongController.song.Add(song), SongController.contain.Add(contain)])
+            var fcheck = await Promise.all([SongController.song.Add(song), 
+                SongController.contain.Add(contain)])
 
             if (fcheck[0] == undefined || fcheck[1] == undefined) {
                 res.json({
@@ -185,6 +186,8 @@ class SongController {
             return
         }
 
+        console.log(req.file);
+        
 
 
         if (req.file != undefined) {

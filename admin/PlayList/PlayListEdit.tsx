@@ -101,7 +101,7 @@ function PlayListFormData() {
     );
   });
   return (
-    <div className="w-full space-y-3 ">
+    <div className="w-full space-y-3 h-max">
       <div className="text-[24px]">Danh sách cũ</div>
       <div>{ls}</div>
       <AdditionalPlayList number={ls.length}></AdditionalPlayList>
@@ -188,6 +188,9 @@ function PlayListFormData() {
         className="text-black px-3 py-1 border-2 rounded-lg w-max cursor-pointer"
       >
         Cập nhật
+      </div>
+      <div className="h-[100px]">
+
       </div>
     </div>
   );

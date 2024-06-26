@@ -92,7 +92,7 @@ class PlayListController {
             playlistmodel.setAll(req.body);
             if (req.file) {
                 try {
-                    yield Firebase_1.default.Move(`playlist/${playlistmodel.id}.jpeg`, `deletePlaylist/playlist/${playlistmodel.id}.jpeg`);
+                    yield Firebase_1.default.MoveImage(`playlist/${playlistmodel.id}`, `deletePlaylist/playlist/${playlistmodel.id}`);
                     playlistmodel.ImagePath = (yield Firebase_1.default.UploadImageBufferNoZip(`playlist/${playlistmodel.id}`, req.file.buffer));
                 }
                 catch (error) {

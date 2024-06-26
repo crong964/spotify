@@ -92,7 +92,7 @@ export class PlayListController {
 
         if (req.file) {
             try {
-                await firebase.Move(`playlist/${playlistmodel.id}.jpeg`, `deletePlaylist/playlist/${playlistmodel.id}.jpeg`)
+                await firebase.MoveImage(`playlist/${playlistmodel.id}`, `deletePlaylist/playlist/${playlistmodel.id}`)
                 playlistmodel.ImagePath = await firebase.UploadImageBufferNoZip(`playlist/${playlistmodel.id}`, req.file.buffer) as string
             } catch (error) {
                 console.log(error);

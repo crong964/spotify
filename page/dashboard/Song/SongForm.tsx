@@ -81,9 +81,7 @@ export default function SongForm() {
   }
   return (
     <div className="w-[70%] mx-auto py-[72px] px-[42px] text-[16px] font-bold space-y-4">
-      <div className="text-center text-[40px] font-bold">
-        Thông tin bài hát
-      </div>
+      <div className="text-center text-[40px] font-bold">Thông tin bài hát</div>
       <div className="w-full">
         <div className="flex space-x-4">
           <div>thể loại</div>
@@ -284,23 +282,22 @@ export default function SongForm() {
             if (song.Singer.length <= 0 || song.SongName.length <= 0) {
               alert("chưa nhập tên hoặc chưa nhập tên ca sĩ");
               if (!confirm("bạn muốn tiếp tục chứ")) {
-                return
+                return;
               }
             }
             var form = new FormData();
 
-            if (file != undefined) {
-              form.append("avatar", file);
-            } else {
-              alert("chưa có file nhạc");
-              return;
-            }
-
-            form.append("Genre_id", slectGenre[floor]);
+            form.set("Genre_id", slectGenre[floor]);
             const myObj: { [key: string]: any } = song;
 
             for (const key in myObj) {
-              form.append(key, myObj[key]);
+              form.set(key, myObj[key]);
+            }
+            if (file != undefined) {
+              form.set("avatar", file);
+            } else {
+              alert("chưa có file nhạc");
+              return;
             }
             post("song/Update", form, (v: any) => {
               if (!v.err) {

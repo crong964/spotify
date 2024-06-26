@@ -63,7 +63,7 @@ class SongController {
                 song.Singer = u.ChanalName;
             }
             if (req.file != undefined) {
-                song.SongImage = "public/image/" + req.file.filename;
+                song.SongImage = "/public/image/" + req.file.filename;
             }
             else {
                 song.SongImage = u.pathImage;
@@ -106,8 +106,9 @@ class SongController {
                 song.SongImage = check.pathImage;
                 song.filePath = f;
                 contain.Song_id = f;
-                contain.Id = id;
-                var fcheck = yield Promise.all([SongController.song.Add(song), SongController.contain.Add(contain)]);
+                contain.PlayList_id = check1.id;
+                var fcheck = yield Promise.all([SongController.song.Add(song),
+                    SongController.contain.Add(contain)]);
                 if (fcheck[0] == undefined || fcheck[1] == undefined) {
                     res.json({
                         err: true,
@@ -214,6 +215,7 @@ class SongController {
                 });
                 return;
             }
+            console.log(req.file);
             if (req.file != undefined) {
                 song.SongImage = "public/image/" + req.file.filename;
                 oldsong.SongImage.indexOf;

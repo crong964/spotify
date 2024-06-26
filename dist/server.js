@@ -66,6 +66,9 @@ require("dotenv/config");
 const Helper_1 = require("./config/Helper");
 const RecentPlaylistRoute_1 = __importDefault(require("./route/RecentPlaylistRoute"));
 const Firebase_1 = __importDefault(require("./config/Firebase"));
+const ArtistManagementRoute_1 = __importDefault(require("./admin/ArtistManagementRoute"));
+const SongAdminRoute_1 = __importDefault(require("./admin/SongAdminRoute"));
+const promises_1 = require("fs/promises");
 const secret = process.env.SECRET || "1";
 const app = (0, express_1.default)();
 const httpServer = (0, http_1.createServer)(app);
@@ -115,43 +118,6 @@ app.get("/dashboard", admin_1.USER, (req, res) => {
     res.sendFile(path_1.default.join(process.cwd(), "web/dashboard.html"));
 });
 app.use("/auth", Acount_1.default);
-// app.get("/idSong", (req, res) => {
-//     var start = parseInt(req.headers.range?.replace("bytes=", "").split("-")[0] || "0")
-//     var music = req.cookies.music
-//     var idSong = req.query.idSong as string
-//     var id = req.cookies.id
-//     if (idSong == undefined || idSong == "undefined") {
-//         res.end()
-//         return
-//     }
-//     res.cookie("music", idSong, { httpOnly: true, maxAge: 1000 * 60 * 60 * 24 * 365 })
-//     if (!music && music != idSong && id != undefined) {
-//         recentSongService.Add(id, idSong)
-//     }
-//     try {
-//         var pathg = path.join(process.cwd(), "public/music", idSong)
-//         var videoSize = fs.statSync(pathg).size
-//         var chuck = 160000
-//         var end = Math.min(start + chuck, videoSize - 1)
-//         var s = fs.createReadStream(pathg, {
-//             start, end
-//         })
-//         s.on("error", (err) => {
-//         })
-//         res.writeHead(206, {
-//             "accept-ranges": "bytes",
-//             "content-range": `bytes ${start}-${end}/${videoSize}`,
-//             "content-type": "audio/mp3",
-//             "content-length": end - start + 1
-//         })
-//         s.pipe(res)
-//     } catch (error) {
-//         console.log(error);
-//         res.json({
-//             err: true
-//         })
-//     }
-// })
 app.use("/genre", GenreRoute_1.default);
 app.use("/playlist", PlayListRoute_1.default);
 //admin
@@ -159,7 +125,9 @@ app.use("/genre", admin_1.default, GenreRouteAdmin_1.default);
 app.use("/playlist", admin_1.default, PlayListRouteAdmin_1.default);
 app.use("/contain", admin_1.default, ContainRouteAdmin_1.default);
 app.use("/admin/UserRouteAdmin", admin_1.default, UserRouteAdmin_1.default);
-app.get(/admin*/, admin_1.default, (req, res) => {
+app.use("/admin/artist", admin_1.default, ArtistManagementRoute_1.default);
+app.use("/admin/song", admin_1.default, SongAdminRoute_1.default);
+app.get(/admin/, admin_1.default, (req, res) => {
     res.sendFile((0, path_1.join)(process.cwd(), "web/admin.html"));
 });
 app.get("/idSong", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -203,35 +171,34 @@ app.get("/idSong", (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         });
     }
 }));
-app.get("/s", (req, res) => {
-    res.setHeader("Cache-Control", "max-age=315360000, no-transform, must-revalidate");
+app.get("/s", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _c;
     var namestrong = req.query.id;
-    try {
-        var pathg = path_1.default.join(process.cwd(), "public/music", namestrong);
-        var s = fs_1.default.createReadStream(pathg);
-        s.on("error", (err) => {
-        });
-        fs_1.default.stat(pathg, (err, stats) => {
-            if (err) {
-                console.log(err);
-                res.end();
-                return;
-            }
-            res.setHeader("Content-Range", `bytes 0-${stats.size}/${stats.size}`);
-            res.setHeader("Content-Length", stats.size);
-            res.setHeader("Accept-Ranges", "bytes");
-            res.setHeader("content-type", "audio/mp3");
-            res.statusCode = 200;
-            s.pipe(res);
-        });
+    var pathg = path_1.default.join(process.cwd(), "public/music", namestrong);
+    let patsong = `song/${namestrong}`;
+    if (fs_1.default.existsSync(pathg)) {
+        try {
+            namestrong = (yield Firebase_1.default.UploadStream(pathg, patsong));
+        }
+        catch (error) {
+            console.log(error);
+            res.json({ err: true });
+            return;
+        }
+        try {
+            (0, promises_1.unlink)(pathg);
+        }
+        catch (error) {
+            console.log(error);
+        }
     }
-    catch (error) {
-        console.log(error);
-        res.json({
-            err: true
-        });
-    }
-});
+    var videoSize = parseInt((((_c = (yield Firebase_1.default.GetMeta(patsong))) === null || _c === void 0 ? void 0 : _c.size) + "") || "0");
+    var read = Firebase_1.default.DownloadStreamFile(patsong, 0, videoSize)
+        .on("error", (err) => {
+        console.log(err);
+    });
+    read.pipe(res);
+}));
 httpServer.listen(8000, () => {
     console.log("http://localhost:8000/");
     console.log("http://localhost:8000/swagger");

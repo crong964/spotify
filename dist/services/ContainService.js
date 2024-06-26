@@ -35,11 +35,11 @@ class ContainService {
             return ls.length > 0 ? ls[0] : undefined;
         });
     }
-    Delete(d) {
+    Delete(Song_id, PlayList_id) {
         return __awaiter(this, void 0, void 0, function* () {
             var sql = `DELETE FROM contain WHERE Song_id=? AND PlayList_id=? `;
             var check;
-            check = yield Config_1.default.query(sql, [d.Song_id, d.PlayList_id]);
+            check = yield Config_1.default.query(sql, [Song_id, PlayList_id]);
             return check;
         });
     }

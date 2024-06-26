@@ -12,5 +12,4 @@ UserRouteAdmin.post("/getE", UserController_1.default.GetAllEAdmin); //0k
 UserRouteAdmin.post("/deE", UserController_1.default.DeleteEAdmin); //0k
 UserRouteAdmin.get("/edit/:id", UserController_1.default.GetEditUser); //0k
 UserRouteAdmin.post("/edit", UserController_1.default.PostEditUser); //0k
-UserRouteAdmin.post("/VertifyArtist", UserController_1.default.VertifyArtist); //OK
 exports.default = UserRouteAdmin;

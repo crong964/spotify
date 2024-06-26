@@ -21,6 +21,8 @@ const HaveListFriendsService_1 = __importDefault(require("../services/HaveListFr
 const PlayListService_1 = __importDefault(require("../services/PlayListService"));
 const LikedSongService_1 = __importDefault(require("../services/LikedSongService"));
 const LikedSongModel_1 = __importDefault(require("../model/LikedSongModel"));
+const AccountService_1 = __importDefault(require("../services/AccountService"));
+const AccountModel_1 = __importDefault(require("../model/AccountModel"));
 class UserController {
     constructor() {
     }
@@ -29,7 +31,7 @@ class UserController {
             var account = req.query.account;
             if (!account) {
             }
-            var check = yield UserController.user.GetByAccount(account);
+            var check = yield UserController.account.GetAccount(account);
             res.cookie("id", check === null || check === void 0 ? void 0 : check.id, { maxAge: 1000 * 60 * 60 * 24 * 356, httpOnly: true });
             res.redirect("http://localhost:8000/dashboard");
         });
@@ -37,10 +39,8 @@ class UserController {
     Get(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             var id = req.cookies.id;
-            console.log(id);
             var use = yield UserController.user.Get(id);
             if (use) {
-                use.Account = "";
                 res.json({
                     err: false,
                     u: use
@@ -138,8 +138,10 @@ class UserController {
     AddEAdmin(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             var user = new UserModel_1.default();
+            var account = new AccountModel_1.default();
+            account.setAll(req.body);
             user.setAll(req.body);
-            var check = yield UserController.user.GetByAccount(user.Account);
+            var check = yield UserController.account.GetAccount(account.Account);
             if (check) {
                 res.json({
                     err: true,
@@ -149,6 +151,14 @@ class UserController {
             }
             user.id = `user-${(0, uuid_1.v4)()}`;
             var add = yield UserController.user.AddAccount(user);
+            if (!add) {
+                res.json({
+                    err: true,
+                    mess: "không thêm dc user"
+                });
+                return;
+            }
+            add = yield UserController.account.Add(user.id, account.Account, account.Password);
             res.json({
                 err: add == undefined,
             });
@@ -183,17 +193,9 @@ class UserController {
             });
         });
     }
-    VertifyArtist(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            var idArtist = req.body.idArtist;
-            var check = yield UserController.user.VertifyAccount(idArtist, "1");
-            res.json({
-                err: check == undefined
-            });
-        });
-    }
 }
 UserController.user = UserService_1.default;
+UserController.account = AccountService_1.default;
 UserController.HaveListFriends = HaveListFriendsService_1.default;
 UserController.likedSong = LikedSongService_1.default;
 UserController.playlist = PlayListService_1.default;

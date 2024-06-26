@@ -26,6 +26,8 @@ require("dotenv/config");
 const Helper_1 = require("../config/Helper");
 const PlayListService_1 = __importDefault(require("../services/PlayListService"));
 const PlayListModel_1 = require("../model/PlayListModel");
+const AccountService_1 = __importDefault(require("../services/AccountService"));
+const AccountModel_1 = __importDefault(require("../model/AccountModel"));
 const client_secret_si = process.env.CLIENT_SECRET_SI;
 const client_id_si = process.env.CLIENT_ID_SI;
 const client_secret_su = process.env.CLIENT_SECRET_SU;
@@ -40,25 +42,33 @@ Account.get("/", (req, res) => {
 Account.post("/signin", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const account = req.body.account;
     const password = req.body.password;
-    var acc = yield UserService_1.default.GetAccountByAccAndPass(account, password);
-    if (!acc) {
+    let acc = yield AccountService_1.default.GetAccount(account);
+    if (!acc || acc.Password != password) {
         res.json({
             err: true,
             mess: "Tài khoản hoặc mật khẩu không đúng"
         });
         return;
     }
-    SetCookie(res, acc);
-    if (acc.role == "master") {
+    let user = yield UserService_1.default.Get(acc.id);
+    if (!user) {
+        res.json({
+            err: true,
+            mess: "Không có người dùng này"
+        });
+        return;
+    }
+    SetCookie(res, user);
+    if (user.role == "master") {
         res.redirect("/admin");
         return;
     }
     res.redirect("/");
 })); //0k 
 Account.get("/github", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var code = req.query.code;
-    var url = `https://github.com/login/oauth/access_token?client_id=${client_id_si}&client_secret=${client_secret_si}&code=${code}`;
-    var r = yield axios_1.default.post(url, {}, {
+    let code = req.query.code;
+    let url = `https://github.com/login/oauth/access_token?client_id=${client_id_si}&client_secret=${client_secret_si}&code=${code}`;
+    let r = yield axios_1.default.post(url, {}, {
         headers: {
             Accept: "application/json",
         },
@@ -68,7 +78,7 @@ Account.get("/github", (req, res) => __awaiter(void 0, void 0, void 0, function*
     //   "token_type": "",
     //   "scope": ""
     // }
-    var c;
+    let c;
     try {
         c = yield Promise.all([
             axios_1.default.get("https://api.github.com/user/emails", {
@@ -107,18 +117,23 @@ Account.get("/github", (req, res) => __awaiter(void 0, void 0, void 0, function*
     //   },
     // ];
     //avatar_url: 'https://avatars.githubusercontent.com/u/71593544?v=4'
-    var acc = yield UserService_1.default.GetByAccount(c[0].data[0].email);
+    let acc = yield AccountService_1.default.GetAccount(c[0].data[0].email);
     if (!acc) {
         res.redirect("/auth");
         return;
     }
-    SetCookie(res, acc);
+    let user = yield UserService_1.default.Get(acc.id);
+    if (!user) {
+        res.redirect("/auth");
+        return;
+    }
+    SetCookie(res, user);
     res.redirect("/");
 }));
 Account.get("/githubsu", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var code = req.query.code;
-    var url = `https://github.com/login/oauth/access_token?client_id=${client_id_su}&client_secret=${client_secret_su}&code=${code}`;
-    var r = yield axios_1.default.post(url, {}, {
+    let code = req.query.code;
+    let url = `https://github.com/login/oauth/access_token?client_id=${client_id_su}&client_secret=${client_secret_su}&code=${code}`;
+    let r = yield axios_1.default.post(url, {}, {
         headers: {
             Accept: "application/json",
         },
@@ -162,7 +177,7 @@ Account.get("/githubsu", (req, res) => __awaiter(void 0, void 0, void 0, functio
     //      created_at: '2020-09-20T12:19:07Z',
     //      updated_at: '2024-03-30T02:12:41Z'
     //    }
-    var c;
+    let c;
     try {
         c = yield Promise.all([
             axios_1.default.get("https://api.github.com/user/emails", {
@@ -200,12 +215,12 @@ Account.get("/githubsu", (req, res) => __awaiter(void 0, void 0, void 0, functio
     //   },
     // ];
     //avatar_url: 'https://avatars.githubusercontent.com/u/71593544?v=4'
-    var acc = yield UserService_1.default.GetByAccount(c[0].data[0].email);
+    let acc = yield AccountService_1.default.GetAccount(c[0].data[0].email);
     if (acc) {
         res.redirect("/auth");
         return;
     }
-    var hash = Hash_1.Hash.CreateHas({
+    let hash = Hash_1.Hash.CreateHas({
         outNumber: undefined,
         salt: undefined,
         a1: c[0].data[0].email,
@@ -221,14 +236,14 @@ Account.get("/githubsu", (req, res) => __awaiter(void 0, void 0, void 0, functio
     res.redirect("/auth");
 }));
 Account.post("/ggin", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var g_csrf_token1 = req.body.g_csrf_token;
-    var g_csrf_token2 = req.cookies.g_csrf_token;
-    var profi = { email: "", name: "", picture: "" };
+    let g_csrf_token1 = req.body.g_csrf_token;
+    let g_csrf_token2 = req.cookies.g_csrf_token;
+    let profi = { email: "", name: "", picture: "" };
     if (g_csrf_token1 != g_csrf_token2) {
         res.redirect("/auth");
         return;
     }
-    var s = req.body.credential;
+    let s = req.body.credential;
     s.split(".").forEach((v, i) => {
         if (i == 1) {
             profi = JSON.parse(Buffer.from(v, "base64").toString());
@@ -250,23 +265,28 @@ Account.post("/ggin", (req, res) => __awaiter(void 0, void 0, void 0, function* 
     //      exp: 1711450680,
     //      jti: 'e17866e1397730421a8823d244726469f9ea63bd'
     //    }
-    var acc = yield UserService_1.default.GetByAccount(profi.email);
+    let acc = yield AccountService_1.default.GetAccount(profi.email);
     if (!acc) {
         res.redirect("/auth");
         return;
     }
-    SetCookie(res, acc);
+    let user = yield UserService_1.default.Get(acc.id);
+    if (!user) {
+        res.redirect("/auth");
+        return;
+    }
+    SetCookie(res, user);
     res.redirect("/");
 }));
 Account.post("/ggup", (req, res) => {
-    var g_csrf_token1 = req.body.g_csrf_token;
-    var g_csrf_token2 = req.cookies.g_csrf_token;
-    var profi = { email: "", name: "", picture: "" };
+    let g_csrf_token1 = req.body.g_csrf_token;
+    let g_csrf_token2 = req.cookies.g_csrf_token;
+    let profi = { email: "", name: "", picture: "" };
     if (g_csrf_token1 != g_csrf_token2) {
         res.redirect("/auth");
         return;
     }
-    var s = req.body.credential;
+    let s = req.body.credential;
     s.split(".").forEach((v, i) => {
         if (i == 1) {
             profi = JSON.parse(Buffer.from(v, "base64").toString());
@@ -288,7 +308,7 @@ Account.post("/ggup", (req, res) => {
     //      exp: 1711450680,
     //      jti: 'e17866e1397730421a8823d244726469f9ea63bd'
     //    }
-    var hash = Hash_1.Hash.CreateHas({
+    let hash = Hash_1.Hash.CreateHas({
         outNumber: undefined,
         salt: undefined,
         a1: profi.email,
@@ -312,8 +332,8 @@ Account.post("/getdata", (req, res) => {
         });
         return;
     }
-    var time = parseInt(req.cookies.time);
-    var time1 = new Date().getTime();
+    let time = parseInt(req.cookies.time);
+    let time1 = new Date().getTime();
     if (time1 - time > 60000) {
         res.json({
             err: true,
@@ -323,7 +343,7 @@ Account.post("/getdata", (req, res) => {
     res.clearCookie("name");
     res.clearCookie("image");
     res.clearCookie("email");
-    var sign = (0, Helper_1.SignJWT)(JSON.stringify({
+    let sign = (0, Helper_1.SignJWT)(JSON.stringify({
         Name: req.cookies.name,
         pathImage: req.cookies.image,
         Account: req.cookies.email,
@@ -338,40 +358,50 @@ Account.post("/getdata", (req, res) => {
     });
 });
 Account.post("/create", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var d = new UserModel_1.default();
-    d.setAll(req.body);
-    d.Account = req.body.Account;
-    d.Password = req.body.Password;
+    let acc = new AccountModel_1.default();
+    let user = new UserModel_1.default();
+    acc.setAll(req.body);
+    user.setAll(req.body);
+    acc.Account = req.body.Account;
+    acc.Password = req.body.Password;
+    let id = `user-${(0, uuid_1.v4)()}-${Date.now()}`;
     if ((0, Helper_1.VertifyJWT)(req.body.sign) == undefined) {
         res.json({
             err: true
         });
         return;
     }
-    d.id = `user-${(0, uuid_1.v4)()}-${Date.now()}`;
-    yield UserService_1.default.AddAccount(d);
-    var pl = new PlayListModel_1.PlayListModel();
-    pl.User_id = d.id;
-    pl.ImagePath = d.pathImage;
+    user.id = id;
+    acc.id = id;
+    let check = yield UserService_1.default.AddAccount(user);
+    if (!check) {
+        res.json({
+            err: true
+        });
+    }
+    check = yield AccountService_1.default.Add(acc.id, acc.Account, acc.Password);
+    let pl = new PlayListModel_1.PlayListModel();
+    pl.User_id = user.id;
+    pl.ImagePath = user.pathImage;
     pl.id = `artists-${(0, uuid_1.v4)()}-${Date.now()}`;
     pl.Status = "0";
-    pl.PlayListName = d.Name;
+    pl.PlayListName = user.Name;
     yield PlayListService_1.default.AddArtists(pl);
     res.json({
         err: false
     });
 }));
 Account.post("/sendcode", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var account = req.body.account;
-    var d = yield UserService_1.default.GetByAccount(account);
-    if (d == undefined) {
+    let account = req.body.account;
+    let acc = yield AccountService_1.default.GetAccount(account);
+    if (acc == undefined) {
         res.json({
             err: true,
             mess: "không tồn tại"
         });
         return;
     }
-    var code = new Date().getTime() % 100000;
+    let code = new Date().getTime() % 100000;
     const transporter = nodemailer_1.default.createTransport({
         service: "gmail",
         auth: {
@@ -386,9 +416,9 @@ Account.post("/sendcode", (req, res) => __awaiter(void 0, void 0, void 0, functi
         text: "Đây là mã xác thực của bạn đừng chia sẻ cho ai",
         html: `<h1>${code}</h1>`,
     });
-    var hash = Hash_1.Hash.CreateHas({ a1: `${code} ${account}`, outNumber: 20, salt: undefined });
+    let hash = Hash_1.Hash.CreateHas({ a1: `${code} ${account}`, outNumber: 20, salt: undefined });
     hash.a1 = account;
-    var token = Buffer.from(JSON.stringify({
+    let token = Buffer.from(JSON.stringify({
         f1: account,
         f2: hash.a2,
         timef: hash.time
@@ -402,15 +432,15 @@ Account.post("/sendcode", (req, res) => __awaiter(void 0, void 0, void 0, functi
     });
 })); //0k
 Account.post("/vertifycode", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var code = req.body.code;
-    var token = req.body.token;
+    let code = req.body.code;
+    let token = req.body.token;
     if (token != undefined) {
         req.cookies = JSON.parse(Buffer.from(token, "base64").toString());
     }
-    var account = req.cookies.f1;
-    var f2 = req.cookies.f2;
-    var timef = req.cookies.timef;
-    var verified = Hash_1.Hash.vertify({ a1: `${code} ${account}`, a2: f2, createTime: timef, outNumber: 20, salt: undefined });
+    let account = req.cookies.f1;
+    let f2 = req.cookies.f2;
+    let timef = req.cookies.timef;
+    let verified = Hash_1.Hash.vertify({ a1: `${code} ${account}`, a2: f2, createTime: timef, outNumber: 20, salt: undefined });
     if ((new Date().getTime()) - parseInt(timef) > 60000) {
         res.json({
             err: true,
@@ -419,10 +449,10 @@ Account.post("/vertifycode", (req, res) => __awaiter(void 0, void 0, void 0, fun
         return;
     }
     if (verified) {
-        var d = new UserModel_1.default();
-        d.Account = account;
-        d.Password = req.body.Password;
-        var check = yield UserService_1.default.UpdatePassword(d);
+        let acc = new AccountModel_1.default();
+        acc.Account = account;
+        acc.Password = req.body.Password;
+        let check = yield AccountService_1.default.UpdatePassword(acc.Account, acc.Password);
         res.json({
             err: check == undefined,
             mess: "thành công"
@@ -437,23 +467,31 @@ Account.post("/vertifycode", (req, res) => __awaiter(void 0, void 0, void 0, fun
 Account.post("/apikey", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const account = req.body.account;
     const password = req.body.password;
-    var acc = yield UserService_1.default.GetAccountByAccAndPass(account, password);
-    if (!acc) {
+    let acc = yield AccountService_1.default.GetAccount(account);
+    if (!acc || acc.Password != password) {
         res.json({
             err: true,
             mess: "Tài khoản hoặc mật khẩu không đúng"
         });
         return;
     }
-    var apikey = jsonwebtoken_1.default.sign({ role: acc.role, id: acc.id }, secret || "1", { expiresIn: "2 days" });
+    let user = yield UserService_1.default.Get(acc.id);
+    if (!user) {
+        res.json({
+            err: true,
+            mess: "Tài khoản hoặc mật khẩu không đúng"
+        });
+        return;
+    }
+    let apikey = jsonwebtoken_1.default.sign({ role: user.role, id: acc.id }, secret || "1", { expiresIn: "2 days" });
     res.json({
         err: false,
         apikey: apikey
     });
 })); //0k
 Account.post("/sendCodeVertifyEmail", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var account = req.body.account;
-    var d = yield UserService_1.default.GetByAccount(account);
+    let account = req.body.account;
+    let acc = yield AccountService_1.default.GetAccount(account);
     if (account == undefined) {
         res.json({
             err: true,
@@ -461,14 +499,14 @@ Account.post("/sendCodeVertifyEmail", (req, res) => __awaiter(void 0, void 0, vo
         });
         return;
     }
-    if (d != undefined) {
+    if (acc != undefined) {
         res.json({
             err: true,
             mess: "tài khoản đã tồn tại"
         });
         return;
     }
-    var code = new Date().getTime() % 100000;
+    let code = new Date().getTime() % 100000;
     const transporter = nodemailer_1.default.createTransport({
         service: "gmail",
         auth: {
@@ -476,7 +514,7 @@ Account.post("/sendCodeVertifyEmail", (req, res) => __awaiter(void 0, void 0, vo
             pass: emailpsapp,
         },
     });
-    var info = undefined;
+    let info = undefined;
     try {
         info = yield transporter.sendMail({
             from: 'spotify@gmail.com.com',
@@ -488,7 +526,7 @@ Account.post("/sendCodeVertifyEmail", (req, res) => __awaiter(void 0, void 0, vo
     }
     catch (error) {
     }
-    var token = jsonwebtoken_1.default.sign({ Account: account }, code + "", {
+    let token = jsonwebtoken_1.default.sign({ Account: account }, code + "", {
         expiresIn: "3h"
     });
     res.json({
@@ -497,10 +535,11 @@ Account.post("/sendCodeVertifyEmail", (req, res) => __awaiter(void 0, void 0, vo
     });
 })); //0k
 Account.post("/createACC", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var Account = req.body.Account;
-    var code = req.body.code;
-    var token = req.body.token;
-    var decode = (0, Helper_1.VertifyJWT)(token, code + "");
+    let Account = req.body.Account;
+    let code = req.body.code;
+    let token = req.body.token;
+    let id = `user-${(0, uuid_1.v4)()}`;
+    let decode = (0, Helper_1.VertifyJWT)(token, code + "");
     if (decode == undefined) {
         res.json({
             err: true,
@@ -515,21 +554,33 @@ Account.post("/createACC", (req, res) => __awaiter(void 0, void 0, void 0, funct
         });
         return;
     }
-    var u = new UserModel_1.default();
+    let u = new UserModel_1.default();
     u.setAll(req.body);
-    u.Password = req.body.Password;
-    u.id = `user-${(0, uuid_1.v4)()}`;
-    var check = yield UserService_1.default.AddAccount(u);
+    let acc = new AccountModel_1.default();
+    acc.setAll(req.body);
+    let pl = new PlayListModel_1.PlayListModel();
+    pl.User_id = u.id;
+    pl.ImagePath = u.pathImage;
+    pl.id = `artists-${(0, uuid_1.v4)()}-${Date.now()}`;
+    pl.Status = "0";
+    pl.PlayListName = u.Name;
+    yield PlayListService_1.default.AddArtists(pl);
+    u.id = id;
+    acc.id = id;
+    let check = yield UserService_1.default.AddAccount(u);
+    if (!check) {
+        check = yield AccountService_1.default.Add(acc.id, acc.Account, acc.Password);
+    }
     res.json({
         err: check == undefined,
     });
 })); //0k
 function SetCookie(res, acc) {
-    var apikey = jsonwebtoken_1.default.sign({ role: acc.role, id: acc.id }, secret || '1', { expiresIn: "2 days" });
+    let apikey = jsonwebtoken_1.default.sign({ role: acc.role, id: acc.id }, secret || '1', { expiresIn: "2 days" });
     res.cookie("apikey", apikey, { maxAge: 900000000 });
 }
 function SetApiKey(res, acc) {
-    var hash = Hash_1.Hash.CreateHas({ a1: acc.id, outNumber: undefined, salt: undefined });
+    let hash = Hash_1.Hash.CreateHas({ a1: acc.id, outNumber: undefined, salt: undefined });
     return hash;
 }
 function clearCookie(res) {
@@ -539,9 +590,9 @@ function clearCookie(res) {
     res.clearCookie("apikey");
 }
 function VerifyCookie(req) {
-    var id = req.cookies.id;
-    var a2 = req.cookies.a2;
-    var timeSIN = req.cookies.timeSIN;
+    let id = req.cookies.id;
+    let a2 = req.cookies.a2;
+    let timeSIN = req.cookies.timeSIN;
     if (!id || !a2 || !timeSIN) {
         return false;
     }

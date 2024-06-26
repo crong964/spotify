@@ -8,9 +8,12 @@ import haveListFriendsService, { HaveListFriendsService } from "../services/Have
 import playListService, { PlayListService } from "../services/PlayListService";
 import likedSongService, { LikedSongService } from "../services/LikedSongService";
 import LikedSongModel from "../model/LikedSongModel";
+import accountService from "../services/AccountService";
+import AccountModel from "../model/AccountModel";
 
 class UserController {
     static user: UserService = userService
+    static account = accountService
     static HaveListFriends: HaveListFriendsService = haveListFriendsService
     static likedSong: LikedSongService = likedSongService
     static playlist: PlayListService = playListService
@@ -23,18 +26,16 @@ class UserController {
         if (!account) {
 
         }
-        var check = await UserController.user.GetByAccount(account)
+        var check = await UserController.account.GetAccount(account)
         res.cookie("id", check?.id, { maxAge: 1000 * 60 * 60 * 24 * 356, httpOnly: true })
         res.redirect("http://localhost:8000/dashboard")
     }
     async Get(req: Request, res: Response) {
         var id = req.cookies.id
-        console.log(id);
-        
         var use = await UserController.user.Get(id)
 
         if (use) {
-            use.Account = ""
+
             res.json({
                 err: false,
                 u: use
@@ -126,8 +127,10 @@ class UserController {
     }
     async AddEAdmin(req: Request, res: Response) {
         var user = new UserModel()
+        var account = new AccountModel()
+        account.setAll(req.body)
         user.setAll(req.body)
-        var check = await UserController.user.GetByAccount(user.Account)
+        var check = await UserController.account.GetAccount(account.Account)
         if (check) {
             res.json({
                 err: true,
@@ -138,9 +141,16 @@ class UserController {
         user.id = `user-${uuidv4()}`
 
         var add = await UserController.user.AddAccount(user)
+        if (!add) {
+            res.json({
+                err: true,
+                mess: "không thêm dc user"
+            })
+            return
+        }
+        add = await UserController.account.Add(user.id, account.Account, account.Password)
         res.json({
             err: add == undefined,
-
         })
     }
     async DeleteEAdmin(req: Request, res: Response) {
@@ -166,13 +176,7 @@ class UserController {
             err: de == undefined,
         })
     }
-    async VertifyArtist(req: Request, res: Response) {
-        var idArtist = req.body.idArtist
-        var check = await UserController.user.VertifyAccount(idArtist, "1")
-        res.json({
-            err: check == undefined
-        })
-    }
+
 }
 var userController = new UserController()
 

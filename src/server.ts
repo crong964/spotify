@@ -31,6 +31,10 @@ import { VertifyJWT } from "./config/Helper";
 import jwt, { JwtPayload } from "jsonwebtoken"
 import RecentPlaylistRoute from "./route/RecentPlaylistRoute";
 import firebase from "./config/Firebase";
+import ArtistManagementRoute from "./admin/ArtistManagementRoute";
+import songAdminController from "./controllerAdmin/SongAdminController";
+import SongAdminRoute from "./admin/SongAdminRoute";
+import { unlink } from "fs/promises";
 
 const secret = process.env.SECRET || "1"
 const app = express()
@@ -51,7 +55,7 @@ app.use((req, res, next) => {
         if (cookie != undefined) {
             req.cookies.id = cookie.id
         }
-        
+
     }
     if (req.headers.iduser) {
         req.cookies.id = req.headers.iduser
@@ -80,7 +84,7 @@ app.use("/box", USER, BoxChatRoute)
 app.use("/user", UserRoute)
 app.use("/song", SongRoute)
 app.use("/lsong", LikedSongRoute)
-app.use("/recentPlaylist", USER,RecentPlaylistRoute)
+app.use("/recentPlaylist", USER, RecentPlaylistRoute)
 app.use("/rs", USER, RecentSongRoute)
 app.use("/search", SearchRoute)
 app.use("/discuss", USER, DiscussRoute)
@@ -91,48 +95,7 @@ app.get("/dashboard", USER, (req, res) => {
 })
 
 app.use("/auth", Account)
-// app.get("/idSong", (req, res) => {
-//     var start = parseInt(req.headers.range?.replace("bytes=", "").split("-")[0] || "0")
-//     var music = req.cookies.music
-//     var idSong = req.query.idSong as string
-//     var id = req.cookies.id
-//     if (idSong == undefined || idSong == "undefined") {
-//         res.end()
-//         return
-//     }
-//     res.cookie("music", idSong, { httpOnly: true, maxAge: 1000 * 60 * 60 * 24 * 365 })
 
-//     if (!music && music != idSong && id != undefined) {
-//         recentSongService.Add(id, idSong)
-//     }
-//     try {
-//         var pathg = path.join(process.cwd(), "public/music", idSong)
-//         var videoSize = fs.statSync(pathg).size
-//         var chuck = 160000
-//         var end = Math.min(start + chuck, videoSize - 1)
-
-//         var s = fs.createReadStream(pathg, {
-//             start, end
-//         })
-//         s.on("error", (err) => {
-//         })
-
-
-//         res.writeHead(206, {
-//             "accept-ranges": "bytes",
-//             "content-range": `bytes ${start}-${end}/${videoSize}`,
-//             "content-type": "audio/mp3",
-//             "content-length": end - start + 1
-//         })
-//         s.pipe(res)
-//     } catch (error) {
-//         console.log(error);
-
-//         res.json({
-//             err: true
-//         })
-//     }
-// })
 
 
 app.use("/genre", GenreRoute)
@@ -142,7 +105,9 @@ app.use("/genre", ADMIN, GenreRouteAdmin)
 app.use("/playlist", ADMIN, PlayListRouteAdmin)
 app.use("/contain", ADMIN, ContainRouteAdmin)
 app.use("/admin/UserRouteAdmin", ADMIN, UserRouteAdmin)
-app.get(/admin*/, ADMIN, (req, res) => {
+app.use("/admin/artist", ADMIN, ArtistManagementRoute)
+app.use("/admin/song", ADMIN, SongAdminRoute)
+app.get(/admin/, ADMIN, (req, res) => {
     res.sendFile(join(process.cwd(), "web/admin.html"))
 })
 
@@ -177,7 +142,6 @@ app.get("/idSong", async (req, res) => {
         var read = firebase.DownloadStreamFile(patsong, start, end)
             .on("error", (err) => {
                 console.log(err);
-
             })
         res.writeHead(206, {
             "accept-ranges": "bytes",
@@ -196,36 +160,32 @@ app.get("/idSong", async (req, res) => {
         })
     }
 })
-app.get("/s", (req, res) => {
-    res.setHeader("Cache-Control", "max-age=315360000, no-transform, must-revalidate")
+app.get("/s", async (req, res) => {
     var namestrong = req.query.id as string
-    try {
-        var pathg = path.join(process.cwd(), "public/music", namestrong)
-        var s = fs.createReadStream(pathg)
-        s.on("error", (err) => {
-        })
-        fs.stat(pathg, (err, stats) => {
-            if (err) {
-                console.log(err);
-                res.end()
-                return
-            }
-            res.setHeader("Content-Range", `bytes 0-${stats.size}/${stats.size}`)
-            res.setHeader("Content-Length", stats.size)
-            res.setHeader("Accept-Ranges", "bytes")
+    var pathg = path.join(process.cwd(), "public/music", namestrong)
 
-            res.setHeader("content-type", "audio/mp3")
-            res.statusCode = 200
-            s.pipe(res)
-
-        })
-    } catch (error) {
-        console.log(error);
-
-        res.json({
-            err: true
-        })
+    let patsong = `song/${namestrong}`
+    if (fs.existsSync(pathg)) {
+        try {
+            namestrong = await firebase.UploadStream(pathg, patsong) as string
+        } catch (error) {
+            console.log(error);
+            res.json({ err: true })
+            return
+        }
+        try {
+            unlink(pathg)
+        } catch (error) {
+            console.log(error);
+        }
     }
+
+    var videoSize = parseInt(((await firebase.GetMeta(patsong))?.size + "") || "0")
+    var read = firebase.DownloadStreamFile(patsong, 0, videoSize)
+        .on("error", (err) => {
+            console.log(err);
+        })
+    read.pipe(res)
 })
 
 httpServer.listen(8000, () => {
