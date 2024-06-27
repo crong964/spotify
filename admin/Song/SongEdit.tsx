@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { get, post } from "../../page/config/req";
 
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../Redux";
+import { RootState, SongListAndInforArtistPage } from "../Redux";
 import IndexGenres from "../GenreLs";
 import { useParams } from "react-router-dom";
 
@@ -23,11 +23,13 @@ type Song = {
   PublicTime: string;
   filePath: string;
 };
-export default function SongForm() {
+
+type SongEidt = {
+  idSong: string;
+};
+export default function SongEdit() {
   const [conut, SetConut] = useState(0);
   const [file, SetFile] = useState<File>();
-  const [total, SetTotal] = useState(0);
-  const [finsih, SetFish] = useState(false);
   const { idArtist } = useParams();
   const [song, SetSong] = useState<Song>({
     Id: "",
@@ -40,50 +42,22 @@ export default function SongForm() {
     Singer: "",
   });
   const slectGenre = useSelector((state: RootState) => state.navi.slectGenre);
+  const floor = useSelector((state: RootState) => state.navi.floor);
   const songListAndInforArtist = useSelector(
     (state: RootState) => state.navi.songListAndInforArtist
   );
-  const floor = useSelector((state: RootState) => state.navi.floor);
-  function upload(params: Uint8Array, i: number, pa?: string) {
-    var n = 10000;
-
-    if (i < params.length) {
-      var element = "";
-      for (let j = i; j < i + n && j < params.length; j++) {
-        element += params[j] + " ";
+  const idSong = useSelector((state: RootState) => state.navi.idSong);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    post("/admin/song/get", { idsong: idSong }, (v: any) => {
+      if (v.err != undefined && !v.err) {
+        SetSong(v.song);
       }
-      var data = {
-        d: element,
-        name: pa,
-        idArtist: idArtist,
-      };
-      fetch("/admin/song/uploadfile", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      })
-        .then((v) => {
-          return v.json();
-        })
-        .then((v) => {
-          SetConut(i + n);
-
-          SetSong({
-            ...song,
-            Id: v.name,
-            filePath: v.name,
-          });
-          upload(params, i + n, v.name);
-        });
-    } else {
-      SetFish(true);
-    }
-  }
+    });
+  }, [idSong]);
   return (
     <>
-      {songListAndInforArtist == "add" ? (
+      {songListAndInforArtist == "edit" ? (
         <div className="w-[70%] mx-auto py-[72px] px-[42px] text-[16px] font-bold space-y-4">
           <div className="text-center text-[40px] font-bold">
             Thông tin bài hát
@@ -107,6 +81,7 @@ export default function SongForm() {
                 });
               }}
               type="text"
+              value={song.SongName}
               className="border-2 border-[#404040] font-medium rounded-lg p-2 w-full"
             />
           </div>
@@ -120,6 +95,7 @@ export default function SongForm() {
                 });
               }}
               type="text"
+              value={song.Singer}
               className="border-2 border-[#404040] rounded-lg p-2 w-full"
             />
           </div>
@@ -150,6 +126,7 @@ export default function SongForm() {
               id=""
               cols={10}
               rows={4}
+              value={song.description}
             ></textarea>
           </div>
           <div className="flex w-full">
@@ -230,52 +207,21 @@ export default function SongForm() {
                     />
                   </svg>
                 </div>
-                {!finsih ? (
-                  <>
-                    <input
-                      id="music"
-                      onChange={(e) => {
-                        var file = e.currentTarget.files?.[0];
 
-                        file?.arrayBuffer().then((v) => {
-                          var ut = new Uint8Array(v);
-                          SetTotal(ut.length);
-                          upload(ut, 0);
-                        });
-                      }}
-                      type="file"
-                      className="border-2 invisible border-[#404040] rounded-lg  p-2 w-full"
-                    />
-                    {total != 0 ? (
-                      <div>
-                        <div>{(conut / total) * 100}</div>
-                        <input
-                          type="range"
-                          className="w-full"
-                          max={total}
-                          value={conut}
-                        />
-                      </div>
-                    ) : (
-                      ""
-                    )}
-                  </>
-                ) : (
-                  <>
-                    <audio
-                      src={`/s?id=${song.Id}`}
-                      controls
-                      onCanPlay={(e) => {
-                        SetSong({
-                          ...song,
-                          Duration: e.currentTarget.duration,
-                        });
-                      }}
-                    >
-                      <source src={`/s?id=${song.Id}`} />
-                    </audio>
-                  </>
-                )}
+                {
+                  <audio
+                    src={`/s?id=${song.filePath}`}
+                    controls
+                    onCanPlay={(e) => {
+                      SetSong({
+                        ...song,
+                        Duration: e.currentTarget.duration,
+                      });
+                    }}
+                  >
+                    <source src={`/s?id=${song.filePath}`} />
+                  </audio>
+                }
               </label>
             </div>
           </div>
@@ -305,22 +251,20 @@ export default function SongForm() {
                 }
                 if (file != undefined) {
                   form.set("avatar", file);
-                } else {
-                  alert("chưa có file nhạc");
-                  return;
                 }
                 form.set("id", idArtist);
-                post("/admin/song/addSong", form, (v: any) => {
+                post("/admin/song/update", form, (v: any) => {
                   if (!v.err) {
                     alert("tc");
+                    window.location.reload();
                   } else {
                     alert("loou");
                   }
                 });
               }}
-              className="bg-blue-700 cursor-pointer text-white font-bold rounded-full px-3 py-1"
+              className="bg-blue-700 cursor-pointer text-white font-bold rounded-full px-3 py-2"
             >
-              Đăng
+              Cập nhật
             </div>
           </div>
         </div>

@@ -162,8 +162,11 @@ app.get("/idSong", async (req, res) => {
 })
 app.get("/s", async (req, res) => {
     var namestrong = req.query.id as string
+    if (namestrong.length <= 0) {
+        res.json({ err: true })
+        return
+    }
     var pathg = path.join(process.cwd(), "public/music", namestrong)
-
     let patsong = `song/${namestrong}`
     if (fs.existsSync(pathg)) {
         try {

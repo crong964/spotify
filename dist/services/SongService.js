@@ -64,7 +64,8 @@ class SongService {
     }
     UpStatus(d) {
         return __awaiter(this, void 0, void 0, function* () {
-            var check = yield this.songDatabase.UpStatus(d);
+            var sql = `UPDATE song Set status=? WHERE Id =?`;
+            var check = yield Config_1.default.query(sql, [d.status, d.Id]);
             return check;
         });
     }

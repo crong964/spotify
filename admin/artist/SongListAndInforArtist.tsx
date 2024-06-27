@@ -3,6 +3,9 @@ import { Link, useParams } from "react-router-dom";
 import { post } from "../../page/config/req";
 import SongList from "../componnt/SongList";
 import SongForm from "../Song/SongForm";
+import { useDispatch } from "react-redux";
+import { SongListAndInforArtistPage } from "../Redux";
+import SongEdit from "../Song/SongEdit";
 type Artist = {
   ChanalName: string;
   pathImage: string;
@@ -18,7 +21,7 @@ type Song = {
   SongImage: string;
   filePath: string;
   stt: number;
-  Vertify: number;
+  status: number;
 };
 export default function SongListAndInforArtist() {
   let { idArtist } = useParams();
@@ -28,7 +31,8 @@ export default function SongListAndInforArtist() {
     pathImage: "",
   });
   const [songlist, SetSongList] = useState<Song[]>([]);
-  const [feature, SetFeature] = useState<"list" | "add" | "edit">("list");
+  const dispatch = useDispatch();
+
   useEffect(() => {
     post("/admin/song/", { idArtist: idArtist }, (v: any) => {
       if (v && v.err != undefined && !v.err) {
@@ -43,7 +47,7 @@ export default function SongListAndInforArtist() {
         <button
           className="rounded-xl px-3 py-2 bg-blue-400 hover:bg-blue-500 text-white"
           onClick={() => {
-            SetFeature("list");
+            dispatch(SongListAndInforArtistPage("list"));
           }}
         >
           Danh sách nhạc
@@ -51,7 +55,7 @@ export default function SongListAndInforArtist() {
         <button
           className="rounded-xl px-3 py-2 bg-blue-400 hover:bg-blue-500 text-white"
           onClick={() => {
-            SetFeature("add");
+            dispatch(SongListAndInforArtistPage("add"));
           }}
         >
           Thêm nhạc
@@ -62,8 +66,9 @@ export default function SongListAndInforArtist() {
         <div className="text-[100px] font-bold">{infor.ChanalName}</div>
       </div>
 
-      {feature == "add" ? <SongForm></SongForm> : <></>}
-      {feature == "list" ? <SongList data={songlist} /> : <></>}
+      <SongForm></SongForm>
+      <SongList data={songlist} />
+      <SongEdit></SongEdit>
     </>
   );
 }

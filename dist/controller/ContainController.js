@@ -29,7 +29,7 @@ class ContainController {
         return __awaiter(this, void 0, void 0, function* () {
             var d = new ContainModel_1.default();
             d.setAll(req.body);
-            var check = yield ContainController.contain.Delete(d);
+            var check = yield ContainController.contain.Delete(d.Song_id, d.PlayList_id);
             res.json({
                 err: check == undefined
             });

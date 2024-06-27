@@ -87,7 +87,6 @@ function Song(d: Song) {
         <div>{d.Viewer}</div>
         <div
           onClick={() => {
-            console.log("đá");
             if (idSong == d.Id) {
               dispatch(SongEidt(""));
             } else {

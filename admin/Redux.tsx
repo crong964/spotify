@@ -8,6 +8,8 @@ export interface CounterState {
   page: string;
   SelectList: any;
   idPlaylistEdit: string;
+  idSong: string;
+  songListAndInforArtist: "add" | "list" | "edit";
 }
 interface FloorAndID {
   Floor: number;
@@ -20,6 +22,8 @@ interface Song {
   SongImage: string;
 }
 var initialState: CounterState = {
+  songListAndInforArtist: "list",
+  idSong: "",
   floor: 1,
   slectGenre: { 0: 0 },
   value: 0,
@@ -72,8 +76,18 @@ export const counterSlice = createSlice({
         delete state.SelectList[action.payload];
       }
     },
-    EditPlayList: (state, action) => {
+    EditPlayList: (state, action: PayloadAction<string>) => {
       state.idPlaylistEdit = action.payload;
+    },
+    EditSong: (state, action: PayloadAction<string>) => {
+      state.idSong = action.payload;
+      state.songListAndInforArtist = "edit";
+    },
+    SongListAndInforArtistPage: (
+      state,
+      action: PayloadAction<"add" | "list" | "edit">
+    ) => {
+      state.songListAndInforArtist = action.payload;
     },
   },
 });
@@ -88,6 +102,8 @@ export const {
   ReSetSelectSong,
   EditPlayList,
   RemoveSelectSong,
+  EditSong,
+  SongListAndInforArtistPage,
 } = counterSlice.actions;
 
 const store = configureStore({

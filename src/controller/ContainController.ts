@@ -16,7 +16,7 @@ class ContainController {
     async Delete(req: Request, res: Response) {
         var d = new ContainModel()
         d.setAll(req.body)
-        var check = await ContainController.contain.Delete(d)
+        var check = await ContainController.contain.Delete(d.Song_id, d.PlayList_id)
         res.json({
             err: check == undefined
         })

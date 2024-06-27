@@ -36,8 +36,7 @@ class SongDatabase {
         return check
     }
     async UpStatus(d: SongModel) {
-        var sql = `UPDATE song Set status=?
-        WHERE Id =?`
+        var sql = `UPDATE song Set status=? WHERE Id =?`
         var check
         check = await Mysql2.query(sql, [d.status, d.Id])
         return check
@@ -61,16 +60,16 @@ class SongDatabase {
         check = await Mysql2.query(sql, [idGenre, limit.start, limit.end])
         return check
     }
-    async IncreaseNumberDiscuss(SongId: string,n:number) {
+    async IncreaseNumberDiscuss(SongId: string, n: number) {
         var sql = `UPDATE song SET dicussquality=dicussquality + ? WHERE id=?`
         var check
-        check = await Mysql2.query(sql, [n,SongId])
+        check = await Mysql2.query(sql, [n, SongId])
         return check
     }
-    async DeincreaseNumberDiscuss(SongId: string,n:number) {
+    async DeincreaseNumberDiscuss(SongId: string, n: number) {
         var sql = `UPDATE song SET dicussquality=dicussquality - ? WHERE id=?`
         var check
-        check = await Mysql2.query(sql, [n,SongId])
+        check = await Mysql2.query(sql, [n, SongId])
         return check
     }
 }

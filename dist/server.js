@@ -174,6 +174,10 @@ app.get("/idSong", (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 app.get("/s", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _c;
     var namestrong = req.query.id;
+    if (namestrong.length <= 0) {
+        res.json({ err: true });
+        return;
+    }
     var pathg = path_1.default.join(process.cwd(), "public/music", namestrong);
     let patsong = `song/${namestrong}`;
     if (fs_1.default.existsSync(pathg)) {

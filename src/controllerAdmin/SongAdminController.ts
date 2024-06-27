@@ -125,19 +125,18 @@ class SongAdminController {
     }
     async Update(req: Request, res: Response) {
         var song = new SongModel();
-
         song.setAll(req.body);
-        var id = req.body.id
+        var id = req.body.user_id
         var u = await SongAdminController.user.Get(id)
         var oldsong = await SongAdminController.song.Get(song.Id)
-
         if (u == undefined || oldsong == undefined) {
             res.json({
                 err: true
             })
             return
         }
-
+        
+        
         let d = Date.now() + ""
         if (req.file != undefined) {
             try {
@@ -185,7 +184,6 @@ class SongAdminController {
         })
         return
     }
-
     async DeleteSong(req: Request, res: Response) {
         let id = req.body.idArtist
         let idsong = req.body.idsong
@@ -209,6 +207,21 @@ class SongAdminController {
         }
         res.json({
             err: check[0] == undefined || check[1] == undefined
+        })
+    }
+    async Get(req: Request, res: Response) {
+        var idsong = req.body.idsong
+        var song = await SongAdminController.song.Get(idsong)
+
+        if (song == undefined) {
+            res.json({
+                err: true,
+            })
+            return
+        }
+        res.json({
+            err: false,
+            song: song
         })
     }
     // async NextSong(req: Request, res: Response) {

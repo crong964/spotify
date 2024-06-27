@@ -44,7 +44,8 @@ export class SongService {
         return check
     }
     async UpStatus(d: SongModel) {
-        var check = await this.songDatabase.UpStatus(d)
+        var sql = `UPDATE song Set status=? WHERE Id =?`
+        var check = await Mysql2.query(sql, [d.status, d.Id])
         return check
     }
     async GetValidateAll(user_id: string) {

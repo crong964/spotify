@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  Page,
   ReSetSelectSong,
   RemoveSelectSong,
   RootState,
@@ -180,8 +179,8 @@ function PlayListFormData() {
           form.set("Genre_ID", slectGenre[floor]);
           post("/playlist/UpdatePlayList", form, (v: any) => {
             if (!v.err) {
-             alert("cập nhật thành công")
-             window.location.href=`/admin/playlist/edit/${idPlaylistEdit}`
+              alert("cập nhật thành công");
+              window.location.href = `/admin/playlist/edit/${idPlaylistEdit}`;
             }
           });
         }}
@@ -189,9 +188,7 @@ function PlayListFormData() {
       >
         Cập nhật
       </div>
-      <div className="h-[100px]">
-
-      </div>
+      <div className="h-[100px]"></div>
     </div>
   );
 }

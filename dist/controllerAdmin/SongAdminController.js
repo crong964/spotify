@@ -133,7 +133,7 @@ class SongAdminController {
         return __awaiter(this, void 0, void 0, function* () {
             var song = new SongModel_1.default();
             song.setAll(req.body);
-            var id = req.body.id;
+            var id = req.body.user_id;
             var u = yield SongAdminController.user.Get(id);
             var oldsong = yield SongAdminController.song.Get(song.Id);
             if (u == undefined || oldsong == undefined) {
@@ -215,6 +215,22 @@ class SongAdminController {
             }
             res.json({
                 err: check[0] == undefined || check[1] == undefined
+            });
+        });
+    }
+    Get(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var idsong = req.body.idsong;
+            var song = yield SongAdminController.song.Get(idsong);
+            if (song == undefined) {
+                res.json({
+                    err: true,
+                });
+                return;
+            }
+            res.json({
+                err: false,
+                song: song
             });
         });
     }
