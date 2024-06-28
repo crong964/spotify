@@ -2,3 +2,4 @@ node_modules
 sql.txt
 .env
 depyl
+build.bat
