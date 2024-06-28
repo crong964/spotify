@@ -157,7 +157,7 @@ export default function PlayingBar() {
           className="flex items-center cursor-pointer space-x-2 hover:border-2 hover:border-gray-400 p-2 rounded-xl"
           onWheel={(e) => {
             var cur = e.deltaY;
-            var o = 8;
+            var o = 2;
             if (cur < 0) {
               if (volume >= 100) {
                 return;

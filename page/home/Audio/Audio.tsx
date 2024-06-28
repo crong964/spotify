@@ -117,7 +117,7 @@ export default function Audio(params: Audio) {
         <input
           type="range"
           className="rounded-lg  cursor-pointer overflow-hidden appearance-none bg-gray-400 h-[6px] w-full sm:w-[70%]"
-          max={duration}
+          max={duration+""}
           value={curTime}
           onChange={(e) => {
             SetCurTime(parseInt(e.currentTarget.value));
