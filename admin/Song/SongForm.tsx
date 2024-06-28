@@ -313,6 +313,7 @@ export default function SongForm() {
                 post("/admin/song/addSong", form, (v: any) => {
                   if (!v.err) {
                     alert("tc");
+                    window.location.reload()
                   } else {
                     alert("loou");
                   }

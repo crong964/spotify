@@ -243,12 +243,13 @@ export default function SongEdit() {
                 }
                 var form = new FormData();
 
-                form.set("Genre_id", slectGenre[floor]);
+               
                 const myObj: { [key: string]: any } = song;
 
                 for (const key in myObj) {
                   form.set(key, myObj[key]);
                 }
+                form.set("Genre_id", slectGenre[floor]);
                 if (file != undefined) {
                   form.set("avatar", file);
                 }
