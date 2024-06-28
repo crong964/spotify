@@ -38,7 +38,7 @@ export default function Audio(params: Audio) {
 
   return (
     <div className="col-span-full sm:col-span-2 flex flex-col space-y-0 sm:space-y-2">
-      <div className="hidden sm:flex space-x-9 justify-center items-center">
+      <div title="ngẫu nhiên" className="hidden sm:flex space-x-9 justify-center items-center">
         <button
           onClick={() => {
             dispatch(RandomSong());
@@ -174,7 +174,7 @@ function ModPlay() {
   switch (modplay) {
     case 2:
       chilred = (
-        <ButtonModPlay>
+        <ButtonModPlay title="lặp lại 1 bài hát mãi mãi">
           <svg
             aria-hidden="true"
             viewBox="0 0 16 16"
@@ -188,7 +188,7 @@ function ModPlay() {
       break;
     case 1:
       chilred = (
-        <ButtonModPlay>
+        <ButtonModPlay title="lặp lại danh sách phát">
           <svg
             data-encore-id="icon"
             role="img"
@@ -203,7 +203,7 @@ function ModPlay() {
       break;
     default:
       chilred = (
-        <ButtonModPlay>
+        <ButtonModPlay title="không lặp">
           <svg
             data-encore-id="icon"
             role="img"
@@ -222,12 +222,14 @@ function ModPlay() {
 
 interface iButtonModPlay {
   children: React.JSX.Element;
+  title: string;
 }
 
 function ButtonModPlay(params: iButtonModPlay) {
   const dispatch = useDispatch();
   return (
     <button
+      title={params.title}
       onClick={() => {
         dispatch(SetModPlay());
       }}

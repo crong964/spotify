@@ -63,7 +63,7 @@ app.use((req, res, next) => {
     next();
 });
 app.use("/static", express.static(path.join(process.cwd(), "web", "static")))
-app.use("/public", express.static(path.join(process.cwd(), "public")))
+app.use("/public",express.static(path.join(process.cwd(), "public"), { maxAge: 100000000000 }))
 app.use("/i", express.static(path.join(process.cwd(), "public", "upload")))
 app.get("/swagger", (req, res) => {
     res.sendFile(join(process.cwd(), "web/swagger.html"))

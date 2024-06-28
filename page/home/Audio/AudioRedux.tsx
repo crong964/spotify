@@ -65,8 +65,12 @@ const audioSlice = createSlice({
     },
     RandomSong: (state) => {
       state.random = !state.random;
+      let newSongList: any[] = [];
+
+      newSongList.push(state.lsSong[state.mark]);
+      state.lsSong.splice(state.mark, 1);
+      
       state.mark = 0;
-      var newSongList: any[] = [];
       while (state.lsSong.length > 0) {
         let i = parseInt(`${(Math.random() * 100) % state.lsSong.length}`);
 

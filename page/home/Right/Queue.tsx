@@ -126,10 +126,23 @@ function SongQueueInplayList(p: MenberQueue) {
     <>
       {p.cur == p.type ? (
         <>
-          <div className="px-2">Đang phát từ</div>
+          <div className="px-2">Đang phát </div>
+          {
+            <Song
+              onClick={() => {
+                dispatch(JumpingSong(lsSong[mark].Id));
+              }}
+              image={lsSong[mark].SongImage}
+              name={lsSong[mark].SongName}
+              singer={lsSong[mark].Singer}
+              Id={lsSong[mark].Id}
+              key={lsSong[mark].Id}
+            ></Song>
+          }
+          <div className="px-2">Tiếp theo </div>
           {lsSong
             .filter((v, i) => {
-              return mark <= i;
+              return mark < i;
             })
             .map((v) => {
               return (
