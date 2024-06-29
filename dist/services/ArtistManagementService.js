@@ -36,6 +36,13 @@ class ArtistManagementService {
             return this.Setls(check);
         });
     }
+    GetWithout(start, count) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var sql = `SELECT * FROM user WHERE id NOT IN (SELECT idArtist FROM artistmanagement) AND Vertify = 1 LIMIT ?,?`;
+            var check = yield Config_1.default.query(sql, [start, count]);
+            return this.Setls(check);
+        });
+    }
     Setls(ls) {
         if (ls == undefined) {
             return [];

@@ -75,7 +75,18 @@ class ArtistManagementController {
         })
     }
     async GetAll(req: Request, res: Response) {
-        let ls = await ArtistManagementController.artistManagement.GetAll(0, 10)
+        let start = req.body.start || 0
+        let count = (req.body.page || 1) * 10
+        let ls = await ArtistManagementController.artistManagement.GetAll(start, count)
+        res.json({
+            ls: ls,
+            err: false
+        })
+    }
+    async GetWithout(req: Request, res: Response) {
+        let start = req.body.start || 0
+        let count = (req.body.page || 1) * 10
+        let ls = await ArtistManagementController.artistManagement.GetWithout(start, count)
         res.json({
             ls: ls,
             err: false

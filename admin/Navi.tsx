@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Page, RootState } from "./Redux";
 import Dropdown from "./componnt/Dropdow";
 import { NavLink, Outlet } from "react-router-dom";
+import { ArtistIcon, GenresIcon, HumanIcon, SongIcon } from "../icon/Icon";
 
 export default function Navi() {
   const dispatch = useDispatch();
@@ -23,7 +24,7 @@ export default function Navi() {
             )
           }
         >
-          <i className="fas fa-tachometer-alt mr-3"></i>
+          <SongIcon className="size-6 fill-white mr-3" />
           Danh sách nhạc
         </NavLink>
         <NavLink
@@ -35,7 +36,7 @@ export default function Navi() {
             )
           }
         >
-          <i className="fas fa-sticky-note mr-3"></i>
+          <GenresIcon className="size-6 fill-white mr-3" />
           Thê loại
         </NavLink>
 
@@ -71,7 +72,7 @@ export default function Navi() {
         </Dropdown>
         <Dropdown>
           <div className="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item cursor-pointer">
-            <svg
+            {/* <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
               fill="currentColor"
@@ -82,7 +83,8 @@ export default function Navi() {
                 d="M19.952 1.651a.75.75 0 0 1 .298.599V16.303a3 3 0 0 1-2.176 2.884l-1.32.377a2.553 2.553 0 1 1-1.403-4.909l2.311-.66a1.5 1.5 0 0 0 1.088-1.442V6.994l-9 2.572v9.737a3 3 0 0 1-2.176 2.884l-1.32.377a2.553 2.553 0 1 1-1.402-4.909l2.31-.66a1.5 1.5 0 0 0 1.088-1.442V5.25a.75.75 0 0 1 .544-.721l10.5-3a.75.75 0 0 1 .658.122Z"
                 clipRule="evenodd"
               />
-            </svg>
+            </svg> */}
+            <ArtistIcon className="size-6 fill-white  mr-3" />
             Danh sách ca sĩ
           </div>
           <NavLink
@@ -100,18 +102,7 @@ export default function Navi() {
         </Dropdown>
         <Dropdown>
           <div className="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item cursor-pointer">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              className="w-6 h-6 mr-3"
-            >
-              <path
-                fillRule="evenodd"
-                d="M7.5 6a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0ZM3.751 20.105a8.25 8.25 0 0 1 16.498 0 .75.75 0 0 1-.437.695A18.683 18.683 0 0 1 12 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 0 1-.437-.695Z"
-                clipRule="evenodd"
-              />
-            </svg>
+            <HumanIcon className="size-6 fill-white mr-3" />
             Danh sách tài khoản
           </div>
           <NavLink

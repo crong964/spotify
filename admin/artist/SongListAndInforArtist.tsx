@@ -44,6 +44,12 @@ export default function SongListAndInforArtist() {
   return (
     <>
       <div className="flex space-x-5 my-4">
+        <Link
+          className="rounded-xl px-3 py-2 bg-blue-400 hover:bg-blue-500 text-white"
+          to={"/artist"}
+        >
+          Danh sách ca sĩ
+        </Link>
         <button
           className="rounded-xl px-3 py-2 bg-blue-400 hover:bg-blue-500 text-white"
           onClick={() => {

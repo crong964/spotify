@@ -12,6 +12,7 @@ const upload = (0, multer_1.default)({ storage: memory })
     .fields([{ name: "Banner", maxCount: 1 }, { name: "pathImage", maxCount: 1 }]);
 ArtistManagementRoute.post("/add", upload, ArtistManagementController_1.default.Add);
 ArtistManagementRoute.post("/", ArtistManagementController_1.default.GetAll);
+ArtistManagementRoute.post("/getWithout", ArtistManagementController_1.default.GetWithout);
 ArtistManagementRoute.post("/Get", ArtistManagementController_1.default.Get);
 ArtistManagementRoute.post("/VertifyArtist", ArtistManagementController_1.default.VertifyArtist);
 ArtistManagementRoute.post("/update", upload, ArtistManagementController_1.default.Update);

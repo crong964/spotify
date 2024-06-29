@@ -17,6 +17,11 @@ class ArtistManagementService {
         var check = await Mysql2.query(sql, [start, count])
         return this.Setls(check)
     }
+    async GetWithout(start: number, count: number) {
+        var sql = `SELECT * FROM user WHERE id NOT IN (SELECT idArtist FROM artistmanagement) AND Vertify = 1 LIMIT ?,?`
+        var check = await Mysql2.query(sql, [start, count])
+        return this.Setls(check)
+    }
     Setls(ls: any) {
         if (ls == undefined) {
             return []

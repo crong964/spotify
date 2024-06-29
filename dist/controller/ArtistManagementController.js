@@ -75,7 +75,20 @@ class ArtistManagementController {
     }
     GetAll(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            let ls = yield ArtistManagementController.artistManagement.GetAll(0, 10);
+            let start = req.body.start || 0;
+            let count = (req.body.page || 1) * 10;
+            let ls = yield ArtistManagementController.artistManagement.GetAll(start, count);
+            res.json({
+                ls: ls,
+                err: false
+            });
+        });
+    }
+    GetWithout(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let start = req.body.start || 0;
+            let count = (req.body.page || 1) * 10;
+            let ls = yield ArtistManagementController.artistManagement.GetWithout(start, count);
             res.json({
                 ls: ls,
                 err: false

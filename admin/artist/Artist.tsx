@@ -29,14 +29,41 @@ export default function Artist() {
 
   return (
     <div>
-      <button
-        onClick={() => {
-          navigate("/artist/add");
-        }}
-        className="px-3 py-2 bg-blue-400 text-white hover:bg-blue-500 rounded-lg my-4"
-      >
-        Thêm tài khoản
-      </button>
+      <div className="flex space-x-3 my-4">
+        <button
+          onClick={() => {
+            navigate("/artist/add");
+          }}
+          className="px-3 py-2 bg-blue-400 text-white hover:bg-blue-500 rounded-lg "
+        >
+          Thêm tài khoản
+        </button>
+        <button
+          onClick={() => {
+            post("/admin/artist/getWithout", {}, (v: any) => {
+              if (v && v.err != undefined && !v.err) {
+                SetLs(v.ls);
+              }
+            });
+          }}
+          className="px-3 py-2 bg-blue-400 text-white hover:bg-blue-500 rounded-lg "
+        >
+          Danh sách ca sĩ ngoài
+        </button>
+        <button
+          onClick={() => {
+            post("/admin/artist/", {}, (v: any) => {
+              if (v && v.err != undefined && !v.err) {
+                SetLs(v.ls);
+              }
+            });
+          }}
+          className="px-3 py-2 bg-blue-400 text-white hover:bg-blue-500 rounded-lg "
+        >
+          Danh sách ca sĩ
+        </button>
+      </div>
+
       <table className="table-auto w-full">
         <thead>
           <tr>
@@ -62,7 +89,7 @@ export default function Artist() {
             return (
               <tr key={v.id}>
                 <th scope="col" className="px-6 py-3 ">
-                  {i}
+                  {i + 1}
                 </th>
                 <th scope="col" className="px-6 py-3">
                   <img className="size-[100px]" src={v.pathImage} alt="" />
@@ -157,7 +184,7 @@ export function AddArtist() {
     <>
       <button
         onClick={() => {
-          navigate("/user/artist/");
+          navigate("/artist/");
         }}
         className="px-3 py-2 bg-blue-400 text-white hover:bg-blue-500 rounded-lg my-4"
       >

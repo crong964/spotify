@@ -10,6 +10,7 @@ const upload = multer({ storage: memory })
 
 ArtistManagementRoute.post("/add", upload, artistManagementController.Add)
 ArtistManagementRoute.post("/", artistManagementController.GetAll)
+ArtistManagementRoute.post("/getWithout", artistManagementController.GetWithout)
 ArtistManagementRoute.post("/Get", artistManagementController.Get)
 ArtistManagementRoute.post("/VertifyArtist", artistManagementController.VertifyArtist)
 ArtistManagementRoute.post("/update", upload, artistManagementController.Update)
