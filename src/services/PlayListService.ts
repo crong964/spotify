@@ -83,9 +83,9 @@ export class PlayListService {
         var sql = `SELECT * FROM playlist where Type='artist' AND status=1 LIMIT ?,?`
         var ls = await Mysql2.query(sql, [start, count])
         return this.SetLs(ls)
-    }
+    } 
     async GetPlayListArtist(User_id: string) {
-        var sql = `SELECT * FROM playlist where User_id=? AND Type="artist"`
+        var sql = `SELECT * FROM playlist where User_id=? AND Type='artist'`
         var ls = await Mysql2.query(sql, [User_id])
         return this.SetLs(ls)[0]
     }

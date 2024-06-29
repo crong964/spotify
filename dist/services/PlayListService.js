@@ -119,7 +119,7 @@ class PlayListService {
     }
     GetPlayListArtist(User_id) {
         return __awaiter(this, void 0, void 0, function* () {
-            var sql = `SELECT * FROM playlist where User_id=? AND Type="artist"`;
+            var sql = `SELECT * FROM playlist where User_id=? AND Type='artist'`;
             var ls = yield Config_1.default.query(sql, [User_id]);
             return this.SetLs(ls)[0];
         });

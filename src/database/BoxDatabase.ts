@@ -6,7 +6,7 @@ export default class BoxDatabase {
     constructor() { }
 
     async getAllBoxById(idUser: string) {
-        var sql = `SELECT u.Name,u.pathImage,idFriend as "idUser", bc.content,bc.id,bc.idBox,bc.boxtype,bc.messType, hb.status
+        var sql = `SELECT u.Name,u.pathImage,idFriend as 'idUser', bc.content,bc.id,bc.idBox,bc.boxtype,bc.messType, hb.status
             FROM havelistboxchat hb, boxchat bc , user u
             WHERE hb.idUser=? AND hb.idBox=bc.idBox AND u.id=hb.idFriend AND hb.status <> 0
             ORDER BY bc.updateDay DESC; `
