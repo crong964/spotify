@@ -99,7 +99,7 @@ app.use("/auth", Account)
 
 
 app.use("/genre", GenreRoute)
-app.use("/playlist", PlayListRoute)
+app.use("/playlist", PlayListRoute)  
 //admin
 app.use("/genre", ADMIN, GenreRouteAdmin)
 app.use("/playlist", ADMIN, PlayListRouteAdmin)

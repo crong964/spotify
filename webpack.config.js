@@ -2,6 +2,8 @@ const path = require('path');
 
 
 module.exports = {
+    mode: 'production', 
+    devtool: 'source-map',
     entry: {
         app: `${process.cwd()}/page/home/App.tsx`,
         dashboard: `${process.cwd()}/page/dashboard/App.tsx`,
