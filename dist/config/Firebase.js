@@ -38,9 +38,13 @@ class Firebase {
     **/
     UploadImageBuffer(name, data) {
         return __awaiter(this, void 0, void 0, function* () {
+            let percentOutput = 100;
+            if (data.length > 40000) {
+                percentOutput = parseInt((40000 / data.length) * 100 + "");
+            }
             return new Promise((res, rea) => {
                 (0, sharp_1.default)(data).
-                    jpeg({ force: true, quality: 10, progressive: true })
+                    jpeg({ force: true, quality: percentOutput, progressive: true })
                     .png({ palette: true, quality: 1, compressionLevel: 9, progressive: true, force: false })
                     .toBuffer((err, buffer, infor) => {
                     if (err) {

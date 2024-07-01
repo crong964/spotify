@@ -26,19 +26,22 @@ class SongAdminController {
     Add(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             var id = req.body.id;
-            var u = yield SongAdminController.user.Get(id);
+            let singer = JSON.parse(req.body.user_id);
+            let check = yield Promise.all(singer.map((v) => __awaiter(this, void 0, void 0, function* () {
+                return yield SongAdminController.user.Get(v.id);
+            })));
+            for (let i = 0; i < check.length; i++) {
+                const element = check[i];
+                if (element == undefined) {
+                    res.json({
+                        err: true,
+                        mess: "ko có ca sĩ này"
+                    });
+                    return;
+                }
+            }
             var song = new SongModel_1.default();
-            if (u == undefined) {
-                res.json({
-                    err: true,
-                    mess: "Không có bài hát này"
-                });
-                return;
-            }
             song.setAll(req.body);
-            if (song.Singer.length == 0) {
-                song.Singer = u.ChanalName;
-            }
             if (req.file != undefined) {
                 try {
                     song.SongImage = (yield Firebase_1.default.UploadImageBuffer(`SongImage/${song.Id}`, req.file.buffer));
@@ -47,10 +50,22 @@ class SongAdminController {
                     console.log(error);
                 }
             }
-            else {
-                song.SongImage = u.pathImage;
-            }
+            let lsPlayListArtist = yield Promise.all(singer.map((v) => __awaiter(this, void 0, void 0, function* () {
+                return yield SongAdminController.playlist.GetPlayListArtist(v.id);
+            })));
+            song.user_id = singer.reduce((s, f, i) => {
+                if (i == singer.length - 1) {
+                    return `${f.id}`;
+                }
+                return `${s}${f.id}@`;
+            }, "");
             var c = yield SongAdminController.song.Update(song);
+            lsPlayListArtist.map((v) => __awaiter(this, void 0, void 0, function* () {
+                let con = new ContainModel_1.default();
+                con.PlayList_id = v.id;
+                con.Song_id = song.Id;
+                return yield SongAdminController.contain.Add(con);
+            }));
             if (c) {
                 res.json({
                     err: false
@@ -133,10 +148,19 @@ class SongAdminController {
         return __awaiter(this, void 0, void 0, function* () {
             var song = new SongModel_1.default();
             song.setAll(req.body);
-            var id = req.body.user_id;
-            var u = yield SongAdminController.user.Get(id);
+            // song.user_id == Đen Vâu@123@Min@123
+            let singer = JSON.parse(req.body.user_id);
+            let lsPlayListArtist = yield Promise.all(singer.map((v) => __awaiter(this, void 0, void 0, function* () {
+                return yield SongAdminController.playlist.GetPlayListArtist(v.id);
+            })));
+            song.user_id = singer.reduce((s, f, i) => {
+                if (i == singer.length - 1) {
+                    return `${s}${f.ChanalName}@${f.id}`;
+                }
+                return `${s}${f.ChanalName}@${f.id}@`;
+            }, "");
             var oldsong = yield SongAdminController.song.Get(song.Id);
-            if (u == undefined || oldsong == undefined) {
+            if (oldsong == undefined) {
                 res.json({
                     err: true
                 });
@@ -153,6 +177,12 @@ class SongAdminController {
                 }
             }
             var c = yield SongAdminController.song.Update(song);
+            lsPlayListArtist.map((v) => __awaiter(this, void 0, void 0, function* () {
+                let con = new ContainModel_1.default();
+                con.PlayList_id = v.id;
+                con.Song_id = song.Id;
+                return yield SongAdminController.contain.Add(con);
+            }));
             if (c) {
                 res.json({
                     err: false

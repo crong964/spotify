@@ -27,7 +27,7 @@ const storageSongFile = multer.diskStorage({
 
 async function isArtist(req: Request, res: Response, next: NextFunction) {
     var s = await userService.Get(req.cookies.id)
-    if (s == undefined || s.Vertify == 0) {
+    if (s == undefined || s.Vertify =="0") {
         res.json({
             err: true,
             mess: "bạn không phải nghệ sĩ"

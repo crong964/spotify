@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { get, post } from "../../page/config/req";
 
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, SongListAndInforArtistPage } from "../Redux";
 import IndexGenres from "../GenreLs";
 import { useParams } from "react-router-dom";
+import useSelectedArtist from "./Handlle";
 
 type Genre = {
   Id: string;
@@ -22,12 +23,15 @@ type Song = {
   description: string;
   PublicTime: string;
   filePath: string;
+  user_id: string;
 };
 
 type SongEidt = {
   idSong: string;
 };
 export default function SongEdit() {
+  const name = useRef<HTMLInputElement>(null);
+  const data = useSelectedArtist();
   const [conut, SetConut] = useState(0);
   const [file, SetFile] = useState<File>();
   const { idArtist } = useParams();
@@ -40,6 +44,7 @@ export default function SongEdit() {
     PublicTime: "",
     filePath: "",
     Singer: "",
+    user_id: "",
   });
   const slectGenre = useSelector((state: RootState) => state.navi.slectGenre);
   const floor = useSelector((state: RootState) => state.navi.floor);
@@ -47,7 +52,6 @@ export default function SongEdit() {
     (state: RootState) => state.navi.songListAndInforArtist
   );
   const idSong = useSelector((state: RootState) => state.navi.idSong);
-  const dispatch = useDispatch();
   useEffect(() => {
     post("/admin/song/get", { idsong: idSong }, (v: any) => {
       if (v.err != undefined && !v.err) {
@@ -86,18 +90,113 @@ export default function SongEdit() {
             />
           </div>
           <div>Ca sĩ</div>
-          <div>
+          {data.SelectedSingers.length > 0 ? (
+            <div className="w-full">
+              {data.SelectedSingers.map((v) => {
+                return (
+                  <div
+                    key={v.id}
+                    className="flex items-center space-x-4 my-2 p-2 cursor-pointer"
+                    onClick={() => {
+                      if (!confirm("bạn muốn xóa không")) {
+                        return;
+                      }
+                      data.SetSelectedSingers([
+                        ...data.SelectedSingers.filter((d) => {
+                          return v.id != d.id;
+                        }),
+                      ]);
+                    }}
+                  >
+                    <img
+                      src={v.pathImage}
+                      alt=""
+                      className="size-[3.6rem] rounded-full"
+                    />
+                    <div>{v.ChanalName}</div>
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <></>
+          )}
+          <div className="relative flex">
             <input
+              ref={name}
               onChange={(e) => {
-                SetSong({
-                  ...song,
-                  Singer: e.currentTarget.value,
-                });
+                let v = e.currentTarget.value;
+                if (v.length < 0) {
+                  return;
+                }
+                data.SetP(e.currentTarget.value);
               }}
               type="text"
-              value={song.Singer}
-              className="border-2 border-[#404040] rounded-lg p-2 w-full"
+              className="rounded-lg p-2 flex-1 focus:outline-none"
             />
+
+            {data.singers.length > 0 ? (
+              <div className="absolute top-full left-0 bg-black overflow-y-scroll text-white h-[300px] w-full">
+                {data.singers.map((v) => {
+                  return (
+                    <div
+                      key={v.id}
+                      className="flex items-center space-x-4 my-2 p-2 hover:bg-[#222222] cursor-pointer"
+                      onClick={() => {
+                        data.SetSelectedSingers([
+                          ...data.SelectedSingers,
+                          {
+                            ChanalName: v.ChanalName,
+                            id: v.id,
+                            pathImage: v.pathImage,
+                          },
+                        ]);
+                        data.Setsingers([]);
+                        if (name.current != null) {
+                          name.current.value = "";
+                        }
+                      }}
+                    >
+                      <img
+                        src={v.pathImage}
+                        alt=""
+                        className="size-[3.6rem] rounded-full"
+                      />
+                      <div>{v.ChanalName}</div>
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <>
+                {name.current != null && name.current.value.length > 0 ? (
+                  <button
+                    onClick={() => {
+                      post(
+                        "/admin/artist/addQickly",
+                        {
+                          Name: name.current?.value,
+                          ChanalName: name.current?.value,
+                        },
+                        (v: any) => {
+                          if (v && v.data) {
+                            data.SetSelectedSingers([
+                              ...data.SelectedSingers,
+                              v.data,
+                            ]);
+                          }
+                        }
+                      );
+                    }}
+                    className="px-3 py-1 bg-blue-400 hover:bg-blue-500"
+                  >
+                    Thêm
+                  </button>
+                ) : (
+                  <></>
+                )}
+              </>
+            )}
           </div>
           <div>Ngày phát hành</div>
           <div>
@@ -228,9 +327,11 @@ export default function SongEdit() {
           <div className="flex justify-end">
             <div
               onClick={() => {
-                if (idArtist == undefined) {
+                if (data.SelectedSingers.length <= 0) {
+                  alert("chưa chọn nghệ sĩ");
                   return;
                 }
+                let user_id = JSON.stringify(data.SelectedSingers);
                 if (floor == 0) {
                   alert("chưa chọn thể loại");
                   return;
@@ -243,7 +344,6 @@ export default function SongEdit() {
                 }
                 var form = new FormData();
 
-               
                 const myObj: { [key: string]: any } = song;
 
                 for (const key in myObj) {
@@ -253,7 +353,7 @@ export default function SongEdit() {
                 if (file != undefined) {
                   form.set("avatar", file);
                 }
-                form.set("id", idArtist);
+                form.set("user_id", user_id);
                 post("/admin/song/update", form, (v: any) => {
                   if (!v.err) {
                     alert("tc");

@@ -23,8 +23,8 @@ export class SongService {
         return song
     }
     async GetAll(user_id: string) {
-        var check
-        check = await this.songDatabase.GetAll(user_id) as []
+        var sql = ` SELECT song.* FROM song,playlist,contain WHERE playlist.user_id=? AND playlist.Type='artist' AND contain.Song_ID=song.Id AND contain.PlayList_id=playlist.id `
+        var check = await Mysql2.query(sql, [user_id])
         var ls: SongModel[] = this.SetLs(check)
         return ls
     }
@@ -35,12 +35,10 @@ export class SongService {
         return check
     }
     async Update(d: SongModel) {
-
-
-        var sql = `UPDATE song Set genre_id =?,SongName=?, Duration=?, publicDate=?, description=?,SongImage=?, Singer=?
+        var sql = `UPDATE song Set genre_id =?,SongName=?, Duration=?, publicDate=?, description=?,SongImage=?, Singer=?,user_id=?
         WHERE Id =?`
         var check
-        check = await Mysql2.query(sql, [d.Genre_id, d.SongName, d.Duration, d.publicDate, d.description, d.SongImage, d.Singer, d.Id])
+        check = await Mysql2.query(sql, [d.Genre_id, d.SongName, d.Duration, d.publicDate, d.description, d.SongImage, d.Singer, d.user_id, d.Id])
         return check
     }
     async UpStatus(d: SongModel) {
@@ -93,6 +91,7 @@ export class SongService {
         }
         return ls
     }
+
 }
 
 var songDatabase = new SongDatabase()

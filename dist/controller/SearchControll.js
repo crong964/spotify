@@ -20,7 +20,7 @@ const PlayListService_1 = __importDefault(require("../services/PlayListService")
 class SearchControll {
     constructor() {
     }
-    SearchNameArtist(req, res) {
+    SearchNameArtistAndSong(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             var name = req.body.name;
             var id = req.cookies.id;
@@ -53,6 +53,23 @@ class SearchControll {
                 err: false,
                 friend: ls[0],
                 orther: ls[1]
+            });
+        });
+    }
+    SearchNameArtist(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var name = req.body.name;
+            if (!name || name.length <= 0) {
+                res.json({
+                    err: false,
+                    ls: []
+                });
+                return;
+            }
+            var ls = yield SearchControll.user.SearchNameArtist(name);
+            res.json({
+                err: false,
+                ls: ls
             });
         });
     }

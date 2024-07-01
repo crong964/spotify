@@ -11,6 +11,7 @@ const memory = multer_1.default.memoryStorage();
 const upload = (0, multer_1.default)({ storage: memory })
     .fields([{ name: "Banner", maxCount: 1 }, { name: "pathImage", maxCount: 1 }]);
 ArtistManagementRoute.post("/add", upload, ArtistManagementController_1.default.Add);
+ArtistManagementRoute.post("/addQickly", ArtistManagementController_1.default.AddQickly);
 ArtistManagementRoute.post("/", ArtistManagementController_1.default.GetAll);
 ArtistManagementRoute.post("/getWithout", ArtistManagementController_1.default.GetWithout);
 ArtistManagementRoute.post("/Get", ArtistManagementController_1.default.Get);

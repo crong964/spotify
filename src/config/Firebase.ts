@@ -30,9 +30,13 @@ class Firebase {
     https://firebasestorage.googleapis.com/v0/b/supple-league-394102.appspot.com/o/g%2Fa.png?alt=media&token=51ef5ff0-f858-4adc-a7f5-9bba021c0131
     **/
     async UploadImageBuffer(name: string, data: Buffer) {
+        let percentOutput = 100
+        if (data.length > 40000) {
+            percentOutput = parseInt((40000 / data.length) * 100 + "")
+        }
         return new Promise((res, rea) => {
             sharp(data).
-                jpeg({ force: true, quality: 10, progressive: true })
+                jpeg({ force: true, quality: percentOutput, progressive: true })
                 .png({ palette: true, quality: 1, compressionLevel: 9, progressive: true, force: false })
                 .toBuffer((err, buffer, infor) => {
                     if (err) {

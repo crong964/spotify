@@ -73,6 +73,38 @@ class ArtistManagementController {
             });
         });
     }
+    AddQickly(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let id = `artist-${(0, crypto_1.randomUUID)()}`;
+            let user = new UserModel_1.default();
+            let d = new PlayListModel_1.PlayListModel();
+            user.setAll(req.body);
+            user.id = id;
+            d.User_id = user.id;
+            d.ImagePath = user.pathImage;
+            d.id = `artists-${(0, uuid_1.v4)()}-${Date.now()}`;
+            user.Vertify = "1";
+            d.Status = "0";
+            d.PlayListName = user.ChanalName;
+            try {
+                yield Promise.all([
+                    ArtistManagementController.user.Add(user),
+                    ArtistManagementController.artistManagement.Add(id),
+                    ArtistManagementController.playlist.AddArtists(d)
+                ]);
+            }
+            catch (error) {
+                console.log(error);
+            }
+            res.json({
+                err: false,
+                data: {
+                    id: user.id,
+                    ChanalName: user.ChanalName
+                }
+            });
+        });
+    }
     GetAll(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             let start = req.body.start || 0;
@@ -125,12 +157,16 @@ class ArtistManagementController {
                 try {
                     if (files["Banner"]) {
                         let BannerFile = files["Banner"][0];
-                        yield Firebase_1.default.MoveImage(`Banner/${id}`, `delete/Banner/${id}_${date}`);
+                        if (old.Banner.length > 0) {
+                            yield Firebase_1.default.MoveImage(`Banner/${id}`, `delete/Banner/${id}_${date}`);
+                        }
                         user.Banner = (yield Firebase_1.default.UploadImageBuffer(`Banner/${id}`, BannerFile.buffer));
                     }
                     if (files["pathImage"]) {
                         let pathImageFile = files["pathImage"][0];
-                        yield Firebase_1.default.MoveImage(`PathImageFile/${id}`, `delete/PathImageFile/${id}_${date}`);
+                        if (old.pathImage.length > 0) {
+                            yield Firebase_1.default.MoveImage(`PathImageFile/${id}`, `delete/PathImageFile/${id}_${date}`);
+                        }
                         user.pathImage = (yield Firebase_1.default.UploadImageBuffer(`PathImageFile/${id}`, pathImageFile.buffer));
                     }
                 }

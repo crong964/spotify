@@ -37,8 +37,8 @@ class LikedSongService {
         return __awaiter(this, void 0, void 0, function* () {
             var sql = `SELECT song.Id, song.SongName,song.SongImage, song.Singer,song.Viewer,song.Duration,likedsong.liked ,song.filePath
         FROM song LEFT JOIN likedsong ON song.Id = likedsong.Id and likedsong.id_user_liked=? 
-        WHERE song.user_id=? And song.status = 1;`;
-            var check = yield Config_1.default.query(sql, [d.id_user_liked, d.user_id]);
+        WHERE song.user_id like ? And song.status = 1;`;
+            var check = yield Config_1.default.query(sql, [d.id_user_liked, `%${d.user_id}%`]);
             return this.SetLs(check);
         });
     }

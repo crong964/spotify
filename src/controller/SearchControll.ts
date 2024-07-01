@@ -13,7 +13,7 @@ class SearchControll {
     constructor() {
 
     }
-    async SearchNameArtist(req: Request, res: Response) {
+    async SearchNameArtistAndSong(req: Request, res: Response) {
         var name = req.body.name
         var id = req.cookies.id
         var ls = await Promise.all([SearchControll.likedSong.SearchName(name, id),
@@ -44,6 +44,21 @@ class SearchControll {
             err: false,
             friend: ls[0],
             orther: ls[1]
+        })
+    }
+    async SearchNameArtist(req: Request, res: Response) {
+        var name = req.body.name
+        if (!name || name.length <= 0) {
+            res.json({
+                err: false,
+                ls: []
+            })
+            return
+        }
+        var ls = await SearchControll.user.SearchNameArtist(name)
+        res.json({
+            err: false,
+            ls: ls
         })
     }
 }

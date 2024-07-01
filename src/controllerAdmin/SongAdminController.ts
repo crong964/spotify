@@ -11,7 +11,11 @@ import playListService, { PlayListService } from "../services/PlayListService";
 import containService, { ContainService } from "../services/ContainService";
 import ContainModel from "../model/ContainModel";
 import firebase from "../config/Firebase";
-
+type singer = {
+    id: string;
+    ChanalName: string;
+    pathImage: string;
+};
 
 class SongAdminController {
     static song: SongService = songService
@@ -20,19 +24,25 @@ class SongAdminController {
     static contain: ContainService = containService
     async Add(req: Request, res: Response) {
         var id = req.body.id
-        var u = await SongAdminController.user.Get(id)
+        let singer: singer[] = JSON.parse(req.body.user_id)
+
+        let check = await Promise.all(singer.map(async (v) => {
+            return await SongAdminController.user.Get(v.id)
+        }))
+        for (let i = 0; i < check.length; i++) {
+            const element = check[i];
+            if (element == undefined) {
+                res.json({
+                    err: true,
+                    mess: "ko có ca sĩ này"
+                })
+                return
+            }
+        }
         var song = new SongModel()
-        if (u == undefined) {
-            res.json({
-                err: true,
-                mess: "Không có bài hát này"
-            })
-            return
-        }
+
         song.setAll(req.body)
-        if (song.Singer.length == 0) {
-            song.Singer = u.ChanalName
-        }
+
         if (req.file != undefined) {
             try {
                 song.SongImage = await firebase.UploadImageBuffer(`SongImage/${song.Id}`, req.file.buffer) as string
@@ -41,10 +51,26 @@ class SongAdminController {
 
             }
         }
-        else {
-            song.SongImage = u.pathImage
-        }
+
+
+
+        let lsPlayListArtist = await Promise.all(singer.map(async (v) => {
+            return await SongAdminController.playlist.GetPlayListArtist(v.id)
+        }))
+
+        song.user_id = singer.reduce((s, f, i) => {
+            if (i == singer.length - 1) {
+                return `${f.id}`
+            }
+            return `${s}${f.id}@`
+        }, "")
         var c = await SongAdminController.song.Update(song)
+        lsPlayListArtist.map(async (v) => {
+            let con = new ContainModel()
+            con.PlayList_id = v.id
+            con.Song_id = song.Id
+            return await SongAdminController.contain.Add(con)
+        })
         if (c) {
             res.json({
                 err: false
@@ -117,6 +143,7 @@ class SongAdminController {
         var id = req.body.idArtist
         var ls = await SongAdminController.song.GetAll(id)
         var u = await SongAdminController.user.Get(id)
+
         res.json({
             err: u == undefined,
             ls: ls,
@@ -126,17 +153,31 @@ class SongAdminController {
     async Update(req: Request, res: Response) {
         var song = new SongModel();
         song.setAll(req.body);
-        var id = req.body.user_id
-        var u = await SongAdminController.user.Get(id)
+        // song.user_id == Đen Vâu@123@Min@123
+
+        let singer: singer[] = JSON.parse(req.body.user_id)
+
+        let lsPlayListArtist = await Promise.all(singer.map(async (v) => {
+            return await SongAdminController.playlist.GetPlayListArtist(v.id)
+        }))
+
+        song.user_id = singer.reduce((s, f, i) => {
+            if (i == singer.length - 1) {
+                return `${s}${f.ChanalName}@${f.id}`
+            }
+            return `${s}${f.ChanalName}@${f.id}@`
+        }, "")
+
         var oldsong = await SongAdminController.song.Get(song.Id)
-        if (u == undefined || oldsong == undefined) {
+        if (oldsong == undefined) {
             res.json({
                 err: true
             })
             return
         }
-        
-        
+
+
+
         let d = Date.now() + ""
         if (req.file != undefined) {
             try {
@@ -149,6 +190,12 @@ class SongAdminController {
         }
 
         var c = await SongAdminController.song.Update(song)
+        lsPlayListArtist.map(async (v) => {
+            let con = new ContainModel()
+            con.PlayList_id = v.id
+            con.Song_id = song.Id
+            return await SongAdminController.contain.Add(con)
+        })
         if (c) {
             res.json({
                 err: false

@@ -2,7 +2,7 @@ import BaseModel from "./BaseModel";
 
 class UserModel extends BaseModel {
     id: string
-    Vertify: number
+    Vertify: string
     Nationality: string
     ChanalName: string
     Name: string
@@ -17,7 +17,7 @@ class UserModel extends BaseModel {
         this.RefeshToken = ""
         this.Name = ""
         this.id = ""
-        this.Vertify = 0
+        this.Vertify = "0"
         this.Nationality = ""
         this.ChanalName = ""
         this.description = ""
@@ -27,8 +27,6 @@ class UserModel extends BaseModel {
     }
     setAll(d: any): void {
         super.setAll(d)
-        this.pathImage = this.pathImage || "/public/avatar/avatar.jpg"
-        this.pathImage = this.pathImage.indexOf("http") >= 0 ? this.pathImage : `${this.pathImage}`
     }
 }
 

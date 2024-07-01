@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { get, post } from "../../page/config/req";
 
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../Redux";
 import IndexGenres from "../GenreLs";
 import { useParams } from "react-router-dom";
+import { ImageIcon, MusicIcon } from "../../icon/Icon";
+import useSelectedArtist from "./Handlle";
 
 type Genre = {
   Id: string;
@@ -24,11 +26,13 @@ type Song = {
   filePath: string;
 };
 export default function SongForm() {
+  const name = useRef<HTMLInputElement>(null);
   const [conut, SetConut] = useState(0);
   const [file, SetFile] = useState<File>();
   const [total, SetTotal] = useState(0);
   const [finsih, SetFish] = useState(false);
   const { idArtist } = useParams();
+  const data = useSelectedArtist();
   const [song, SetSong] = useState<Song>({
     Id: "",
     SongImage: "",
@@ -81,6 +85,7 @@ export default function SongForm() {
       SetFish(true);
     }
   }
+
   return (
     <>
       {songListAndInforArtist == "add" ? (
@@ -111,18 +116,87 @@ export default function SongForm() {
             />
           </div>
           <div>Ca sĩ</div>
-          <div>
+          {data.SelectedSingers.length > 0 ? (
+            <div className="w-full">
+              {data.SelectedSingers.map((v) => {
+                return (
+                  <div
+                    key={v.id}
+                    className="flex items-center space-x-4 my-2 p-2 cursor-pointer"
+                    onClick={() => {
+                      if (!confirm("bạn muốn xóa không")) {
+                        return;
+                      }
+                      data.SetSelectedSingers([
+                        ...data.SelectedSingers.filter((d) => {
+                          return v.id != d.id;
+                        }),
+                      ]);
+                    }}
+                  >
+                    <img
+                      src={v.pathImage}
+                      alt=""
+                      className="size-[3.6rem] rounded-full"
+                    />
+                    <div>{v.ChanalName}</div>
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <></>
+          )}
+          <div className="relative ">
             <input
+              ref={name}
               onChange={(e) => {
-                SetSong({
-                  ...song,
-                  Singer: e.currentTarget.value,
-                });
+                let v = e.currentTarget.value;
+                if (v.length < 0) {
+                  return;
+                }
+                data.SetP(e.currentTarget.value);
               }}
               type="text"
-              className="border-2 border-[#404040] rounded-lg p-2 w-full"
+              className="border-2 border-[#404040] rounded-lg p-2 w-full focus:outline-none"
             />
+            {data.singers.length > 0 ? (
+              <div className="absolute top-full left-0 bg-black overflow-y-scroll text-white h-[300px] w-full">
+                {data.singers.map((v) => {
+                  return (
+                    <div
+                      key={v.id}
+                      className="flex items-center space-x-4 my-2 p-2 hover:bg-[#222222] cursor-pointer"
+                      onClick={() => {
+                        data.SetSelectedSingers([
+                          ...data.SelectedSingers,
+                          {
+                            ChanalName: v.ChanalName,
+                            id: v.id,
+                            pathImage: v.pathImage,
+                          },
+                        ]);
+                        data.Setsingers([]);
+                        if (name.current != null) {
+                          name.current.value = "";
+                        }
+                      }}
+                    >
+                      <img
+                        src={v.pathImage}
+                        alt=""
+                        className="size-[3.6rem] rounded-full"
+                      />
+                      <div>{v.ChanalName}</div>
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <></>
+            )}
           </div>
+
           <div>Ngày phát hành</div>
           <div>
             <input
@@ -161,20 +235,7 @@ export default function SongForm() {
               >
                 <div className="w-full">
                   {song.SongImage == "" ? (
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="white"
-                      viewBox="0 0 24 24"
-                      strokeWidth="1.5"
-                      stroke="currentColor"
-                      className="size-1/3"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
-                      />
-                    </svg>
+                    <ImageIcon className="size-1/3" />
                   ) : (
                     <div>
                       <div
@@ -215,20 +276,7 @@ export default function SongForm() {
               <div>Nhạc</div>
               <label htmlFor="music">
                 <div className="w-full">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="white"
-                    viewBox="0 0 24 24"
-                    strokeWidth="1.5"
-                    stroke="currentColor"
-                    className="w-1/3"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="m9 9 10.5-3m0 6.553v3.75a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 1 1-.99-3.467l2.31-.66a2.25 2.25 0 0 0 1.632-2.163Zm0 0V2.25L9 5.25v10.303m0 0v3.75a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 0 1-.99-3.467l2.31-.66A2.25 2.25 0 0 0 9 15.553Z"
-                    />
-                  </svg>
+                  <MusicIcon className="w-1/3 fill-white"></MusicIcon>
                 </div>
                 {!finsih ? (
                   <>
@@ -282,19 +330,16 @@ export default function SongForm() {
           <div className="flex justify-end">
             <div
               onClick={() => {
-                if (idArtist == undefined) {
+                if (data.SelectedSingers.length <= 0) {
+                  alert("chưa chọn nghệ sĩ");
                   return;
                 }
+                let user_id = JSON.stringify(data.SelectedSingers);
                 if (floor == 0) {
                   alert("chưa chọn thể loại");
                   return;
                 }
-                if (song.Singer.length <= 0 || song.SongName.length <= 0) {
-                  alert("chưa nhập tên hoặc chưa nhập tên ca sĩ");
-                  if (!confirm("bạn muốn tiếp tục chứ")) {
-                    return;
-                  }
-                }
+               
                 var form = new FormData();
 
                 form.set("Genre_id", slectGenre[floor]);
@@ -309,11 +354,11 @@ export default function SongForm() {
                   alert("chưa có file nhạc");
                   return;
                 }
-                form.set("id", idArtist);
+                form.set("user_id", user_id);
                 post("/admin/song/addSong", form, (v: any) => {
                   if (!v.err) {
                     alert("tc");
-                    window.location.reload()
+                    window.location.reload();
                   } else {
                     alert("loou");
                   }

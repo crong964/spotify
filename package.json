@@ -6,7 +6,7 @@
   "scripts": {
     "start": "run ./dist/server.js",
     "webpack": "npx webpack watch --mode development",
-    "start:dev": "concurrently \" npx webpack watch --mode production \" \" npx tsc -w \" \" nodemon ./dist/server.js \" "
+    "start:dev": "concurrently \" npx webpack watch --mode development \" \" npx tsc -w \" \" nodemon ./dist/server.js \" "
   },
   "author": "",
   "license": "ISC",

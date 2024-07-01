@@ -9,6 +9,7 @@ const upload = multer({ storage: memory })
     .fields([{ name: "Banner", maxCount: 1 }, { name: "pathImage", maxCount: 1 }])
 
 ArtistManagementRoute.post("/add", upload, artistManagementController.Add)
+ArtistManagementRoute.post("/addQickly", artistManagementController.AddQickly)
 ArtistManagementRoute.post("/", artistManagementController.GetAll)
 ArtistManagementRoute.post("/getWithout", artistManagementController.GetWithout)
 ArtistManagementRoute.post("/Get", artistManagementController.Get)

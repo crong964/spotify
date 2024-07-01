@@ -39,8 +39,8 @@ class SongService {
     }
     GetAll(user_id) {
         return __awaiter(this, void 0, void 0, function* () {
-            var check;
-            check = (yield this.songDatabase.GetAll(user_id));
+            var sql = ` SELECT song.* FROM song,playlist,contain WHERE playlist.user_id=? AND playlist.Type='artist' AND contain.Song_ID=song.Id AND contain.PlayList_id=playlist.id `;
+            var check = yield Config_1.default.query(sql, [user_id]);
             var ls = this.SetLs(check);
             return ls;
         });
@@ -55,10 +55,10 @@ class SongService {
     }
     Update(d) {
         return __awaiter(this, void 0, void 0, function* () {
-            var sql = `UPDATE song Set genre_id =?,SongName=?, Duration=?, publicDate=?, description=?,SongImage=?, Singer=?
+            var sql = `UPDATE song Set genre_id =?,SongName=?, Duration=?, publicDate=?, description=?,SongImage=?, Singer=?,user_id=?
         WHERE Id =?`;
             var check;
-            check = yield Config_1.default.query(sql, [d.Genre_id, d.SongName, d.Duration, d.publicDate, d.description, d.SongImage, d.Singer, d.Id]);
+            check = yield Config_1.default.query(sql, [d.Genre_id, d.SongName, d.Duration, d.publicDate, d.description, d.SongImage, d.Singer, d.user_id, d.Id]);
             return check;
         });
     }

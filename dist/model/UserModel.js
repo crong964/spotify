@@ -11,7 +11,7 @@ class UserModel extends BaseModel_1.default {
         this.RefeshToken = "";
         this.Name = "";
         this.id = "";
-        this.Vertify = 0;
+        this.Vertify = "0";
         this.Nationality = "";
         this.ChanalName = "";
         this.description = "";
@@ -20,8 +20,6 @@ class UserModel extends BaseModel_1.default {
     }
     setAll(d) {
         super.setAll(d);
-        this.pathImage = this.pathImage || "/public/avatar/avatar.jpg";
-        this.pathImage = this.pathImage.indexOf("http") >= 0 ? this.pathImage : `${this.pathImage}`;
     }
 }
 exports.default = UserModel;

@@ -18,9 +18,9 @@ export class LikedSongService {
     async GetAllByIduserAndIdArtise(d: LikedSongModel) {
         var sql = `SELECT song.Id, song.SongName,song.SongImage, song.Singer,song.Viewer,song.Duration,likedsong.liked ,song.filePath
         FROM song LEFT JOIN likedsong ON song.Id = likedsong.Id and likedsong.id_user_liked=? 
-        WHERE song.user_id=? And song.status = 1;`
+        WHERE song.user_id like ? And song.status = 1;`
 
-        var check = await Mysql2.query(sql, [d.id_user_liked, d.user_id]);
+        var check = await Mysql2.query(sql, [d.id_user_liked, `%${d.user_id}%`]);
 
         return this.SetLs(check);
     }

@@ -81,8 +81,10 @@ class UserService {
     }
     SearchNameArtist(name) {
         return __awaiter(this, void 0, void 0, function* () {
-            var ls = yield this.userDatabae.SearchNameArtist(name);
-            return this.SetList(ls);
+            var sql = "SELECT * FROM user WHERE user.role ='user' AND Name like ? AND Vertify = 1 ";
+            var check;
+            check = yield Config_1.default.query(sql, [`%${name}%`]);
+            return this.SetList(check);
         });
     }
     Update(d) {

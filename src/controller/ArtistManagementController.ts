@@ -74,6 +74,41 @@ class ArtistManagementController {
             mess: ""
         })
     }
+    async AddQickly(req: Request, res: Response) {
+
+
+        let id = `artist-${randomUUID()}`
+
+        let user = new UserModel()
+        let d = new PlayListModel()
+        user.setAll(req.body)
+        user.id = id
+        d.User_id = user.id
+        d.ImagePath = user.pathImage
+        d.id = `artists-${v4()}-${Date.now()}`
+        user.Vertify = "1"
+        d.Status = "0"
+        d.PlayListName = user.ChanalName
+
+        try {
+            await Promise.all([
+                ArtistManagementController.user.Add(user),
+                ArtistManagementController.artistManagement.Add(id),
+                ArtistManagementController.playlist.AddArtists(d)
+            ])
+        } catch (error) {
+            console.log(error);
+
+        }
+
+        res.json({
+            err: false,
+            data: {
+                id: user.id,
+                ChanalName: user.ChanalName
+            }
+        })
+    }
     async GetAll(req: Request, res: Response) {
         let start = req.body.start || 0
         let count = (req.body.page || 1) * 10
@@ -121,13 +156,17 @@ class ArtistManagementController {
             try {
                 if (files["Banner"]) {
                     let BannerFile = files["Banner"][0] as Express.Multer.File
-                    await firebase.MoveImage(`Banner/${id}`, `delete/Banner/${id}_${date}`)
+                    if (old.Banner.length > 0) {
+                        await firebase.MoveImage(`Banner/${id}`, `delete/Banner/${id}_${date}`)
+                    }
 
                     user.Banner = await firebase.UploadImageBuffer(`Banner/${id}`, BannerFile.buffer) as string
                 }
                 if (files["pathImage"]) {
                     let pathImageFile = files["pathImage"][0] as Express.Multer.File
-                    await firebase.MoveImage(`PathImageFile/${id}`, `delete/PathImageFile/${id}_${date}`)
+                    if (old.pathImage.length > 0) {
+                        await firebase.MoveImage(`PathImageFile/${id}`, `delete/PathImageFile/${id}_${date}`)
+                    }
                     user.pathImage = await firebase.UploadImageBuffer(`PathImageFile/${id}`, pathImageFile.buffer) as string
                 }
             } catch (error) {

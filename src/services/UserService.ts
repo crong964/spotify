@@ -64,8 +64,10 @@ export class UserService {
     }
 
     async SearchNameArtist(name: string) {
-        var ls = await this.userDatabae.SearchNameArtist(name)
-        return this.SetList(ls)
+        var sql = "SELECT * FROM user WHERE user.role ='user' AND Name like ? AND Vertify = 1 "
+        var check
+        check = await Mysql2.query(sql, [`%${name}%`])
+        return this.SetList(check)
     }
     async Update(d: UserModel) {
         var sql = "UPDATE user SET Name=?,Nationality=?,ChanalName=?,pathImage=? ,Banner=? WHERE id=? "
