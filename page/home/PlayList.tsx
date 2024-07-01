@@ -6,6 +6,7 @@ import { RootHome, PlaySong, SetCurName, SetPlaying } from "./RootRedux";
 import { get, post } from "../config/req";
 import { SongInPlayList, SongList } from "../component/Song";
 import TypeFriend from "./friend/TypeFriend";
+import Time, { TimeString } from "../component/Time";
 
 var g = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 6, 7];
 interface artist {
@@ -25,7 +26,7 @@ export interface Song {
   user_id: string;
   SongName: string;
   Singer: string;
-  Duration: number;
+  Duration: string;
   Viewer: number;
   SongImage: string;
   filePath: string;
@@ -217,7 +218,7 @@ export default function PlaylistPage() {
         var song = 0;
         for (let i = 0; i < v.songs.length; i++) {
           const element: Song = v.songs[i];
-          time += element.Duration;
+          time += parseInt(element.Duration + "");
           song += 1;
         }
         v.playlist.Duration = time;
@@ -254,8 +255,9 @@ export default function PlaylistPage() {
                 <span className="text-[16px] font-bold text-white">
                   {playlist.Songs} bài hát
                 </span>
-                <span className="text-[16px] font-bold text-white">
-                  Khoảng thời gian: {playlist.Duration}
+                <span className="text-[16px] font-bold text-white flex items-center space-x-3">
+                  <div>Khoảng thời gian:</div>
+                  <TimeString d={parseInt(playlist.Duration + "")} />
                 </span>
               </div>
             </div>
