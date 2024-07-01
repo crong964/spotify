@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { NaviRight, RootHome } from "../RootRedux";
 import Audio from "./Audio";
 import { post } from "../../config/req";
-import { NextSong, SetSongs, SetStop } from "./AudioRedux";
+import { NextSong, SetAutoPlay, SetSongs, SetStop } from "./AudioRedux";
 import { ParseJson, VolumeAudio } from "../../socket/Socket";
 import {
   BigVolumeIcon,
@@ -31,6 +31,7 @@ export default function PlayingBar() {
   const isLogin = useSelector((state: RootHome) => state.rootHome.isLogin);
   const lsSong = useSelector((state: RootHome) => state.audioroot.lsSong);
   const mark = useSelector((state: RootHome) => state.audioroot.mark);
+  const autoplay = useSelector((state: RootHome) => state.audioroot.autoplay);
   const [volume, SetVolume] = useState(
     parseInt(localStorage.getItem("volume") || "100")
   );
@@ -88,6 +89,9 @@ export default function PlayingBar() {
           <button
             className=" p-2 inline-block sm:hidden"
             onClick={() => {
+              if (!autoplay) {
+                dispatch(SetAutoPlay(true));
+              }
               var mu = document.querySelector(".g") as HTMLAudioElement;
               if (mu.paused) {
                 mu.play();

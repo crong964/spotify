@@ -7,6 +7,7 @@ import {
   NextSong,
   RandomSong,
   RepeatPlaylist,
+  SetAutoPlay,
   SetModPlay,
   SetSongs,
   SetStop,
@@ -31,13 +32,14 @@ interface Audio {
 export default function Audio(params: Audio) {
   const stop = useSelector((state: RootHome) => state.audioroot.stop);
   const modplay = useSelector((state: RootHome) => state.audioroot.modplay);
+  const autoplay = useSelector((state: RootHome) => state.audioroot.autoplay);
   const dispatch = useDispatch();
   const [duration, SetDuration] = useState(0);
   const [curTime, SetCurTime] = useState(0);
   const [timeUpdate, SetTimeUpdate] = useState(true);
   useEffect(() => {
     async function set() {
-      var mu = document.querySelector(".g") as HTMLAudioElement;
+      let mu = document.querySelector(".g") as HTMLAudioElement;
 
       if (mu) {
         SetDuration(mu.duration);
@@ -71,7 +73,10 @@ export default function Audio(params: Audio) {
         <button
           className=""
           onClick={() => {
-            var mu = document.querySelector(".g") as HTMLAudioElement;
+            if (!autoplay) {
+              dispatch(SetAutoPlay(true));
+            }
+            let mu = document.querySelector(".g") as HTMLAudioElement;
             if (mu.paused) {
               mu.play();
               dispatch(SetStop(false));
@@ -110,7 +115,7 @@ export default function Audio(params: Audio) {
             SetTimeUpdate(false);
           }}
           onMouseUp={() => {
-            var mu = document.querySelector(".g") as HTMLAudioElement;
+            let mu = document.querySelector(".g") as HTMLAudioElement;
             mu.currentTime = curTime;
             SetTimeUpdate(true);
           }}
@@ -119,13 +124,16 @@ export default function Audio(params: Audio) {
         <audio
           src={`idSong?idSong=${params.path}`}
           onCanPlay={async (e) => {
-            var cu = e.currentTarget;
+            if (!autoplay) {
+              return;
+            }
+            let cu = e.currentTarget;
             await cu.play();
             dispatch(SetStop(cu.paused));
           }}
           className="g"
           onTimeUpdate={(e) => {
-            var time =
+            let time =
               e.currentTarget.duration - e.currentTarget.currentTime < 0.001;
             if (time && modplay == 0) {
               params.RandomNext(1);
@@ -134,7 +142,7 @@ export default function Audio(params: Audio) {
               dispatch(RepeatPlaylist());
             }
             if (time && modplay == 2) {
-              var mu = document.querySelector(".g") as HTMLAudioElement;
+              let mu = document.querySelector(".g") as HTMLAudioElement;
               mu.currentTime = 0;
             }
 
@@ -156,7 +164,7 @@ export default function Audio(params: Audio) {
 
 function ModPlay() {
   const modplay = useSelector((state: RootHome) => state.audioroot.modplay);
-  var chilred = <></>;
+  let chilred = <></>;
   switch (modplay) {
     case 2:
       chilred = (

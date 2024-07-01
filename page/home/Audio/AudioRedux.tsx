@@ -8,6 +8,7 @@ interface AudioRedux {
   lsSong: Song[];
   mark: number;
   random: boolean;
+  autoplay: boolean;
 }
 interface Song {
   oldindex: number;
@@ -25,6 +26,7 @@ const initialState: AudioRedux = {
   stop: true,
   modplay: 0,
   mark: 0,
+  autoplay: false,
 };
 
 const audioSlice = createSlice({
@@ -69,7 +71,7 @@ const audioSlice = createSlice({
 
       newSongList.push(state.lsSong[state.mark]);
       state.lsSong.splice(state.mark, 1);
-      
+
       state.mark = 0;
       while (state.lsSong.length > 0) {
         let i = parseInt(`${(Math.random() * 100) % state.lsSong.length}`);
@@ -89,6 +91,9 @@ const audioSlice = createSlice({
         }
       }
     },
+    SetAutoPlay: (state, action: PayloadAction<boolean>) => {
+      state.autoplay = action.payload;
+    },
   },
   extraReducers(builder) {},
 });
@@ -101,5 +106,6 @@ export const {
   JumpingSong,
   RepeatPlaylist,
   RandomSong,
+  SetAutoPlay,
 } = audioSlice.actions;
 export default audioSlice;
