@@ -59,6 +59,12 @@ class SongAdminController {
                 }
                 return `${s}${f.id}@`;
             }, "");
+            song.Singer = singer.reduce((s, f, i) => {
+                if (i == singer.length - 1) {
+                    return `${s}${f.ChanalName}`;
+                }
+                return `${s}${f.ChanalName},`;
+            }, "");
             var c = yield SongAdminController.song.Update(song);
             lsPlayListArtist.map((v) => __awaiter(this, void 0, void 0, function* () {
                 let con = new ContainModel_1.default();
@@ -155,9 +161,15 @@ class SongAdminController {
             })));
             song.user_id = singer.reduce((s, f, i) => {
                 if (i == singer.length - 1) {
-                    return `${s}${f.ChanalName}@${f.id}`;
+                    return `${s}${f.id}`;
                 }
-                return `${s}${f.ChanalName}@${f.id}@`;
+                return `${s}${f.id}@`;
+            }, "");
+            song.Singer = singer.reduce((s, f, i) => {
+                if (i == singer.length - 1) {
+                    return `${s}${f.ChanalName}`;
+                }
+                return `${s}${f.ChanalName},`;
             }, "");
             var oldsong = yield SongAdminController.song.Get(song.Id);
             if (oldsong == undefined) {

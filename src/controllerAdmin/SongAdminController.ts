@@ -64,6 +64,12 @@ class SongAdminController {
             }
             return `${s}${f.id}@`
         }, "")
+        song.Singer = singer.reduce((s, f, i) => {
+            if (i == singer.length - 1) {
+                return `${s}${f.ChanalName}`
+            }
+            return `${s}${f.ChanalName},`
+        }, "")
         var c = await SongAdminController.song.Update(song)
         lsPlayListArtist.map(async (v) => {
             let con = new ContainModel()
@@ -163,9 +169,15 @@ class SongAdminController {
 
         song.user_id = singer.reduce((s, f, i) => {
             if (i == singer.length - 1) {
-                return `${s}${f.ChanalName}@${f.id}`
+                return `${s}${f.id}`
             }
-            return `${s}${f.ChanalName}@${f.id}@`
+            return `${s}${f.id}@`
+        }, "")
+        song.Singer = singer.reduce((s, f, i) => {
+            if (i == singer.length - 1) {
+                return `${s}${f.ChanalName}`
+            }
+            return `${s}${f.ChanalName},`
         }, "")
 
         var oldsong = await SongAdminController.song.Get(song.Id)
@@ -188,7 +200,6 @@ class SongAdminController {
             }
 
         }
-
         var c = await SongAdminController.song.Update(song)
         lsPlayListArtist.map(async (v) => {
             let con = new ContainModel()
