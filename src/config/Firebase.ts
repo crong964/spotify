@@ -45,7 +45,11 @@ class Firebase {
                     }
                     var g = `${name}.jpeg`
                     let w = Firebase.bucket.file(g)
-                        .createWriteStream().on("finish", async () => {
+                        .createWriteStream({
+                            metadata: {
+                                cacheControl: 'public, max-age=31536000000',
+                            }
+                        }).on("finish", async () => {
                             var nameURL = await getDownloadURL(Firebase.bucket.file(g))
                             res(nameURL)
                         })
@@ -74,7 +78,13 @@ class Firebase {
                     }
                     var g = `${name}.jpeg`
                     let w = Firebase.bucket.file(g)
-                        .createWriteStream().on("finish", async () => {
+                        .createWriteStream(
+                            {
+                                metadata: {
+                                    cacheControl: 'public, max-age=31536000000',
+                                }
+                            }
+                        ).on("finish", async () => {
                             var nameURL = await getDownloadURL(Firebase.bucket.file(g))
                             res(nameURL)
                         })

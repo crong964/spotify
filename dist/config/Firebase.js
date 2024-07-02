@@ -53,7 +53,11 @@ class Firebase {
                     }
                     var g = `${name}.jpeg`;
                     let w = Firebase.bucket.file(g)
-                        .createWriteStream().on("finish", () => __awaiter(this, void 0, void 0, function* () {
+                        .createWriteStream({
+                        metadata: {
+                            cacheControl: 'public, max-age=31536000000',
+                        }
+                    }).on("finish", () => __awaiter(this, void 0, void 0, function* () {
                         var nameURL = yield (0, storage_1.getDownloadURL)(Firebase.bucket.file(g));
                         res(nameURL);
                     }));
@@ -80,7 +84,11 @@ class Firebase {
                     }
                     var g = `${name}.jpeg`;
                     let w = Firebase.bucket.file(g)
-                        .createWriteStream().on("finish", () => __awaiter(this, void 0, void 0, function* () {
+                        .createWriteStream({
+                        metadata: {
+                            cacheControl: 'public, max-age=31536000000',
+                        }
+                    }).on("finish", () => __awaiter(this, void 0, void 0, function* () {
                         var nameURL = yield (0, storage_1.getDownloadURL)(Firebase.bucket.file(g));
                         res(nameURL);
                     }));
