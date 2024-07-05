@@ -76,7 +76,7 @@ app.use(bodyParser.json())
 
 
 app.get("/", (req, res) => {
-
+    res.setHeader("Cache-Control","public, max-age=720000000000")
     res.sendFile(path.join(process.cwd(), "web/home.html"))
 })
 app.use("/mess", USER, MessRoute)

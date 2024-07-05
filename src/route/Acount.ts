@@ -657,7 +657,7 @@ Account.post("/createACC", async (req, res) => {
 })//0k
 
 function SetCookie(res: Response, acc: UserModel) {
-  let apikey = jwt.sign({ role: acc.role, id: acc.id }, secret || '1', { expiresIn: "2 days" })
+  let apikey = jwt.sign({ role: acc.role, id: acc.id }, secret || '1', { expiresIn: "10 days" })
   res.cookie("apikey", apikey, { maxAge: 900000000 })
 }
 function SetApiKey(res: Response, acc: UserModel) {

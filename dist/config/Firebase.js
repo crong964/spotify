@@ -108,7 +108,11 @@ class Firebase {
         return __awaiter(this, void 0, void 0, function* () {
             return new Promise((res, rej) => {
                 var r = (0, fs_1.createReadStream)(path);
-                var w = Firebase.bucket.file(name).createWriteStream();
+                var w = Firebase.bucket.file(name).createWriteStream({
+                    metadata: {
+                        cacheControl: 'public, max-age=31536000000',
+                    }
+                });
                 w.on("finish", () => {
                     res(name);
                 });

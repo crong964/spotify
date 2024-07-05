@@ -101,6 +101,7 @@ app.get("/swagger", (req, res) => {
 app.use(body_parser_1.default.urlencoded({ extended: false, limit: "50mb" }));
 app.use(body_parser_1.default.json());
 app.get("/", (req, res) => {
+    res.setHeader("Cache-Control", "public, max-age=720000000000");
     res.sendFile(path_1.default.join(process.cwd(), "web/home.html"));
 });
 app.use("/mess", admin_1.USER, MessRoute_1.default);

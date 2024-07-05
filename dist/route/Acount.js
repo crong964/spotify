@@ -576,7 +576,7 @@ Account.post("/createACC", (req, res) => __awaiter(void 0, void 0, void 0, funct
     });
 })); //0k
 function SetCookie(res, acc) {
-    let apikey = jsonwebtoken_1.default.sign({ role: acc.role, id: acc.id }, secret || '1', { expiresIn: "2 days" });
+    let apikey = jsonwebtoken_1.default.sign({ role: acc.role, id: acc.id }, secret || '1', { expiresIn: "10 days" });
     res.cookie("apikey", apikey, { maxAge: 900000000 });
 }
 function SetApiKey(res, acc) {

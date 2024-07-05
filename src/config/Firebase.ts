@@ -103,7 +103,11 @@ class Firebase {
     async UploadStream(path: string, name: string) {
         return new Promise((res, rej) => {
             var r = createReadStream(path)
-            var w = Firebase.bucket.file(name).createWriteStream()
+            var w = Firebase.bucket.file(name).createWriteStream({
+                metadata: {
+                    cacheControl: 'public, max-age=31536000000',
+                }
+            })
 
             w.on("finish", () => {
                 res(name)
@@ -121,7 +125,7 @@ class Firebase {
         } catch (error) {
             console.log(error);
         }
-        return meta?.[0]
+        return meta?.[0] 
     }
     DownloadStreamFile(name: string, start: number, end: number) {
         return Firebase.bucket.file(name).createReadStream({ start: start, end: end })
