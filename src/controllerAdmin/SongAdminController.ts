@@ -51,18 +51,14 @@ class SongAdminController {
 
             }
         }
-
-
-
         let lsPlayListArtist = await Promise.all(singer.map(async (v) => {
             return await SongAdminController.playlist.GetPlayListArtist(v.id)
         }))
-
         song.user_id = singer.reduce((s, f, i) => {
             if (i == singer.length - 1) {
                 return `${f.id}`
             }
-            return `${s}${f.id}@`
+            return `${s}${f.id} `
         }, "")
         song.Singer = singer.reduce((s, f, i) => {
             if (i == singer.length - 1) {
@@ -171,7 +167,7 @@ class SongAdminController {
             if (i == singer.length - 1) {
                 return `${s}${f.id}`
             }
-            return `${s}${f.id}@`
+            return `${s}${f.id} `
         }, "")
         song.Singer = singer.reduce((s, f, i) => {
             if (i == singer.length - 1) {

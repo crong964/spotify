@@ -44,6 +44,8 @@ const io = new Server(httpServer, {
 })
 app.use(cookieParser())
 app.use((req, res, next) => {
+    console.log(req.url); 
+    
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader('Access-Control-Allow-Headers', "*");
     res.setHeader('Access-Control-Allow-Methods', "*");
@@ -63,7 +65,7 @@ app.use((req, res, next) => {
     next();
 });
 app.use("/static", express.static(path.join(process.cwd(), "web", "static")))
-app.use("/public",express.static(path.join(process.cwd(), "public"), { maxAge: 100000000000 }))
+app.use("/public", express.static(path.join(process.cwd(), "public"), { maxAge: 100000000000 }))
 app.use("/i", express.static(path.join(process.cwd(), "public", "upload")))
 app.get("/swagger", (req, res) => {
     res.sendFile(join(process.cwd(), "web/swagger.html"))
@@ -75,9 +77,14 @@ app.use(bodyParser.json())
 
 
 
-app.get("/", (req, res) => {
-    res.setHeader("Cache-Control","public, max-age=720000000000")
+app.get(/\\/, (req, res) => {
+    res.setHeader("Cache-Control", "public, max-age=720000000000")
     res.sendFile(path.join(process.cwd(), "web/home.html"))
+})
+
+app.get("/test", (req, res) => {
+    res.setHeader("Cache-Control", "public, max-age=720000000000")
+    res.sendFile(path.join(process.cwd(), "web/test.html"))
 })
 app.use("/mess", USER, MessRoute)
 app.use("/box", USER, BoxChatRoute)
@@ -99,7 +106,7 @@ app.use("/auth", Account)
 
 
 app.use("/genre", GenreRoute)
-app.use("/playlist", PlayListRoute)  
+app.use("/playlist", PlayListRoute)
 //admin
 app.use("/genre", ADMIN, GenreRouteAdmin)
 app.use("/playlist", ADMIN, PlayListRouteAdmin)
@@ -192,7 +199,7 @@ app.get("/s", async (req, res) => {
 })
 
 httpServer.listen(8000, () => {
-
+    console.log("http://localhost:8000/test");
     console.log("http://localhost:8000/");
     console.log("http://localhost:8000/swagger");
     console.log("http://localhost:8000/gg");

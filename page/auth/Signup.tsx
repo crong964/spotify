@@ -130,9 +130,9 @@ export default function Signup() {
                       }}
                     >
                       {eye ? (
-                        <EyeSlashIcon className="size-6 "></EyeSlashIcon>
-                      ) : (
                         <Eye className="size-6 "></Eye>
+                      ) : (
+                        <EyeSlashIcon className="size-6 "></EyeSlashIcon>
                       )}
                     </div>
                   </div>

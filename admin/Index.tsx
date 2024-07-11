@@ -73,7 +73,6 @@ export default function App() {
   return (
     <div className="w-full h-full border-t flex flex-row">
       <Navi />
-
       <Center />
     </div>
   );

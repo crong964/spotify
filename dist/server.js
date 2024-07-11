@@ -77,6 +77,7 @@ const io = new socket_io_1.Server(httpServer, {
 });
 app.use((0, cookie_parser_1.default)());
 app.use((req, res, next) => {
+    console.log(req.url);
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader('Access-Control-Allow-Headers', "*");
     res.setHeader('Access-Control-Allow-Methods', "*");
@@ -100,9 +101,13 @@ app.get("/swagger", (req, res) => {
 });
 app.use(body_parser_1.default.urlencoded({ extended: false, limit: "50mb" }));
 app.use(body_parser_1.default.json());
-app.get("/", (req, res) => {
+app.get(/\\/, (req, res) => {
     res.setHeader("Cache-Control", "public, max-age=720000000000");
     res.sendFile(path_1.default.join(process.cwd(), "web/home.html"));
+});
+app.get("/test", (req, res) => {
+    res.setHeader("Cache-Control", "public, max-age=720000000000");
+    res.sendFile(path_1.default.join(process.cwd(), "web/test.html"));
 });
 app.use("/mess", admin_1.USER, MessRoute_1.default);
 app.use("/box", admin_1.USER, BoxChatRoute_1.default);
@@ -205,6 +210,7 @@ app.get("/s", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     read.pipe(res);
 }));
 httpServer.listen(8000, () => {
+    console.log("http://localhost:8000/test");
     console.log("http://localhost:8000/");
     console.log("http://localhost:8000/swagger");
     console.log("http://localhost:8000/gg");

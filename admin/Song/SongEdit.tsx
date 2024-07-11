@@ -307,20 +307,19 @@ export default function SongEdit() {
                   </svg>
                 </div>
 
-                {
-                  <audio
-                    src={`/s?id=${song.filePath}`}
-                    controls
-                    onCanPlay={(e) => {
-                      SetSong({
-                        ...song,
-                        Duration: e.currentTarget.duration,
-                      });
-                    }}
-                  >
-                    <source src={`/s?id=${song.filePath}`} />
-                  </audio>
-                }
+                <audio
+                  controls 
+                  src={`/s?id=${song.filePath}`}
+                  onCanPlay={(e) => {
+                    console.log(e.currentTarget.duration);
+                    SetSong({
+                      ...song,
+                      Duration: e.currentTarget.duration,
+                    });
+                  }}
+                >
+                  <source src={`/s?id=${song.filePath}`} />
+                </audio>
               </label>
             </div>
           </div>

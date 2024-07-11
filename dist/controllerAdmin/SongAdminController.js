@@ -57,7 +57,7 @@ class SongAdminController {
                 if (i == singer.length - 1) {
                     return `${f.id}`;
                 }
-                return `${s}${f.id}@`;
+                return `${s}${f.id} `;
             }, "");
             song.Singer = singer.reduce((s, f, i) => {
                 if (i == singer.length - 1) {
@@ -163,7 +163,7 @@ class SongAdminController {
                 if (i == singer.length - 1) {
                     return `${s}${f.id}`;
                 }
-                return `${s}${f.id}@`;
+                return `${s}${f.id} `;
             }, "");
             song.Singer = singer.reduce((s, f, i) => {
                 if (i == singer.length - 1) {

@@ -2,13 +2,14 @@ const path = require('path');
 
 
 module.exports = {
-    mode: 'production', 
+    mode: 'production',
     devtool: 'source-map',
     entry: {
         app: `${process.cwd()}/page/home/App.tsx`,
         dashboard: `${process.cwd()}/page/dashboard/App.tsx`,
         admin: path.join(process.cwd(), 'admin/App.tsx'),
-        auth: path.join(process.cwd(), "page/auth/App.tsx")
+        auth: path.join(process.cwd(), "page/auth/App.tsx"),
+        test: path.join(process.cwd(), "test/App.tsx")
     },
     module: {
         rules: [

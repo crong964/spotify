@@ -11,7 +11,6 @@ const PRIVATEKEY = process.env.PRIVATEKEY;
 const DATABASEURL = process.env.DATABASEURL;
 const STORAGEBUCKET = process.env.STORAGEBUCKET
 const defaultApp = admin.initializeApp(
-
     {
         databaseURL: DATABASEURL,
         credential: admin.credential.cert({
@@ -21,6 +20,7 @@ const defaultApp = admin.initializeApp(
         })
     }
 )
+
 class Firebase {
     private static bucket = defaultApp.storage().bucket(STORAGEBUCKET)
     constructor() {
