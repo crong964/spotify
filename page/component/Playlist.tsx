@@ -3,6 +3,7 @@ import PlayButtom from "./PlayButtom";
 import { NaviPage, RootHome } from "../home/RootRedux";
 import { useDispatch, useSelector } from "react-redux";
 import { post } from "../config/req";
+import { Link } from "react-router-dom";
 
 export interface PlayList {
   id: string;
@@ -29,22 +30,24 @@ export function PlayList(d: PlayList) {
           SetShow(false);
         }}
       >
-        <img
-          onClick={() => {
-            dispatch(
-              NaviPage({
-                page: d.Type as any,
-                param: d.id,
-              })
-            );
-          }}
-          src={d.ImagePath}
-          className={`${
-            d.Type == "artist" ? "rounded-full" : " rounded-2xl"
-          }`.concat(" size-[150px] sm:size-full")}
-          alt=""
-          srcSet=""
-        />
+        <Link to={`/${d.Type}/${d.id}`}>
+          <img
+            onClick={() => {
+              dispatch(
+                NaviPage({
+                  page: d.Type as any,
+                  param: d.id,
+                })
+              );
+            }}
+            src={d.ImagePath}
+            className={`${
+              d.Type == "artist" ? "rounded-full" : " rounded-2xl"
+            }`.concat(" size-[150px] sm:size-full")}
+            alt=""
+            srcSet=""
+          />
+        </Link>
         {show ? (
           <div className="absolute bottom-0 right-0">
             <PlayButtom id={d.id} page={d.Type} />

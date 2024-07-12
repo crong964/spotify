@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { NaviPage, RootHome } from "./RootRedux";
 import { Artists } from "../component/Artist";
 import PlayLists, { PlayList } from "../component/Playlist";
+import { Link } from "react-router-dom";
 
 interface SetionList {
   name: string;
@@ -34,7 +35,7 @@ export default function SetionData(params: SetionData) {
   const dispatch = useDispatch();
   return (
     <div
-      className="w-[200px] sm:w-full cursor-pointer "
+      className="w-[200px] sm:w-full cursor-pointer relative"
       onClick={() => {
         dispatch(NaviPage({ page: "artist", param: params.id }));
       }}
@@ -45,27 +46,30 @@ export default function SetionData(params: SetionData) {
         SetHidden(true);
       }}
     >
-      <div className="relative">
-        <img
-          src={params.pathImage}
-          className="w-full rounded-full"
-          alt=""
-          srcSet=""
-        />
-        {hidden ? (
-          <></>
-        ) : (
-          <>
-            <PlayButtom id={params.id} page="artist" />
-          </>
-        )}
-      </div>
-      <div className="text-[16px] text-white font-bold line-clamp-1">
-        {params.ChanalName}
-      </div>
-      <div className="text-[14px] text-[#b3b3b3] font-normal line-clamp-1">
-        {params.type == "artist" ? "nghệ sĩ" : params.artist}
-      </div>
+       <Link to={`/artist/${params.id}`}>
+        <div className="">
+          <img
+            src={params.pathImage}
+            className="w-full rounded-full"
+            alt=""
+            srcSet=""
+          />
+        </div>
+        <div className="text-[16px] text-white font-bold line-clamp-1">
+          {params.ChanalName}
+        </div>
+        <div className="text-[14px] text-[#b3b3b3] font-normal line-clamp-1">
+          {params.type == "artist" ? "nghệ sĩ" : params.artist}
+        </div>
+      </Link>
+
+      {hidden ? (
+        <></>
+      ) : (
+        <>
+          <PlayButtom id={params.id} page="artist" />
+        </>
+      )}
     </div>
   );
 }

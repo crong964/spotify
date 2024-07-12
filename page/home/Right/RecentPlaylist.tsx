@@ -4,6 +4,7 @@ import React from "react";
 import { post } from "../../config/req";
 import { useDispatch } from "react-redux";
 import { NaviPage } from "../RootRedux";
+import { Link } from "react-router-dom";
 
 interface RecentPlaylist {
   User_ID: string;
@@ -29,7 +30,8 @@ export function RecentPlaylist(params: RecentPlaylist) {
         SetHidden(false);
       }}
     >
-      <div
+      <Link
+        to={`${params.Type}/${params.ID}`}
         className="flex items-center space-x-1 sm:space-x-2 p-1 mx-1 cursor-pointer bg-[#1A1A1A] "
         onClick={() => {
           dispatch(
@@ -56,7 +58,8 @@ export function RecentPlaylist(params: RecentPlaylist) {
           {params.PlayListName}
         </div>
         <div className="hidden sm:block size-6"></div>
-      </div>
+      </Link>
+
       {hidden ? (
         <></>
       ) : (

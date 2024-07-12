@@ -25,7 +25,7 @@ export default function PlayButtom(p: Playing) {
       return;
     }
     if (p.page != "likesong") {
-      post("recentPlaylist/play", { id: p.id, type: p.page }, (v: any) => {
+      post("/recentPlaylist/play", { id: p.id, type: p.page }, (v: any) => {
         if (!v.err) {
           dispatch(SetPlaying({ id: p.id, page: p.page }));
           dispatch(SetSongs(v.ls));
@@ -33,7 +33,7 @@ export default function PlayButtom(p: Playing) {
       });
       return;
     }
-    get("lsong/likedsongs", (v: any) => {
+    get("/lsong/likedsongs", (v: any) => {
       if (v && !v.err) {
         dispatch(SetPlaying({ id: p.id, page: p.page }));
         dispatch(SetSongs(v.ls));

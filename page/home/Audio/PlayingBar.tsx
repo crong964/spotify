@@ -50,7 +50,7 @@ export default function PlayingBar() {
       return;
     }
 
-    post("song/NextSong", { idSong: lsSong[mark].Id }, (v: any) => {
+    post("/song/NextSong", { idSong: lsSong[mark].Id }, (v: any) => {
       if (!v || v.err) {
         return;
       }
@@ -60,7 +60,7 @@ export default function PlayingBar() {
   };
   useEffect(() => {
     post(
-      "song/get",
+      "/song/get",
       {
         idsong: idsong,
       },

@@ -122,7 +122,7 @@ export default function Audio(params: Audio) {
         />
         <Time d={duration} key={1} />
         <audio
-          src={`idSong?idSong=${params.path}`}
+          src={`/idSong?idSong=${params.path}`}
           onCanPlay={async (e) => {
             if (!autoplay) {
               return;
@@ -152,7 +152,7 @@ export default function Audio(params: Audio) {
           }}
         >
           {params.path != "" ? (
-            <source src={`idSong?idSong=${params.path}`} type="audio/mp3" />
+            <source src={`/idSong?idSong=${params.path}`} type="audio/mp3" />
           ) : (
             <></>
           )}

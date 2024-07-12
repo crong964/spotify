@@ -7,6 +7,7 @@ import { get, post } from "../config/req";
 import { SongInPlayList, SongList } from "../component/Song";
 import TypeFriend from "./friend/TypeFriend";
 import Time, { TimeString } from "../component/Time";
+import { useParams } from "react-router-dom";
 
 var g = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 6, 7];
 interface artist {
@@ -48,9 +49,9 @@ export function ArtistPage() {
   const [songs, SetSongS] = useState<SongInPlayList[]>([]);
 
   const dispatch = useDispatch();
-
+  const { id } = useParams();
   useEffect(() => {
-    get(`/user/artistpage/${idpage}`, (v: any) => {
+    get(`/user/artistpage/${id}`, (v: any) => {
       if (!v || v.err) {
         return;
       }
@@ -59,7 +60,7 @@ export function ArtistPage() {
       SetSongS(v.lsong);
       dispatch(SetCurName(v.atist.ChanalName));
     });
-  }, [idpage]);
+  }, [id]);
 
   return (
     <div className="relative ">
@@ -197,10 +198,11 @@ export default function PlaylistPage() {
   const idPlayList = useSelector(
     (state: RootHome) => state.rootHome.command.param
   );
-
+  const { id } = useParams();
   const [status, SetStatus] = useState<"play" | "pause">("pause");
   const [load, SetLoad] = useState(false);
 
+  
   const [songs, SetSongS] = useState<SongInPlayList[]>([]);
   const [playlist, SetPlayList] = useState<PlayList>({
     Duration: "",
@@ -211,7 +213,7 @@ export default function PlaylistPage() {
     Songs: 0,
   });
   useEffect(() => {
-    get(`/playlist/${idPlayList}`, (v: any) => {
+    get(`/playlist/data/${id}`, (v: any) => {
       if (v && !v.err) {
         SetSongS(v.songs);
         var time = 0;
@@ -227,7 +229,7 @@ export default function PlaylistPage() {
         dispatch(SetCurName(v.playlist.PlayListName));
       }
     });
-  }, [idPlayList]);
+  }, [id]);
 
   return (
     <div className="relative">
@@ -268,14 +270,14 @@ export default function PlaylistPage() {
       <div className="h-[320px]"></div>
       <div className="px-4">
         <div className="flex items-center py-0 sm:py-4 space-x-4">
-          <button
+          <div
             onClick={() => {
               if (load == true) {
                 return;
               }
               post(
-                "recentPlaylist/play",
-                { id: idPlayList, type: "playlist" },
+                "/recentPlaylist/play",
+                { id: id, type: "playlist" },
                 (v: any) => {
                   SetStatus("play");
                   SetLoad(false);
@@ -285,9 +287,9 @@ export default function PlaylistPage() {
             }}
           >
             <button className={load ? "cursor-wait" : "cursor-pointer"}>
-              <PlayButtom id={idPlayList} page="playlist" />
+              <PlayButtom id={id+""} page="playlist" />
             </button>
-          </button>
+          </div>
           <div className="cursor-pointer">
             <svg
               className="fill-[#C7C7C7] hover:fill-white size-[45px] "

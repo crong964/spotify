@@ -6,6 +6,7 @@ import { post } from "../config/req";
 import PlayLists, { PlayList } from "../component/Playlist";
 import { Artists } from "../component/Artist";
 import { SongList } from "../component/Song";
+import { useParams } from "react-router-dom";
 interface artist {
   pathImage: string;
   ChanalName: string;
@@ -32,15 +33,15 @@ export default function Search() {
   const [songname, SetSongName] = useState<SongInPlayList[]>([]);
   const [songs, SetSongS] = useState<SongInPlayList[]>([]);
   const dispatch = useDispatch();
-  const search = useSelector((state: RootHome) => state.rootHome.command.param);
+  const { s } = useParams();
   const [artist, SetArtis] = useState<artist[]>([]);
   const [playlists, SetPlayLists] = useState<PlayList[]>([]);
   const [name, SetName] = useState("");
   useEffect(() => {
-    if (search.length <= 0) {
+    if (s == undefined || s.length <= 0) {
       return;
     }
-    post("/search", { name: search }, (v: any) => {
+    post("/search", { name: s }, (v: any) => {
       if (!v || v.err) {
         return;
       }
@@ -49,7 +50,7 @@ export default function Search() {
       SetSongS(v["songls"] || []);
       SetPlayLists(v["playlists"] || []);
     });
-  }, [search]);
+  }, [s]);
   return (
     <div className="w-full">
       <form
@@ -82,7 +83,7 @@ export default function Search() {
           </svg>
         </button>
       </form>
-      {search.length <= 0 ? (
+      {s == undefined || s.length <= 0 ? (
         <div className="text-center font-bold h-full">Bài hát bạn tìm</div>
       ) : (
         <>

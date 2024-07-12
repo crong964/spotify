@@ -97,7 +97,7 @@ class GenreController {
             });
         });
     }
-    GetByGenre(req, res) {
+    PostByGenre(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             var idParent = req.params.idParent;
             var ls = yield Promise.all([GenreController.playlist.GetByGenre(idParent, 0, 10),

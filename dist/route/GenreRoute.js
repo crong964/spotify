@@ -8,5 +8,5 @@ const GenreController_1 = __importDefault(require("../controller/GenreController
 const GenreRoute = (0, express_1.default)();
 GenreRoute.get("/GetAll", GenreController_1.default.GetAll); //0k
 GenreRoute.get("/GetLimitFloor", GenreController_1.default.GetLimitFloor); //0k
-GenreRoute.get("/:idParent", GenreController_1.default.GetByGenre); //0k
+GenreRoute.post("/:idParent", GenreController_1.default.PostByGenre); //0k
 exports.default = GenreRoute;

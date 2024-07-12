@@ -2,9 +2,10 @@ import { useDispatch, useSelector } from "react-redux";
 import rootHome, { NaviPage, RootHome } from "./RootRedux";
 import { useEffect, useState } from "react";
 import React from "react";
-import { get } from "../config/req";
+import { get, post } from "../config/req";
 import PlayButtom from "../component/PlayButtom";
 import { PlayList } from "../component/Playlist";
+import { useParams } from "react-router-dom";
 
 interface Genre {
   Id: string;
@@ -15,20 +16,19 @@ interface Genre {
   Floor: number;
 }
 export default function IdGenre() {
-  const idgenre = useSelector(
-    (state: RootHome) => state.rootHome.command.param
-  );
+  const { id } = useParams();
+
   const [playlists, SetPlayLists] = useState<PlayList[]>([]);
   const [genres, SetGernes] = useState<Genre[]>([]);
   useEffect(() => {
-    get(`genre/${idgenre}`, (v: any) => {
+    post(`/genre/${id}`, {}, (v: any) => {
       if (!v || v.err) {
         return;
       }
       SetPlayLists(v.playlist);
       SetGernes(v.genre);
     });
-  }, [idgenre]);
+  }, [id]);
 
   var ls = genres.map((v, i) => {
     return <PlayListByGenre genre={v} ls={playlists} key={i} />;

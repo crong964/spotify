@@ -77,7 +77,6 @@ const io = new socket_io_1.Server(httpServer, {
 });
 app.use((0, cookie_parser_1.default)());
 app.use((req, res, next) => {
-    console.log(req.url);
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader('Access-Control-Allow-Headers', "*");
     res.setHeader('Access-Control-Allow-Methods', "*");
@@ -101,10 +100,6 @@ app.get("/swagger", (req, res) => {
 });
 app.use(body_parser_1.default.urlencoded({ extended: false, limit: "50mb" }));
 app.use(body_parser_1.default.json());
-app.get(/\\/, (req, res) => {
-    res.setHeader("Cache-Control", "public, max-age=720000000000");
-    res.sendFile(path_1.default.join(process.cwd(), "web/home.html"));
-});
 app.get("/test", (req, res) => {
     res.setHeader("Cache-Control", "public, max-age=720000000000");
     res.sendFile(path_1.default.join(process.cwd(), "web/test.html"));
@@ -127,15 +122,12 @@ app.use("/auth", Acount_1.default);
 app.use("/genre", GenreRoute_1.default);
 app.use("/playlist", PlayListRoute_1.default);
 //admin
-app.use("/genre", admin_1.default, GenreRouteAdmin_1.default);
-app.use("/playlist", admin_1.default, PlayListRouteAdmin_1.default);
-app.use("/contain", admin_1.default, ContainRouteAdmin_1.default);
+app.use("/admin/genre", admin_1.default, GenreRouteAdmin_1.default);
+app.use("/admin/playlist", admin_1.default, PlayListRouteAdmin_1.default);
+app.use("/admin/contain", admin_1.default, ContainRouteAdmin_1.default);
 app.use("/admin/UserRouteAdmin", admin_1.default, UserRouteAdmin_1.default);
 app.use("/admin/artist", admin_1.default, ArtistManagementRoute_1.default);
 app.use("/admin/song", admin_1.default, SongAdminRoute_1.default);
-app.get(/admin/, admin_1.default, (req, res) => {
-    res.sendFile((0, path_1.join)(process.cwd(), "web/admin.html"));
-});
 app.get("/idSong", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b;
     res.setHeader("Cache-Control", "max-age=315360000, no-transform, must-revalidate");
@@ -209,6 +201,13 @@ app.get("/s", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     });
     read.pipe(res);
 }));
+app.get(/admin/, admin_1.default, (req, res) => {
+    res.sendFile((0, path_1.join)(process.cwd(), "web/admin.html"));
+});
+app.get(/\//, (req, res) => {
+    res.setHeader("Cache-Control", "public, max-age=720000000000");
+    res.sendFile(path_1.default.join(process.cwd(), "web/home.html"));
+});
 httpServer.listen(8000, () => {
     console.log("http://localhost:8000/test");
     console.log("http://localhost:8000/");

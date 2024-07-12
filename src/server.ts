@@ -44,8 +44,6 @@ const io = new Server(httpServer, {
 })
 app.use(cookieParser())
 app.use((req, res, next) => {
-    console.log(req.url); 
-    
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader('Access-Control-Allow-Headers', "*");
     res.setHeader('Access-Control-Allow-Methods', "*");
@@ -77,10 +75,6 @@ app.use(bodyParser.json())
 
 
 
-app.get(/\\/, (req, res) => {
-    res.setHeader("Cache-Control", "public, max-age=720000000000")
-    res.sendFile(path.join(process.cwd(), "web/home.html"))
-})
 
 app.get("/test", (req, res) => {
     res.setHeader("Cache-Control", "public, max-age=720000000000")
@@ -108,15 +102,13 @@ app.use("/auth", Account)
 app.use("/genre", GenreRoute)
 app.use("/playlist", PlayListRoute)
 //admin
-app.use("/genre", ADMIN, GenreRouteAdmin)
-app.use("/playlist", ADMIN, PlayListRouteAdmin)
-app.use("/contain", ADMIN, ContainRouteAdmin)
+app.use("/admin/genre", ADMIN, GenreRouteAdmin)
+app.use("/admin/playlist", ADMIN, PlayListRouteAdmin)
+app.use("/admin/contain", ADMIN, ContainRouteAdmin)
 app.use("/admin/UserRouteAdmin", ADMIN, UserRouteAdmin)
 app.use("/admin/artist", ADMIN, ArtistManagementRoute)
 app.use("/admin/song", ADMIN, SongAdminRoute)
-app.get(/admin/, ADMIN, (req, res) => {
-    res.sendFile(join(process.cwd(), "web/admin.html"))
-})
+
 
 app.get("/idSong", async (req, res) => {
     res.setHeader("Cache-Control", "max-age=315360000, no-transform, must-revalidate")
@@ -197,7 +189,13 @@ app.get("/s", async (req, res) => {
         })
     read.pipe(res)
 })
-
+app.get(/admin/, ADMIN, (req, res) => {
+    res.sendFile(join(process.cwd(), "web/admin.html"))
+})
+app.get(/\//, (req, res) => {
+    res.setHeader("Cache-Control", "public, max-age=720000000000")
+    res.sendFile(path.join(process.cwd(), "web/home.html"))
+})
 httpServer.listen(8000, () => {
     console.log("http://localhost:8000/test");
     console.log("http://localhost:8000/");

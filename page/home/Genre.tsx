@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NaviPage, RootHome } from "./RootRedux";
 import { get } from "../config/req";
+import { Link } from "react-router-dom";
 interface Genre {
   Id: string;
   Name: string;
@@ -47,6 +48,7 @@ export default function Genre() {
             SetName(v.currentTarget.value);
           }}
         />
+
         <button type="submit">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -92,13 +94,15 @@ interface GenreData {
 function GenreData(d: GenreData) {
   const dispatch = useDispatch();
   return (
-    <div
-      onClick={() => {
-        dispatch(NaviPage({ page: "idgenre", param: d.id }));
-      }}
-      className={`bg-[${d.color}] cursor-pointer m-2 h-[100px] sm:size-[160px] rounded-lg p-2`}
-    >
-      <div className="text-[24px] font-bold text-white ">{d.name}</div>
-    </div>
+    <Link to={`/genre/${d.id}`}>
+      <div
+        onClick={() => {
+          dispatch(NaviPage({ page: "idgenre", param: d.id }));
+        }}
+        className={`bg-[${d.color}] cursor-pointer m-2 h-[100px] sm:size-[160px] rounded-lg p-2`}
+      >
+        <div className="text-[24px] font-bold text-white ">{d.name}</div>
+      </div>
+    </Link>
   );
 }

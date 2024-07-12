@@ -10,7 +10,8 @@ interface iMobileRedux {
     | "home"
     | "search"
     | "profile"
-    | "idgenre"|"mess";
+    | "idgenre"
+    | "mess";
 }
 
 const initialState: iMobileRedux = {
@@ -21,9 +22,6 @@ const mobileRedux = createSlice({
   initialState,
   name: "mobile",
   reducers: {
-    SetTypeMobile: (state, action: PayloadAction<"pc" | "mobile">) => {
-      state.type = action.payload;
-    },
     NaviPageMobile: (
       state,
       action: PayloadAction<
@@ -44,4 +42,4 @@ const mobileRedux = createSlice({
 });
 
 export default mobileRedux;
-export const { SetTypeMobile, NaviPageMobile } = mobileRedux.actions;
+export const { NaviPageMobile } = mobileRedux.actions;
