@@ -3,7 +3,7 @@ import SignIn from "./SignIn";
 import { useDispatch, useSelector } from "react-redux";
 import { Infor, Page, RootAuth } from "./RootAuth";
 import Signup from "./Signup";
-import { post } from "../config/req";
+import { post } from "@/page/config/req";
 import CreateAccount from "./CreateAccount";
 import Forgot from "./Forgot";
 import ChangePassword from "./ChangePassword";

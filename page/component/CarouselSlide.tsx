@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useId } from "react";
 import { useState } from "react";
-import "../../public/css/index.css";
+import "@/public/css/index.css";
 
 var color = [
   "#E8115B",

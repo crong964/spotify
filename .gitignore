@@ -5,3 +5,4 @@ depyl
 build.bat
 run.bat
 test
+web/static

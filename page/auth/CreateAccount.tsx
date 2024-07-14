@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Page, RootAuth } from "./RootAuth";
 import { useDispatch, useSelector } from "react-redux";
-import { post } from "../config/req";
+import { post } from "@/page/config/req";
 export default function CreateAccount() {
   const dispatch = useDispatch();
   const [Password, SetPassword] = useState("");

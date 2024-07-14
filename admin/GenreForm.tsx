@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { get, post } from "../page/config/req";
+import { get, post } from "@/page/config/req";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState, SetLoad, SetFloor, addGenre } from "./Redux";
 

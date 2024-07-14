@@ -1,8 +1,8 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { NaviPage, NaviRight, RootHome } from "../RootRedux";
+import { useDispatch } from "react-redux";
+import { NaviPage, } from "@/page/home/RootRedux";
 import Navi from "./Navi";
-import { HomeFillIcon, HomeIcon } from "../../../icon/Icon";
+import { HomeFillIcon, HomeIcon } from "@/icon/Icon";
 import { Link } from "react-router-dom";
 
 export default function Home() {

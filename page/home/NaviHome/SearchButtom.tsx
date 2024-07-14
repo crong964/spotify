@@ -1,9 +1,9 @@
 import { useDispatch, useSelector } from "react-redux";
-import { NaviPage, NaviRight, RootHome } from "../RootRedux";
+import { NaviPage, NaviRight, RootHome } from "@/page/home/RootRedux";
 import React from "react";
 import Navi from "./Navi";
 import { Link } from "react-router-dom";
-import { SearchCircleIcon, SearchIcon } from "../../../icon/Icon";
+import { SearchCircleIcon, SearchIcon } from "@/icon/Icon";
 
 export function SearchButtom() {
   const dispatch = useDispatch();

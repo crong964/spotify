@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { get, post } from "../../config/req";
-import IndexGenres from "../Genres";
+import { get, post } from "@/page/config/req";
+import IndexGenres from "@/page/dashboard/Genres";
 import { useDispatch, useSelector } from "react-redux";
-import { Navi, RootNaviRedux, SongEidt } from "../NaviRedux";
+import { Navi, RootNaviRedux, SongEidt } from "@/page/dashboard/NaviRedux";
 interface Genre {
   Id: string;
   Name: string;
@@ -216,9 +216,6 @@ export default function SongForm() {
               form.set("avatar", newImage);
             }
 
-          
-
-            
             post("song/NewUpdate", form, (v: any) => {
               if (!v.err) {
                 dispatch(Navi("songlist"));

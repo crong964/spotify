@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { Socket, io } from "socket.io-client";
 import audioSlice from "./Audio/AudioRedux";
 import mobileRedux from "./NaviHome/NaviRedux";
-import { ParseJson } from "../socket/Socket";
+import { ParseJson } from "@/page/socket/Socket";
 
 interface mess {
   idMess: string;

@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
-import Song from "../../component/Song";
+import Song from "@/page/component/Song";
 import { useDispatch, useSelector } from "react-redux";
-import { NaviRight, RootHome } from "../RootRedux";
+import { NaviRight, RootHome } from "@/page/home/RootRedux";
 import Audio from "./Audio";
-import { post } from "../../config/req";
+import { post } from "@/page/config/req";
 import { NextSong, SetAutoPlay, SetSongs, SetStop } from "./AudioRedux";
-import { ParseJson, VolumeAudio } from "../../socket/Socket";
+import { ParseJson, VolumeAudio } from "@/page/socket/Socket";
 import {
   BigVolumeIcon,
   DiscussIcon,
@@ -15,7 +15,7 @@ import {
   PlaySoundIcon,
   QueueIcon,
   SmallVolumeIcon,
-} from "../../../icon/Icon";
+} from "@/icon/Icon";
 
 interface SongI {
   Id: string;

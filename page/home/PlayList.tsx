@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 
-import PlayButtom from "../component/PlayButtom";
+import PlayButtom from "@/page/component/PlayButtom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootHome, SetCurName } from "./RootRedux";
-import { get, post } from "../config/req";
-import { SongInPlayList, SongList } from "../component/Song";
+import { get, post } from "@/page/config/req";
+import { SongInPlayList, SongList } from "@/page/component/Song";
 import TypeFriend from "./friend/TypeFriend";
-import  { TimeString } from "../component/Time";
+import { TimeString } from "@/page/component/Time";
 import { useParams } from "react-router-dom";
 
 var g = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 6, 7];
@@ -202,7 +202,6 @@ export default function PlaylistPage() {
   const [status, SetStatus] = useState<"play" | "pause">("pause");
   const [load, SetLoad] = useState(false);
 
-  
   const [songs, SetSongS] = useState<SongInPlayList[]>([]);
   const [playlist, SetPlayList] = useState<PlayList>({
     Duration: "",
@@ -287,7 +286,7 @@ export default function PlaylistPage() {
             }}
           >
             <button className={load ? "cursor-wait" : "cursor-pointer"}>
-              <PlayButtom id={id+""} page="playlist" />
+              <PlayButtom id={id + ""} page="playlist" />
             </button>
           </div>
           <div className="cursor-pointer">

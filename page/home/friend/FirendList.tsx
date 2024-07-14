@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { post } from "../../config/req";
+import { post } from "@/page/config/req";
 
 export interface Friend {
   avatar: string;

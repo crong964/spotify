@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
-import { get, post } from "../../page/config/req";
+import { get, post } from "@/page/config/req";
 
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../Redux";
-import IndexGenres from "../GenreLs";
+import { RootState } from "@/admin/Redux";
+import IndexGenres from "@/admin/GenreLs";
 import { useParams } from "react-router-dom";
-import { ImageIcon, MusicIcon } from "../../icon/Icon";
+import { ImageIcon, MusicIcon } from "@/icon/Icon";
 import useSelectedArtist from "./Handlle";
 
 type Genre = {
@@ -50,7 +50,6 @@ export default function SongForm() {
   const floor = useSelector((state: RootState) => state.navi.floor);
   function upload(params: Uint8Array, i: number, pa?: string) {
     var n = 10000;
-
     if (i < params.length) {
       var element = "";
       for (let j = i; j < i + n && j < params.length; j++) {
@@ -73,7 +72,6 @@ export default function SongForm() {
         })
         .then((v) => {
           SetConut(i + n);
-
           SetSong({
             ...song,
             Id: v.name,
@@ -339,7 +337,7 @@ export default function SongForm() {
                   alert("chưa chọn thể loại");
                   return;
                 }
-               
+
                 var form = new FormData();
 
                 form.set("Genre_id", slectGenre[floor]);

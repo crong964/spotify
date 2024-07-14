@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { get, post } from "../../page/config/req";
+import { get, post } from "@/page/config/req";
 type Artist = {
   Nationality: string;
   ChanalName: string;

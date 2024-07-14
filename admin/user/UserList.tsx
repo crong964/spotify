@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { post } from "../../page/config/req";
+import { post } from "@/page/config/req";
 interface User {
   pathImage: string;
   Account: string;

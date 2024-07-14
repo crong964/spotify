@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Song } from "./PlayList";
 import { useDispatch, useSelector } from "react-redux";
 import { NaviPage, RootHome } from "./RootRedux";
-import { post } from "../config/req";
-import PlayLists, { PlayList } from "../component/Playlist";
-import { Artists } from "../component/Artist";
-import { SongList } from "../component/Song";
+import { post } from "@/page/config/req";
+import PlayLists, { PlayList } from "@/page/component/Playlist";
+import { Artists } from "@/page/component/Artist";
+import { SongList } from "@/page/component/Song";
 import { useParams } from "react-router-dom";
 interface artist {
   pathImage: string;

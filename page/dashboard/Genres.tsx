@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { get } from "../config/req";
+import { get } from "@/page/config/req";
 import { useDispatch, useSelector } from "react-redux";
 import {
   RootNaviRedux,

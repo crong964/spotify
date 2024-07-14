@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { NaviPage, NaviRight, RootHome } from "../RootRedux";
+import { NaviPage, NaviRight, RootHome } from "@/page/home/RootRedux";
 import Navi from "./Navi";
 import { Link } from "react-router-dom";
 

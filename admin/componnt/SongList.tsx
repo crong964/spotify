@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
-import { post } from "../../page/config/req";
-import Time from "../../page/component/Time";
+import { post } from "@/page/config/req";
+import Time from "@/page/component/Time";
 import Toggle from "./Toggle";
 import { useDispatch, useSelector } from "react-redux";
-import { EditSong, RootState } from "../Redux";
+import { EditSong, RootState } from "@/admin/Redux";
 
 type Song = {
   Id: string;

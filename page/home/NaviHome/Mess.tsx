@@ -1,9 +1,9 @@
 import React from "react";
-import { NaviRight, RootHome } from "../RootRedux";
+import { NaviRight, RootHome } from "@/page/home/RootRedux";
 import { useDispatch, useSelector } from "react-redux";
 import { NaviPageMobile } from "./NaviRedux";
 import Navi from "./Navi";
-import { MessIcon } from "../../../icon/Icon";
+import { MessIcon } from "@/icon/Icon";
 
 export function MobileMessButtom() {
   const curpage = useSelector((state: RootHome) => state.rootHome.Right);

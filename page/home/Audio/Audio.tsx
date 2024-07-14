@@ -1,8 +1,8 @@
 import React, { useRef } from "react";
 import { useEffect, useState } from "react";
-import { post } from "../../config/req";
+import { post } from "@/page/config/req";
 import { useDispatch, useSelector } from "react-redux";
-import { RootHome } from "../RootRedux";
+import { RootHome } from "@/page/home/RootRedux";
 import {
   NextSong,
   RandomSong,
@@ -22,7 +22,7 @@ import {
   RepeatSongIcon,
   SkipNextIcon,
   SkipPreviousIcon,
-} from "../../../icon/Icon";
+} from "@/icon/Icon";
 
 interface Audio {
   path: string;

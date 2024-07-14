@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { post } from "../../config/req";
+import { post } from "@/page/config/req";
 import { useDispatch, useSelector } from "react-redux";
-import { RootHome, SetBoxList, SetMess } from "../RootRedux";
+import { RootHome, SetBoxList, SetMess } from "@/page/home/RootRedux";
 interface lastmess {
   type: string;
   idMess: string;

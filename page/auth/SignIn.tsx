@@ -3,9 +3,9 @@ import { useState } from "react";
 import { SignInGitHubButtom, SignInGoogleButtom } from "./SignButtom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { post } from "../config/req";
+import { post } from "@/page/config/req";
 import { Page, RootAuth } from "./RootAuth";
-import { Eye, EyeSlashIcon, LogoIcon } from "../../icon/Icon";
+import { Eye, EyeSlashIcon, LogoIcon } from "@/icon/Icon";
 export default function SignIn() {
   const [account, SetAccount] = useState("");
   const [password, SetPassword] = useState("");

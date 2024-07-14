@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { get, post } from "../../page/config/req";
+import { get, post } from "@/page/config/req";
 import { useDispatch, useSelector } from "react-redux";
-import { Page, RootState, SetLoad } from "../Redux";
+import { Page, RootState, SetLoad } from "@/admin/Redux";
 
 interface User {
   pathImage: string;

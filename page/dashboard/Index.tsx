@@ -2,8 +2,8 @@ import React from "react";
 import Header from "./Header";
 import Home from "./Home";
 import SongForm from "./Song/SongForm";
-import { Provider, useSelector } from "react-redux";
-import dashboard, { RootNaviRedux } from "./NaviRedux";
+import { useSelector } from "react-redux";
+import { RootNaviRedux } from "./NaviRedux";
 import SongList from "./SongList";
 import SongEdit from "./Song/SongEdit";
 

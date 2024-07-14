@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { Duration, post } from "../config/req";
+import { Duration, post } from "@/page/config/req";
 import { useDispatch, useSelector } from "react-redux";
-import { PlaySong, RootHome } from "../home/RootRedux";
-import { JumpingSong } from "../home/Audio/AudioRedux";
-import { CheckCircleIcon, PlusCircleIcon } from "../../icon/Icon";
+import { PlaySong, RootHome } from "@/page/home/RootRedux";
+
+import { CheckCircleIcon, PlusCircleIcon } from "@/icon/Icon";
 
 interface Song {
   image: string;

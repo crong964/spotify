@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Page, RootState } from "./Redux";
 import Dropdown from "./componnt/Dropdow";
 import { NavLink, Outlet } from "react-router-dom";
-import { ArtistIcon, GenresIcon, HumanIcon, SongIcon } from "../icon/Icon";
+import { ArtistIcon, GenresIcon, HumanIcon, SongIcon } from "@/icon/Icon";
 
 export default function Navi() {
   const dispatch = useDispatch();

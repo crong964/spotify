@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from "react";
-import SingleMess, { singleMess } from "../Mess/SingleMess";
-import { post } from "../../config/req";
+import SingleMess, { singleMess } from "@/page/home/Mess/SingleMess";
+import { post } from "@/page/config/req";
 import { useDispatch, useSelector } from "react-redux";
-import { NaviPage, RemoveBoxList, RootHome, SetMess } from "../RootRedux";
+import {
+  NaviPage,
+  RemoveBoxList,
+  RootHome,
+  SetMess,
+} from "@/page/home/RootRedux";
 
 interface BoxInfor {
   idbox: string;

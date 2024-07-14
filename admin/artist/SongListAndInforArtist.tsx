@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { post } from "../../page/config/req";
-import SongList from "../componnt/SongList";
-import SongForm from "../Song/SongForm";
+import { post } from "@/page/config/req";
+import SongList from "@/admin/componnt/SongList";
+import SongForm from "@/admin/Song/SongForm";
 import { useDispatch } from "react-redux";
-import { SongListAndInforArtistPage } from "../Redux";
-import SongEdit from "../Song/SongEdit";
+import { SongListAndInforArtistPage } from "@/admin/Redux";
+import SongEdit from "@/admin/Song/SongEdit";
 type Artist = {
   ChanalName: string;
   pathImage: string;

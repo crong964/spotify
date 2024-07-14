@@ -2,7 +2,7 @@ import React from "react";
 import { SearchButtom } from "./SearchButtom";
 import { MobileMessButtom } from "./Mess";
 import NaviLoveSong from "./NaviLoveSong";
-import { RootHome } from "../RootRedux";
+import { RootHome } from "@/page/home/RootRedux";
 import { useSelector } from "react-redux";
 import Home from "./Home";
 

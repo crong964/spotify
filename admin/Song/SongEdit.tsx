@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
-import { get, post } from "../../page/config/req";
+import { get, post } from "@/page/config/req";
 
 import { useDispatch, useSelector } from "react-redux";
-import { RootState, SongListAndInforArtistPage } from "../Redux";
-import IndexGenres from "../GenreLs";
+import { RootState, SongListAndInforArtistPage } from "@/admin/Redux";
+import IndexGenres from "@/admin/GenreLs";
 import { useParams } from "react-router-dom";
 import useSelectedArtist from "./Handlle";
 

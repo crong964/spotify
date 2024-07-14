@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { SignUpGitHubButtom, SignUpGoogleButtom } from "./SignButtom";
-import { post } from "../config/req";
+import { post } from "@/page/config/req";
 import { useDispatch, useSelector } from "react-redux";
 import { Page, RootAuth } from "./RootAuth";
 import { Eye, EyeSlashIcon, LogoIcon } from "@/icon/Icon";

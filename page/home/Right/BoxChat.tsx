@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import BoxListData from "../boxchat/BoxListData";
 import { useDispatch } from "react-redux";
-import { SetSearchName } from "../RootRedux";
-import { post } from "../../config/req";
-import UserSearchList, { Users, UsersRespond } from "../friend/UserSearchList";
+import { SetSearchName } from "@/page/home/RootRedux";
+
+import UserSearchList, {
+  Users,
+  UsersRespond,
+} from "@/page/home/friend/UserSearchList";
 
 export default function BoxChat() {
   const [search, SetSearch] = useState(false);

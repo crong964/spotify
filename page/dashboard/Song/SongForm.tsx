@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { get, post } from "../../config/req";
-import IndexGenres from "../Genres";
+import { get, post } from "@/page/config/req";
+import IndexGenres from "@/page/dashboard/Genres";
 import { useDispatch, useSelector } from "react-redux";
-import { Navi, RootNaviRedux } from "../NaviRedux";
+import { Navi, RootNaviRedux } from "@/page/dashboard/NaviRedux";
 interface Genre {
   Id: string;
   Name: string;

@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import PlayButtom from "../../component/PlayButtom";
+import PlayButtom from "../@/page/component/PlayButtom";
 import React from "react";
-import { post } from "../../config/req";
+import { post } from "@/page/config/req";
 import { useDispatch } from "react-redux";
-import { NaviPage } from "../RootRedux";
+import { NaviPage } from "@/page/home/RootRedux";
 import { Link } from "react-router-dom";
 
 interface RecentPlaylist {

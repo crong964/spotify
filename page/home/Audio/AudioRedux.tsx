@@ -1,6 +1,4 @@
-import { PayloadAction, configureStore, createSlice } from "@reduxjs/toolkit";
-import { post } from "../../config/req";
-import { useDispatch } from "react-redux";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 interface AudioRedux {
   stop: boolean;

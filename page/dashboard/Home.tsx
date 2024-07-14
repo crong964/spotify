@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Avatar, RootNaviRedux } from "./NaviRedux";
-import { useDispatch, useSelector } from "react-redux";
-import { get } from "../config/req";
+import { Avatar } from "./NaviRedux";
+import { useDispatch } from "react-redux";
+import { get } from "@/page/config/req";
 interface Tit {
   title: string;
   count: string;

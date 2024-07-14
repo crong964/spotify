@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { post } from "../../config/req";
+import { post } from "@/page/config/req";
 export interface singleMess {
   idUser2: string;
   idFuture: string | undefined;

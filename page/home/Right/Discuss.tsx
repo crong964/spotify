@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
-import { RootHome, SetdeleteDiscuss, RemoveRight } from "../RootRedux";
+import { RootHome, SetdeleteDiscuss, RemoveRight } from "@/page/home/RootRedux";
 import { useDispatch, useSelector } from "react-redux";
-import { post } from "../../config/req";
-import Time from "../../config/hepler";
-import { ParseJson } from "../../socket/Socket";
+import { post } from "@/page/config/req";
+import Time from "@/page/config/hepler";
+import { ParseJson } from "@/page/socket/Socket";
 
 interface MainDiscuss {
   Discuss_Id: string;

@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
-import Song from "../../component/Song";
+import Song from "@/page/component/Song";
 import { useDispatch, useSelector } from "react-redux";
-import RecentList from "./RecentPlaylist";
-import { PlaySong, RemoveRight, RootHome } from "../RootRedux";
-import { get } from "../../config/req";
-import { JumpingSong } from "../Audio/AudioRedux";
+import { PlaySong, RemoveRight, RootHome } from "@/page/home/RootRedux";
+import { get } from "@/page/config/req";
+import { JumpingSong } from "@/page/home/Audio/AudioRedux";
 interface RecentSong {
   Id: string;
   user_id: string;

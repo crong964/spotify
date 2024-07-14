@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { post } from "../../config/req";
+import { post } from "@/page/config/req";
 import { useDispatch, useSelector } from "react-redux";
-import { RootHome, SetBoxList } from "../RootRedux";
+import { RootHome, SetBoxList } from "@/page/home/RootRedux";
 import TypeFriend from "./TypeFriend";
 interface user {
   Name: string;

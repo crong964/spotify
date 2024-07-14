@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { post } from "../../config/req";
+import { post } from "@/page/config/req";
 import React from "react";
 
 interface TypeFriend {

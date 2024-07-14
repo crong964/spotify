@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { post } from "../../page/config/req";
+import { post } from "@/page/config/req";
 type singer = {
   id: string;
   ChanalName: string;

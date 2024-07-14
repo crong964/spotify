@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Page, ReSetSelectSong, RootState } from "../Redux";
-import { Song } from "../SongList";
-import IndexGenres from "../GenreLs";
-import { get, post } from "../../page/config/req";
+import { Page, ReSetSelectSong, RootState } from "@/admin/Redux";
+import { Song } from "@/admin/SongList";
+import IndexGenres from "@/admin/GenreLs";
+import { get, post } from "@/page/config/req";
 
 interface PlayListFormData {
   id: string;

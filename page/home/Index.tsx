@@ -4,7 +4,6 @@ import { SetionList } from "./Setion";
 import RecentList from "./Right/RecentPlaylist";
 import Genre from "./Genre";
 
-
 import PlaylistPage, { ArtistPage, LikedSongListPage } from "./PlayList";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -23,15 +22,14 @@ import IdGenre from "./IdGenre";
 
 import Right from "./Right/Right";
 import ChatBox from "./boxchat/SingleBox";
-import { socket } from "../socket/Socket";
+import { socket } from "@/page/socket/Socket";
 import { MobileSearchButtom } from "./NaviHome/SearchButtom";
 
 import { NaviHomeMobile } from "./NaviHome/NaviHome";
 import Foot from "./Foot";
-import { SuggestPlaylist } from "../component/Playlist";
+import { SuggestPlaylist } from "@/page/component/Playlist";
 import NaviLoveSong from "./NaviHome/NaviLoveSong";
 import Home from "./NaviHome/Home";
-
 
 function useIndex() {
   const [queue, SetQueue] = useState(false);
@@ -48,7 +46,6 @@ function useIndex() {
   return { Set, queue, SetQueue, scroll };
 }
 export default function Index() {
- 
   const { Set, queue, SetQueue, scroll } = useIndex();
   const mobiletype = useSelector((state: RootHome) => state.mobile.type);
   const BoxList = useSelector((state: RootHome) => state.rootHome.BoxList);
@@ -209,7 +206,7 @@ function Center() {
       ) : (
         <></>
       )}
-      
+
       <div className=" h-max relative">{children}</div>
       <Foot />
     </div>

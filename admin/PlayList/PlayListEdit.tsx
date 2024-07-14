@@ -6,11 +6,11 @@ import {
   RootState,
   SetFloor,
   addGenre,
-} from "../Redux";
+} from "@/admin/Redux";
 import { redirect, useParams } from "react-router-dom";
-import { Song } from "../SongList";
-import IndexGenres from "../GenreLs";
-import { get, post } from "../../page/config/req";
+import { Song } from "@/admin/SongList";
+import IndexGenres from "@/admin/GenreLs";
+import { get, post } from "@/page/config/req";
 interface SongForm {
   Id: string;
   user_id: string;

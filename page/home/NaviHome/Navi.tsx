@@ -1,5 +1,3 @@
-import { useDispatch, useSelector } from "react-redux";
-import { NaviPage, RootHome } from "../RootRedux";
 import React from "react";
 import { useLocation } from "react-router-dom";
 

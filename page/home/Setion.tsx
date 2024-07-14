@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import PlayButtom from "../component/PlayButtom";
+import PlayButtom from "@/page/component/PlayButtom";
 import React from "react";
-import { get, post } from "../config/req";
+import { get, post } from "@/page/config/req";
 import { useDispatch, useSelector } from "react-redux";
 import { NaviPage, RootHome } from "./RootRedux";
-import { Artists } from "../component/Artist";
-import PlayLists, { PlayList } from "../component/Playlist";
+import { Artists } from "@/page/component/Artist";
+import PlayLists, { PlayList } from "@/page/component/Playlist";
 import { Link } from "react-router-dom";
 
 interface SetionList {

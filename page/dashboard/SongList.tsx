@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Duration, get, post } from "../config/req";
-import { KeyObject } from "crypto";
+import { Duration, get, post } from "@/page/config/req";
+
 import { useDispatch, useSelector } from "react-redux";
 import { Navi, RootNaviRedux, SongEidt } from "./NaviRedux";
 export default function SongList() {
