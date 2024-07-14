@@ -15,7 +15,7 @@ import { get, post } from "@/page/config/req";
 import NotificationPage from "./NotificationList";
 import PlayButtom from "@/page/component/PlayButtom";
 import { GenreInHome } from "@/page/home/Index";
-import { MessIcon } from "@/icon/Icon";
+import { BackIcon, ForwardIcon, MessIcon } from "@/icon/Icon";
 import { useLocation, useNavigate } from "react-router-dom";
 
 interface Infor {
@@ -195,50 +195,38 @@ function Forward() {
     <button
       title="forward"
       className={`${
-        position < stack.length - 1 ? "bg-[#2A2A2A]" : "bg-black"
+        position < stack.length - 1 ? "bg-[#2A2A2A]" : "bg-black cursor-not-allowed"
       } rounded-full size-[28px] hidden sm:flex justify-center items-center`}
       onClick={() => {
         if (stack.length == 0) {
           return;
         }
+        history.forward();
         dispatch(SetPosition(1));
       }}
     >
-      <svg
-        data-encore-id="icon"
-        role="img"
-        aria-hidden="true"
-        className="fill-white size-4"
-        viewBox="0 0 16 16"
-      >
-        <path d="M4.97.47a.75.75 0 0 0 0 1.06L11.44 8l-6.47 6.47a.75.75 0 1 0 1.06 1.06L13.56 8 6.03.47a.75.75 0 0 0-1.06 0z"></path>
-      </svg>
+      <ForwardIcon className="fill-white size-4"></ForwardIcon>
     </button>
   );
 }
 
 function Back() {
-  const stack = useSelector((state: RootHome) => state.rootHome.stack.length);
   const position = useSelector((state: RootHome) => state.rootHome.position);
   const dispatch = useDispatch();
   return (
     <button
       onClick={() => {
+        if (position <= 0) {
+          return;
+        }
         dispatch(SetPosition(-1));
+        history.back();
       }}
       className={`${
-        position > 0 ? "bg-[#2A2A2A]" : "bg-black"
+        position > 0 ? "bg-[#2A2A2A]" : "bg-black cursor-not-allowed"
       } rounded-full size-[28px] hidden sm:flex justify-center items-center `}
     >
-      <svg
-        data-encore-id="icon"
-        role="img"
-        aria-hidden="true"
-        className="fill-white size-4"
-        viewBox="0 0 16 16"
-      >
-        <path d="M11.03.47a.75.75 0 0 1 0 1.06L4.56 8l6.47 6.47a.75.75 0 1 1-1.06 1.06L2.44 8 9.97.47a.75.75 0 0 1 1.06 0z"></path>
-      </svg>
+      <BackIcon className="fill-white size-4"></BackIcon>
     </button>
   );
 }

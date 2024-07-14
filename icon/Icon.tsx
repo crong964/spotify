@@ -380,7 +380,6 @@ export function CheckCircleIcon(params: icon) {
     </svg>
   );
 }
-
 export function SearchIcon(params: icon) {
   return (
     <svg
@@ -409,6 +408,32 @@ export function SearchCircleIcon(params: icon) {
         strokeLinejoin="round"
         d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
       />
+    </svg>
+  );
+}
+export function ForwardIcon(params: icon) {
+  return (
+    <svg
+      data-encore-id="icon"
+      role="img"
+      aria-hidden="true"
+      className={params.className}
+      viewBox="0 0 16 16"
+    >
+      <path d="M4.97.47a.75.75 0 0 0 0 1.06L11.44 8l-6.47 6.47a.75.75 0 1 0 1.06 1.06L13.56 8 6.03.47a.75.75 0 0 0-1.06 0z"></path>
+    </svg>
+  );
+}
+export function BackIcon(params: icon) {
+  return (
+    <svg
+      data-encore-id="icon"
+      role="img"
+      aria-hidden="true"
+      className={params.className}
+      viewBox="0 0 16 16"
+    >
+      <path d="M11.03.47a.75.75 0 0 1 0 1.06L4.56 8l6.47 6.47a.75.75 0 1 1-1.06 1.06L2.44 8 9.97.47a.75.75 0 0 1 1.06 0z"></path>
     </svg>
   );
 }

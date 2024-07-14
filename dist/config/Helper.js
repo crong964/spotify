@@ -10,7 +10,7 @@ const SECRET = process.env.SECRET;
 function VertifyJWT(apikey, secret) {
     var decode = undefined;
     try {
-        decode = jsonwebtoken_1.default.verify(apikey, secret || SECRET || "1");
+        decode = jsonwebtoken_1.default.verify(apikey, secret || SECRET || "1", {});
     }
     catch (error) {
     }
