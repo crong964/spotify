@@ -22,12 +22,12 @@ import IdGenre from "./IdGenre";
 
 import Right from "./Right/Right";
 import ChatBox from "./boxchat/SingleBox";
-import { socket } from "../socket/Socket";
+import { socket } from "@/page/socket/Socket";
 import { MobileSearchButtom } from "./NaviHome/SearchButtom";
 
 import { NaviHomeMobile } from "./NaviHome/NaviHome";
 import Foot from "./Foot";
-import { SuggestPlaylist } from "../component/Playlist";
+import { SuggestPlaylist } from "@/page/component/Playlist";
 import NaviLoveSong from "./NaviHome/NaviLoveSong";
 import Home from "./NaviHome/Home";
 import { Outlet, Route, Routes, useRouteError } from "react-router-dom";

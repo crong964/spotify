@@ -4,7 +4,7 @@ import { SignUpGitHubButtom, SignUpGoogleButtom } from "./SignButtom";
 import { post } from "../config/req";
 import { useDispatch, useSelector } from "react-redux";
 import { Page, RootAuth } from "./RootAuth";
-import { Eye, EyeSlashIcon, LogoIcon } from "../../icon/Icon";
+import { Eye, EyeSlashIcon, LogoIcon } from "@/icon/Icon";
 type User = {
   Password: string;
   Account: string;

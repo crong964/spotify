@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Page, RootAuth } from "./RootAuth";
 import React, { useState } from "react";
-import { post } from "../config/req";
+import { post } from "@/page/config/req";
 export default function Forgot() {
   const dispatch = useDispatch();
   const page = useSelector((state: RootAuth) => state.rootauth.page);

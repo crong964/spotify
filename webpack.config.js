@@ -8,8 +8,7 @@ module.exports = {
         app: `${process.cwd()}/page/home/App.tsx`,
         dashboard: `${process.cwd()}/page/dashboard/App.tsx`,
         admin: path.join(process.cwd(), 'admin/App.tsx'),
-        auth: path.join(process.cwd(), "page/auth/App.tsx"),
-        test: path.join(process.cwd(), "test/App.tsx")
+        auth: path.join(process.cwd(), "page/auth/App.tsx")
     },
     module: {
         rules: [
@@ -31,6 +30,9 @@ module.exports = {
     },
     resolve: {
         extensions: ['.tsx', '.ts', '.js'],
+        alias: {
+            "@": process.cwd()
+        }
     },
     output: {
         filename: '[name].js',

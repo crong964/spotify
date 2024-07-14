@@ -48,8 +48,6 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Headers', "*");
     res.setHeader('Access-Control-Allow-Methods', "*");
     var apikey = (req.headers.apikey as any) || req.cookies.apikey
-
-
     if (apikey) {
         var cookie = VertifyJWT(apikey)
         if (cookie != undefined) {

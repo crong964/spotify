@@ -9,12 +9,13 @@ import {
   SetNotificationPage,
   SetNotificationPageIdSong,
   SetPosition,
-} from "../RootRedux";
-import { get, post } from "../../config/req";
-import NotificationPage, { NotificationList } from "./NotificationList";
-import PlayButtom from "../../component/PlayButtom";
-import { GenreInHome } from "../Index";
-import { MessIcon } from "../../../icon/Icon";
+} from "@/page/home/RootRedux";
+
+import { get, post } from "@/page/config/req";
+import NotificationPage from "./NotificationList";
+import PlayButtom from "@/page/component/PlayButtom";
+import { GenreInHome } from "@/page/home/Index";
+import { MessIcon } from "@/icon/Icon";
 import { useLocation, useNavigate } from "react-router-dom";
 
 interface Infor {

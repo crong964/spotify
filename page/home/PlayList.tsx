@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import InforUser from "./Header/InforUser";
+
 import PlayButtom from "../component/PlayButtom";
 import { useDispatch, useSelector } from "react-redux";
-import { RootHome, PlaySong, SetCurName, SetPlaying } from "./RootRedux";
+import { RootHome, SetCurName } from "./RootRedux";
 import { get, post } from "../config/req";
 import { SongInPlayList, SongList } from "../component/Song";
 import TypeFriend from "./friend/TypeFriend";
-import Time, { TimeString } from "../component/Time";
+import  { TimeString } from "../component/Time";
 import { useParams } from "react-router-dom";
 
 var g = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 6, 7];

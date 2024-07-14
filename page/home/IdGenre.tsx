@@ -2,9 +2,8 @@ import { useDispatch, useSelector } from "react-redux";
 import rootHome, { NaviPage, RootHome } from "./RootRedux";
 import { useEffect, useState } from "react";
 import React from "react";
-import { get, post } from "../config/req";
-import PlayButtom from "../component/PlayButtom";
-import { PlayList } from "../component/Playlist";
+import { get, post } from "@/page/config/req";
+import { PlayList } from "@/page/component/Playlist";
 import { useParams } from "react-router-dom";
 
 interface Genre {

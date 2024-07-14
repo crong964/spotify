@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NaviPage, RootHome } from "./RootRedux";
-import { get } from "../config/req";
+import { get } from "@/page/config/req";
 import { Link } from "react-router-dom";
 interface Genre {
   Id: string;

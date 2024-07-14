@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
-import { post } from "../../config/req";
+import { post } from "@/page/config/req";
 import React from "react";
-import Time from "../../config/hepler";
+import Time from "@/page/config/hepler";
 import { useDispatch, useSelector } from "react-redux";
 import {
   RootHome,
   SetNotificationPage,
   SetNotificationPageIdSong,
-} from "../RootRedux";
-import Discuss, { MainDiscussList } from "../Right/Discuss";
+} from "@/page/home/RootRedux";
+import Discuss, { MainDiscussList } from "@/page/home/Right/Discuss";
 
 interface Notification {
   Discuss_Id: string;

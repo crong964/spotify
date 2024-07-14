@@ -13,6 +13,7 @@ import playListService from "../services/PlayListService";
 import { PlayListModel } from "../model/PlayListModel";
 import accountService from "../services/AccountService";
 import AccountModel from "../model/AccountModel";
+import SMTPTransport from "nodemailer/lib/smtp-transport";
 interface google {
   email: string;
   name: string;
@@ -584,7 +585,7 @@ Account.post("/sendCodeVertifyEmail", async (req, res) => {
     },
   });
 
-  let info = undefined
+  let info: SMTPTransport.SentMessageInfo | undefined = undefined
   try {
     info = await transporter.sendMail({
       from: 'spotify@gmail.com.com',
@@ -592,7 +593,7 @@ Account.post("/sendCodeVertifyEmail", async (req, res) => {
       subject: "Mã Xác thực email",
       text: "Đây là mã xác thực của bạn đừng chia sẻ cho ai",
       html: `<h1>${code}</h1>`,
-    });
+    }) 
   } catch (error) {
 
   }
@@ -644,7 +645,7 @@ Account.post("/createACC", async (req, res) => {
   pl.PlayListName = u.Name
 
   await playListService.AddArtists(pl)
-  
+
   u.id = id
   acc.id = id
   let check = await userService.AddAccount(u)

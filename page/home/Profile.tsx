@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { get, post } from "../config/req";
+
 import { useDispatch } from "react-redux";
 import { Update } from "./RootRedux";
+import { get, post } from "@/page/config/req";
 
 interface Profile {
   pathImage: string;
