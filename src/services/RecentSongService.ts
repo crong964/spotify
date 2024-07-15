@@ -1,3 +1,4 @@
+import Mysql2 from "../config/Config";
 import RecentSongDatabase from "../database/RecentSongDatabase";
 import RecentSongModel from "../model/RecentSongModel";
 
@@ -12,8 +13,10 @@ export class RecentSongService {
         return check;
     }
     async GetAllByidUser(id: string) {
-        var ls = await this.recentSongDatabase.GetAllByidUser(id)
-        return this.SetLs(ls);
+        var sql = `SELECT song.* FROM recentsong, song WHERE recentsong.user_id=? AND song.Id =recentsong.Id ORDER BY recentsong.Time ASC limit 0,10`;
+        var check = await Mysql2.query(sql, [id]);
+        return this.SetLs(check);
+
     }
 
     async Get(user_id: string, Id_song: string) {
@@ -33,7 +36,7 @@ export class RecentSongService {
         if (ls == undefined) {
             return []
         }
-        var check = []
+        var check: RecentSongModel[] = []
         for (let i = 0; i < ls.length; i++) {
             const element = ls[i];
             var temp = new RecentSongModel()

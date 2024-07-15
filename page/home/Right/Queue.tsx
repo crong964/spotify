@@ -126,7 +126,9 @@ function SongQueueInplayList(p: MenberQueue) {
       {p.cur == p.type ? (
         <>
           <div className="px-2">Đang phát </div>
-          {
+          {lsSong[mark] == undefined ? (
+            <></>
+          ) : (
             <Song
               onClick={() => {
                 dispatch(JumpingSong(lsSong[mark].Id));
@@ -137,7 +139,7 @@ function SongQueueInplayList(p: MenberQueue) {
               Id={lsSong[mark].Id}
               key={lsSong[mark].Id}
             ></Song>
-          }
+          )}
           <div className="px-2">Tiếp theo </div>
           {lsSong
             .filter((v, i) => {

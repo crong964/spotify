@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RecentSongService = void 0;
+const Config_1 = __importDefault(require("../config/Config"));
 const RecentSongDatabase_1 = __importDefault(require("../database/RecentSongDatabase"));
 const RecentSongModel_1 = __importDefault(require("../model/RecentSongModel"));
 class RecentSongService {
@@ -27,8 +28,9 @@ class RecentSongService {
     }
     GetAllByidUser(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            var ls = yield this.recentSongDatabase.GetAllByidUser(id);
-            return this.SetLs(ls);
+            var sql = `SELECT song.* FROM recentsong, song WHERE recentsong.user_id=? AND song.Id =recentsong.Id ORDER BY recentsong.Time ASC limit 0,10`;
+            var check = yield Config_1.default.query(sql, [id]);
+            return this.SetLs(check);
         });
     }
     Get(user_id, Id_song) {
