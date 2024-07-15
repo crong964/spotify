@@ -60,17 +60,9 @@ export default function SongForm() {
         name: pa,
         idArtist: idArtist,
       };
-      fetch("/admin/song/uploadfile", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      })
-        .then((v) => {
-          return v.json();
-        })
-        .then((v) => {
+
+      post("/admin/song/uploadfile", data, (v: any) => {
+        if (!v.err) {
           SetConut(i + n);
           SetSong({
             ...song,
@@ -78,7 +70,8 @@ export default function SongForm() {
             filePath: v.name,
           });
           upload(params, i + n, v.name);
-        });
+        }
+      });
     } else {
       SetFish(true);
     }

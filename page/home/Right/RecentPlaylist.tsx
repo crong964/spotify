@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import PlayButtom from "../@/page/component/PlayButtom";
+import PlayButtom from "@/page/component/PlayButtom";
 import React from "react";
 import { post } from "@/page/config/req";
 import { useDispatch } from "react-redux";

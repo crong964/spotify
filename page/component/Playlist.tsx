@@ -87,9 +87,7 @@ export default function PlayLists(p: PlayLists) {
               {p.title}
             </div>
             <div
-              className={`flex w-max sm:w-full overflow-x-scroll sm:grid gap-2 ${
-                Right == "" ? "grid-cols-7" : "grid-cols-5 "
-              }`}
+              className={`flex w-max sm:w-full overflow-x-scroll sm:grid gap-2 grid-cols-7`}
             >
               {children}
             </div>
