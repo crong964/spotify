@@ -1,3 +1,4 @@
+import { iHelp } from "@/page/socket/Socket";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 interface AudioRedux {
@@ -46,12 +47,16 @@ const audioSlice = createSlice({
       state.mark = 0;
       if (state.lsSong[state.mark]) {
         localStorage.setItem("song", JSON.stringify(state.lsSong[state.mark]));
+        let s = state.lsSong[state.mark];
+        iHelp.Title(`${s.SongName} • ${s.Singer}`);
       }
     },
     NextSong: (state, pay: PayloadAction<number>) => {
       state.mark = state.mark + pay.payload;
       if (state.lsSong[state.mark]) {
         localStorage.setItem("song", JSON.stringify(state.lsSong[state.mark]));
+        let s = state.lsSong[state.mark];
+        iHelp.Title(`${s.SongName} • ${s.Singer}`);
       }
     },
     RepeatPlaylist: (state) => {

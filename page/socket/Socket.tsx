@@ -21,3 +21,17 @@ export function ParseJson(params: string) {
     return {};
   }
 }
+class Help implements iHelp {
+  Title(titlename: string) {
+    let t = document.getElementById("titlte");
+    if (t) {
+      t.innerText = titlename;
+    }
+  }
+}
+
+interface iHelp {
+  Title(titlename: string): void;
+}
+
+export const iHelp = new Help();
