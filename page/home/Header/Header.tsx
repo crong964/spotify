@@ -14,7 +14,7 @@ import {
 import { get, post } from "@/page/config/req";
 import NotificationPage from "./NotificationList";
 import PlayButtom from "@/page/component/PlayButtom";
-import { GenreInHome } from "@/page/home/Index";
+import { GenreInHome } from "@/page/home/IndexTest";
 import { BackIcon, ForwardIcon, MessIcon } from "@/icon/Icon";
 import { useLocation, useNavigate } from "react-router-dom";
 

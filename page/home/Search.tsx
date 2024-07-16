@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Song } from "./PlayList";
+import { Song } from "./Route/PlayListPage";
 import { useDispatch, useSelector } from "react-redux";
 import { NaviPage, RootHome } from "./RootRedux";
 import { post } from "@/page/config/req";

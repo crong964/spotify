@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 
 import { SetionList } from "./Setion";
 import RecentList from "./Right/RecentPlaylist";
 import Genre from "./Genre";
 
-import PlaylistPage, { ArtistPage, LikedSongListPage } from "./PlayList";
+
+const PlaylistPage = React.lazy(() => import("@/page/home/Route/PlayListPage"));
+const ArtistPage = React.lazy(() => import("@/page/home/Route/ArtistPage"));
+const LikedSongListPage = React.lazy(() => import("@/page/home/Route/LikedSongListPage"));
 
 import { useDispatch, useSelector } from "react-redux";
 import PlayingBar from "./Audio/PlayingBar";
@@ -223,29 +226,31 @@ function ErrorBoundary() {
 }
 function NaviRoute() {
   return (
-    <Routes>
-      <Route path="/" element={<CenterShare></CenterShare>}>
-        <Route
-          index
-          element={
-            <div className="h-full">
-              <RecentList />
-              <SetionList name="Danh sách các nghệ sĩ" type="artist" />
-              <SuggestPlaylist />
-            </div>
-          }
-        />
-        <Route path="genre" element={<Outlet></Outlet>}>
-          <Route path=":id" element={<IdGenre></IdGenre>} />
-          <Route index element={<Genre></Genre>} />
+    <Suspense fallback={<div>Loading...</div>}>
+      <Routes>
+        <Route path="/" element={<CenterShare></CenterShare>}>
+          <Route
+            index
+            element={
+              <div className="h-full">
+                <RecentList />
+                <SetionList name="Danh sách các nghệ sĩ" type="artist" />
+                <SuggestPlaylist />
+              </div>
+            }
+          />
+          <Route path="genre" element={<Outlet></Outlet>}>
+            <Route path=":id" element={<IdGenre></IdGenre>} />
+            <Route index element={<Genre></Genre>} />
+          </Route>
+          <Route path="playlist/:id" element={<PlaylistPage />}></Route>
+          <Route path="likedsongs" element={<LikedSongListPage />}></Route>
+          <Route path="artist/:id" element={<ArtistPage></ArtistPage>}></Route>
+          <Route path="search/:s" element={<Search></Search>}></Route>
+          <Route element={<div>ko ti d</div>}></Route>
         </Route>
-        <Route path="playlist/:id" element={<PlaylistPage />}></Route>
-        <Route path="likedsongs" element={<LikedSongListPage />}></Route>
-        <Route path="artist/:id" element={<ArtistPage></ArtistPage>}></Route>
-        <Route path="search/:s" element={<Search></Search>}></Route>
-        <Route element={<div>ko ti d</div>}></Route>
-      </Route>
-    </Routes>
+      </Routes>
+    </Suspense>
   );
 }
 function PcBody() {

@@ -3,12 +3,20 @@ const path = require('path');
 
 module.exports = {
     mode: 'production',
-    devtool: 'source-map',
+
     entry: {
-        app: `${process.cwd()}/page/home/App.tsx`,
         dashboard: `${process.cwd()}/page/dashboard/App.tsx`,
         admin: path.join(process.cwd(), 'admin/App.tsx'),
-        auth: path.join(process.cwd(), "page/auth/App.tsx")
+        auth: path.join(process.cwd(), "page/auth/App.tsx"),
+        app: {
+            import: `${process.cwd()}/page/home/App.tsx`,
+            dependOn: 'shared',
+        },
+        ArtistPage: {
+            import: path.join(process.cwd(), "page/home/Route/ArtistPage.tsx"),
+            dependOn: 'shared',
+        },
+        shared: 'lodash',
     },
     module: {
         rules: [
@@ -37,5 +45,11 @@ module.exports = {
     output: {
         filename: '[name].js',
         path: path.join(process.cwd(), 'web', 'static'),
+        chunkFilename: '[name].bundle.js',
+    },
+    optimization: {
+        splitChunks: {
+            chunks: 'all',
+        },
     },
 }; 
