@@ -12,9 +12,9 @@ import {
 } from "@/page/home/RootRedux";
 
 import { get, post } from "@/page/config/req";
-import NotificationPage from "./NotificationList";
+import NotificationPage from "./NotificationList"; 
 import PlayButtom from "@/page/component/PlayButtom";
-import { GenreInHome } from "@/page/home/IndexTest";
+import { GenreInHome } from "@/page/home/IndexHome";
 import { BackIcon, ForwardIcon, MessIcon } from "@/icon/Icon";
 import { useLocation, useNavigate } from "react-router-dom";
 

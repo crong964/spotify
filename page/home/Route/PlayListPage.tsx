@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import PlayButtom from "@/page/component/PlayButtom";
 import { useDispatch, useSelector } from "react-redux";
-import { RootHome, SetCurName } from "../RootRedux";
+import { RootHome, SetCurName } from "@/page/home/RootRedux";
 import { get, post } from "@/page/config/req";
 import { SongInPlayList, SongList } from "@/page/component/Song";
 import { TimeString } from "@/page/component/Time";
 import { useParams } from "react-router-dom";
-
+ 
 var g = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 6, 7];
 export interface artist {
   id: string | undefined;

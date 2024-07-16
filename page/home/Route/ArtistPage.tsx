@@ -4,11 +4,11 @@ import { RootHome, SetCurName } from "@/page/home/RootRedux";
 import { artist } from "./PlayListPage";
 import { SongInPlayList, SongList } from "@/page/component/Song";
 import { useParams } from "react-router-dom";
-import { get } from "@/page/config/req";
+import { get } from "@/page/config/req"; 
 import React from "react";
 import PlayButtom from "@/page/component/PlayButtom";
 import TypeFriend from "@/page/home/friend/TypeFriend";
-
+  
 export default function ArtistPage() {
   const idpage = useSelector((state: RootHome) => state.rootHome.command.param);
   const [artist, SetaAtist] = useState<artist>();

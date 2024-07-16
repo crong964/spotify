@@ -15,7 +15,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.VerifyCookie = void 0;
 const axios_1 = __importDefault(require("axios"));
 const express_1 = require("express");
-const path_1 = __importDefault(require("path"));
 const Hash_1 = require("../config/Hash");
 const UserService_1 = __importDefault(require("../services/UserService"));
 const UserModel_1 = __importDefault(require("../model/UserModel"));
@@ -36,9 +35,9 @@ const email = process.env.EMAIL;
 const emailpsapp = process.env.EMAILPSAPP;
 const secret = process.env.SECRET;
 const Account = (0, express_1.Router)();
-Account.get("/", (req, res) => {
-    res.sendFile(path_1.default.join(process.cwd(), "/web/auth.html"));
-});
+// Account.get("/", (req, res) => {
+//   res.sendFile(path.join(process.cwd(), "/web/auth.html"));
+// });
 Account.post("/signin", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const account = req.body.account;
     const password = req.body.password;

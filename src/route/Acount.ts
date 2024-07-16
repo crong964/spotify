@@ -32,9 +32,9 @@ const secret = process.env.SECRET
 
 const Account = Router();
 
-Account.get("/", (req, res) => {
-  res.sendFile(path.join(process.cwd(), "/web/auth.html"));
-});
+// Account.get("/", (req, res) => {
+//   res.sendFile(path.join(process.cwd(), "/web/auth.html"));
+// });
 Account.post("/signin", async (req, res) => {
   const account = req.body.account
   const password = req.body.password

@@ -1,6 +1,6 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
-import Index from "./Index";
+import Index from "./IndexAuth";
 import { Provider } from "react-redux";
 import rootAuth from "./RootAuth";
 
