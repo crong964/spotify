@@ -6,8 +6,6 @@ const DATABASE = process.env.DATABASE
 const PASSWORD = process.env.PASSWORD || ""
 const PORTDATABAE = process.env.PORTDATABAE 
 const DockerDB = process.env.DockerDB;
-
-
 const pool = mysql2.createPool({
     host: DockerDB || LOCALHOST,
     user: USER, 

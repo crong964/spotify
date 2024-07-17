@@ -4,7 +4,7 @@ import admin from "firebase-admin"
 import { getDownloadURL } from "firebase-admin/storage"
 import { createReadStream } from "fs";
 import sharp from "sharp";
-
+const cacheControl = 'public, max-age=31536000000,immutable'
 const PROJECTID = process.env.PROJECTID;
 const CLIENTMAIL = process.env.CLIENTMAIL;
 const PRIVATEKEY = process.env.PRIVATEKEY;
@@ -47,7 +47,7 @@ class Firebase {
                     let w = Firebase.bucket.file(g)
                         .createWriteStream({
                             metadata: {
-                                cacheControl: 'public, max-age=31536000000',
+                                cacheControl: cacheControl,
                             }
                         }).on("finish", async () => {
                             var nameURL = await getDownloadURL(Firebase.bucket.file(g))
@@ -81,7 +81,7 @@ class Firebase {
                         .createWriteStream(
                             {
                                 metadata: {
-                                    cacheControl: 'public, max-age=31536000000',
+                                    cacheControl: cacheControl,
                                 }
                             }
                         ).on("finish", async () => {
@@ -105,7 +105,7 @@ class Firebase {
             var r = createReadStream(path)
             var w = Firebase.bucket.file(name).createWriteStream({
                 metadata: {
-                    cacheControl: 'public, max-age=31536000000',
+                    cacheControl: cacheControl,
                 }
             })
 
@@ -125,7 +125,7 @@ class Firebase {
         } catch (error) {
             console.log(error);
         }
-        return meta?.[0] 
+        return meta?.[0]
     }
     DownloadStreamFile(name: string, start: number, end: number) {
         return Firebase.bucket.file(name).createReadStream({ start: start, end: end })

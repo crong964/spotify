@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
-import PlayButtom from "@/page/component/PlayButtom";
+import { Link } from "react-router-dom";
 import React from "react";
 import { get, post } from "@/page/config/req";
 import { useDispatch, useSelector } from "react-redux";
 import { NaviPage, RootHome } from "./RootRedux";
 import { Artists } from "@/page/component/Artist";
-import PlayLists, { PlayList } from "@/page/component/Playlist";
-import { Link } from "react-router-dom";
+import { PlayList } from "@/page/component/Playlist";
+
+const PlayLists = React.lazy(() => import("@/page/component/Playlist"));
+const PlayButtom = React.lazy(() => import("@/page/component/PlayButtom"));
 
 interface SetionList {
   name: string;
@@ -46,7 +48,7 @@ export default function SetionData(params: SetionData) {
         SetHidden(true);
       }}
     >
-       <Link to={`/artist/${params.id}`}>
+      <Link to={`/artist/${params.id}`}>
         <div className="">
           <img
             src={params.pathImage}

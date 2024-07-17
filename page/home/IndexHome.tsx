@@ -14,8 +14,8 @@ import { useDispatch, useSelector } from "react-redux";
 
 const PlayingBar = React.lazy(() => import("./Audio/PlayingBar"));
 const ChatBox = React.lazy(() => import("./boxchat/SingleBox"));
+const Header = React.lazy(() => import("./Header/Header"));
 
-import Header from "./Header/Header";
 import {
   NaviPage,
   RootHome,
