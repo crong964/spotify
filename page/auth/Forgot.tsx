@@ -1,11 +1,12 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Page, RootAuth } from "./RootAuth";
+import { Page } from "./RootAuth";
 import React, { useState } from "react";
 import { post } from "@/page/config/req";
 import { Link } from "react-router-dom";
+import { RootHome } from "../home/RootRedux";
 export default function Forgot() {
   const dispatch = useDispatch();
-  const page = useSelector((state: RootAuth) => state.rootauth.page);
+  const page = useSelector((state: RootHome) => state.rootauth.page);
   const [account, SetAccount] = useState("");
   return (
     <div className="bg-[#2A2A2A] flex justify-center h-full sm:items-center">
@@ -45,7 +46,7 @@ export default function Forgot() {
           >
             Xác nhận
           </div>
-          <Link to="/auth"> 
+          <Link to="/auth">
             <div
               className="text-white hover:text-[#1FDF64] cursor-pointer"
               onClick={() => {

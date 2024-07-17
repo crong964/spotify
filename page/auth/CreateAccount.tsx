@@ -1,13 +1,15 @@
 import React, { useState } from "react";
-import { Page, RootAuth } from "./RootAuth";
+
 import { useDispatch, useSelector } from "react-redux";
 import { post } from "@/page/config/req";
+import { RootHome } from "../home/RootRedux";
+import { Page } from "./RootAuth";
 export default function CreateAccount() {
   const dispatch = useDispatch();
   const [Password, SetPassword] = useState("");
 
-  const page = useSelector((state: RootAuth) => state.rootauth.page);
-  const int = useSelector((state: RootAuth) => state.rootauth);
+  const page = useSelector((state: RootHome) => state.rootauth.page);
+  const int = useSelector((state: RootHome) => state.rootauth);
   const [Name, SetName] = useState(int.Name);
   return (
     <div className="bg-[#2A2A2A] flex  justify-center h-full items-center">

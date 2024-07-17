@@ -1,9 +1,12 @@
 import { useSelector } from "react-redux";
 import { RootHome } from "@/page/home/RootRedux";
+
+
 import React from "react";
-import Queue from "./Queue";
-import Discuss from "./Discuss";
-import BoxChat from "./BoxChat";
+
+const Discuss = React.lazy(() => import("./Discuss"));
+const BoxChat = React.lazy(() => import("./BoxChat"));
+const Queue = React.lazy(() => import("./Queue"));
 
 export default function Right() {
   const Right = useSelector((state: RootHome) => state.rootHome.Right);

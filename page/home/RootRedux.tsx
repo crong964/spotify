@@ -1,9 +1,9 @@
 import { PayloadAction, configureStore, createSlice } from "@reduxjs/toolkit";
 import { useSelector } from "react-redux";
-import { Socket, io } from "socket.io-client";
 import audioSlice from "./Audio/AudioRedux";
 import mobileRedux from "./NaviHome/NaviRedux";
 import { ParseJson } from "@/page/socket/Socket";
+import { authRedux } from "@/page/auth/RootAuth";
 
 interface mess {
   idMess: string;
@@ -198,6 +198,7 @@ const rootHome = configureStore({
     rootHome: rootslice.reducer,
     audioroot: audioSlice.reducer,
     mobile: mobileRedux.reducer,
+    rootauth: authRedux.reducer,
   },
 });
 export type RootTy = typeof rootHome;

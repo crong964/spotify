@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { SignUpGitHubButtom, SignUpGoogleButtom } from "./SignButtom";
 import { post } from "@/page/config/req";
 import { useDispatch, useSelector } from "react-redux";
-import { Page, RootAuth } from "./RootAuth";
+import { Infor, Page } from "./RootAuth";
 import { Eye, EyeSlashIcon, LogoIcon } from "@/icon/Icon";
 import { Link } from "react-router-dom";
+import { RootHome } from "../home/RootRedux";
 type User = {
   Password: string;
   Account: string;
@@ -15,7 +16,7 @@ type User = {
 };
 export default function Signup() {
   const dispatch = useDispatch();
-  const page = useSelector((state: RootAuth) => state.rootauth.page);
+  const page = useSelector((state: RootHome) => state.rootauth.page);
   const [user, SetUser] = useState<User>({
     Account: "",
     Name: "",
@@ -51,7 +52,15 @@ export default function Signup() {
       }
     });
   };
-
+  useEffect(() => {
+    post("/auth/getdata", {}, (v: any) => {
+      if (!v.err) {
+        dispatch(Page("createAccount"));
+        dispatch(Infor(v));
+        console.log(v);
+      }
+    });
+  }, []);
   return (
     <div className="bg-[#2A2A2A] flex  justify-center h-max items-center">
       <div className="bg-black w-[80] h-full p-2 sm:p-20 rounded-3xl">

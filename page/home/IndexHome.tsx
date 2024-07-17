@@ -27,8 +27,7 @@ import Search from "./Search";
 import Profile from "./Profile";
 import IdGenre from "./IdGenre";
 
-import Right from "./Right/Right";
-
+const Right = React.lazy(() => import("./Right/Right"));
 
 import { socket } from "@/page/socket/Socket";
 import { MobileSearchButtom } from "./NaviHome/SearchButtom";
@@ -231,11 +230,7 @@ export default function IndexTest() {
 //     </div>
 //   );
 // }
-function ErrorBoundary() {
-  const error = useRouteError();
-  console.error(error);
-  return <div>lỗi</div>;
-}
+
 function NaviRoute() {
   return (
     <Suspense fallback={<div>Loading...</div>}>

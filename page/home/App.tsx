@@ -6,23 +6,29 @@ import rootHome from "./RootRedux";
 import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 
 const IndexTest = React.lazy(() => import("./IndexHome"));
-import RecentList from "./Right/RecentPlaylist";
+
+const RecentList = React.lazy(() => import("./Right/RecentPlaylist"));
 import { SetionList } from "./Setion";
 import { SuggestPlaylist } from "@/page//component/Playlist";
 const IdGenre = React.lazy(() => import("./IdGenre"));
 const Genre = React.lazy(() => import("./Genre"));
 const PlaylistPage = React.lazy(() => import("@/page/home/Route/PlayListPage"));
 const ArtistPage = React.lazy(() => import("@/page/home/Route/ArtistPage"));
-const LikedSongListPage = React.lazy(
+const LikedSongListPage = React.lazy( 
   () => import("@/page/home/Route/LikedSongListPage")
 );
+const Search = React.lazy(() => import("./Search"));
 
-import Search from "./Search";
-
-import rootAuth from "../auth/RootAuth";
 const IndexAuth = React.lazy(() => import("@/page/auth/IndexAuth"));
 //@ts-ignore
 const root = createRoot(document.getElementById("root"));
+const SignIn = React.lazy(() => import("@/page/auth/SignIn"));
+const Signup = React.lazy(() => import("@/page/auth/Signup"));
+const CreateAccount = React.lazy(() => import("@/page/auth/CreateAccount"));
+const Forgot = React.lazy(() => import("@/page/auth/Forgot"));
+const ChangePassword = React.lazy(() => import("@/page/auth/ChangePassword"));
+const CenterShare = React.lazy(() => import("@/page/auth/CenterShare"));
+
 root.render(
   <BrowserRouter>
     <Provider store={rootHome}>
@@ -52,11 +58,15 @@ root.render(
             <Route path="search/:s" element={<Search></Search>}></Route>
             <Route element={<div>ko ti d</div>}></Route>
           </Route>
+          <Route path="auth" element={<CenterShare></CenterShare>}>
+            <Route index element={<SignIn />}></Route>
+            <Route path="CreateAccount" element={<CreateAccount />}></Route>
+            <Route path="Signup" element={<Signup />}></Route>
+            <Route path="Forgot" element={<Forgot />}></Route>
+            <Route path="ChangePassword" element={<ChangePassword />}></Route>
+          </Route>
         </Routes>
       </Suspense>
-    </Provider>
-    <Provider store={rootAuth}>
-      <IndexAuth />
     </Provider>
   </BrowserRouter>
 );

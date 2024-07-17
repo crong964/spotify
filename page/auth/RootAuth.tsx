@@ -21,7 +21,7 @@ var initialState: initialState = {
   Sign: "",
 };
 
-export const counterSlice = createSlice({
+export const authRedux = createSlice({
   name: "rootauth",
   initialState,
   reducers: {
@@ -43,16 +43,5 @@ export const counterSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { Page, Infor } = counterSlice.actions;
+export const { Page, Infor } = authRedux.actions;
 
-const rootAuth = configureStore({
-  reducer: {
-    rootauth: counterSlice.reducer,
-  },
-});
-
-export type AppDispatch = typeof rootAuth.dispatch;
-
-export type RootAuth = ReturnType<typeof rootAuth.getState>;
-
-export default rootAuth;

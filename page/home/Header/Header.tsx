@@ -12,8 +12,10 @@ import {
 } from "@/page/home/RootRedux";
 
 import { get, post } from "@/page/config/req";
-import NotificationPage from "./NotificationList"; 
-import PlayButtom from "@/page/component/PlayButtom";
+
+const NotificationPage = React.lazy(() => import("./NotificationList"));
+const PlayButtom = React.lazy(() => import("@/page/component/PlayButtom"));
+
 import { GenreInHome } from "@/page/home/IndexHome";
 import { BackIcon, ForwardIcon, MessIcon } from "@/icon/Icon";
 import { useLocation, useNavigate } from "react-router-dom";

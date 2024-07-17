@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import BoxListData from "../boxchat/BoxListData";
+
 import { useDispatch } from "react-redux";
 import { SetSearchName } from "@/page/home/RootRedux";
 
@@ -8,6 +8,7 @@ import UserSearchList, {
   UsersRespond,
 } from "@/page/home/friend/UserSearchList";
 
+const BoxListData = React.lazy(() => import("@/page/home/boxchat/BoxListData"));
 export default function BoxChat() {
   const [search, SetSearch] = useState(false);
   const [order, SetOrder] = useState(0);

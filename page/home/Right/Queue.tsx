@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import Song from "@/page/component/Song";
+
 import { useDispatch, useSelector } from "react-redux";
 import { PlaySong, RemoveRight, RootHome } from "@/page/home/RootRedux";
 import { get } from "@/page/config/req";
 import { JumpingSong } from "@/page/home/Audio/AudioRedux";
+const Song = React.lazy(() => import("@/page/component/Song"));
 interface RecentSong {
   Id: string;
   user_id: string;

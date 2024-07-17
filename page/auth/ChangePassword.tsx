@@ -1,11 +1,12 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Page, RootAuth } from "./RootAuth";
+import { Page } from "./RootAuth";
 import React, { useState } from "react";
 import { post } from "@/page/config/req";
+import { RootHome } from "@/page/home/RootRedux";
 
 export default function ChangePassword() {
   const dispatch = useDispatch();
-  const page = useSelector((state: RootAuth) => state.rootauth.page);
+  const page = useSelector((state: RootHome) => state.rootauth.page);
   const [code, SetCode] = useState("");
   const [Password, SetPassword] = useState("");
   const [Password2, SetPassword2] = useState("");

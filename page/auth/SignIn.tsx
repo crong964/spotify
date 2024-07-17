@@ -4,16 +4,17 @@ import { SignInGitHubButtom, SignInGoogleButtom } from "./SignButtom";
 import { useDispatch, useSelector } from "react-redux";
 
 import { post } from "@/page/config/req";
-import { Page, RootAuth } from "./RootAuth";
+import { Page } from "./RootAuth";
 import { Eye, EyeSlashIcon, LogoIcon } from "@/icon/Icon";
 import { Link } from "react-router-dom";
+import { RootHome } from "@/page/home/RootRedux";
 export default function SignIn() {
   const [account, SetAccount] = useState("");
   const [password, SetPassword] = useState("");
   const [on, SetOn] = useState(false);
   const [eye, SetEye] = useState(false);
   const dispatch = useDispatch();
-  const page = useSelector((state: RootAuth) => state.rootauth.page);
+  const page = useSelector((state: RootHome) => state.rootauth.page);
   var submit = (e: any) => {
     e.preventDefault();
     if (account.length <= 0 || password.length <= 0) {
