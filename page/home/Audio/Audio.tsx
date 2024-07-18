@@ -73,9 +73,6 @@ export default function Audio(params: Audio) {
         <button
           className=""
           onClick={() => {
-            if (!autoplay) {
-              dispatch(SetAutoPlay(true));
-            }
             let mu = document.querySelector(".g") as HTMLAudioElement;
             if (mu.paused) {
               mu.play();
@@ -122,6 +119,7 @@ export default function Audio(params: Audio) {
         />
         <Time d={duration} key={1} />
         <audio
+          
           src={`/idSong?idSong=${params.path}`}
           onCanPlay={async (e) => {
             if (!autoplay) {

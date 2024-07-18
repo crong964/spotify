@@ -34,6 +34,7 @@ const audioSlice = createSlice({
   reducers: {
     SetStop: (state, pay: PayloadAction<boolean>) => {
       state.stop = pay.payload;
+      state.autoplay = true;
     },
     SetModPlay: (state) => {
       state.modplay = (state.modplay + 1) % 3;

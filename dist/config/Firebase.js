@@ -17,6 +17,7 @@ const firebase_admin_1 = __importDefault(require("firebase-admin"));
 const storage_1 = require("firebase-admin/storage");
 const fs_1 = require("fs");
 const sharp_1 = __importDefault(require("sharp"));
+const cacheControl = 'public, max-age=31536000000,immutable';
 const PROJECTID = process.env.PROJECTID;
 const CLIENTMAIL = process.env.CLIENTMAIL;
 const PRIVATEKEY = process.env.PRIVATEKEY;
@@ -55,7 +56,7 @@ class Firebase {
                     let w = Firebase.bucket.file(g)
                         .createWriteStream({
                         metadata: {
-                            cacheControl: 'public, max-age=31536000000',
+                            cacheControl: cacheControl,
                         }
                     }).on("finish", () => __awaiter(this, void 0, void 0, function* () {
                         var nameURL = yield (0, storage_1.getDownloadURL)(Firebase.bucket.file(g));
@@ -86,7 +87,7 @@ class Firebase {
                     let w = Firebase.bucket.file(g)
                         .createWriteStream({
                         metadata: {
-                            cacheControl: 'public, max-age=31536000000',
+                            cacheControl: cacheControl,
                         }
                     }).on("finish", () => __awaiter(this, void 0, void 0, function* () {
                         var nameURL = yield (0, storage_1.getDownloadURL)(Firebase.bucket.file(g));
@@ -110,7 +111,7 @@ class Firebase {
                 var r = (0, fs_1.createReadStream)(path);
                 var w = Firebase.bucket.file(name).createWriteStream({
                     metadata: {
-                        cacheControl: 'public, max-age=31536000000',
+                        cacheControl: cacheControl,
                     }
                 });
                 w.on("finish", () => {

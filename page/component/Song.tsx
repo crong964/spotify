@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { PlaySong, RootHome } from "@/page/home/RootRedux";
 
 import { CheckCircleIcon, PlusCircleIcon } from "@/icon/Icon";
+import { SetAutoPlay } from "../home/Audio/AudioRedux";
 
 interface Song {
   image: string;
@@ -66,6 +67,7 @@ export function SongInPlayList(v: SongInPlayList) {
         className="col-span-5 grid grid-cols-5"
         onClick={() => {
           dispatch(PlaySong(v.Id));
+          dispatch(SetAutoPlay(true));
         }}
       >
         <div className="col-span-1 flex items-center space-x-2">

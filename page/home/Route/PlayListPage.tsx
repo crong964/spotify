@@ -6,7 +6,8 @@ import { get, post } from "@/page/config/req";
 import { SongInPlayList, SongList } from "@/page/component/Song";
 import { TimeString } from "@/page/component/Time";
 import { useParams } from "react-router-dom";
- 
+import { SetAutoPlay } from "../Audio/AudioRedux";
+
 var g = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 6, 7];
 export interface artist {
   id: string | undefined;
@@ -128,7 +129,7 @@ export default function PlaylistPage() {
                 "/recentPlaylist/play",
                 { id: id, type: "playlist" },
                 (v: any) => {
-                  SetStatus("play");
+                  dispatch(SetAutoPlay(true));
                   SetLoad(false);
                 }
               );

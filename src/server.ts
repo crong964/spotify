@@ -37,6 +37,7 @@ import SongAdminRoute from "./admin/SongAdminRoute";
 import { unlink } from "fs/promises";
 
 const secret = process.env.SECRET || "1"
+const production = process.env.MODE == "production"
 const app = express()
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
@@ -60,7 +61,7 @@ app.use((req, res, next) => {
     }
     next();
 });
-app.use("/static", express.static(path.join(process.cwd(), "web", "static")))
+app.use("/static", express.static(path.join(process.cwd(), "web", "static"), { maxAge: production ? 36000000 * 12 : 0, cacheControl: true, immutable: true }))
 app.use("/public", express.static(path.join(process.cwd(), "public"), { maxAge: 100000000000 }))
 app.use("/i", express.static(path.join(process.cwd(), "public", "upload")))
 app.get("/swagger", (req, res) => {
@@ -188,12 +189,12 @@ app.get("/s", async (req, res) => {
     read.pipe(res)
 })
 app.get(/admin/, ADMIN, (req, res) => {
-   
+
     res.sendFile(join(process.cwd(), "web/admin.html"))
 })
 app.get(/\//, (req, res) => {
- 
-    
+
+
     res.setHeader("Cache-Control", "public, max-age=720000000000")
     res.sendFile(path.join(process.cwd(), "web/home.html"))
 })

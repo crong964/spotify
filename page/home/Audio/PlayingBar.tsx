@@ -89,9 +89,6 @@ export default function PlayingBar() {
           <button
             className=" p-2 inline-block sm:hidden"
             onClick={() => {
-              if (!autoplay) {
-                dispatch(SetAutoPlay(true));
-              }
               var mu = document.querySelector(".g") as HTMLAudioElement;
               if (mu.paused) {
                 mu.play();

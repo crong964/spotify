@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { PlaySong, RemoveRight, RootHome } from "@/page/home/RootRedux";
 import { get } from "@/page/config/req";
-import { JumpingSong } from "@/page/home/Audio/AudioRedux";
+import { JumpingSong, SetAutoPlay } from "@/page/home/Audio/AudioRedux";
 const Song = React.lazy(() => import("@/page/component/Song"));
 interface RecentSong {
   Id: string;
@@ -97,6 +97,7 @@ function RecentPlaySongs(p: MenberQueue) {
               <Song
                 onClick={() => {
                   dispatch(PlaySong(v.Id));
+                  dispatch(SetAutoPlay(true));
                 }}
                 image={v.SongImage}
                 name={v.SongName}

@@ -70,6 +70,7 @@ const ArtistManagementRoute_1 = __importDefault(require("./admin/ArtistManagemen
 const SongAdminRoute_1 = __importDefault(require("./admin/SongAdminRoute"));
 const promises_1 = require("fs/promises");
 const secret = process.env.SECRET || "1";
+const production = process.env.MODE == "production";
 const app = (0, express_1.default)();
 const httpServer = (0, http_1.createServer)(app);
 const io = new socket_io_1.Server(httpServer, {
@@ -92,7 +93,7 @@ app.use((req, res, next) => {
     }
     next();
 });
-app.use("/static", express_1.default.static(path_1.default.join(process.cwd(), "web", "static")));
+app.use("/static", express_1.default.static(path_1.default.join(process.cwd(), "web", "static"), { maxAge: production ? 36000000 * 12 : 0, cacheControl: true, immutable: true }));
 app.use("/public", express_1.default.static(path_1.default.join(process.cwd(), "public"), { maxAge: 100000000000 }));
 app.use("/i", express_1.default.static(path_1.default.join(process.cwd(), "public", "upload")));
 app.get("/swagger", (req, res) => {

@@ -9,7 +9,7 @@ const DockerDB = process.env.DockerDB;
 const pool = mysql2.createPool({
     host: DockerDB || LOCALHOST,
     user: USER, 
-    database: DATABASE,
+    database: DATABASE, 
     password: PASSWORD,
     waitForConnections: true,
     port: parseInt(PORTDATABAE + "" || "3306"),
