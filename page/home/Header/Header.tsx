@@ -13,7 +13,9 @@ import {
 
 import { get, post } from "@/page/config/req";
 
-const NotificationPage = React.lazy(() => import("./NotificationList"));
+const NotificationPage = React.lazy(
+  () => import("@/page/home/Header/NotificationList")
+);
 const PlayButtom = React.lazy(() => import("@/page/component/PlayButtom"));
 
 import { GenreInHome } from "@/page/home/IndexHome";
@@ -27,6 +29,7 @@ interface Infor {
 }
 export default function Header() {
   const curName = useSelector((state: RootHome) => state.rootHome.curName);
+  const [search, SetSearch] = useState("");
   const topbarcontent = useSelector(
     (state: RootHome) => state.rootHome.topbarcontent
   );
@@ -37,6 +40,7 @@ export default function Header() {
   const isLogin = useSelector((state: RootHome) => state.rootHome.isLogin);
   const dispatch = useDispatch();
   const { pathname } = useLocation();
+
   const [infor, SetInfor] = useState<Infor>({
     Name: "",
     pathImage: "",
@@ -51,6 +55,8 @@ export default function Header() {
       }
     });
   }, [update]);
+
+  useEffect(() => {}, [search]);
 
   return (
     <div
@@ -74,13 +80,12 @@ export default function Header() {
                 <input
                   onChange={(v) => {
                     var value = v.currentTarget.value;
-                    if (value.length < 2) {
+                    if (value.length <= 0) {
                       navigate(`/genre`);
                       return;
                     }
                     dispatch(NaviPage({ page: "search", param: value }));
                     navigate(`/search/${value}`);
-                    navigator;
                   }}
                   type="text"
                   className="searchname p-1 text-white w-[300px] bg-[#2A2A2A] border-[#2A2A2A]  focus:outline-none border-2 rounded-full"
@@ -197,7 +202,9 @@ function Forward() {
     <button
       title="forward"
       className={`${
-        position < stack.length - 1 ? "bg-[#2A2A2A]" : "bg-black cursor-not-allowed"
+        position < stack.length - 1
+          ? "bg-[#2A2A2A]"
+          : "bg-black cursor-not-allowed"
       } rounded-full size-[28px] hidden sm:flex justify-center items-center`}
       onClick={() => {
         if (stack.length == 0) {

@@ -1,2 +1,1 @@
-cp -r .\dist\ .\depyl\
-cp -r .\web\ .\depyl\
+npm run build

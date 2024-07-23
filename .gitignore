@@ -4,5 +4,6 @@ sql.txt
 depyl
 build.bat
 run.bat
+depl.bat
 test
 web/static/*

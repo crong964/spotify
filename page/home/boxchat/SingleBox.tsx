@@ -46,7 +46,7 @@ function useChatBox(boxInfor: BoxInfor) {
   const mess = useSelector((state: RootHome) => state.rootHome.mess);
 
   useEffect(() => {
-    var url = "mess/GetAllMessInbox";
+    var url = "/mess/GetAllMessInbox";
     post(url, { idBox: boxInfor.idbox }, (v: any) => {
       SetBoxChatData(v.infor);
       SetListMess([...(v.mess as []).reverse()]);
@@ -77,7 +77,7 @@ function useChatBox(boxInfor: BoxInfor) {
   }, [listMess, mess]);
   function SetParamester() {
     post(
-      "mess/NextMessList",
+      "/mess/NextMessList",
       { idFriend: boxChatData.id, idBox: boxChatData.idBox, now: now },
       (v: any) => {
         SetListMess([...(v.ls as []).reverse(), ...listMess]);
@@ -307,7 +307,7 @@ export default function ChatBox(boxInfor: BoxInfor) {
                       fo.append("image", element);
                     }
                     fo.set("idbox", boxInfor.idbox);
-                    post("mess/image", fo, () => {});
+                    post("/mess/image", fo, () => {});
                   }}
                   type="file"
                   className="hidden"

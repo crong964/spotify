@@ -91,7 +91,9 @@ app.use((req, res, next) => {
     if (req.headers.iduser) {
         req.cookies.id = req.headers.iduser;
     }
-    next();
+    setTimeout(() => {
+        next();
+    }, production ? 0 : 1000);
 });
 app.use("/static", express_1.default.static(path_1.default.join(process.cwd(), "web", "static"), { maxAge: production ? 36000000 * 12 : 0, cacheControl: true, immutable: true }));
 app.use("/public", express_1.default.static(path_1.default.join(process.cwd(), "public"), { maxAge: 100000000000 }));

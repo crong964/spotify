@@ -32,7 +32,7 @@ import jwt, { JwtPayload } from "jsonwebtoken"
 import RecentPlaylistRoute from "./route/RecentPlaylistRoute";
 import firebase from "./config/Firebase";
 import ArtistManagementRoute from "./admin/ArtistManagementRoute";
-import songAdminController from "./controllerAdmin/SongAdminController";
+
 import SongAdminRoute from "./admin/SongAdminRoute";
 import { unlink } from "fs/promises";
 
@@ -59,7 +59,9 @@ app.use((req, res, next) => {
     if (req.headers.iduser) {
         req.cookies.id = req.headers.iduser
     }
-    next();
+    setTimeout(() => {
+        next();
+    }, production ? 0 : 1000);
 });
 app.use("/static", express.static(path.join(process.cwd(), "web", "static"), { maxAge: production ? 36000000 * 12 : 0, cacheControl: true, immutable: true }))
 app.use("/public", express.static(path.join(process.cwd(), "public"), { maxAge: 100000000000 }))
