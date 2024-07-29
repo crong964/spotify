@@ -8,12 +8,13 @@ import { RootState } from "./Redux";
 import PlayListForm from "./PlayList/PlayListForn";
 import PlaylistAndGenre from "./PlayList/PlaylistAndGenre";
 import PlayListEdit from "./PlayList/PlayListEdit";
-import UserList from "./user/UserList"; 
+import UserList from "./user/UserList";
 import Employls from "./user/Employls";
 import { Outlet, Route, Routes } from "react-router-dom";
 import Artist, { AddArtist, ArtistDetail } from "./artist/Artist";
 import ArtistList from "./artist/Artist";
 import SongListAndInforArtist from "./artist/SongListAndInforArtist";
+import CmdPage from "./Cmd/CmdPage";
 
 export default function App() {
   var children: React.JSX.Element;
@@ -184,6 +185,16 @@ function Center() {
           element={
             <Main title="Danh sách nhạc của ca sĩ">
               <SongListAndInforArtist></SongListAndInforArtist>
+            </Main>
+          }
+        />
+      </Route>
+      <Route path="cmd" element={<Outlet></Outlet>}>
+        <Route
+          path=""
+          element={
+            <Main title="Lệnh">
+              <CmdPage />
             </Main>
           }
         />

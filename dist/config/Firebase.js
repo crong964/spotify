@@ -76,7 +76,9 @@ class Firebase {
     UploadImageBufferNoZip(name, data) {
         return __awaiter(this, void 0, void 0, function* () {
             return new Promise((res, rej) => {
-                (0, sharp_1.default)(data).jpeg({ force: true, progressive: true }).png({ palette: true, progressive: true, force: false })
+                (0, sharp_1.default)(data).
+                    jpeg({ force: true, progressive: true })
+                    .png({ palette: true, progressive: true, force: false })
                     .toBuffer((err, buffer, infor) => {
                     if (err) {
                         console.log(err);

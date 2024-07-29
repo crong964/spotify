@@ -130,7 +130,18 @@ export default function Navi() {
             Danh sách nhân viên
           </NavLink>
         </Dropdown>
-
+        <NavLink
+            to="/cmd"
+            end
+            className={({ isActive, isPending }) =>
+              [isActive ? "active-nav-link" : "", ""].join(
+                " flex items-center hover:opacity-100 text-white py-4 pl-6 nav-item cursor-pointer"
+              )
+            }
+          >
+            <div className="mr-4"></div>
+            Lệnh
+          </NavLink>
         <a
           href="/auth/logout"
           className="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item cursor-pointer"

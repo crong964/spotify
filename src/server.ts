@@ -35,6 +35,7 @@ import ArtistManagementRoute from "./admin/ArtistManagementRoute";
 
 import SongAdminRoute from "./admin/SongAdminRoute";
 import { unlink } from "fs/promises";
+import CmdRoute from "./route/CmdRoute";
 
 const secret = process.env.SECRET || "1"
 const production = process.env.MODE == "production"
@@ -61,7 +62,7 @@ app.use((req, res, next) => {
     }
     setTimeout(() => {
         next();
-    }, production ? 0 : 1000);
+    }, production ? 0 : 10);
 });
 app.use("/static", express.static(path.join(process.cwd(), "web", "static"), { maxAge: production ? 36000000 * 12 : 0, cacheControl: true, immutable: true }))
 app.use("/public", express.static(path.join(process.cwd(), "public"), { maxAge: 100000000000 }))
@@ -109,7 +110,7 @@ app.use("/admin/contain", ADMIN, ContainRouteAdmin)
 app.use("/admin/UserRouteAdmin", ADMIN, UserRouteAdmin)
 app.use("/admin/artist", ADMIN, ArtistManagementRoute)
 app.use("/admin/song", ADMIN, SongAdminRoute)
-
+app.use("/admin/cmd", ADMIN, CmdRoute)
 
 app.get("/idSong", async (req, res) => {
     res.setHeader("Cache-Control", "max-age=315360000, no-transform, must-revalidate")
@@ -136,7 +137,7 @@ app.get("/idSong", async (req, res) => {
             res.cookie("music", idSong, { httpOnly: true, maxAge: 1000 * 60 * 60 * 24 * 365 })
             res.cookie("videoSize", videoSize, { httpOnly: true, maxAge: 1000 * 60 * 60 * 24 * 365 })
         }
-        var chuck = 10 ** 6
+        var chuck = 100000
 
         var end = Math.min(start + chuck, videoSize - 1)
         var read = firebase.DownloadStreamFile(patsong, start, end)

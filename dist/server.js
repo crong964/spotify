@@ -69,6 +69,7 @@ const Firebase_1 = __importDefault(require("./config/Firebase"));
 const ArtistManagementRoute_1 = __importDefault(require("./admin/ArtistManagementRoute"));
 const SongAdminRoute_1 = __importDefault(require("./admin/SongAdminRoute"));
 const promises_1 = require("fs/promises");
+const CmdRoute_1 = __importDefault(require("./route/CmdRoute"));
 const secret = process.env.SECRET || "1";
 const production = process.env.MODE == "production";
 const app = (0, express_1.default)();
@@ -93,7 +94,7 @@ app.use((req, res, next) => {
     }
     setTimeout(() => {
         next();
-    }, production ? 0 : 1000);
+    }, production ? 0 : 10);
 });
 app.use("/static", express_1.default.static(path_1.default.join(process.cwd(), "web", "static"), { maxAge: production ? 36000000 * 12 : 0, cacheControl: true, immutable: true }));
 app.use("/public", express_1.default.static(path_1.default.join(process.cwd(), "public"), { maxAge: 100000000000 }));
@@ -131,6 +132,7 @@ app.use("/admin/contain", admin_1.default, ContainRouteAdmin_1.default);
 app.use("/admin/UserRouteAdmin", admin_1.default, UserRouteAdmin_1.default);
 app.use("/admin/artist", admin_1.default, ArtistManagementRoute_1.default);
 app.use("/admin/song", admin_1.default, SongAdminRoute_1.default);
+app.use("/admin/cmd", admin_1.default, CmdRoute_1.default);
 app.get("/idSong", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b;
     res.setHeader("Cache-Control", "max-age=315360000, no-transform, must-revalidate");
@@ -151,7 +153,7 @@ app.get("/idSong", (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             res.cookie("music", idSong, { httpOnly: true, maxAge: 1000 * 60 * 60 * 24 * 365 });
             res.cookie("videoSize", videoSize, { httpOnly: true, maxAge: 1000 * 60 * 60 * 24 * 365 });
         }
-        var chuck = 10 ** 6;
+        var chuck = 100000;
         var end = Math.min(start + chuck, videoSize - 1);
         var read = Firebase_1.default.DownloadStreamFile(patsong, start, end)
             .on("error", (err) => {
