@@ -22,22 +22,12 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const path_1 = __importStar(require("path"));
-const fs_1 = __importDefault(require("fs"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const GenreRoute_1 = __importDefault(require("./route/GenreRoute"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
@@ -46,7 +36,6 @@ const UserRoute_1 = __importDefault(require("./route/UserRoute"));
 const Song_Route_1 = __importDefault(require("./route/Song.Route"));
 const Acount_1 = __importDefault(require("./route/Acount"));
 const LikedSongRoute_1 = __importDefault(require("./route/LikedSongRoute"));
-const RecentSongService_1 = __importDefault(require("./services/RecentSongService"));
 const RecentSongRoute_1 = __importDefault(require("./route/RecentSongRoute"));
 const SearchRoute_1 = __importDefault(require("./route/SearchRoute"));
 const PlayListRoute_1 = __importDefault(require("./route/PlayListRoute"));
@@ -65,11 +54,10 @@ const admin_1 = __importStar(require("./config/admin"));
 require("dotenv/config");
 const Helper_1 = require("./config/Helper");
 const RecentPlaylistRoute_1 = __importDefault(require("./route/RecentPlaylistRoute"));
-const Firebase_1 = __importDefault(require("./config/Firebase"));
 const ArtistManagementRoute_1 = __importDefault(require("./admin/ArtistManagementRoute"));
 const SongAdminRoute_1 = __importDefault(require("./admin/SongAdminRoute"));
-const promises_1 = require("fs/promises");
 const CmdRoute_1 = __importDefault(require("./route/CmdRoute"));
+const StreamingRoute_1 = __importDefault(require("./route/StreamingRoute"));
 const secret = process.env.SECRET || "1";
 const production = process.env.MODE == "production";
 const app = (0, express_1.default)();
@@ -133,79 +121,75 @@ app.use("/admin/UserRouteAdmin", admin_1.default, UserRouteAdmin_1.default);
 app.use("/admin/artist", admin_1.default, ArtistManagementRoute_1.default);
 app.use("/admin/song", admin_1.default, SongAdminRoute_1.default);
 app.use("/admin/cmd", admin_1.default, CmdRoute_1.default);
-app.get("/idSong", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b;
-    res.setHeader("Cache-Control", "max-age=315360000, no-transform, must-revalidate");
-    var start = parseInt(((_a = req.headers.range) === null || _a === void 0 ? void 0 : _a.replace("bytes=", "").split("-")[0]) || "0");
-    var music = req.cookies.music;
-    var idSong = req.query.idSong;
-    var id = req.cookies.id;
-    if (idSong == undefined || idSong == "undefined") {
-        res.end();
-        return;
-    }
-    var patsong = `song/${idSong}`;
-    try {
-        var videoSize = parseInt(req.cookies.videoSize || "0");
-        if (music != idSong && id != undefined) {
-            RecentSongService_1.default.Add(id, idSong);
-            videoSize = parseInt((((_b = (yield Firebase_1.default.GetMeta(patsong))) === null || _b === void 0 ? void 0 : _b.size) + "") || "0");
-            res.cookie("music", idSong, { httpOnly: true, maxAge: 1000 * 60 * 60 * 24 * 365 });
-            res.cookie("videoSize", videoSize, { httpOnly: true, maxAge: 1000 * 60 * 60 * 24 * 365 });
-        }
-        var chuck = 100000;
-        var end = Math.min(start + chuck, videoSize - 1);
-        var read = Firebase_1.default.DownloadStreamFile(patsong, start, end)
-            .on("error", (err) => {
-            console.log(err);
-        });
-        res.writeHead(206, {
-            "accept-ranges": "bytes",
-            "content-range": `bytes ${start}-${end}/${videoSize}`,
-            "content-type": "audio/mp3",
-            "content-length": end - start + 1
-        });
-        read.pipe(res);
-    }
-    catch (error) {
-        console.log(error);
-        res.json({
-            err: true
-        });
-    }
-}));
-app.get("/s", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _c;
-    var namestrong = req.query.id;
-    if (namestrong.length <= 0) {
-        res.json({ err: true });
-        return;
-    }
-    var pathg = path_1.default.join(process.cwd(), "public/music", namestrong);
-    let patsong = `song/${namestrong}`;
-    if (fs_1.default.existsSync(pathg)) {
-        try {
-            namestrong = (yield Firebase_1.default.UploadStream(pathg, patsong));
-        }
-        catch (error) {
-            console.log(error);
-            res.json({ err: true });
-            return;
-        }
-        try {
-            (0, promises_1.unlink)(pathg);
-        }
-        catch (error) {
-            console.log(error);
-        }
-    }
-    var videoSize = parseInt((((_c = (yield Firebase_1.default.GetMeta(patsong))) === null || _c === void 0 ? void 0 : _c.size) + "") || "0");
-    var read = Firebase_1.default.DownloadStreamFile(patsong, 0, videoSize)
-        .on("error", (err) => {
-        console.log(err);
-    });
-    read.pipe(res);
-}));
+app.use(StreamingRoute_1.default);
+// app.get("/idSong", async (req, res) => {
+//     res.setHeader("Cache-Control", "max-age=315360000, no-transform, must-revalidate")
+//     var start = parseInt(req.headers.range?.replace("bytes=", "").split("-")[0] || "0")
+//     var music = req.cookies.music
+//     var idSong = req.query.idSong as string
+//     var id = req.cookies.id
+//     if (idSong == undefined || idSong == "undefined") {
+//         res.end()
+//         return
+//     }
+//     var patsong = `song/${idSong}`
+//     try {
+//         var videoSize = parseInt(req.cookies.videoSize || "0")
+//         if (music != idSong && id != undefined) {
+//             recentSongService.Add(id, idSong)
+//             videoSize = parseInt(((await firebase.GetMeta(patsong))?.size + "") || "0")
+//             res.cookie("music", idSong, { httpOnly: true, maxAge: 1000 * 60 * 60 * 24 * 365 })
+//             res.cookie("videoSize", videoSize, { httpOnly: true, maxAge: 1000 * 60 * 60 * 24 * 365 })
+//         }
+//         var chuck = 100000
+//         var end = Math.min(start + chuck, videoSize - 1)
+//         var read = firebase.DownloadStreamFile(patsong, start, end)
+//             .on("error", (err) => {
+//                 console.log(err);
+//             })
+//         res.writeHead(206, {
+//             "accept-ranges": "bytes",
+//             "content-range": `bytes ${start}-${end}/${videoSize}`,
+//             "content-type": "audio/mp3",
+//             "content-length": end - start + 1
+//         })
+//         read.pipe(res)
+//     } catch (error) {
+//         console.log(error);
+//         res.json({
+//             err: true
+//         })
+//     }
+// })
+// app.get("/s", async (req, res) => {
+//     var namestrong = req.query.id as string
+//     if (namestrong.length <= 0) {
+//         res.json({ err: true })
+//         return
+//     }
+//     var pathg = path.join(process.cwd(), "public/music", namestrong)
+//     let patsong = `song/${namestrong}`
+//     if (fs.existsSync(pathg)) {
+//         try {
+//             namestrong = await firebase.UploadStream(pathg, patsong) as string
+//         } catch (error) {
+//             console.log(error);
+//             res.json({ err: true })
+//             return
+//         }
+//         try {
+//             unlink(pathg)
+//         } catch (error) {
+//             console.log(error);
+//         }
+//     }
+//     var videoSize = parseInt(((await firebase.GetMeta(patsong))?.size + "") || "0")
+//     var read = firebase.DownloadStreamFile(patsong, 0, videoSize)
+//         .on("error", (err) => {
+//             console.log(err);
+//         })
+//     read.pipe(res)
+// })
 app.get(/admin/, admin_1.default, (req, res) => {
     res.sendFile((0, path_1.join)(process.cwd(), "web/admin.html"));
 });

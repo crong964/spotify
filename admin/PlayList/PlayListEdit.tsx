@@ -58,10 +58,10 @@ function PlayListFormData() {
     Genre_ID: "",
     id: "",
     ImagePath: "",
-    PlayListName: "",
+    PlayListName: "", 
   });
   useEffect(() => {
-    get(`/playlist/playListDetailAdmin/${idPlaylistEdit}`, (v: any) => {
+    get(`/admin/playlist/playListDetailAdmin/${idPlaylistEdit}`, (v: any) => {
       if (!v.err) {
         SetPlayList(v.playlist);
         for (let i = 0; i < v.genre.length; i++) {
@@ -177,7 +177,7 @@ function PlayListFormData() {
             form.set(key, element);
           }
           form.set("Genre_ID", slectGenre[floor]);
-          post("/playlist/UpdatePlayList", form, (v: any) => {
+          post("/admin/playlist/UpdatePlayList", form, (v: any) => {
             if (!v.err) {
               alert("cập nhật thành công");
               window.location.href = `/admin/playlist/edit/${idPlaylistEdit}`;

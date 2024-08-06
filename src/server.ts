@@ -36,6 +36,7 @@ import ArtistManagementRoute from "./admin/ArtistManagementRoute";
 import SongAdminRoute from "./admin/SongAdminRoute";
 import { unlink } from "fs/promises";
 import CmdRoute from "./route/CmdRoute";
+import StreamingRoute from "./route/StreamingRoute";
 
 const secret = process.env.SECRET || "1"
 const production = process.env.MODE == "production"
@@ -111,93 +112,93 @@ app.use("/admin/UserRouteAdmin", ADMIN, UserRouteAdmin)
 app.use("/admin/artist", ADMIN, ArtistManagementRoute)
 app.use("/admin/song", ADMIN, SongAdminRoute)
 app.use("/admin/cmd", ADMIN, CmdRoute)
+app.use(StreamingRoute)
 
-app.get("/idSong", async (req, res) => {
-    res.setHeader("Cache-Control", "max-age=315360000, no-transform, must-revalidate")
-    var start = parseInt(req.headers.range?.replace("bytes=", "").split("-")[0] || "0")
-    var music = req.cookies.music
-    var idSong = req.query.idSong as string
-    var id = req.cookies.id
-    if (idSong == undefined || idSong == "undefined") {
-        res.end()
-        return
-    }
-
-
-    var patsong = `song/${idSong}`
-    try {
-        var videoSize = parseInt(req.cookies.videoSize || "0")
-
-        if (music != idSong && id != undefined) {
-            recentSongService.Add(id, idSong)
-
-            videoSize = parseInt(((await firebase.GetMeta(patsong))?.size + "") || "0")
+// app.get("/idSong", async (req, res) => {
+//     res.setHeader("Cache-Control", "max-age=315360000, no-transform, must-revalidate")
+//     var start = parseInt(req.headers.range?.replace("bytes=", "").split("-")[0] || "0")
+//     var music = req.cookies.music
+//     var idSong = req.query.idSong as string
+//     var id = req.cookies.id
+//     if (idSong == undefined || idSong == "undefined") {
+//         res.end()
+//         return
+//     }
 
 
-            res.cookie("music", idSong, { httpOnly: true, maxAge: 1000 * 60 * 60 * 24 * 365 })
-            res.cookie("videoSize", videoSize, { httpOnly: true, maxAge: 1000 * 60 * 60 * 24 * 365 })
-        }
-        var chuck = 100000
+//     var patsong = `song/${idSong}`
+//     try {
+//         var videoSize = parseInt(req.cookies.videoSize || "0")
 
-        var end = Math.min(start + chuck, videoSize - 1)
-        var read = firebase.DownloadStreamFile(patsong, start, end)
-            .on("error", (err) => {
-                console.log(err);
-            })
-        res.writeHead(206, {
-            "accept-ranges": "bytes",
-            "content-range": `bytes ${start}-${end}/${videoSize}`,
-            "content-type": "audio/mp3",
-            "content-length": end - start + 1
+//         if (music != idSong && id != undefined) {
+//             recentSongService.Add(id, idSong)
 
-        })
-        read.pipe(res)
+//             videoSize = parseInt(((await firebase.GetMeta(patsong))?.size + "") || "0")
 
-    } catch (error) {
-        console.log(error);
 
-        res.json({
-            err: true
-        })
-    }
-})
-app.get("/s", async (req, res) => {
-    var namestrong = req.query.id as string
-    if (namestrong.length <= 0) {
-        res.json({ err: true })
-        return
-    }
-    var pathg = path.join(process.cwd(), "public/music", namestrong)
-    let patsong = `song/${namestrong}`
-    if (fs.existsSync(pathg)) {
-        try {
-            namestrong = await firebase.UploadStream(pathg, patsong) as string
-        } catch (error) {
-            console.log(error);
-            res.json({ err: true })
-            return
-        }
-        try {
-            unlink(pathg)
-        } catch (error) {
-            console.log(error);
-        }
-    }
+//             res.cookie("music", idSong, { httpOnly: true, maxAge: 1000 * 60 * 60 * 24 * 365 })
+//             res.cookie("videoSize", videoSize, { httpOnly: true, maxAge: 1000 * 60 * 60 * 24 * 365 })
+//         }
+//         var chuck = 100000
 
-    var videoSize = parseInt(((await firebase.GetMeta(patsong))?.size + "") || "0")
-    var read = firebase.DownloadStreamFile(patsong, 0, videoSize)
-        .on("error", (err) => {
-            console.log(err);
-        })
-    read.pipe(res)
-})
+//         var end = Math.min(start + chuck, videoSize - 1)
+//         var read = firebase.DownloadStreamFile(patsong, start, end)
+//             .on("error", (err) => {
+//                 console.log(err);
+//             })
+//         res.writeHead(206, {
+//             "accept-ranges": "bytes",
+//             "content-range": `bytes ${start}-${end}/${videoSize}`,
+//             "content-type": "audio/mp3",
+//             "content-length": end - start + 1
+
+//         })
+//         read.pipe(res)
+
+//     } catch (error) {
+//         console.log(error);
+
+//         res.json({
+//             err: true
+//         })
+//     }
+// })
+// app.get("/s", async (req, res) => {
+//     var namestrong = req.query.id as string
+//     if (namestrong.length <= 0) {
+//         res.json({ err: true })
+//         return
+//     }
+//     var pathg = path.join(process.cwd(), "public/music", namestrong)
+//     let patsong = `song/${namestrong}`
+//     if (fs.existsSync(pathg)) {
+//         try {
+//             namestrong = await firebase.UploadStream(pathg, patsong) as string
+//         } catch (error) {
+//             console.log(error);
+//             res.json({ err: true })
+//             return
+//         }
+//         try {
+//             unlink(pathg)
+//         } catch (error) {
+//             console.log(error);
+//         }
+//     }
+
+//     var videoSize = parseInt(((await firebase.GetMeta(patsong))?.size + "") || "0")
+//     var read = firebase.DownloadStreamFile(patsong, 0, videoSize)
+//         .on("error", (err) => {
+//             console.log(err);
+//         })
+//     read.pipe(res)
+// })
+
 app.get(/admin/, ADMIN, (req, res) => {
 
     res.sendFile(join(process.cwd(), "web/admin.html"))
 })
 app.get(/\//, (req, res) => {
-
-
     res.setHeader("Cache-Control", "public, max-age=720000000000")
     res.sendFile(path.join(process.cwd(), "web/home.html"))
 })

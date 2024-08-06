@@ -37,15 +37,12 @@ export default function Audio(params: Audio) {
   const [duration, SetDuration] = useState(0);
   const [curTime, SetCurTime] = useState(0);
   const [timeUpdate, SetTimeUpdate] = useState(true);
-  useEffect(() => {
-    async function set() {
-      let mu = document.querySelector(".g") as HTMLAudioElement;
 
-      if (mu) {
-        SetDuration(mu.duration);
-      }
+  useEffect(() => {
+    let mu = document.querySelector(".g") as HTMLAudioElement;
+    if (mu) {
+      SetDuration(mu.duration);
     }
-    set();
   });
 
   return (
@@ -119,7 +116,6 @@ export default function Audio(params: Audio) {
         />
         <Time d={duration} key={1} />
         <audio
-          
           src={`/idSong?idSong=${params.path}`}
           onCanPlay={async (e) => {
             if (!autoplay) {
