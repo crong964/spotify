@@ -153,7 +153,7 @@ export default function PlaylistPage() {
         <div className="py-3 font-bold text-[24px]  text-white">
           Các bài hát
         </div>
-        <SongList data={songs} />
+        <SongList data={songs} type="playlist" />
         <footer className="h-5"></footer>
       </div>
     </div>

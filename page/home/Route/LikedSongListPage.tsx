@@ -61,7 +61,7 @@ export default function LikedSongListPage() {
         <div className="py-3 font-bold text-[24px]  text-white">
           Các bài hát
         </div>
-        <SongList data={songs} />
+        <SongList data={songs} type="likeplaylist"/>
         <footer className="h-5"></footer>
       </div>
     </div>

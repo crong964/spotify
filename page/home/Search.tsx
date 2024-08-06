@@ -5,7 +5,7 @@ import { NaviPage, RootHome } from "./RootRedux";
 import { post } from "@/page/config/req";
 import PlayLists, { PlayList } from "@/page/component/Playlist";
 import { Artists } from "@/page/component/Artist";
-import { SongList } from "@/page/component/Song";
+import { SongInPlayList, SongList } from "@/page/component/Song";
 import { useParams } from "react-router-dom";
 interface artist {
   pathImage: string;
@@ -17,18 +17,7 @@ interface artist {
 interface Artists {
   d: artist[];
 }
-interface SongInPlayList {
-  Id: string;
-  user_id: string;
-  SongName: string;
-  Singer: string;
-  Duration: string;
-  Viewer: number;
-  SongImage: string;
-  filePath: string;
-  liked: string;
-  stt: number;
-}
+
 export default function Search() {
   const [songname, SetSongName] = useState<SongInPlayList[]>([]);
   const [songs, SetSongS] = useState<SongInPlayList[]>([]);
@@ -96,11 +85,11 @@ export default function Search() {
         <div className="text-center font-bold h-full">Bài hát bạn tìm</div>
       ) : (
         <>
-          <SongList data={songname} />
+          <SongList data={songname} type="" />
 
           <Artists d={artist} />
 
-          <SongList data={songs} />
+          <SongList data={songs} type="" />
 
           <PlayLists d={playlists} title="Danh sách phát nhạc" />
         </>

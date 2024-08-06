@@ -15,6 +15,7 @@ interface Song {
 }
 interface SongList {
   data: SongInPlayList[];
+  type: string;
 }
 export default function Song(d: Song) {
   const dispatch = useDispatch();
@@ -56,13 +57,14 @@ export interface SongInPlayList {
   filePath: string;
   liked: string;
   stt: number;
+  type: string;
 }
 export function SongInPlayList(v: SongInPlayList) {
   const [liked, SetLike] = useState<string>(v.liked);
   const isLogin = useSelector((state: RootHome) => state.rootHome.isLogin);
   const dispatch = useDispatch();
   return (
-    <div className="grid grid-cols-7 text-[13px] sm:text-[14px]  cursor-pointer sm:space-x-2 hover:bg-[#2D2D2D] text-white font-bold sm:p-4 rounded-lg items-center">
+    <div className="grid grid-cols-7 h-[56px]  text-[13px] sm:text-[14px]  cursor-pointer sm:space-x-2 hover:bg-[#2D2D2D] text-white font-bold rounded-lg items-center">
       <div
         className="col-span-5 grid grid-cols-5"
         onClick={() => {
@@ -77,9 +79,14 @@ export function SongInPlayList(v: SongInPlayList) {
         <div className="col-span-4 sm:col-span-2 p-2 ">
           <div className="block">{v.SongName}</div>
           <div className="block sm:hidden text-stone-500">{v.Viewer}</div>
+          {v.type != "artist" ? (
+            <div className="block text-stone-500">{v.Singer}</div>
+          ) : (
+            <></>
+          )}
         </div>
 
-        <div className="sm:block hidden col-span-2 text-[14px] text-stone-500">
+        <div className="sm:block hidden col-span-2 p-2 text-[14px] text-stone-500">
           {v.Viewer}
         </div>
       </div>
@@ -144,6 +151,7 @@ export function SongList(d: SongList) {
               stt += 1;
               return (
                 <SongInPlayList
+                  type={d.type}
                   Duration={v.Duration + ""}
                   Id={v.Id}
                   Singer={v.Singer}
