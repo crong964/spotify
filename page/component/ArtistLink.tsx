@@ -10,9 +10,23 @@ export default function ArtistLink(v: tArtistLink) {
   let name = v.nameArtist.split(",");
 
   return (
-    <div className="flex space-x-2 text-stone-500">
+    <div className="flex text-stone-500">
       {id.map((va, ix) => {
-        return <Link to={`/artist/${va}`}>{name[ix]}</Link>;
+        if ((ix == id.length - 1)) {
+          return (
+            <Link className="hover:text-white" to={`/artist/${va}`}>
+              {name[ix]}
+            </Link>
+          );
+        }
+        return (
+          <>
+            <Link className="hover:text-white" to={`/artist/${va}`}>
+              {name[ix]}
+            </Link>
+            ,
+          </>
+        );
       })}
     </div>
   );
