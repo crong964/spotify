@@ -318,7 +318,7 @@ Account.post("/ggup", (req, res) => {
     res.cookie("email", profi.email);
     res.cookie("image", profi.picture);
     res.cookie("name", profi.name);
-    res.redirect("/auth");
+    res.redirect("/auth/Signup");
 });
 Account.get("/logout", (req, res) => {
     clearCookie(res);
@@ -382,7 +382,7 @@ Account.post("/create", (req, res) => __awaiter(void 0, void 0, void 0, function
     let pl = new PlayListModel_1.PlayListModel();
     pl.User_id = user.id;
     pl.ImagePath = user.pathImage;
-    pl.id = `artists-${(0, uuid_1.v4)()}-${Date.now()}`;
+    pl.id = user.id;
     pl.Status = "0";
     pl.PlayListName = user.Name;
     yield PlayListService_1.default.AddArtists(pl);

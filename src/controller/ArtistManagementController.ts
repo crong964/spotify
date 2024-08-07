@@ -26,7 +26,7 @@ class ArtistManagementController {
             return
         }
 
-        let id = `artist-${randomUUID()}`
+        let id = `artist-${randomUUID()}-${Date.now()}`
         let BannerFile = files["Banner"][0] as Express.Multer.File
         let pathImageFile = files["pathImage"][0] as Express.Multer.File
         let name: any[] = []
@@ -57,7 +57,7 @@ class ArtistManagementController {
 
         d.User_id = user.id
         d.ImagePath = user.pathImage
-        d.id = `artists-${v4()}-${Date.now()}`
+        d.id = user.id
 
         d.Status = "0"
         d.PlayListName = user.ChanalName
@@ -77,7 +77,7 @@ class ArtistManagementController {
     async AddQickly(req: Request, res: Response) {
 
 
-        let id = `artist-${randomUUID()}`
+        let id = `artist-${randomUUID()}-${Date.now()}`
 
         let user = new UserModel()
         let d = new PlayListModel()
@@ -85,7 +85,7 @@ class ArtistManagementController {
         user.id = id
         d.User_id = user.id
         d.ImagePath = user.pathImage
-        d.id = `artists-${v4()}-${Date.now()}`
+        d.id = id
         user.Vertify = "1"
         d.Status = "0"
         d.PlayListName = user.ChanalName

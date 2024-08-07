@@ -19,7 +19,6 @@ const crypto_1 = require("crypto");
 const UserModel_1 = __importDefault(require("../model/UserModel"));
 const PlayListService_1 = __importDefault(require("../services/PlayListService"));
 const PlayListModel_1 = require("../model/PlayListModel");
-const uuid_1 = require("uuid");
 class ArtistManagementController {
     constructor() {
     }
@@ -32,7 +31,7 @@ class ArtistManagementController {
                 });
                 return;
             }
-            let id = `artist-${(0, crypto_1.randomUUID)()}`;
+            let id = `artist-${(0, crypto_1.randomUUID)()}-${Date.now()}`;
             let BannerFile = files["Banner"][0];
             let pathImageFile = files["pathImage"][0];
             let name = [];
@@ -59,7 +58,7 @@ class ArtistManagementController {
             user.pathImage = name[1];
             d.User_id = user.id;
             d.ImagePath = user.pathImage;
-            d.id = `artists-${(0, uuid_1.v4)()}-${Date.now()}`;
+            d.id = user.id;
             d.Status = "0";
             d.PlayListName = user.ChanalName;
             let check = yield Promise.all([
@@ -75,14 +74,14 @@ class ArtistManagementController {
     }
     AddQickly(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            let id = `artist-${(0, crypto_1.randomUUID)()}`;
+            let id = `artist-${(0, crypto_1.randomUUID)()}-${Date.now()}`;
             let user = new UserModel_1.default();
             let d = new PlayListModel_1.PlayListModel();
             user.setAll(req.body);
             user.id = id;
             d.User_id = user.id;
             d.ImagePath = user.pathImage;
-            d.id = `artists-${(0, uuid_1.v4)()}-${Date.now()}`;
+            d.id = id;
             user.Vertify = "1";
             d.Status = "0";
             d.PlayListName = user.ChanalName;

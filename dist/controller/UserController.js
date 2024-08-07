@@ -64,9 +64,9 @@ class UserController {
     }
     getArtisePage(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            var idplaylist = req.params.artistpage;
+            var idArtist = req.params.artistpage;
             var id = req.cookies.id;
-            var playlist = yield UserController.playlist.Get(idplaylist);
+            var playlist = yield UserController.playlist.Get(idArtist);
             if (playlist == undefined) {
                 res.json({
                     err: true,

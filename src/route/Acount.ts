@@ -357,7 +357,7 @@ Account.post("/ggup", (req, res) => {
   res.cookie("email", profi.email);
   res.cookie("image", profi.picture);
   res.cookie("name", profi.name);
-  res.redirect("/auth");
+  res.redirect("/auth/Signup");
 });
 Account.get("/logout", (req, res) => {
   clearCookie(res)
@@ -435,7 +435,7 @@ Account.post("/create", async (req, res) => {
 
   pl.User_id = user.id
   pl.ImagePath = user.pathImage
-  pl.id = `artists-${uuidv4()}-${Date.now()}`
+  pl.id = user.id
   pl.Status = "0"
   pl.PlayListName = user.Name
 
@@ -593,7 +593,7 @@ Account.post("/sendCodeVertifyEmail", async (req, res) => {
       subject: "Mã Xác thực email",
       text: "Đây là mã xác thực của bạn đừng chia sẻ cho ai",
       html: `<h1>${code}</h1>`,
-    }) 
+    })
   } catch (error) {
 
   }

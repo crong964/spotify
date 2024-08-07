@@ -56,8 +56,8 @@ export default function Signup() {
     post("/auth/getdata", {}, (v: any) => {
       if (!v.err) {
         dispatch(Page("createAccount"));
-        dispatch(Infor(v));
-        console.log(v);
+        SetUser(v);
+        SetInfor(true);
       }
     });
   }, []);

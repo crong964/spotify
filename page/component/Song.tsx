@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { PlaySong, RootHome } from "@/page/home/RootRedux";
 
 import { CheckCircleIcon, PlusCircleIcon } from "@/icon/Icon";
-import { SetAutoPlay } from "../home/Audio/AudioRedux";
+import { SetAutoPlay } from "@/page/home/Audio/AudioRedux";
+import ArtistLink from "@/page/component/ArtistLink";
 
 interface Song {
   image: string;
@@ -67,7 +68,7 @@ export function SongInPlayList(v: SongInPlayList) {
     <div className="grid grid-cols-7 h-[56px]  text-[13px] sm:text-[14px]  cursor-pointer sm:space-x-2 hover:bg-[#2D2D2D] text-white font-bold rounded-lg items-center">
       <div
         className="col-span-5 grid grid-cols-5"
-        onClick={() => {
+        onDoubleClick={() => {
           dispatch(PlaySong(v.Id));
           dispatch(SetAutoPlay(true));
         }}
@@ -80,7 +81,7 @@ export function SongInPlayList(v: SongInPlayList) {
           <div className="block">{v.SongName}</div>
           <div className="block sm:hidden text-stone-500">{v.Viewer}</div>
           {v.type != "artist" ? (
-            <div className="block text-stone-500">{v.Singer}</div>
+            <ArtistLink idArtist={v.user_id} nameArtist={v.Singer} />
           ) : (
             <></>
           )}
@@ -161,7 +162,7 @@ export function SongList(d: SongList) {
                   SongImage={v.SongImage}
                   liked={v.liked}
                   stt={stt}
-                  user_id=""
+                  user_id={v.user_id}
                   key={v.Id}
                 />
               );

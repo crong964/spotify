@@ -56,9 +56,9 @@ class UserController {
     }
     async getArtisePage(req: Request, res: Response) {
 
-        var idplaylist = req.params.artistpage
+        var idArtist = req.params.artistpage
         var id = req.cookies.id
-        var playlist = await UserController.playlist.Get(idplaylist)
+        var playlist = await UserController.playlist.Get(idArtist)
         if (playlist == undefined) {
             res.json({
                 err: true,
