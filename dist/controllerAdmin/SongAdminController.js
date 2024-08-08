@@ -125,11 +125,24 @@ class SongAdminController {
             var write = (0, fs_1.createWriteStream)(path_1.default.join(process.cwd(), "/public/music", `${f}`), {
                 flags: "as+"
             });
-            var s = Buffer.from(d.map((v) => {
+            var s = d.map((v) => {
                 return parseInt(v);
-            }));
-            write.write(s);
+            });
+            var s2 = Buffer.from(s);
+            let checksum = 0;
+            for (let i = 0; i < s.length; i++) {
+                const element = s[i];
+                checksum += element;
+                if (checksum > 10000) {
+                    checksum %= 10000;
+                }
+            }
+            if (req.body.checksum != checksum) {
+                console.log(`trên client ${req.body.checksum} dưới server ${checksum}`);
+            }
+            write.write(s2);
             write.end(() => {
+                console.log("end");
             });
             res.json({
                 name: f,

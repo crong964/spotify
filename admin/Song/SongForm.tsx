@@ -49,16 +49,22 @@ export default function SongForm() {
   );
   const floor = useSelector((state: RootState) => state.navi.floor);
   function upload(params: Uint8Array, i: number, pa?: string) {
-    var n = 10000;
+    let n = 10000;
+    let checksum = 0;
     if (i < params.length) {
-      var element = "";
+      let element = "";
       for (let j = i; j < i + n && j < params.length; j++) {
         element += params[j] + " ";
+        checksum += params[j];
+        if (checksum > 10000) {
+          checksum %= 10000;
+        }
       }
-      var data = {
+      let data = {
         d: element,
         name: pa,
         idArtist: idArtist,
+        checksum: checksum,
       };
 
       post("/admin/song/uploadfile", data, (v: any) => {
