@@ -21,8 +21,8 @@ export class UserService {
         return check
     }
     async Get(id: string) {
-        var user: UserModel | undefined
-        var check = await this.userDatabae.Get(id) as UserModel[]
+        let user: UserModel | undefined
+        let check = await this.userDatabae.Get(id) as UserModel[]
         if (check && check.length > 0) {
             user = new UserModel()
             user.setAll(check[0])
@@ -30,14 +30,14 @@ export class UserService {
         return user
     }
     async VertifyAccount(user_id: string, Vertify: string) {
-        var check = await this.userDatabae.VertifyAccount(user_id, Vertify)
+        let check = await this.userDatabae.VertifyAccount(user_id, Vertify)
         return check
     }
 
     async getAllArtist(Vertify: string) {
-        var check
+        let check
         check = await this.userDatabae.getAllArtist(Vertify)
-        var ls = this.SetList(check)
+        let ls = this.SetList(check)
         return ls
     }
 
@@ -45,10 +45,10 @@ export class UserService {
         if (ls == undefined) {
             return []
         }
-        var check: UserModel[] = []
+        let check: UserModel[] = []
         for (let id = 0; id < ls.length; id++) {
             const element = ls[id];
-            var user = new UserModel()
+            let user = new UserModel()
             user.setAll(element)
             check.push(user)
         }
@@ -56,51 +56,51 @@ export class UserService {
         return check
     }
     async AddAccount(d: UserModel) {
-        var sql = "INSERT INTO user(id, Name, Vertify, Nationality, ChanalName, pathImage, description, RefeshToken, Banner,role) VALUES (?,?,?,?,?,?,?,?,?,?)"
-        var check
+        let sql = "INSERT INTO user(id, Name, Vertify, Nationality, ChanalName, pathImage, description, RefeshToken, Banner,role) VALUES (?,?,?,?,?,?,?,?,?,?)"
+        let check
         check = await Mysql2.query(sql, [d.id, d.Name, d.Vertify, d.Nationality, d.ChanalName, d.pathImage, d.description, d.RefeshToken, d.Banner, d.role])
         return check
 
     }
 
     async SearchNameArtist(name: string) {
-        var sql = "SELECT * FROM user WHERE user.role ='user' AND Name like ? AND Vertify = 1 "
-        var check
+        let sql = "SELECT * FROM user WHERE user.role ='user' AND Name like ? AND Vertify = 1 "
+        let check
         check = await Mysql2.query(sql, [`%${name}%`])
         return this.SetList(check)
     }
     async Update(d: UserModel) {
-        var sql = "UPDATE user SET Name=?,Nationality=?,ChanalName=?,pathImage=? ,Banner=? WHERE id=? "
-        var check
+        let sql = "UPDATE user SET Name=?,Nationality=?,ChanalName=?,pathImage=? ,Banner=? WHERE id=? "
+        let check
         check = await Mysql2.query(sql, [d.Name, d.Nationality, d.ChanalName, d.pathImage, d.Banner, d.id])
         return check
     }
     async GetAllUserByType(Vertify: "" | "0" | "1") {
-        var sql = "SELECT * FROM `user` WHERE Vertify LIKE ? AND role = 'user' "
-        var ls
+        let sql = "SELECT * FROM `user` WHERE Vertify LIKE ? AND role = 'user' "
+        let ls
         ls = await Mysql2.query(sql, [`%${Vertify}%`]) as []
         return this.SetList(ls)
     }
     async GetAllEAdmin(role: string) {
-        var sql = "SELECT * FROM user WHERE role LIKE ? AND role <> 'master' "
-        var ls
+        let sql = "SELECT * FROM user WHERE role LIKE ? AND role <> 'master' "
+        let ls
         ls = await Mysql2.query(sql, [`%${role}%`]) as []
         return this.SetList(ls)
     }
     async DeleteEAdmin(id: string) {
-        var sql = "Delete FROM user WHERE id = ? AND role = 'employee' "
-        var ls
+        let sql = "Delete FROM user WHERE id = ? AND role = 'employee' "
+        let ls
         ls = await Mysql2.query(sql, [id]) as []
         return this.SetList(ls)
     }
     async UpdateE(d: UserModel) {
-        var sql = "UPDATE user SET Name=?, Password=? , role=? WHERE id= ?"
-        var check = await Mysql2.query(sql, [d.Name, d.pathImage, d.role, d.id])
+        let sql = "UPDATE user SET Name=?, Password=? , role=? WHERE id= ?"
+        let check = await Mysql2.query(sql, [d.Name, d.pathImage, d.role, d.id])
         return check
     }
 }
 
 
-var userService = new UserService(new UserDatabase())
+let userService = new UserService(new UserDatabase())
 
 export default userService

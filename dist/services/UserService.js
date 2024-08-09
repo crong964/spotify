@@ -35,8 +35,8 @@ class UserService {
     }
     Get(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            var user;
-            var check = yield this.userDatabae.Get(id);
+            let user;
+            let check = yield this.userDatabae.Get(id);
             if (check && check.length > 0) {
                 user = new UserModel_1.default();
                 user.setAll(check[0]);
@@ -46,15 +46,15 @@ class UserService {
     }
     VertifyAccount(user_id, Vertify) {
         return __awaiter(this, void 0, void 0, function* () {
-            var check = yield this.userDatabae.VertifyAccount(user_id, Vertify);
+            let check = yield this.userDatabae.VertifyAccount(user_id, Vertify);
             return check;
         });
     }
     getAllArtist(Vertify) {
         return __awaiter(this, void 0, void 0, function* () {
-            var check;
+            let check;
             check = yield this.userDatabae.getAllArtist(Vertify);
-            var ls = this.SetList(check);
+            let ls = this.SetList(check);
             return ls;
         });
     }
@@ -62,10 +62,10 @@ class UserService {
         if (ls == undefined) {
             return [];
         }
-        var check = [];
+        let check = [];
         for (let id = 0; id < ls.length; id++) {
             const element = ls[id];
-            var user = new UserModel_1.default();
+            let user = new UserModel_1.default();
             user.setAll(element);
             check.push(user);
         }
@@ -73,60 +73,60 @@ class UserService {
     }
     AddAccount(d) {
         return __awaiter(this, void 0, void 0, function* () {
-            var sql = "INSERT INTO user(id, Name, Vertify, Nationality, ChanalName, pathImage, description, RefeshToken, Banner,role) VALUES (?,?,?,?,?,?,?,?,?,?)";
-            var check;
+            let sql = "INSERT INTO user(id, Name, Vertify, Nationality, ChanalName, pathImage, description, RefeshToken, Banner,role) VALUES (?,?,?,?,?,?,?,?,?,?)";
+            let check;
             check = yield Config_1.default.query(sql, [d.id, d.Name, d.Vertify, d.Nationality, d.ChanalName, d.pathImage, d.description, d.RefeshToken, d.Banner, d.role]);
             return check;
         });
     }
     SearchNameArtist(name) {
         return __awaiter(this, void 0, void 0, function* () {
-            var sql = "SELECT * FROM user WHERE user.role ='user' AND Name like ? AND Vertify = 1 ";
-            var check;
+            let sql = "SELECT * FROM user WHERE user.role ='user' AND Name like ? AND Vertify = 1 ";
+            let check;
             check = yield Config_1.default.query(sql, [`%${name}%`]);
             return this.SetList(check);
         });
     }
     Update(d) {
         return __awaiter(this, void 0, void 0, function* () {
-            var sql = "UPDATE user SET Name=?,Nationality=?,ChanalName=?,pathImage=? ,Banner=? WHERE id=? ";
-            var check;
+            let sql = "UPDATE user SET Name=?,Nationality=?,ChanalName=?,pathImage=? ,Banner=? WHERE id=? ";
+            let check;
             check = yield Config_1.default.query(sql, [d.Name, d.Nationality, d.ChanalName, d.pathImage, d.Banner, d.id]);
             return check;
         });
     }
     GetAllUserByType(Vertify) {
         return __awaiter(this, void 0, void 0, function* () {
-            var sql = "SELECT * FROM `user` WHERE Vertify LIKE ? AND role = 'user' ";
-            var ls;
+            let sql = "SELECT * FROM `user` WHERE Vertify LIKE ? AND role = 'user' ";
+            let ls;
             ls = (yield Config_1.default.query(sql, [`%${Vertify}%`]));
             return this.SetList(ls);
         });
     }
     GetAllEAdmin(role) {
         return __awaiter(this, void 0, void 0, function* () {
-            var sql = "SELECT * FROM user WHERE role LIKE ? AND role <> 'master' ";
-            var ls;
+            let sql = "SELECT * FROM user WHERE role LIKE ? AND role <> 'master' ";
+            let ls;
             ls = (yield Config_1.default.query(sql, [`%${role}%`]));
             return this.SetList(ls);
         });
     }
     DeleteEAdmin(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            var sql = "Delete FROM user WHERE id = ? AND role = 'employee' ";
-            var ls;
+            let sql = "Delete FROM user WHERE id = ? AND role = 'employee' ";
+            let ls;
             ls = (yield Config_1.default.query(sql, [id]));
             return this.SetList(ls);
         });
     }
     UpdateE(d) {
         return __awaiter(this, void 0, void 0, function* () {
-            var sql = "UPDATE user SET Name=?, Password=? , role=? WHERE id= ?";
-            var check = yield Config_1.default.query(sql, [d.Name, d.pathImage, d.role, d.id]);
+            let sql = "UPDATE user SET Name=?, Password=? , role=? WHERE id= ?";
+            let check = yield Config_1.default.query(sql, [d.Name, d.pathImage, d.role, d.id]);
             return check;
         });
     }
 }
 exports.UserService = UserService;
-var userService = new UserService(new UserDatabase_1.default());
+let userService = new UserService(new UserDatabase_1.default());
 exports.default = userService;

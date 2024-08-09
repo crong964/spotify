@@ -100,6 +100,18 @@ export class PlayListService {
         check = await Mysql2.query(sql, [id])
         return check
     }
+    async GetUserByArrayId(id: string[]) {
+        let sql = "SELECT * FROM playlist where "
+        for (let i = 0; i < id.length; i++) {
+            if (i == id.length - 1) {
+                sql += ` User_id=?`
+                continue
+            }
+            sql += ` User_id=? or`
+        }
+        let check = await Mysql2.query(sql, id)
+        return this.SetLs(check)
+    }
 }
 
 var playListService: PlayListService = new PlayListService(new PlayListDatabase())

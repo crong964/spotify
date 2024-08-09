@@ -4,13 +4,16 @@ import { RootHome, SetCurName } from "@/page/home/RootRedux";
 import { artist } from "./PlayListPage";
 import { SongInPlayList, SongList } from "@/page/component/Song";
 import { useParams } from "react-router-dom";
-import { get } from "@/page/config/req"; 
+import { get } from "@/page/config/req";
 import React from "react";
 import PlayButtom from "@/page/component/PlayButtom";
 import TypeFriend from "@/page/home/friend/TypeFriend";
-  
+import { PlayList } from "@/page/component/Playlist";
+const PlayLists = React.lazy(() => import("@/page/component/Playlist"));
+
 export default function ArtistPage() {
   const idpage = useSelector((state: RootHome) => state.rootHome.command.param);
+  const [lsartist, SetLsAtist] = useState<PlayList[]>([]);
   const [artist, SetaAtist] = useState<artist>();
   const [isfriend, SetIsfriend] = useState<"-1" | "0" | "1" | "2">();
   const [songs, SetSongS] = useState<SongInPlayList[]>([]);
@@ -25,7 +28,9 @@ export default function ArtistPage() {
       SetIsfriend(v.isfriend);
       SetaAtist(v.atist);
       SetSongS(v.lsong);
+      SetLsAtist(v.lsplaylistartist)
       dispatch(SetCurName(v.atist.ChanalName));
+
     });
   }, [id]);
 
@@ -64,7 +69,7 @@ export default function ArtistPage() {
         </span>
       </div>
 
-      <div className="h-[320px]"></div> 
+      <div className="h-[320px]"></div>
       <div className="px-4">
         <div className="flex items-center py-4 space-x-4">
           <PlayButtom id={idpage} page="artist" />
@@ -85,7 +90,8 @@ export default function ArtistPage() {
         <div className="py-3 font-bold text-[24px]  text-white">
           Các bài hát
         </div>
-        <SongList data={songs} type="artist"/>
+        <SongList data={songs} type="artist" />
+        <PlayLists d={lsartist} title="Nghệ sĩ xuất hiện"></PlayLists>
         <footer className="h-5"></footer>
       </div>
     </div>

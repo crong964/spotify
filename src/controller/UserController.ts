@@ -10,6 +10,7 @@ import likedSongService, { LikedSongService } from "../services/LikedSongService
 import LikedSongModel from "../model/LikedSongModel";
 import accountService from "../services/AccountService";
 import AccountModel from "../model/AccountModel";
+import { PlayListModel } from "../model/PlayListModel";
 
 class UserController {
     static user: UserService = userService
@@ -66,20 +67,36 @@ class UserController {
             })
             return
         }
-        var temp = new LikedSongModel()
+        let temp = new LikedSongModel()
         temp.user_id = playlist.User_id
         temp.id_user_liked = id
-        var l = await Promise.all([UserController.user.Get(playlist.User_id),
+        let l = await Promise.all([UserController.user.Get(playlist.User_id),
         UserController.HaveListFriends.Get(id, playlist.User_id),
         UserController.likedSong.GetAllByIduserAndIdArtise(temp)],
         )
-
+        let idOtherArtist: any = {}
+        let arrayId: string[] = []
+        let lsong = l[2]
+        lsong.map((value) => {
+            let lsvalue = value.user_id.split(" ")
+            lsvalue.map((vds) => {
+                if (!idOtherArtist[vds] && vds != idArtist && vds != "") {
+                    idOtherArtist[vds] = true
+                    arrayId.push(vds)
+                }
+            })
+        })
+        let lsuer: PlayListModel[] = []
+        if (arrayId.length > 0) {
+            lsuer = await UserController.playlist.GetUserByArrayId(arrayId)
+        }
 
         res.json({
             err: false,
             atist: l[0],
             isfriend: l[1] ? l[1].IsFriend : "-1",
-            lsong: l[2]
+            lsong: l[2],
+            lsplaylistartist: lsuer
         })
     }
     async update(req: Request, res: Response) {

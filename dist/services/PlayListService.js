@@ -139,6 +139,20 @@ class PlayListService {
             return check;
         });
     }
+    GetUserByArrayId(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let sql = "SELECT * FROM playlist where ";
+            for (let i = 0; i < id.length; i++) {
+                if (i == id.length - 1) {
+                    sql += ` User_id=?`;
+                    continue;
+                }
+                sql += ` User_id=? or`;
+            }
+            let check = yield Config_1.default.query(sql, id);
+            return this.SetLs(check);
+        });
+    }
 }
 exports.PlayListService = PlayListService;
 var playListService = new PlayListService(new PlayListDatabase_1.default());

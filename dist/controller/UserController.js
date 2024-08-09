@@ -74,17 +74,34 @@ class UserController {
                 });
                 return;
             }
-            var temp = new LikedSongModel_1.default();
+            let temp = new LikedSongModel_1.default();
             temp.user_id = playlist.User_id;
             temp.id_user_liked = id;
-            var l = yield Promise.all([UserController.user.Get(playlist.User_id),
+            let l = yield Promise.all([UserController.user.Get(playlist.User_id),
                 UserController.HaveListFriends.Get(id, playlist.User_id),
                 UserController.likedSong.GetAllByIduserAndIdArtise(temp)]);
+            let idOtherArtist = {};
+            let arrayId = [];
+            let lsong = l[2];
+            lsong.map((value) => {
+                let lsvalue = value.user_id.split(" ");
+                lsvalue.map((vds) => {
+                    if (!idOtherArtist[vds] && vds != idArtist && vds != "") {
+                        idOtherArtist[vds] = true;
+                        arrayId.push(vds);
+                    }
+                });
+            });
+            let lsuer = [];
+            if (arrayId.length > 0) {
+                lsuer = yield UserController.playlist.GetUserByArrayId(arrayId);
+            }
             res.json({
                 err: false,
                 atist: l[0],
                 isfriend: l[1] ? l[1].IsFriend : "-1",
-                lsong: l[2]
+                lsong: l[2],
+                lsplaylistartist: lsuer
             });
         });
     }

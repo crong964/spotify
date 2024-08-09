@@ -65,7 +65,7 @@ export function SongInPlayList(v: SongInPlayList) {
   const isLogin = useSelector((state: RootHome) => state.rootHome.isLogin);
   const dispatch = useDispatch();
   return (
-    <div className="grid grid-cols-7 h-[56px]  text-[13px] sm:text-[14px]  cursor-pointer sm:space-x-2 hover:bg-[#2D2D2D] text-white font-bold rounded-lg items-center">
+    <div key={v.Id} className="grid grid-cols-7 h-[56px]  text-[13px] sm:text-[14px]  cursor-pointer sm:space-x-2 hover:bg-[#2D2D2D] text-white font-bold rounded-lg items-center">
       <div
         className="col-span-5 grid grid-cols-5"
         onDoubleClick={() => {
@@ -81,7 +81,7 @@ export function SongInPlayList(v: SongInPlayList) {
           <div className="block">{v.SongName}</div>
           <div className="block sm:hidden text-stone-500">{v.Viewer}</div>
           {v.type != "artist" ? (
-            <ArtistLink idArtist={v.user_id} nameArtist={v.Singer} />
+            <ArtistLink key={v.Id} idArtist={v.user_id} nameArtist={v.Singer} />
           ) : (
             <></>
           )}
@@ -91,7 +91,6 @@ export function SongInPlayList(v: SongInPlayList) {
           {v.Viewer}
         </div>
       </div>
-
       <div
         className="col-span-2 sm:col-span-1 flex items-center space-x-4"
         onClick={() => {
