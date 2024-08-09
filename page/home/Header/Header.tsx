@@ -210,6 +210,9 @@ function Forward() {
         if (stack.length == 0) {
           return;
         }
+        if (position >= stack.length - 1) {
+          return;
+        }
         history.forward();
         dispatch(SetPosition(1));
       }}

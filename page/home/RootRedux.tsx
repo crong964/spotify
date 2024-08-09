@@ -101,9 +101,9 @@ var rootslice = createSlice({
         return;
       }
 
-      if (action.payload.page == state.stack[state.position].page) {
-        return;
-      }
+      // if (action.payload.page == state.stack[state.position].page) {
+      //   return;
+      // }
 
       if (state.stack[state.position + 1]) {
         state.stack[state.position + 1] = action.payload;
