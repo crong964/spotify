@@ -9,7 +9,7 @@ const IndexTest = React.lazy(() => import("./IndexHome"));
 
 const RecentList = React.lazy(() => import("./Right/RecentPlaylist"));
 import { SetionList } from "./Setion";
-import { SuggestPlaylist } from "@/page//component/Playlist";
+import { SuggestPlaylist } from "@/page/component/Playlist";
 const IdGenre = React.lazy(() => import("./IdGenre"));
 const Genre = React.lazy(() => import("./Genre"));
 const PlaylistPage = React.lazy(() => import("@/page/home/Route/PlayListPage"));
@@ -17,7 +17,7 @@ const ArtistPage = React.lazy(() => import("@/page/home/Route/ArtistPage"));
 const LikedSongListPage = React.lazy( 
   () => import("@/page/home/Route/LikedSongListPage")
 );
-const Search = React.lazy(() => import("./Search"));
+const Search = React.lazy(() => import("@/page/home/Search"));
 
 const IndexAuth = React.lazy(() => import("@/page/auth/IndexAuth"));
 //@ts-ignore

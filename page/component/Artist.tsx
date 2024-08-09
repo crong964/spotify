@@ -7,7 +7,7 @@ interface artist {
   ChanalName: string;
   artist: string;
   id: string;
-  type: string;
+  type: string; 
 }
 interface Artists {
   d: artist[];
