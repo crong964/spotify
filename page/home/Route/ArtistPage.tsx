@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { LegacyRef, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootHome, SetCurName } from "@/page/home/RootRedux";
 import { artist } from "./PlayListPage";
@@ -18,6 +18,7 @@ export default function ArtistPage() {
   const [isfriend, SetIsfriend] = useState<"-1" | "0" | "1" | "2">();
   const [songs, SetSongS] = useState<SongInPlayList[]>([]);
 
+  const refPage = useRef<any>(null);
   const dispatch = useDispatch();
   const { id } = useParams();
   useEffect(() => {
@@ -28,14 +29,17 @@ export default function ArtistPage() {
       SetIsfriend(v.isfriend);
       SetaAtist(v.atist);
       SetSongS(v.lsong);
-      SetLsAtist(v.lsplaylistartist)
+      SetLsAtist(v.lsplaylistartist);
       dispatch(SetCurName(v.atist.ChanalName));
-
+      if (refPage.current) {
+        refPage.current.scrollIntoView();
+      }
     });
   }, [id]);
 
   return (
-    <div className="relative ">
+    <div className="relative " ref={refPage}>
+      
       <div
         className="hidden sm:block bg-no-repeat bg-cover rounded-t-lg absolute top-0 left-0 w-full h-[320px] "
         style={{ backgroundImage: `url(${artist?.Banner || ""})` }}

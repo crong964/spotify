@@ -146,7 +146,6 @@ class SongAdminController {
 
         write.write(s2)
         write.end(() => {
-            console.log("end");
         })
         res.json({
             name: f,
