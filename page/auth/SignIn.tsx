@@ -15,7 +15,7 @@ export default function SignIn() {
   const [eye, SetEye] = useState(false);
   const dispatch = useDispatch();
   const page = useSelector((state: RootHome) => state.rootauth.page);
-  var submit = (e: any) => {
+  const submit = (e: any) => {
     e.preventDefault();
     if (account.length <= 0 || password.length <= 0) {
       alert("chưa điền đủ");
@@ -100,7 +100,7 @@ export default function SignIn() {
               </div>
             </div>
             <div className="text-white text-[14px]">nhớ mật khẩu</div>
-          </div> 
+          </div>
 
           <button className="cursor-pointer w-full bg-[#1FDF64] mt-5 p-3 font-bold text-center rounded-full">
             Đăng nhập
@@ -124,12 +124,7 @@ export default function SignIn() {
         <div className="text-[16px] text-white font-normal text-center space-x-2">
           <span className="text-[#A7A7A7]">Bạn chưa có tài khoản?</span>
           <Link to="/auth/Signup">
-            <span
-              onClick={() => {
-                dispatch(Page("signup"));
-              }}
-              className=" hover:text-[#1CD159] cursor-pointer"
-            >
+            <span className=" hover:text-[#1CD159] cursor-pointer">
               Đăng ký
             </span>
           </Link>

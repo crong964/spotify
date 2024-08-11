@@ -20,7 +20,7 @@ const PlayButtom = React.lazy(() => import("@/page/component/PlayButtom"));
 
 import { GenreInHome } from "@/page/home/IndexHome";
 import { BackIcon, ForwardIcon, MessIcon } from "@/icon/Icon";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 interface Infor {
   pathImage: string;
@@ -166,22 +166,18 @@ export default function Header() {
             ) : (
               <>
                 <div className="flex  items-center space-x-3">
-                  <button
-                    onClick={() => {
-                      window.location.href = "/auth?dk=yes";
-                    }}
+                  <Link
+                    to={"/auth/Signup"}
                     className="font-bold hover:text-blue-500 px-3 py-1 rounded-2xl"
                   >
                     đăng ký
-                  </button>
-                  <button
-                    onClick={() => {
-                      window.location.href = "/auth";
-                    }}
+                  </Link>
+                  <Link
+                    to={"/auth"}
                     className="bg-white hover:text-blue-500 font-bold text-black px-3 py-1 rounded-2xl "
                   >
                     đăng nhập
-                  </button>
+                  </Link>
                 </div>
               </>
             )}

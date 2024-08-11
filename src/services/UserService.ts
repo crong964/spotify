@@ -57,8 +57,7 @@ export class UserService {
     }
     async AddAccount(d: UserModel) {
         let sql = "INSERT INTO user(id, Name, Vertify, Nationality, ChanalName, pathImage, description, RefeshToken, Banner,role) VALUES (?,?,?,?,?,?,?,?,?,?)"
-        let check
-        check = await Mysql2.query(sql, [d.id, d.Name, d.Vertify, d.Nationality, d.ChanalName, d.pathImage, d.description, d.RefeshToken, d.Banner, d.role])
+        let check = await Mysql2.query(sql, [d.id, d.Name, d.Vertify, d.Nationality, d.ChanalName, d.pathImage, d.description, d.RefeshToken, d.Banner, d.role])
         return check
 
     }
@@ -88,6 +87,12 @@ export class UserService {
         return this.SetList(ls)
     }
     async DeleteEAdmin(id: string) {
+        let sql = "Delete FROM user WHERE id = ? AND role = 'employee' "
+        let ls
+        ls = await Mysql2.query(sql, [id]) as []
+        return this.SetList(ls)
+    }
+    async Delete(id: string) {
         let sql = "Delete FROM user WHERE id = ? AND role = 'employee' "
         let ls
         ls = await Mysql2.query(sql, [id]) as []

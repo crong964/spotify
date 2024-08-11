@@ -8,12 +8,13 @@ import { v4 as uuidv4 } from 'uuid';
 import nodemailer from "nodemailer"
 import jwt from "jsonwebtoken"
 import "dotenv/config"
-import { SignJWT, VertifyJWT } from "../config/Helper";
+import { SignJWT, VerifyGoogleIDtoken, VertifyJWT } from "../config/Helper";
 import playListService from "../services/PlayListService";
 import { PlayListModel } from "../model/PlayListModel";
 import accountService from "../services/AccountService";
 import AccountModel from "../model/AccountModel";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
+import { OAuth2Client } from "google-auth-library";
 interface google {
   email: string;
   name: string;
@@ -30,6 +31,7 @@ const email = process.env.EMAIL
 const emailpsapp = process.env.EMAILPSAPP
 const secret = process.env.SECRET
 
+const client_id_gg = process.env.Client_ID_GG
 const Account = Router();
 
 // Account.get("/", (req, res) => {
@@ -38,6 +40,10 @@ const Account = Router();
 Account.post("/signin", async (req, res) => {
   const account = req.body.account
   const password = req.body.password
+  if (password == "") {
+    res.redirect("/athu")
+    return
+  }
   let acc = await accountService.GetAccount(account)
   if (!acc || acc.Password != password) {
     res.json({
@@ -263,7 +269,6 @@ Account.get("/githubsu", async (req, res) => {
 Account.post("/ggin", async (req, res) => {
   let g_csrf_token1 = req.body.g_csrf_token;
   let g_csrf_token2 = req.cookies.g_csrf_token;
-  let profi: google = { email: "", name: "", picture: "" };
 
   if (g_csrf_token1 != g_csrf_token2) {
     res.redirect("/auth");
@@ -271,29 +276,13 @@ Account.post("/ggin", async (req, res) => {
   }
 
   let s = req.body.credential as string;
-  s.split(".").forEach((v, i) => {
-    if (i == 1) {
-      profi = JSON.parse(Buffer.from(v, "base64").toString()) as any as google;
-    }
-  });
-  // {
-  //      iss: 'https://accounts.google.com',
-  //      azp: '814286348049-ehu28te266lohvbgsgu6mcgroe3qihcr.apps.googleusercontent.com',
-  //      aud: '814286348049-ehu28te266lohvbgsgu6mcgroe3qihcr.apps.googleusercontent.com',
-  //      sub: '104614040852490738418',
-  //      email: 'huy91027@gmail.com',
-  //      email_verified: true,
-  //      nbf: 1711446780,
-  //      name: 'Huy Nguyễn',
-  //      picture: 'https://lh3.googleusercontent.com/a/ACg8ocLNfMWE2gocEli3yYxs-95uRjnX_8PeHAtb3gtpFr8S_g=s96-c',
-  //      given_name: 'Huy',
-  //      family_name: 'Nguyễn',
-  //      iat: 1711447080,
-  //      exp: 1711450680,
-  //      jti: 'e17866e1397730421a8823d244726469f9ea63bd'
-  //    }
 
-  let acc = await accountService.GetAccount(profi.email)
+  let payload = await VerifyGoogleIDtoken(s)
+  if (payload == undefined || payload.email == undefined) {
+    res.redirect("/auth/Signup");
+    return
+  }
+  let acc = await accountService.GetAccount(payload.email)
 
 
   if (!acc) {
@@ -311,7 +300,8 @@ Account.post("/ggin", async (req, res) => {
   res.redirect("/")
 
 });
-Account.post("/ggup", (req, res) => {
+//đăng ký gg
+Account.post("/ggup", async (req, res) => {
   let g_csrf_token1 = req.body.g_csrf_token;
   let g_csrf_token2 = req.cookies.g_csrf_token;
   let profi: google = { email: "", name: "", picture: "" };
@@ -322,42 +312,54 @@ Account.post("/ggup", (req, res) => {
   }
 
   let s = req.body.credential as string;
-  s.split(".").forEach((v, i) => {
-    if (i == 1) {
-      profi = JSON.parse(Buffer.from(v, "base64").toString()) as any as google;
-    }
-  });
-  // {
-  //      iss: 'https://accounts.google.com',
-  //      azp: '814286348049-ehu28te266lohvbgsgu6mcgroe3qihcr.apps.googleusercontent.com',
-  //      aud: '814286348049-ehu28te266lohvbgsgu6mcgroe3qihcr.apps.googleusercontent.com',
-  //      sub: '104614040852490738418',
-  //      email: 'huy91027@gmail.com',
-  //      email_verified: true,
-  //      nbf: 1711446780,
-  //      name: 'Huy Nguyễn',
-  //      picture: 'https://lh3.googleusercontent.com/a/ACg8ocLNfMWE2gocEli3yYxs-95uRjnX_8PeHAtb3gtpFr8S_g=s96-c',
-  //      given_name: 'Huy',
-  //      family_name: 'Nguyễn',
-  //      iat: 1711447080,
-  //      exp: 1711450680,
-  //      jti: 'e17866e1397730421a8823d244726469f9ea63bd'
-  //    }
-  let hash = Hash.CreateHas({
-    outNumber: undefined,
-    salt: undefined,
-    a1: profi.email,
-  });
 
+  let payload = await VerifyGoogleIDtoken(s)
 
-  res.cookie("a1", hash.a1);
-  res.cookie("a2", hash.a2);
-  res.cookie("time", hash.time);
+  if (payload == undefined || payload.email == undefined) {
+    res.redirect("/auth/Signup?dk=khongthanhcong");
+    return
+  }
+  let acc = await accountService.GetAccount(payload.email)
 
-  res.cookie("email", profi.email);
-  res.cookie("image", profi.picture);
-  res.cookie("name", profi.name);
-  res.redirect("/auth/Signup");
+  if (acc) {
+    res.redirect("/auth/Signup?dk=taikhoantontai");
+    return
+  }
+  let id = `user-${uuidv4()}-${Date.now()}`
+
+  let u = new UserModel()
+  u.id = id
+  u.pathImage = payload.picture || ""
+  u.ChanalName = payload.name || ""
+  u.Name = payload.name || ""
+
+  let ac = new AccountModel()
+  ac.Account = payload.email
+  ac.Password = ""
+  ac.id = u.id
+  let pl = new PlayListModel()
+
+  pl.User_id = u.id
+  pl.ImagePath = u.pathImage
+  pl.id = u.id
+  pl.Status = "0"
+  pl.Type = "user"
+  pl.PlayListName = u.ChanalName
+
+  await playListService.AddArtists(pl)
+
+  u.id = id
+  ac.id = id
+  let check = await userService.AddAccount(u)
+
+  if (check) {
+    check = await accountService.Add(ac.id, ac.Account, ac.Password)
+  } else {
+    userService.Delete(u.id)
+    playListService.DeletePlaylist(pl.id)
+  }
+
+  res.redirect("/auth");
 });
 Account.get("/logout", (req, res) => {
   clearCookie(res)
@@ -390,9 +392,6 @@ Account.post("/getdata", (req, res) => {
     pathImage: req.cookies.image,
     Account: req.cookies.email,
   }))
-
-  console.log(sign);
-
   res.json({
     err: false,
     Name: req.cookies.name,
@@ -612,7 +611,7 @@ Account.post("/createACC", async (req, res) => {
   let code = req.body.code
   let token = req.body.token
 
-  let id = `user-${uuidv4()}`
+  let id = `user-${uuidv4()}-${Date.now()}`
 
   let decode = VertifyJWT(token, code + "")
   if (decode == undefined) {
@@ -640,7 +639,7 @@ Account.post("/createACC", async (req, res) => {
 
   pl.User_id = u.id
   pl.ImagePath = u.pathImage
-  pl.id = `artists-${uuidv4()}-${Date.now()}`
+  pl.id = u.id
   pl.Status = "0"
   pl.PlayListName = u.Name
 

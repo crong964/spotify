@@ -34,6 +34,7 @@ const client_id_su = process.env.CLIENT_ID_SU;
 const email = process.env.EMAIL;
 const emailpsapp = process.env.EMAILPSAPP;
 const secret = process.env.SECRET;
+const client_id_gg = process.env.Client_ID_GG;
 const Account = (0, express_1.Router)();
 // Account.get("/", (req, res) => {
 //   res.sendFile(path.join(process.cwd(), "/web/auth.html"));
@@ -41,6 +42,10 @@ const Account = (0, express_1.Router)();
 Account.post("/signin", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const account = req.body.account;
     const password = req.body.password;
+    if (password == "") {
+        res.redirect("/athu");
+        return;
+    }
     let acc = yield AccountService_1.default.GetAccount(account);
     if (!acc || acc.Password != password) {
         res.json({
@@ -237,34 +242,17 @@ Account.get("/githubsu", (req, res) => __awaiter(void 0, void 0, void 0, functio
 Account.post("/ggin", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     let g_csrf_token1 = req.body.g_csrf_token;
     let g_csrf_token2 = req.cookies.g_csrf_token;
-    let profi = { email: "", name: "", picture: "" };
     if (g_csrf_token1 != g_csrf_token2) {
         res.redirect("/auth");
         return;
     }
     let s = req.body.credential;
-    s.split(".").forEach((v, i) => {
-        if (i == 1) {
-            profi = JSON.parse(Buffer.from(v, "base64").toString());
-        }
-    });
-    // {
-    //      iss: 'https://accounts.google.com',
-    //      azp: '814286348049-ehu28te266lohvbgsgu6mcgroe3qihcr.apps.googleusercontent.com',
-    //      aud: '814286348049-ehu28te266lohvbgsgu6mcgroe3qihcr.apps.googleusercontent.com',
-    //      sub: '104614040852490738418',
-    //      email: 'huy91027@gmail.com',
-    //      email_verified: true,
-    //      nbf: 1711446780,
-    //      name: 'Huy Nguyễn',
-    //      picture: 'https://lh3.googleusercontent.com/a/ACg8ocLNfMWE2gocEli3yYxs-95uRjnX_8PeHAtb3gtpFr8S_g=s96-c',
-    //      given_name: 'Huy',
-    //      family_name: 'Nguyễn',
-    //      iat: 1711447080,
-    //      exp: 1711450680,
-    //      jti: 'e17866e1397730421a8823d244726469f9ea63bd'
-    //    }
-    let acc = yield AccountService_1.default.GetAccount(profi.email);
+    let payload = yield (0, Helper_1.VerifyGoogleIDtoken)(s);
+    if (payload == undefined || payload.email == undefined) {
+        res.redirect("/auth/Signup");
+        return;
+    }
+    let acc = yield AccountService_1.default.GetAccount(payload.email);
     if (!acc) {
         res.redirect("/auth");
         return;
@@ -277,7 +265,8 @@ Account.post("/ggin", (req, res) => __awaiter(void 0, void 0, void 0, function* 
     SetCookie(res, user);
     res.redirect("/");
 }));
-Account.post("/ggup", (req, res) => {
+//đăng ký gg
+Account.post("/ggup", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     let g_csrf_token1 = req.body.g_csrf_token;
     let g_csrf_token2 = req.cookies.g_csrf_token;
     let profi = { email: "", name: "", picture: "" };
@@ -286,40 +275,46 @@ Account.post("/ggup", (req, res) => {
         return;
     }
     let s = req.body.credential;
-    s.split(".").forEach((v, i) => {
-        if (i == 1) {
-            profi = JSON.parse(Buffer.from(v, "base64").toString());
-        }
-    });
-    // {
-    //      iss: 'https://accounts.google.com',
-    //      azp: '814286348049-ehu28te266lohvbgsgu6mcgroe3qihcr.apps.googleusercontent.com',
-    //      aud: '814286348049-ehu28te266lohvbgsgu6mcgroe3qihcr.apps.googleusercontent.com',
-    //      sub: '104614040852490738418',
-    //      email: 'huy91027@gmail.com',
-    //      email_verified: true,
-    //      nbf: 1711446780,
-    //      name: 'Huy Nguyễn',
-    //      picture: 'https://lh3.googleusercontent.com/a/ACg8ocLNfMWE2gocEli3yYxs-95uRjnX_8PeHAtb3gtpFr8S_g=s96-c',
-    //      given_name: 'Huy',
-    //      family_name: 'Nguyễn',
-    //      iat: 1711447080,
-    //      exp: 1711450680,
-    //      jti: 'e17866e1397730421a8823d244726469f9ea63bd'
-    //    }
-    let hash = Hash_1.Hash.CreateHas({
-        outNumber: undefined,
-        salt: undefined,
-        a1: profi.email,
-    });
-    res.cookie("a1", hash.a1);
-    res.cookie("a2", hash.a2);
-    res.cookie("time", hash.time);
-    res.cookie("email", profi.email);
-    res.cookie("image", profi.picture);
-    res.cookie("name", profi.name);
-    res.redirect("/auth/Signup");
-});
+    let payload = yield (0, Helper_1.VerifyGoogleIDtoken)(s);
+    if (payload == undefined || payload.email == undefined) {
+        res.redirect("/auth/Signup?dk=khongthanhcong");
+        return;
+    }
+    let acc = yield AccountService_1.default.GetAccount(payload.email);
+    if (acc) {
+        res.redirect("/auth/Signup?dk=taikhoantontai");
+        return;
+    }
+    let id = `user-${(0, uuid_1.v4)()}-${Date.now()}`;
+    let u = new UserModel_1.default();
+    u.id = id;
+    u.pathImage = payload.picture || "";
+    u.ChanalName = payload.name || "";
+    u.Name = payload.name || "";
+    let ac = new AccountModel_1.default();
+    ac.Account = payload.email;
+    ac.Password = "";
+    ac.id = u.id;
+    let pl = new PlayListModel_1.PlayListModel();
+    pl.User_id = u.id;
+    pl.ImagePath = u.pathImage;
+    pl.id = u.id;
+    pl.Status = "0";
+    pl.Type = "user";
+    pl.PlayListName = u.ChanalName;
+    yield PlayListService_1.default.AddArtists(pl);
+    u.id = id;
+    ac.id = id;
+    let check = yield UserService_1.default.AddAccount(u);
+    if (check) {
+        check = yield AccountService_1.default.Add(ac.id, ac.Account, ac.Password);
+    }
+    else {
+        UserService_1.default.Delete(u.id);
+        PlayListService_1.default.DeletePlaylist(pl.id);
+    }
+    res.redirect("/auth");
+}));
 Account.get("/logout", (req, res) => {
     clearCookie(res);
     res.redirect("/auth");
@@ -347,7 +342,6 @@ Account.post("/getdata", (req, res) => {
         pathImage: req.cookies.image,
         Account: req.cookies.email,
     }));
-    console.log(sign);
     res.json({
         err: false,
         Name: req.cookies.name,
@@ -537,7 +531,7 @@ Account.post("/createACC", (req, res) => __awaiter(void 0, void 0, void 0, funct
     let Account = req.body.Account;
     let code = req.body.code;
     let token = req.body.token;
-    let id = `user-${(0, uuid_1.v4)()}`;
+    let id = `user-${(0, uuid_1.v4)()}-${Date.now()}`;
     let decode = (0, Helper_1.VertifyJWT)(token, code + "");
     if (decode == undefined) {
         res.json({
@@ -560,7 +554,7 @@ Account.post("/createACC", (req, res) => __awaiter(void 0, void 0, void 0, funct
     let pl = new PlayListModel_1.PlayListModel();
     pl.User_id = u.id;
     pl.ImagePath = u.pathImage;
-    pl.id = `artists-${(0, uuid_1.v4)()}-${Date.now()}`;
+    pl.id = u.id;
     pl.Status = "0";
     pl.PlayListName = u.Name;
     yield PlayListService_1.default.AddArtists(pl);

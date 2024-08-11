@@ -74,8 +74,7 @@ class UserService {
     AddAccount(d) {
         return __awaiter(this, void 0, void 0, function* () {
             let sql = "INSERT INTO user(id, Name, Vertify, Nationality, ChanalName, pathImage, description, RefeshToken, Banner,role) VALUES (?,?,?,?,?,?,?,?,?,?)";
-            let check;
-            check = yield Config_1.default.query(sql, [d.id, d.Name, d.Vertify, d.Nationality, d.ChanalName, d.pathImage, d.description, d.RefeshToken, d.Banner, d.role]);
+            let check = yield Config_1.default.query(sql, [d.id, d.Name, d.Vertify, d.Nationality, d.ChanalName, d.pathImage, d.description, d.RefeshToken, d.Banner, d.role]);
             return check;
         });
     }
@@ -112,6 +111,14 @@ class UserService {
         });
     }
     DeleteEAdmin(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let sql = "Delete FROM user WHERE id = ? AND role = 'employee' ";
+            let ls;
+            ls = (yield Config_1.default.query(sql, [id]));
+            return this.SetList(ls);
+        });
+    }
+    Delete(id) {
         return __awaiter(this, void 0, void 0, function* () {
             let sql = "Delete FROM user WHERE id = ? AND role = 'employee' ";
             let ls;
