@@ -18,7 +18,7 @@ export default function ArtistPage() {
   const [isfriend, SetIsfriend] = useState<"-1" | "0" | "1" | "2">();
   const [songs, SetSongS] = useState<SongInPlayList[]>([]);
 
-  const refPage = useRef<any>(null);
+  const refPage = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
   const { id } = useParams();
   useEffect(() => {
@@ -32,7 +32,7 @@ export default function ArtistPage() {
       SetLsAtist(v.lsplaylistartist);
       dispatch(SetCurName(v.atist.ChanalName));
       if (refPage.current) {
-        refPage.current.scrollIntoView();
+        refPage.current.scrollIntoView()
       }
     });
   }, [id]);
