@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Check,
@@ -12,10 +12,8 @@ import {
 } from "@/page/home/RootRedux";
 
 import { get, post } from "@/page/config/req";
+import NotificationPage from "@/page/home/Header/NotificationList";
 
-const NotificationPage = React.lazy(
-  () => import("@/page/home/Header/NotificationList")
-);
 const PlayButtom = React.lazy(() => import("@/page/component/PlayButtom"));
 
 import { GenreInHome } from "@/page/home/IndexHome";
@@ -141,25 +139,33 @@ export default function Header() {
                   >
                     <MessIcon className="fill-white hover:fill-[#1FDF64]"></MessIcon>
                   </div>
-                  <div className="bg-[#2A2A2A] p-2 rounded-full relative cursor-pointer">
-                    <svg
-                      onClick={() => {
-                        SetShowNotification(!showNotification);
-                        if (showNotification == false) {
-                          dispathch(SetNotificationPage("list"));
-                          dispathch(SetNotificationPageIdSong(""));
-                        }
-                      }}
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      className="fill-white hover:fill-[#1FDF64]"
-                      viewBox="0 0 16 16"
-                    >
-                      <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2M8 1.918l-.797.161A4 4 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4 4 0 0 0-3.203-3.92zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5 5 0 0 1 13 6c0 .88.32 4.2 1.22 6" />
-                    </svg>
-                    {showNotification ? <NotificationPage /> : <></>}
-                  </div>
+                  <button
+                    onBlur={() => {
+                      if (showNotification) {
+                        SetShowNotification(false);
+                      }
+                    }}
+                  >
+                    <div className="bg-[#2A2A2A] p-2 rounded-full relative cursor-pointer ">
+                      <svg
+                        onClick={(e) => {
+                          SetShowNotification(!showNotification);
+                          if (showNotification == false) {
+                            dispathch(SetNotificationPage("list"));
+                            dispathch(SetNotificationPageIdSong(""));
+                          }
+                        }}
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        className="fill-white hover:fill-[#1FDF64]"
+                        viewBox="0 0 16 16"
+                      >
+                        <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2M8 1.918l-.797.161A4 4 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4 4 0 0 0-3.203-3.92zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5 5 0 0 1 13 6c0 .88.32 4.2 1.22 6" />
+                      </svg>
+                      {showNotification ? <NotificationPage /> : <></>}
+                    </div>
+                  </button>
                   <Avatar Name="" Vertify="" pathImage={infor.pathImage} />
                 </div>
               </>
@@ -243,12 +249,19 @@ function Avatar(p: Infor) {
   const [show, SetShow] = useState(false);
   const dispatch = useDispatch();
   return (
-    <div className="relative cursor-pointer">
+    <button
+      onBlur={() => {
+        if (show) {
+          SetShow(false);
+        }
+      }}
+      className="relative cursor-pointer focus:outline-none"
+    >
       <div
-        onClick={() => {
+        onClick={(e) => {
           SetShow(!show);
         }}
-        className="text-[14px]"
+        className="text-[14px] "
       >
         <img
           className="size-[40px] rounded-full cursor-pointer"
@@ -258,7 +271,7 @@ function Avatar(p: Infor) {
         />
       </div>
       {show ? (
-        <div className="bg-[#3E3E3E] z-[20] rounded-lg min-w-[200px] text-[16px] absolute top-full  sm:right-0">
+        <div className="bg-[#3E3E3E]  z-[20] rounded-lg min-w-[200px] text-[16px] absolute top-full  sm:right-0">
           <div className="text-white  cursor-pointer hover:bg-black">
             <div
               onClick={() => {
@@ -270,7 +283,6 @@ function Avatar(p: Infor) {
               Tài khoản
             </div>
           </div>
-
           <div
             onClick={() => {
               get("/auth/logout", (e: any) => {
@@ -285,6 +297,6 @@ function Avatar(p: Infor) {
       ) : (
         <></>
       )}
-    </div>
+    </button>
   );
 }
