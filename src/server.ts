@@ -37,6 +37,7 @@ import SongAdminRoute from "./admin/SongAdminRoute";
 import { unlink } from "fs/promises";
 import CmdRoute from "./route/CmdRoute";
 import StreamingRoute from "./route/StreamingRoute";
+import PlayListLikeRoute from "./route/PlayListLikeRoute";
 
 const secret = process.env.SECRET || "1"
 const production = process.env.MODE == "production"
@@ -85,6 +86,7 @@ app.get("/test", (req, res) => {
 })
 app.use("/mess", USER, MessRoute)
 app.use("/box", USER, BoxChatRoute)
+app.use("/likePlaylist", USER, PlayListLikeRoute)
 app.use("/user", UserRoute)
 app.use("/song", SongRoute)
 app.use("/lsong", LikedSongRoute)

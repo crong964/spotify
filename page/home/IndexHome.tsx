@@ -28,6 +28,9 @@ import Profile from "./Profile";
 import IdGenre from "./IdGenre";
 
 const Right = React.lazy(() => import("./Right/Right"));
+const PlaylistLike = React.lazy(
+  () => import("@/page/home/NaviHome/PlaylistLike")
+);
 
 import { socket } from "@/page/socket/Socket";
 import { MobileSearchButtom } from "./NaviHome/SearchButtom";
@@ -58,6 +61,7 @@ export default function IndexTest() {
   const mobiletype = useSelector((state: RootHome) => state.mobile.type);
   const BoxList = useSelector((state: RootHome) => state.rootHome.BoxList);
   const isLogin = useSelector((state: RootHome) => state.rootHome.isLogin);
+  const titleXY = useSelector((state: RootHome) => state.rootHome.titleXY);
   const screem = () => {
     if (window.innerWidth > 600) {
       dispatch(SetDeviceType("pc"));
@@ -65,12 +69,12 @@ export default function IndexTest() {
       dispatch(SetDeviceType("mobile"));
     }
   };
-  const windowchage = () => {};
   const dispatch = useDispatch();
   useEffect(() => {
     function res(v: any) {
       dispatch(SetMess(v));
     }
+
     socket.on("mess", res);
 
     window.addEventListener("resize", (ev) => {
@@ -79,6 +83,7 @@ export default function IndexTest() {
     window.addEventListener("load", (ev) => {
       screem();
     });
+
     window.addEventListener("popstate", (e) => {});
     return () => {
       socket.off("mess", res);
@@ -96,8 +101,8 @@ export default function IndexTest() {
 
   return (
     <div className="h-full w-full p-0 m-0 bg-black CircularSpUIv3T-Book overflow-hidden">
-      <div className="flex h-[80%] sm:h-[88%] space-x-1 relative">
-        <div className="w-[80px] hidden sm:block px-1 space-y-1">
+      <main title="main" className="flex h-[80%] sm:h-[88%] space-x-1 relative">
+        <nav title="left" className="w-[80px] hidden sm:block px-1 space-y-1">
           <div className="h-[20%] bg-[#121212] rounded-lg py-2">
             <div className="h-full  ">
               <Home />
@@ -105,14 +110,15 @@ export default function IndexTest() {
             </div>
           </div>
           {isLogin ? (
-            <div className="h-[80%] bg-[#121212] rounded-lg py-2 flex justify-center">
+            <div className="h-[80%] overflow-y-auto bg-[#121212] rounded-lg py-2 ">
               <NaviLoveSong />
+              <PlaylistLike />
             </div>
           ) : (
             <></>
           )}
-        </div>
-        <div className=" w-full  space-y-1">
+        </nav>
+        <div title="center" className=" w-full  space-y-1">
           <div className="relative min-h-max max-h-[10%]">
             <Header></Header>
           </div>
@@ -127,7 +133,7 @@ export default function IndexTest() {
             )}
           </div>
         </div>
-      </div>
+      </main>
       <PlayingBar />
       <NaviHomeMobile />
       {BoxList.length > 0 ? (
@@ -135,6 +141,20 @@ export default function IndexTest() {
           {BoxList.map((v) => {
             return <ChatBox idbox={v} key={v} />;
           })}
+        </div>
+      ) : (
+        <></>
+      )}
+
+      {titleXY.show ? (
+        <div
+          style={{ left: 80, top: titleXY.y }}
+          className="absolute z-40 bg-[#434242] p-2 rounded-lg"
+        >
+          <div className="text-base text-white">{titleXY.Name}</div>
+          <div className="text-sm text-gray-400">
+            {titleXY.type == "artist" ? "Nghệ sĩ" : "Danh sách phát"}
+          </div>
         </div>
       ) : (
         <></>

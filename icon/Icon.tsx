@@ -359,7 +359,7 @@ export function LogoIcon(params: icon) {
     </svg>
   );
 }
-export function PlusCircleIcon(params: icon) {
+export function CheckCircleIcon(params: icon) {
   return (
     <svg
       data-encore-id="icon"
@@ -372,7 +372,7 @@ export function PlusCircleIcon(params: icon) {
     </svg>
   );
 }
-export function CheckCircleIcon(params: icon) {
+export function PlusCircleIcon(params: icon) {
   return (
     <svg aria-hidden="true" viewBox="0 0 16 16" className={params.className}>
       <path d="M8 1.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z"></path>
@@ -437,7 +437,7 @@ export function BackIcon(params: icon) {
     </svg>
   );
 }
-export function IconGitHub(params: icon) {
+export function GitHubIcon(params: icon) {
   return (
     <svg
       className={params.className}
@@ -454,7 +454,7 @@ export function IconGitHub(params: icon) {
     </svg>
   );
 }
-export function IconGoogle(params: icon) {
+export function GoogleIcon(params: icon) {
   return (
     <svg
       version="1.1"
@@ -481,6 +481,13 @@ export function IconGoogle(params: icon) {
         ></path>
         <path fill="none" d="M0 0h48v48H0z"></path>
       </g>
+    </svg>
+  );
+}
+export function ThreeDotsIcon(params: icon) {
+  return (
+    <svg className={params.className} aria-hidden="true" viewBox="0 0 24 24">
+      <path d="M4.5 13.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm15 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm-7.5 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"></path>
     </svg>
   );
 }

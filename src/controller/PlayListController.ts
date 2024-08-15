@@ -13,6 +13,7 @@ import userService, { UserService } from "../services/UserService";
 import haveListFriendsService, { HaveListFriendsService } from "../services/HaveListFriendsService";
 import LikedSongModel from "../model/LikedSongModel";
 import firebase from "../config/Firebase";
+import playListLikeService from "../services/PlayListLikeService";
 
 export class PlayListController {
 
@@ -22,6 +23,7 @@ export class PlayListController {
     static likedSong: LikedSongService = likedSongService
     static user: UserService = userService
     static HaveListFriends: HaveListFriendsService = haveListFriendsService
+    static Playlistlike = playListLikeService
 
     async AddPlayListByAdmin(req: Request, res: Response) {
         var file = req.file?.filename as any as string
@@ -123,11 +125,13 @@ export class PlayListController {
 
         var id = req.cookies.id
         var ls = await Promise.all([PlayListController.playlist.Get(id_playlist),
-        PlayListController.likedSong.GetAllByIdPlayList(id, id_playlist)])
+        PlayListController.likedSong.GetAllByIdPlayList(id, id_playlist),
+        PlayListController.Playlistlike.Get(id, id_playlist)])
 
         res.json({
             playlist: ls[0],
             songs: ls[1],
+            like: ls[2] != undefined,
             err: ls[0] == undefined
         })
     }

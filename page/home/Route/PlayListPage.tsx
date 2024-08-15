@@ -7,6 +7,7 @@ import { SongInPlayList, SongList } from "@/page/component/Song";
 import { TimeString } from "@/page/component/Time";
 import { useParams } from "react-router-dom";
 import { SetAutoPlay } from "../Audio/AudioRedux";
+import { CheckCircleIcon, PlusCircleIcon, ThreeDotsIcon } from "@/icon/Icon";
 
 var g = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 6, 7];
 export interface artist {
@@ -52,8 +53,8 @@ export default function PlaylistPage() {
   const { id } = useParams();
   const [status, SetStatus] = useState<"play" | "pause">("pause");
   const [load, SetLoad] = useState(false);
-
   const [songs, SetSongS] = useState<SongInPlayList[]>([]);
+  const isLogin = useSelector((state: RootHome) => state.rootHome.isLogin);
   const [playlist, SetPlayList] = useState<PlayList>({
     Duration: "",
     id: "",
@@ -62,6 +63,7 @@ export default function PlaylistPage() {
     PlayListName: "",
     Songs: 0,
   });
+  const [like, SetLike] = useState(false);
   useEffect(() => {
     get(`/playlist/data/${id}`, (v: any) => {
       if (v && !v.err) {
@@ -76,6 +78,7 @@ export default function PlaylistPage() {
         v.playlist.Duration = time;
         v.playlist.Songs = song;
         SetPlayList(v.playlist);
+        SetLike(v.like);
         dispatch(SetCurName(v.playlist.PlayListName));
       }
     });
@@ -119,8 +122,8 @@ export default function PlaylistPage() {
 
       <div className="h-[320px]"></div>
       <div className="px-4">
-        <div className="flex items-center py-0 sm:py-4 space-x-4">
-          <div
+        <div className="flex items-center py-0 sm:py-4 space-x-5">
+          <button
             onClick={() => {
               if (load == true) {
                 return;
@@ -135,20 +138,50 @@ export default function PlaylistPage() {
               );
               SetLoad(true);
             }}
+            className={load ? "cursor-wait" : "cursor-pointer"}
           >
-            <button className={load ? "cursor-wait" : "cursor-pointer"}>
-              <PlayButtom id={id + ""} page="playlist" />
-            </button>
-          </div>
-          <div className="cursor-pointer">
-            <svg
-              className="fill-[#C7C7C7] hover:fill-white size-[45px] "
-              aria-hidden="true"
-              viewBox="0 0 24 24"
-            >
-              <path d="M4.5 13.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm15 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm-7.5 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"></path>
-            </svg>
-          </div>
+            <PlayButtom id={id + ""} page="playlist" />
+          </button>
+
+          {isLogin ? (
+            <>
+              {like ? (
+                <button
+                  onClick={() => {
+                    post(
+                      "/likePlaylist/delete",
+                      { idPlaylist: id },
+                      (v: any) => {
+                        if (v) {
+                          SetLike(!like);
+                        }
+                      }
+                    );
+                  }}
+                >
+                  <CheckCircleIcon className="size-[32px] fill-[#1ED760] "></CheckCircleIcon>
+                </button>
+              ) : (
+                <button
+                  onClick={() => {
+                    post("/likePlaylist/add", { idPlaylist: id }, (v: any) => {
+                      if (v) {
+                        SetLike(!like);
+                      }
+                    });
+                  }}
+                >
+                  <PlusCircleIcon className="size-[32px] fill-[#C7C7C7] "></PlusCircleIcon>
+                </button>
+              )}
+            </>
+          ) : (
+            <></>
+          )}
+
+          <button className="cursor-pointer">
+            <ThreeDotsIcon className="fill-[#C7C7C7] hover:fill-white size-[45px] "></ThreeDotsIcon>
+          </button>
         </div>
         <div className="py-3 font-bold text-[24px]  text-white">
           Các bài hát

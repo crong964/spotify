@@ -11,6 +11,7 @@ import LikedSongModel from "../model/LikedSongModel";
 import accountService from "../services/AccountService";
 import AccountModel from "../model/AccountModel";
 import { PlayListModel } from "../model/PlayListModel";
+import playListLikeService from "../services/PlayListLikeService";
 
 class UserController {
     static user: UserService = userService
@@ -18,6 +19,7 @@ class UserController {
     static HaveListFriends: HaveListFriendsService = haveListFriendsService
     static likedSong: LikedSongService = likedSongService
     static playlist: PlayListService = playListService
+    static playlistlike = playListLikeService
     constructor() {
 
 
@@ -72,7 +74,8 @@ class UserController {
         temp.id_user_liked = id
         let l = await Promise.all([UserController.user.Get(playlist.User_id),
         UserController.HaveListFriends.Get(id, playlist.User_id),
-        UserController.likedSong.GetAllByIduserAndIdArtise(temp)],
+        UserController.likedSong.GetAllByIduserAndIdArtise(temp),
+        UserController.playlistlike.Get(id, idArtist)]
         )
         let idOtherArtist: any = {}
         let arrayId: string[] = []
@@ -96,6 +99,7 @@ class UserController {
             atist: l[0],
             isfriend: l[1] ? l[1].IsFriend : "-1",
             lsong: l[2],
+            like: l[3] != undefined,
             lsplaylistartist: lsuer
         })
     }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useId } from "react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { NaviPage } from "@/page/home/RootRedux";
@@ -11,12 +11,14 @@ export default function ArtistLink(v: tArtistLink) {
   let id = v.idArtist.split(" ");
   let name = v.nameArtist.split(",");
   const dispatch = useDispatch();
+  let ids = useId();
   return (
-    <div key={v.idArtist} className="flex text-stone-500">
+    <div key={ids} className="flex text-stone-500">
       {id.map((va, ix) => {
         if (ix == id.length - 1) {
           return (
             <Link
+
               onClick={() => {
                 dispatch(
                   NaviPage({
@@ -26,7 +28,7 @@ export default function ArtistLink(v: tArtistLink) {
                 );
               }}
               className="hover:text-white"
-              key={`${va}_${ix}`}
+              key={`${ids}_${ix}`}
               to={`/artist/${va}`}
             >
               {name[ix]}
@@ -45,7 +47,7 @@ export default function ArtistLink(v: tArtistLink) {
                 );
               }}
               className="hover:text-white"
-              key={`${va}_${ix}`}
+              key={`${ids}_${ix}`}
               to={`/artist/${va}`}
             >
               {name[ix]}

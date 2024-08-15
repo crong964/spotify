@@ -23,6 +23,7 @@ const LikedSongService_1 = __importDefault(require("../services/LikedSongService
 const LikedSongModel_1 = __importDefault(require("../model/LikedSongModel"));
 const AccountService_1 = __importDefault(require("../services/AccountService"));
 const AccountModel_1 = __importDefault(require("../model/AccountModel"));
+const PlayListLikeService_1 = __importDefault(require("../services/PlayListLikeService"));
 class UserController {
     constructor() {
     }
@@ -79,7 +80,8 @@ class UserController {
             temp.id_user_liked = id;
             let l = yield Promise.all([UserController.user.Get(playlist.User_id),
                 UserController.HaveListFriends.Get(id, playlist.User_id),
-                UserController.likedSong.GetAllByIduserAndIdArtise(temp)]);
+                UserController.likedSong.GetAllByIduserAndIdArtise(temp),
+                UserController.playlistlike.Get(id, idArtist)]);
             let idOtherArtist = {};
             let arrayId = [];
             let lsong = l[2];
@@ -101,6 +103,7 @@ class UserController {
                 atist: l[0],
                 isfriend: l[1] ? l[1].IsFriend : "-1",
                 lsong: l[2],
+                like: l[3] != undefined,
                 lsplaylistartist: lsuer
             });
         });
@@ -216,5 +219,6 @@ UserController.account = AccountService_1.default;
 UserController.HaveListFriends = HaveListFriendsService_1.default;
 UserController.likedSong = LikedSongService_1.default;
 UserController.playlist = PlayListService_1.default;
+UserController.playlistlike = PlayListLikeService_1.default;
 var userController = new UserController();
 exports.default = userController;

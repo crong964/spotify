@@ -115,9 +115,9 @@ export function SongInPlayList(v: SongInPlayList) {
         {isLogin ? (
           <>
             {liked ? (
-              <PlusCircleIcon className="fill-[#1DD25E] size-4 mx-2"></PlusCircleIcon>
+              <CheckCircleIcon className="fill-[#1DD25E] size-4 mx-2"></CheckCircleIcon>
             ) : (
-              <CheckCircleIcon className="fill-white size-4 mx-2"></CheckCircleIcon>
+              <PlusCircleIcon className="fill-white size-4 mx-2"></PlusCircleIcon>
             )}
           </>
         ) : (

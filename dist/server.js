@@ -58,6 +58,7 @@ const ArtistManagementRoute_1 = __importDefault(require("./admin/ArtistManagemen
 const SongAdminRoute_1 = __importDefault(require("./admin/SongAdminRoute"));
 const CmdRoute_1 = __importDefault(require("./route/CmdRoute"));
 const StreamingRoute_1 = __importDefault(require("./route/StreamingRoute"));
+const PlayListLikeRoute_1 = __importDefault(require("./route/PlayListLikeRoute"));
 const secret = process.env.SECRET || "1";
 const production = process.env.MODE == "production";
 const app = (0, express_1.default)();
@@ -98,6 +99,7 @@ app.get("/test", (req, res) => {
 });
 app.use("/mess", admin_1.USER, MessRoute_1.default);
 app.use("/box", admin_1.USER, BoxChatRoute_1.default);
+app.use("/likePlaylist", admin_1.USER, PlayListLikeRoute_1.default);
 app.use("/user", UserRoute_1.default);
 app.use("/song", Song_Route_1.default);
 app.use("/lsong", LikedSongRoute_1.default);

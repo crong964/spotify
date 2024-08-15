@@ -13,6 +13,12 @@ interface mess {
   ngay: string;
   type: string;
 }
+interface TitleXY {
+  y: number;
+  Name: string;
+  type: string;
+  show: boolean;
+}
 export interface Playing {
   page: string;
   id: string;
@@ -32,17 +38,16 @@ interface Commamd {
 }
 interface Root {
   playing: Playing;
+  update: boolean;
   topbarcontent: boolean;
   curName: string;
   devicetype: "pc" | "mobile";
-  watchbox: string;
   side: "left" | "center" | "right";
   mess: mess;
   BoxList: string[];
   command: Commamd;
   idSong: string;
   isLogin: boolean;
-  update: boolean;
   Right: string;
   DeleteDiscuss: string;
   NotificationPage: string;
@@ -50,14 +55,15 @@ interface Root {
   stack: Commamd[];
   position: number;
   SearchName: string;
+  titleXY: TitleXY;
 }
 const initialState: Root = {
+  update: false,
   playing: { id: "", page: "" },
   topbarcontent: false,
   curName: "",
   devicetype: "pc",
   side: "center",
-  watchbox: "",
   SearchName: "",
   BoxList: [],
   command: {
@@ -68,7 +74,6 @@ const initialState: Root = {
   NotificationPage: "list",
   idSong: ParseJson(localStorage.getItem("song") || "{}").Id || "",
   isLogin: false,
-  update: true,
   Right: "",
   DeleteDiscuss: "",
   stack: [{ page: "home", param: "" }],
@@ -81,8 +86,14 @@ const initialState: Root = {
     ngay: "",
     type: "",
   },
+  titleXY: {
+    Name: "",
+    show: false,
+    type: "",
+    y: 0,
+  },
 };
-var rootslice = createSlice({
+const rootslice = createSlice({
   name: "rootHome",
   initialState: initialState,
   reducers: {
@@ -116,9 +127,7 @@ var rootslice = createSlice({
     IsLogin: (state, action: PayloadAction<boolean>) => {
       state.isLogin = action.payload;
     },
-    Update: (state) => {
-      state.update = !state.update;
-    },
+
     NaviRight: (
       state,
       action: PayloadAction<"Discuss" | "Queue" | "Mess" | "">
@@ -190,6 +199,9 @@ var rootslice = createSlice({
       localStorage.setItem("queue", JSON.stringify(action.payload));
       state.playing = action.payload;
     },
+    SetTitle: (state, action: PayloadAction<TitleXY>) => {
+      state.titleXY = action.payload;
+    },
   },
 });
 
@@ -210,7 +222,6 @@ export const {
   PlaySong,
   NaviPage,
   IsLogin,
-  Update,
   NaviRight,
   SetdeleteDiscuss,
   SetNotificationPage,
@@ -223,6 +234,7 @@ export const {
   RemoveRight,
   SetDeviceType,
   SetPlaying,
+  SetTitle,
 } = rootslice.actions;
 
 export default rootHome;

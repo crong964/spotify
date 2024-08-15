@@ -4,11 +4,12 @@ import { RootHome, SetCurName } from "@/page/home/RootRedux";
 import { artist } from "./PlayListPage";
 import { SongInPlayList, SongList } from "@/page/component/Song";
 import { useParams } from "react-router-dom";
-import { get } from "@/page/config/req";
+import { get, post } from "@/page/config/req";
 import React from "react";
 import PlayButtom from "@/page/component/PlayButtom";
 import TypeFriend from "@/page/home/friend/TypeFriend";
 import { PlayList } from "@/page/component/Playlist";
+import { CheckCircleIcon, PlusCircleIcon } from "@/icon/Icon";
 const PlayLists = React.lazy(() => import("@/page/component/Playlist"));
 
 export default function ArtistPage() {
@@ -17,10 +18,11 @@ export default function ArtistPage() {
   const [artist, SetaAtist] = useState<artist>();
   const [isfriend, SetIsfriend] = useState<"-1" | "0" | "1" | "2">();
   const [songs, SetSongS] = useState<SongInPlayList[]>([]);
-
+  const [like, SetLike] = useState(false);
   const refPage = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
   const { id } = useParams();
+  const isLogin = useSelector((state: RootHome) => state.rootHome.isLogin);
   useEffect(() => {
     get(`/user/artistpage/${id}`, (v: any) => {
       if (!v || v.err) {
@@ -31,15 +33,15 @@ export default function ArtistPage() {
       SetSongS(v.lsong);
       SetLsAtist(v.lsplaylistartist);
       dispatch(SetCurName(v.atist.ChanalName));
+      SetLike(v.like);
       if (refPage.current) {
-        refPage.current.scrollIntoView()
+        refPage.current.scrollIntoView();
       }
     });
   }, [id]);
 
   return (
     <div className="relative " ref={refPage}>
-      
       <div
         className="hidden sm:block bg-no-repeat bg-cover rounded-t-lg absolute top-0 left-0 w-full h-[320px] "
         style={{ backgroundImage: `url(${artist?.Banner || ""})` }}
@@ -77,9 +79,43 @@ export default function ArtistPage() {
       <div className="px-4">
         <div className="flex items-center py-4 space-x-4">
           <PlayButtom id={idpage} page="artist" />
-          <div className="font-bold cursor-pointer text-[14px] border-2 border-white text-white rounded-full px-2 py-1">
-            Theo dõi
-          </div>
+          {isLogin ? (
+            <>
+              {like ? (
+                <button
+                  className="font-bold cursor-pointer text-[14px] border-2 border-white text-white rounded-full px-2 py-1"
+                  onClick={() => {
+                    post(
+                      "/likePlaylist/delete",
+                      { idPlaylist: id },
+                      (v: any) => {
+                        if (v) {
+                          SetLike(!like);
+                        }
+                      }
+                    );
+                  }}
+                >
+                  Đang Theo dõi
+                </button>
+              ) : (
+                <button
+                  className="font-bold cursor-pointer text-[14px] border-2 border-white text-white rounded-full px-2 py-1"
+                  onClick={() => {
+                    post("/likePlaylist/add", { idPlaylist: id }, (v: any) => {
+                      if (v) {
+                        SetLike(!like);
+                      }
+                    });
+                  }}
+                >
+                  Theo dõi
+                </button>
+              )}
+            </>
+          ) : (
+            <></>
+          )}
           <div className="cursor-pointer">
             <svg
               className="fill-[#C7C7C7] hover:fill-white size-[45px] "

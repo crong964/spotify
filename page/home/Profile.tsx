@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { useDispatch } from "react-redux";
-import { Update } from "./RootRedux";
+
 import { get, post } from "@/page/config/req";
 
 interface Profile {
@@ -171,7 +171,7 @@ export default function Profile() {
                   alert("bất bại");
                 } else {
                   alert("thành công");
-                  dispatch(Update());
+                 
                 }
               });
             }}

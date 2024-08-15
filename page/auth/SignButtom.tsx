@@ -1,4 +1,4 @@
-import { IconGitHub, IconGoogle } from "@/icon/Icon";
+import { GitHubIcon, GoogleIcon } from "@/icon/Icon";
 import React, { useEffect } from "react";
 
 interface SignButtom {
@@ -51,7 +51,7 @@ export function SignInGoogleButtom() {
             ).click();
           }}
         >
-          <IconGoogle className="size-[36px] me-2" />
+          <GoogleIcon className="size-[36px] me-2" />
           Đăng nhập với Google
         </div>
       </div>
@@ -63,7 +63,7 @@ export function SignInGitHubButtom() {
   return (
     <SignButtom>
       <div className=" flex justify-center items-center">
-        <IconGitHub className="size-[36px] me-2" />
+        <GitHubIcon className="size-[36px] me-2" />
         <a href="https://github.com/login/oauth/authorize?scope=user:email&client_id=50e42ef1515d9e670365">
           Đăng nhập cùng github
         </a>
@@ -109,7 +109,7 @@ export function SignUpGoogleButtom() {
             ).click();
           }}
         >
-          <IconGoogle className="size-[36px] me-2" />
+          <GoogleIcon className="size-[36px] me-2" />
           Đăng ký với Google
         </div>
       </div>
@@ -121,7 +121,7 @@ export function SignUpGitHubButtom() {
   return (
     <SignButtom>
       <div className=" flex justify-center items-center">
-        <IconGitHub className="size-[36px] me-2" />
+        <GitHubIcon className="size-[36px] me-2" />
         <a href="https://github.com/login/oauth/authorize?scope=user:email&client_id=499fd7cb01fc989f8bc1">
           Đăng ký cùng GitHub
         </a>

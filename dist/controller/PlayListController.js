@@ -23,6 +23,7 @@ const LikedSongService_1 = __importDefault(require("../services/LikedSongService
 const UserService_1 = __importDefault(require("../services/UserService"));
 const HaveListFriendsService_1 = __importDefault(require("../services/HaveListFriendsService"));
 const Firebase_1 = __importDefault(require("../config/Firebase"));
+const PlayListLikeService_1 = __importDefault(require("../services/PlayListLikeService"));
 class PlayListController {
     AddPlayListByAdmin(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -124,10 +125,12 @@ class PlayListController {
             var id_playlist = req.params.idplaylist;
             var id = req.cookies.id;
             var ls = yield Promise.all([PlayListController.playlist.Get(id_playlist),
-                PlayListController.likedSong.GetAllByIdPlayList(id, id_playlist)]);
+                PlayListController.likedSong.GetAllByIdPlayList(id, id_playlist),
+                PlayListController.Playlistlike.Get(id, id_playlist)]);
             res.json({
                 playlist: ls[0],
                 songs: ls[1],
+                like: ls[2] != undefined,
                 err: ls[0] == undefined
             });
         });
@@ -162,5 +165,6 @@ PlayListController.genre = GenreService_1.default;
 PlayListController.likedSong = LikedSongService_1.default;
 PlayListController.user = UserService_1.default;
 PlayListController.HaveListFriends = HaveListFriendsService_1.default;
+PlayListController.Playlistlike = PlayListLikeService_1.default;
 var playListController = new PlayListController();
 exports.default = playListController;
