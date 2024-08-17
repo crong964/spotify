@@ -91,6 +91,7 @@ class StreamingController {
         read.pipe(res)
     }
     async Streaming(req: Request, res: Response) {
+        res.setHeader("Cache-Control", "max-age=315360000, no-transform, must-revalidate")
         const { segment, path } = req.body
 
         let read: internal.Readable

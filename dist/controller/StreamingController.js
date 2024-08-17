@@ -99,6 +99,7 @@ class StreamingController {
     }
     Streaming(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
+            res.setHeader("Cache-Control", "max-age=315360000, no-transform, must-revalidate");
             const { segment, path } = req.body;
             let read;
             if (segment == "0") {
