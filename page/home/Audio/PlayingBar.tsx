@@ -16,6 +16,8 @@ import {
   QueueIcon,
   SmallVolumeIcon,
 } from "@/icon/Icon";
+import Volume from "./Volume";
+import Audio2 from "./Audio2";
 
 interface SongI {
   Id: string;
@@ -107,7 +109,7 @@ export default function PlayingBar() {
           </button>
         </div>
       </div>
-      <Audio
+      <Audio2
         RandomNext={RandomNext}
         path={lsSong[mark]?.filePath}
         id={lsSong[mark]?.Id}
@@ -137,7 +139,7 @@ export default function PlayingBar() {
           className="flex items-center cursor-pointer space-x-2 hover:border-2 hover:border-gray-400 p-2 rounded-xl"
           onWheel={(e) => {
             var cur = e.deltaY;
-            var o = 2;
+            var o = 4;
             if (cur < 0) {
               if (volume >= 100) {
                 return;
@@ -166,56 +168,5 @@ export default function PlayingBar() {
         </div>
       </div>
     </div>
-  );
-}
-interface Volume {
-  value: number;
-}
-function Volume(p: Volume) {
-  return (
-    <>
-      <MuteVolume value={p.value} />
-      <SmallVolume value={p.value} />
-      <MediumVolume value={p.value} />
-      <BigVolume value={p.value} />
-    </>
-  );
-}
-
-function MuteVolume(p: Volume) {
-  return (
-    <>
-      {p.value <= 0 ? <MuteVolumeIcon className="fill-white size-4" /> : <></>}
-    </>
-  );
-}
-
-function SmallVolume(p: Volume) {
-  return (
-    <>
-      {1 <= p.value && p.value < 33 ? (
-        <SmallVolumeIcon className="fill-white size-4" />
-      ) : (
-        <></>
-      )}
-    </>
-  );
-}
-function MediumVolume(p: Volume) {
-  return (
-    <>
-      {33 <= p.value && p.value < 66 ? (
-        <MediumVolumeIcon className="fill-white size-4" />
-      ) : (
-        <></>
-      )}
-    </>
-  );
-}
-function BigVolume(p: Volume) {
-  return (
-    <>
-      {66 <= p.value ? <BigVolumeIcon className="fill-white size-4" /> : <></>}
-    </>
   );
 }

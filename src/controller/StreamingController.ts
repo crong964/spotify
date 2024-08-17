@@ -5,8 +5,9 @@ import path from "path";
 import { unlink } from "fs/promises";
 
 import fs, { createWriteStream, writeFile } from "fs"
+import internal from "stream";
 class StreamingController {
-    
+
     constructor() {
 
     }
@@ -88,7 +89,18 @@ class StreamingController {
                 console.log(err);
             })
         read.pipe(res)
-    } 
+    }
+    async Streaming(req: Request, res: Response) {
+        const { segment, path } = req.body
+
+        let read: internal.Readable
+        if (segment == "0") {
+            read = firebase.DownloadFile(`streaming/${path}/${path}.init`)
+        } else {
+            read = firebase.DownloadFile(`streaming/${path}/${path}-${segment}`)
+        }
+        read.pipe(res)
+    }
 }
 
 const streamingController = new StreamingController()

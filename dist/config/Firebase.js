@@ -165,6 +165,9 @@ class Firebase {
             return check;
         });
     }
+    DownloadFile(name) {
+        return Firebase.bucket.file(name).createReadStream();
+    }
 }
 Firebase.bucket = defaultApp.storage().bucket(STORAGEBUCKET);
 const firebase = new Firebase();

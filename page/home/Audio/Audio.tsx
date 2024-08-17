@@ -1,28 +1,21 @@
-import React, { useRef } from "react";
-import { useEffect, useState } from "react";
-import { post } from "@/page/config/req";
+import React from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootHome } from "@/page/home/RootRedux";
 import {
-  NextSong,
   RandomSong,
   RepeatPlaylist,
-  SetAutoPlay,
-  SetModPlay,
-  SetSongs,
   SetStop,
-} from "./AudioRedux";
-import Time from "../../component/Time";
+} from "@/page/home/Audio/AudioRedux";
+import Time from "@/page/component/Time";
 import {
-  NoRepeat,
   PauseSoundIcon,
   PlaySoundIcon,
-  RandomPlayIcon,
-  RepeatPlaylistIcon,
-  RepeatSongIcon,
   SkipNextIcon,
   SkipPreviousIcon,
 } from "@/icon/Icon";
+import ModPlay from "@/page/home/Audio/ModPlay";
+import ButtonRandomPlay from "@/page/home/Audio/ButtonRandomPlay";
 
 interface Audio {
   path: string;
@@ -37,13 +30,6 @@ export default function Audio(params: Audio) {
   const [duration, SetDuration] = useState(0);
   const [curTime, SetCurTime] = useState(0);
   const [timeUpdate, SetTimeUpdate] = useState(true);
-
-  useEffect(() => {
-    let mu = document.querySelector(".g") as HTMLAudioElement;
-    if (mu) {
-      SetDuration(mu.duration);
-    }
-  });
 
   return (
     <div className="col-span-full sm:col-span-2 flex flex-col space-y-0 sm:space-y-2">
@@ -118,11 +104,15 @@ export default function Audio(params: Audio) {
         <audio
           src={`/idSong?idSong=${params.path}`}
           onCanPlay={async (e) => {
+            SetDuration(e.currentTarget.duration);
             if (!autoplay) {
               return;
             }
             let cu = e.currentTarget;
-            await cu.play();
+            cu.pause();
+            setTimeout(() => {
+              cu.play();
+            }, 2000);
             dispatch(SetStop(cu.paused));
           }}
           className="g"
@@ -154,60 +144,4 @@ export default function Audio(params: Audio) {
       </div>
     </div>
   );
-}
-
-function ModPlay() {
-  const modplay = useSelector((state: RootHome) => state.audioroot.modplay);
-  let chilred = <></>;
-  switch (modplay) {
-    case 2:
-      chilred = (
-        <ButtonModPlay title="lặp lại 1 bài hát mãi mãi">
-          <RepeatSongIcon className="fill-green-500 size-4" />
-        </ButtonModPlay>
-      );
-      break;
-    case 1:
-      chilred = (
-        <ButtonModPlay title="lặp lại danh sách phát">
-          <RepeatPlaylistIcon className="fill-green-500 size-4" />
-        </ButtonModPlay>
-      );
-      break;
-    default:
-      chilred = (
-        <ButtonModPlay title="không lặp">
-          <NoRepeat className="fill-white size-4"></NoRepeat>
-        </ButtonModPlay>
-      );
-      break;
-  }
-  return chilred;
-}
-
-interface iButtonModPlay {
-  children: React.JSX.Element;
-  title: string;
-}
-
-function ButtonModPlay(params: iButtonModPlay) {
-  const dispatch = useDispatch();
-  return (
-    <button
-      title={params.title}
-      onClick={() => {
-        dispatch(SetModPlay());
-      }}
-    >
-      {params.children}
-    </button>
-  );
-}
-
-function ButtonRandomPlay() {
-  const random = useSelector((state: RootHome) => state.audioroot.random);
-  if (!random) {
-    return <RandomPlayIcon className="size-4 fill-white"></RandomPlayIcon>;
-  }
-  return <RandomPlayIcon className="size-4 fill-[#1CCA5A]"></RandomPlayIcon>;
 }

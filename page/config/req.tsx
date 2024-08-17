@@ -43,3 +43,20 @@ export function Duration(d: Duration) {
     </>
   );
 }
+export function streaming(url: string, body: any, cb: any) {
+  axios
+    .post(url, body, {
+      headers: {
+        type: "web",
+      },
+      responseType: "arraybuffer",
+    })
+    .then((v) => {
+      if (v.data) {
+        cb(v.data);
+      }
+    })
+    .catch((v) => {
+      cb(null);
+    });
+}

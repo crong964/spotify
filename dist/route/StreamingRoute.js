@@ -8,4 +8,5 @@ const StreamingController_1 = __importDefault(require("../controller/StreamingCo
 const StreamingRoute = (0, express_1.Router)();
 StreamingRoute.get("/idSong", StreamingController_1.default.StreamingMusic);
 StreamingRoute.get("/s", StreamingController_1.default.StreamingMusicUpload);
+StreamingRoute.post("/streaming", StreamingController_1.default.Streaming);
 exports.default = StreamingRoute;

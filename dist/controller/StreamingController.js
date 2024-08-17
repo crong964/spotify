@@ -97,6 +97,19 @@ class StreamingController {
             read.pipe(res);
         });
     }
+    Streaming(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { segment, path } = req.body;
+            let read;
+            if (segment == "0") {
+                read = Firebase_1.default.DownloadFile(`streaming/${path}/${path}.init`);
+            }
+            else {
+                read = Firebase_1.default.DownloadFile(`streaming/${path}/${path}-${segment}`);
+            }
+            read.pipe(res);
+        });
+    }
 }
 const streamingController = new StreamingController();
 exports.default = streamingController;
