@@ -20,7 +20,6 @@ export class BoxService {
         var check
         check = await Mysql2.query(sql, [idBox, type])
         return check
-
     }
 
     private setlsBox(any: any) {

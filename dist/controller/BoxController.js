@@ -35,6 +35,7 @@ class BoxController {
     }
     Chat(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
+            var _a;
             let id = req.cookies.id;
             var idFriend = req.body.idFriend;
             if (id == idFriend) {
@@ -61,7 +62,7 @@ class BoxController {
             var idbox = `idbox-${(0, uuid_1.v4)()}`;
             yield BoxController.box.insertNewBox(idbox, "friend");
             let isFriend = "";
-            var isfriend = (yield BoxController.haveListFriend.Get(id, idFriend)).IsFriend;
+            var isfriend = (_a = (yield BoxController.haveListFriend.Get(id, idFriend))) === null || _a === void 0 ? void 0 : _a.IsFriend;
             isFriend = isfriend == 2 ? "Friend" : "noFriend";
             yield Promise.all([
                 BoxController.haveListBoxChat.InsertIdToNewBox(id, idbox, idFriend),

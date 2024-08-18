@@ -91,7 +91,7 @@ function BoxButton(params: BoxButton) {
                     idBox: params.idBox,
                   },
                   (n: any) => {
-                    alert(n.mess);
+                    window.location.reload()
                     params.SetShow(false);
                   }
                 );

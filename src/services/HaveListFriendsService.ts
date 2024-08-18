@@ -35,8 +35,8 @@ export class HaveListFriendsService {
     }
     async Get(idUser: string, idAddFriends: string) {
         var sql = "SELECT * FROM havelistfriends WHERE idUser=? AND idFriends=? ";
-        var check = await Mysql2.query(sql, [idUser, idAddFriends])
-        return this.Setls(check)[0]
+        var check = await Mysql2.query(sql, [idUser, idAddFriends]) as []
+        return check.length > 0 ? this.Setls(check)[0] : undefined
     }
     async GetAllTypeFriend(idUser: string, IsFriend: "Request" | "Responsd" | "Friend") {
         var d: any = {

@@ -49,7 +49,7 @@ class HaveListFriendsService {
         return __awaiter(this, void 0, void 0, function* () {
             var sql = "SELECT * FROM havelistfriends WHERE idUser=? AND idFriends=? ";
             var check = yield Config_1.default.query(sql, [idUser, idAddFriends]);
-            return this.Setls(check)[0];
+            return check.length > 0 ? this.Setls(check)[0] : undefined;
         });
     }
     GetAllTypeFriend(idUser, IsFriend) {

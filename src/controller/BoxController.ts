@@ -58,7 +58,7 @@ export class BoxController {
         var idbox = `idbox-${uuidv4()}`
         await BoxController.box.insertNewBox(idbox, "friend")
         let isFriend: string = ""
-        var isfriend = (await BoxController.haveListFriend.Get(id, idFriend)).IsFriend
+        var isfriend = (await BoxController.haveListFriend.Get(id, idFriend))?.IsFriend
         isFriend = isfriend == 2 ? "Friend" : "noFriend"
         await Promise.all([
             BoxController.haveListBoxChat.InsertIdToNewBox(id, idbox, idFriend),
