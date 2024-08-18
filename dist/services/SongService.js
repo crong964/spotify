@@ -122,6 +122,13 @@ class SongService {
         }
         return ls;
     }
+    IncreaseView(SongId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var sql = `UPDATE song SET Viewer = Viewer + 1 WHERE id=?`;
+            var check = yield Config_1.default.query(sql, [SongId]);
+            return check;
+        });
+    }
 }
 exports.SongService = SongService;
 var songDatabase = new SongDatabase_1.default();

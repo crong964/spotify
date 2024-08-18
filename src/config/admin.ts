@@ -26,7 +26,8 @@ export function USER(req: Request, res: Response, next: NextFunction) {
         return
     }
     var decode = VertifyJWT(apikey)
-    if (!decode || !decode.id ) {
+
+    if (!decode || !decode.id) {
         res.json({ err: true })
         return
     }

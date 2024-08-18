@@ -91,7 +91,11 @@ export class SongService {
         }
         return ls
     }
-
+    async IncreaseView(SongId: string) {
+        var sql = `UPDATE song SET Viewer = Viewer + 1 WHERE id=?`
+        var check = await Mysql2.query(sql, [SongId])
+        return check
+    }
 }
 
 var songDatabase = new SongDatabase()

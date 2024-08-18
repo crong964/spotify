@@ -16,7 +16,11 @@ const Firebase_1 = __importDefault(require("../config/Firebase"));
 const RecentSongService_1 = __importDefault(require("../services/RecentSongService"));
 const path_1 = __importDefault(require("path"));
 const promises_1 = require("fs/promises");
+require("dotenv/config");
+const uuid_1 = require("uuid");
 const fs_1 = __importDefault(require("fs"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const SongService_1 = __importDefault(require("../services/SongService"));
 class StreamingController {
     constructor() {
     }
@@ -101,16 +105,47 @@ class StreamingController {
         return __awaiter(this, void 0, void 0, function* () {
             res.setHeader("Cache-Control", "max-age=315360000, no-transform, must-revalidate");
             const { segment, path } = req.body;
+            if (req.cookies.id) {
+                RecentSongService_1.default.Add(req.cookies.id, path);
+            }
             let read;
+            if (segment == "1") {
+                let sign = jsonwebtoken_1.default.sign({ path: path, time: 0, level: 0 }, StreamingController.KEYTREAMING, { expiresIn: 60 * 9 });
+                res.cookie("sign", sign);
+            }
             if (segment == "0") {
                 read = Firebase_1.default.DownloadFile(`streaming/${path}/${path}.init`);
             }
             else {
                 read = Firebase_1.default.DownloadFile(`streaming/${path}/${path}-${segment}`);
+                if (StreamingController.segment[segment + ""]) {
+                    try {
+                        let sign = req.cookies.sign || "";
+                        let oldign = jsonwebtoken_1.default.verify(sign, StreamingController.KEYTREAMING);
+                        if (oldign.level < segment) {
+                            let newtime = parseInt(oldign.time + "") + 1;
+                            if (newtime == 4) {
+                                SongService_1.default.IncreaseView(path);
+                            }
+                            else {
+                                let newsign = jsonwebtoken_1.default.sign({ path: path, time: newtime, level: segment }, StreamingController.KEYTREAMING, { expiresIn: 60 * 9 });
+                                res.cookie("sign", newsign);
+                            }
+                        }
+                    }
+                    catch (error) {
+                    }
+                }
             }
+            read.on("error", (err) => {
+                console.log(err);
+            });
             read.pipe(res);
         });
     }
 }
+StreamingController.KEYTREAMING = (0, uuid_1.v4)();
+StreamingController.segment = { "6": true, "12": true, "20": true, "24": true };
+StreamingController.song = SongService_1.default;
 const streamingController = new StreamingController();
 exports.default = streamingController;

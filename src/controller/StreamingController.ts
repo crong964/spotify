@@ -3,11 +3,17 @@ import firebase from "../config/Firebase";
 import recentSongService from "../services/RecentSongService";
 import path from "path";
 import { unlink } from "fs/promises";
-
+import "dotenv/config"
+import { v4 as uuidv4 } from 'uuid';
 import fs, { createWriteStream, writeFile } from "fs"
 import internal from "stream";
+import { SignJWT } from "../config/Helper";
+import jwt from "jsonwebtoken"
+import songService from "../services/SongService";
 class StreamingController {
-
+    static KEYTREAMING = uuidv4()
+    static segment = { "6": true, "12": true, "20": true, "24": true }
+    static song = songService
     constructor() {
 
     }
@@ -93,13 +99,40 @@ class StreamingController {
     async Streaming(req: Request, res: Response) {
         res.setHeader("Cache-Control", "max-age=315360000, no-transform, must-revalidate")
         const { segment, path } = req.body
+        if (req.cookies.id) {
+            recentSongService.Add(req.cookies.id, path)
+        }
 
         let read: internal.Readable
+        if (segment == "1") {
+            let sign = jwt.sign({ path: path, time: 0, level: 0 }, StreamingController.KEYTREAMING, { expiresIn: 60 * 9 })
+            res.cookie("sign", sign)
+        }
         if (segment == "0") {
             read = firebase.DownloadFile(`streaming/${path}/${path}.init`)
         } else {
             read = firebase.DownloadFile(`streaming/${path}/${path}-${segment}`)
+            if (StreamingController.segment[segment + ""]) {
+                try {
+                    let sign = req.cookies.sign || ""
+                    let oldign = jwt.verify(sign, StreamingController.KEYTREAMING) as jwt.JwtPayload
+                    if (oldign.level < segment) {
+                        let newtime = parseInt(oldign.time + "") + 1
+                        if (newtime == 4) {
+                            songService.IncreaseView(path)
+                        } else {
+                            let newsign = jwt.sign({ path: path, time: newtime, level: segment }, StreamingController.KEYTREAMING, { expiresIn: 60 * 9 })
+                            res.cookie("sign", newsign)
+                        }
+                    }
+                } catch (error) {
+
+                }
+            }
         }
+        read.on("error", (err) => {
+            console.log(err);
+        })
         read.pipe(res)
     }
 }
