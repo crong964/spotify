@@ -13,12 +13,11 @@ export default function ArtistLink(v: tArtistLink) {
   const dispatch = useDispatch();
   let ids = useId();
   return (
-    <div key={ids} className="flex text-stone-500">
+    <div key={ids} className="flex text-stone-500 font-normal">
       {id.map((va, ix) => {
         if (ix == id.length - 1) {
           return (
             <Link
-
               onClick={() => {
                 dispatch(
                   NaviPage({

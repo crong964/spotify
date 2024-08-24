@@ -12,6 +12,7 @@ interface Song {
   name: string;
   singer: string;
   Id: string;
+  user_id: string;
   onClick(): void;
 }
 interface SongList {
@@ -23,7 +24,7 @@ export default function Song(d: Song) {
 
   return (
     <div
-      onClick={d.onClick}
+      onDoubleClick={d.onClick}
       className="flex justify-center items-center px-1 cursor-pointer"
     >
       {d.image != "" && d.image ? (
@@ -41,7 +42,7 @@ export default function Song(d: Song) {
           {d.name}
         </div>
         <div className="text-[12px] sm:text-[14px] text-stone-300">
-          {d.singer}
+          <ArtistLink key={d.Id} idArtist={d.user_id} nameArtist={d.singer} />
         </div>
       </div>
     </div>

@@ -9,7 +9,7 @@ import fs, { createWriteStream, writeFile } from "fs"
 import internal from "stream";
 import { SignJWT } from "../config/Helper";
 import jwt from "jsonwebtoken"
-import songService from "../services/SongService";
+import songService from "../services/SongService"; import cryptojs from "crypto-js";
 class StreamingController {
     static KEYTREAMING = uuidv4()
     static segment = { "6": true, "12": true, "20": true, "24": true }
@@ -98,10 +98,11 @@ class StreamingController {
     }
     async Streaming(req: Request, res: Response) {
         res.setHeader("Cache-Control", "max-age=315360000, no-transform, must-revalidate")
-        const { segment, path } = req.body
+        const { segment, path, sign } = req.body
         if (req.cookies.id) {
             recentSongService.Add(req.cookies.id, path)
         }
+        console.log(cryptojs.SHA256(segment + "" + "private").toString(), sign);
 
         let read: internal.Readable
         if (segment == "1") {

@@ -140,13 +140,15 @@ class SongAdminController {
             if (req.body.checksum != checksum) {
                 console.log(`trên client ${req.body.checksum} dưới server ${checksum}`);
             }
+            write.on("close", () => {
+                res.json({
+                    name: f,
+                    err: false,
+                    idSong: idSong
+                });
+            });
             write.write(s2);
             write.end(() => {
-            });
-            res.json({
-                name: f,
-                err: false,
-                idSong: idSong
             });
         });
     }

@@ -84,8 +84,9 @@ export default function PlayingBar() {
           onClick={() => {}}
           Id={lsSong[mark]?.Id || "0"}
           image={lsSong[mark]?.SongImage}
-          name={lsSong[mark]?.SongName}
-          singer={lsSong[mark]?.Singer}
+          name={lsSong[mark]?.SongName||","}
+          singer={lsSong[mark]?.Singer||","}
+          user_id={lsSong[mark]?.user_id||" "}
         />
         <div>
           <button

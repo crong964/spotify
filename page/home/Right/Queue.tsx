@@ -99,6 +99,7 @@ function RecentPlaySongs(p: MenberQueue) {
                   dispatch(PlaySong(v.Id));
                   dispatch(SetAutoPlay(true));
                 }}
+                user_id={v.user_id}
                 image={v.SongImage}
                 name={v.SongName}
                 singer={v.Singer}
@@ -135,6 +136,7 @@ function SongQueueInplayList(p: MenberQueue) {
               onClick={() => {
                 dispatch(JumpingSong(lsSong[mark].Id));
               }}
+              user_id={lsSong[mark].user_id}
               image={lsSong[mark].SongImage}
               name={lsSong[mark].SongName}
               singer={lsSong[mark].Singer}
@@ -153,6 +155,7 @@ function SongQueueInplayList(p: MenberQueue) {
                   onClick={() => {
                     dispatch(JumpingSong(v.Id));
                   }}
+                  user_id={v.user_id}
                   image={v.SongImage}
                   name={v.SongName}
                   singer={v.Singer}
