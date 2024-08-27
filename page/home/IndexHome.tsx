@@ -100,8 +100,8 @@ export default function IndexTest() {
   }, []);
 
   return (
-    <div className="h-full w-full p-0 m-0 bg-black CircularSpUIv3T-Book overflow-hidden">
-      <main title="main" className="flex h-[80%] sm:h-[88%] space-x-1 relative">
+    <div className="h-full w-full relative p-0 m-0 bg-black CircularSpUIv3T-Book overflow-hidden">
+      <main title="main" className="flex h-full sm:h-[90%] space-x-1 relative">
         <nav title="left" className="w-[80px] hidden sm:block px-1 space-y-1">
           <div className="h-[20%] bg-[#121212] rounded-lg py-2">
             <div className="h-full  ">
@@ -134,8 +134,11 @@ export default function IndexTest() {
           </div>
         </div>
       </main>
-      <PlayingBar />
-      <NaviHomeMobile />
+      <div className="sticky block sm:hidden bg-black h-[10%] opacity-40 z-30 left-0 bottom-0 w-full"></div>
+      <div className="sticky sm:block z-40 left-0 bottom-0 w-full p-2">
+        <PlayingBar />
+        <NaviHomeMobile />
+      </div>
       {BoxList.length > 0 ? (
         <div className="absolute right-0 bottom-0 h-full w-full sm:right-[400px] sm:bottom-[100px] sm:h-max sm:w-max z-40 space-x-2 flex  ">
           {BoxList.map((v) => {
@@ -146,7 +149,7 @@ export default function IndexTest() {
         <></>
       )}
 
-      {titleXY.show ? (
+      {titleXY.show && mobiletype=="pc" ? (
         <div
           style={{ left: 80, top: titleXY.y }}
           className="absolute z-40 bg-[#434242] p-2 rounded-lg"
