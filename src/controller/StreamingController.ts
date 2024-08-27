@@ -12,7 +12,7 @@ import jwt from "jsonwebtoken"
 import songService from "../services/SongService"; import cryptojs from "crypto-js";
 class StreamingController {
     static KEYTREAMING = uuidv4()
-    static segment = { "6": true, "12": true, "20": true, "24": true }
+    static segment: any = { "6": true, "12": true, "20": true, "24": true }
     static song = songService
     constructor() {
 
@@ -102,8 +102,6 @@ class StreamingController {
         if (req.cookies.id) {
             recentSongService.Add(req.cookies.id, path)
         }
-        console.log(cryptojs.SHA256(segment + "" + "private").toString(), sign);
-
         let read: internal.Readable
         if (segment == "1") {
             let sign = jwt.sign({ path: path, time: 0, level: 0 }, StreamingController.KEYTREAMING, { expiresIn: 60 * 9 })

@@ -10,7 +10,7 @@ interface RecentPlaylist {
   User_ID: string;
   ID: string;
   CreateTime: string;
-  PlayListName: string; 
+  PlayListName: string;
   Type: string;
   ImagePath: string;
 }
@@ -32,7 +32,7 @@ export function RecentPlaylist(params: RecentPlaylist) {
     >
       <Link
         to={`${params.Type}/${params.ID}`}
-        className="flex items-center space-x-1 sm:space-x-2 p-1 mx-1 cursor-pointer bg-[#1A1A1A] "
+        className="flex items-center space-x-1 sm:space-x-2 p-2 mx-1 cursor-pointer bg-[#1A1A1A] "
         onClick={() => {
           dispatch(
             NaviPage({
@@ -42,19 +42,24 @@ export function RecentPlaylist(params: RecentPlaylist) {
           );
         }}
       >
-        <div className="size-10 sm:size-[64px]">
+        <>
           {params.Type == "artist" ? (
             <img
-              className="rounded-full"
+              className="rounded-full size-10 lg:size-[60px] "
               src={params.ImagePath}
               alt=""
               srcSet=""
             />
           ) : (
-            <img src={params.ImagePath} alt="" srcSet="" />
+            <img
+              className=" size-10 lg:size-[60px]"
+              src={params.ImagePath}
+              alt=""
+              srcSet=""
+            />
           )}
-        </div>
-        <div className="text-white text-[16px] font-bold ">
+        </>
+        <div className="text-white text-base font-bold line-clamp-2">
           {params.PlayListName}
         </div>
         <div className="hidden sm:block size-6"></div>

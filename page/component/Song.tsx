@@ -83,7 +83,6 @@ export function SongInPlayList(v: SongInPlayList) {
         </div>
         <div className="col-span-4 sm:col-span-2 p-2 ">
           <div className="block">{v.SongName}</div>
-          <div className="block sm:hidden text-stone-500">{v.Viewer}</div>
           {v.type != "artist" ? (
             <ArtistLink key={v.Id} idArtist={v.user_id} nameArtist={v.Singer} />
           ) : (

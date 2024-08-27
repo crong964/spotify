@@ -21,7 +21,6 @@ const uuid_1 = require("uuid");
 const fs_1 = __importDefault(require("fs"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const SongService_1 = __importDefault(require("../services/SongService"));
-const crypto_js_1 = __importDefault(require("crypto-js"));
 class StreamingController {
     constructor() {
     }
@@ -109,7 +108,6 @@ class StreamingController {
             if (req.cookies.id) {
                 RecentSongService_1.default.Add(req.cookies.id, path);
             }
-            console.log(crypto_js_1.default.SHA256(segment + "" + "private").toString(), sign);
             let read;
             if (segment == "1") {
                 let sign = jsonwebtoken_1.default.sign({ path: path, time: 0, level: 0 }, StreamingController.KEYTREAMING, { expiresIn: 60 * 9 });
