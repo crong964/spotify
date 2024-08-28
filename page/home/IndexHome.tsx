@@ -58,12 +58,14 @@ function useIndex() {
 }
 export default function IndexTest() {
   const { Set, queue, SetQueue, scroll } = useIndex();
-  const mobiletype = useSelector((state: RootHome) => state.mobile.type);
+  const mobiletype = useSelector(
+    (state: RootHome) => state.rootHome.devicetype
+  );
   const BoxList = useSelector((state: RootHome) => state.rootHome.BoxList);
   const isLogin = useSelector((state: RootHome) => state.rootHome.isLogin);
   const titleXY = useSelector((state: RootHome) => state.rootHome.titleXY);
   const screem = () => {
-    if (window.innerWidth > 600) {
+    if (window.innerWidth > 900) {
       dispatch(SetDeviceType("pc"));
     } else {
       dispatch(SetDeviceType("mobile"));
@@ -74,28 +76,10 @@ export default function IndexTest() {
     function res(v: any) {
       dispatch(SetMess(v));
     }
-
+    screem();
     socket.on("mess", res);
-
-    window.addEventListener("resize", (ev) => {
-      screem();
-    });
-    window.addEventListener("load", (ev) => {
-      screem();
-    });
-
-    window.addEventListener("popstate", (e) => {});
     return () => {
       socket.off("mess", res);
-      window.removeEventListener("load", (ev) => {
-        screem();
-      });
-      window.removeEventListener("resize", (ev) => {
-        screem();
-      });
-      window.removeEventListener("popstate", () => {
-        alert("f");
-      });
     };
   }, []);
 
@@ -123,19 +107,13 @@ export default function IndexTest() {
             <Header></Header>
           </div>
           <div className="flex h-[90%] w-full ">
-            {mobiletype == "pc" ? (
-              <>
-                <CenterShare />
-                <Right />
-              </>
-            ) : (
-              <MobileBody />
-            )}
+            <CenterShare />
+            <Right />
           </div>
         </div>
       </main>
-      <div className="sticky block sm:hidden bg-black h-[10%] opacity-40 z-30 left-0 bottom-0 w-full"></div>
-      <div className="sticky sm:block z-40 left-0 bottom-0 w-full p-2">
+      <div className="absolute block sm:hidden bg-black h-[10%] opacity-40 z-30 left-0 bottom-0 w-full"></div>
+      <div className="absolute sm:block z-40 left-0 bottom-0 w-full p-2">
         <PlayingBar />
         <NaviHomeMobile />
       </div>
@@ -149,7 +127,7 @@ export default function IndexTest() {
         <></>
       )}
 
-      {titleXY.show && mobiletype=="pc" ? (
+      {titleXY.show && mobiletype == "pc" ? (
         <div
           style={{ left: 80, top: titleXY.y }}
           className="absolute z-40 bg-[#434242] p-2 rounded-lg"

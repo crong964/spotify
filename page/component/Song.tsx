@@ -64,6 +64,9 @@ export interface SongInPlayList {
 export function SongInPlayList(v: SongInPlayList) {
   const [liked, SetLike] = useState<string>(v.liked);
   const isLogin = useSelector((state: RootHome) => state.rootHome.isLogin);
+  const typeDevice = useSelector(
+    (state: RootHome) => state.rootHome.devicetype
+  );
   const dispatch = useDispatch();
   return (
     <div
@@ -72,7 +75,17 @@ export function SongInPlayList(v: SongInPlayList) {
     >
       <div
         className="col-span-5 grid grid-cols-5"
+        onClick={() => {
+          if (typeDevice == "pc") {
+            return;
+          }
+          dispatch(PlaySong(v.Id));
+          dispatch(SetAutoPlay(true));
+        }}
         onDoubleClick={() => {
+          if (typeDevice == "mobile") {
+            return;
+          }
           dispatch(PlaySong(v.Id));
           dispatch(SetAutoPlay(true));
         }}
@@ -94,38 +107,37 @@ export function SongInPlayList(v: SongInPlayList) {
           {v.Viewer}
         </div>
       </div>
-      <div
-        className="col-span-2 sm:col-span-1 flex items-center space-x-4"
-        onClick={() => {
-          post(
-            "/lsong/add",
-            {
-              Id: v.Id,
-            },
-            (v: any) => {
-              if (v.err) {
-                alert("có lỗi");
-              } else {
-                SetLike(v.liked);
-              }
-            }
-          );
-        }}
-      >
-        {isLogin ? (
-          <>
+      {isLogin ? (
+        <>
+          <div
+            className="col-span-2 sm:col-span-1 flex items-center space-x-4"
+            onClick={() => {
+              post(
+                "/lsong/add",
+                {
+                  Id: v.Id,
+                },
+                (v: any) => {
+                  if (v.err) {
+                    alert("có lỗi");
+                  } else {
+                    SetLike(v.liked);
+                  }
+                }
+              );
+            }}
+          >
             {liked ? (
               <CheckCircleIcon className="fill-[#1DD25E] size-4 mx-2"></CheckCircleIcon>
             ) : (
               <PlusCircleIcon className="fill-white size-4 mx-2"></PlusCircleIcon>
             )}
-          </>
-        ) : (
-          <></>
-        )}
-
-        <Duration Duration={v.Duration} />
-      </div>
+          </div>
+        </>
+      ) : (
+        <></>
+      )}
+      <Duration Duration={v.Duration} />
     </div>
   );
 }
