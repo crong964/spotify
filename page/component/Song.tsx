@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Duration, post } from "@/page/config/req";
 import { useDispatch, useSelector } from "react-redux";
 import { PlaySong, RootHome } from "@/page/home/RootRedux";
-
+import { v4 as uuidv4 } from 'uuid';
 import { CheckCircleIcon, PlusCircleIcon } from "@/icon/Icon";
 import { SetAutoPlay } from "@/page/home/Audio/AudioRedux";
 const ArtistLink = React.lazy(() => import("@/page/component/ArtistLink"));
@@ -21,7 +21,6 @@ interface SongList {
 }
 export default function Song(d: Song) {
   const dispatch = useDispatch();
-
   return (
     <div
       onDoubleClick={d.onClick}
@@ -42,7 +41,7 @@ export default function Song(d: Song) {
           {d.name}
         </div>
         <div className="text-[12px] sm:text-[14px] text-stone-300">
-          <ArtistLink key={d.Id} idArtist={d.user_id} nameArtist={d.singer} />
+          <ArtistLink idArtist={d.user_id} nameArtist={d.singer} />
         </div>
       </div>
     </div>
@@ -107,37 +106,39 @@ export function SongInPlayList(v: SongInPlayList) {
           {v.Viewer}
         </div>
       </div>
-      {isLogin ? (
-        <>
-          <div
-            className="col-span-2 sm:col-span-1 flex items-center space-x-4"
-            onClick={() => {
-              post(
-                "/lsong/add",
-                {
-                  Id: v.Id,
-                },
-                (v: any) => {
-                  if (v.err) {
-                    alert("có lỗi");
-                  } else {
-                    SetLike(v.liked);
+      <div className="col-span-2 sm:col-span-1 flex items-center space-x-4">
+        {isLogin ? (
+          <>
+            <div
+              className=""
+              onClick={() => {
+                post(
+                  "/lsong/add",
+                  {
+                    Id: v.Id,
+                  },
+                  (v: any) => {
+                    if (v.err) {
+                      alert("có lỗi");
+                    } else {
+                      SetLike(v.liked);
+                    }
                   }
-                }
-              );
-            }}
-          >
-            {liked ? (
-              <CheckCircleIcon className="fill-[#1DD25E] size-4 mx-2"></CheckCircleIcon>
-            ) : (
-              <PlusCircleIcon className="fill-white size-4 mx-2"></PlusCircleIcon>
-            )}
-          </div>
-        </>
-      ) : (
-        <></>
-      )}
-      <Duration Duration={v.Duration} />
+                );
+              }}
+            >
+              {liked ? (
+                <CheckCircleIcon className="fill-[#1DD25E] size-4 mx-2"></CheckCircleIcon>
+              ) : (
+                <PlusCircleIcon className="fill-white size-4 mx-2"></PlusCircleIcon>
+              )}
+            </div>
+          </>
+        ) : (
+          <></>
+        )}
+        <Duration Duration={v.Duration} />
+      </div>
     </div>
   );
 }
