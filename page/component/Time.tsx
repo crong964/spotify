@@ -16,7 +16,7 @@ export default function Time(params: Time) {
   return (
     <div
       className={
-        params.className || "text-[12px] text-[#a7a7a7] hidden sm:inline-block "
+        params.className || "text-[12px] text-[#a7a7a7] sm:inline-block "
       }
     >
       {minute}:{second < 10 ? `0${second}` : `${second}`}

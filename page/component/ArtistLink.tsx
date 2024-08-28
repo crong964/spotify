@@ -2,7 +2,6 @@ import React, { useId } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { NaviPage, RootHome } from "@/page/home/RootRedux";
-import { v4 as uuidv4 } from "uuid";
 type tArtistLink = {
   idArtist: string;
   nameArtist: string;
@@ -14,14 +13,12 @@ export default function ArtistLink(v: tArtistLink) {
   let id = v.idArtist.split(" ");
   let name = v.nameArtist.split(",");
   const dispatch = useDispatch();
-  let ids = useId();
   return (
     <div className="flex text-stone-500 font-normal">
       {id.map((va, ix) => {
         if (ix == id.length - 1) {
           return (
             <Link
-              key={uuidv4() + ix}
               onClick={() => {
                 dispatch(
                   NaviPage({
@@ -40,7 +37,6 @@ export default function ArtistLink(v: tArtistLink) {
         return (
           <>
             <Link
-              key={uuidv4() + ix}
               onClick={() => {
                 dispatch(
                   NaviPage({

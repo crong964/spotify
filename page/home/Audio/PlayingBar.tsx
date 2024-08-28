@@ -4,7 +4,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { NaviRight, RootHome } from "@/page/home/RootRedux";
 import Audio from "./Audio";
 import { post } from "@/page/config/req";
-import { NextSong, SetAutoPlay, SetSongs, SetStop } from "./AudioRedux";
+import {
+  NextSong,
+  SetAutoPlay,
+  SetPlaylistmobile,
+  SetSongs,
+  SetStop,
+} from "./AudioRedux";
 import { ParseJson, VolumeAudio } from "@/page/socket/Socket";
 import {
   BigVolumeIcon,
@@ -34,6 +40,9 @@ export default function PlayingBar() {
   const lsSong = useSelector((state: RootHome) => state.audioroot.lsSong);
   const mark = useSelector((state: RootHome) => state.audioroot.mark);
   const autoplay = useSelector((state: RootHome) => state.audioroot.autoplay);
+  const devicetype = useSelector(
+    (state: RootHome) => state.rootHome.devicetype
+  );
   const [volume, SetVolume] = useState(
     parseInt(localStorage.getItem("volume") || "100")
   );
@@ -80,36 +89,44 @@ export default function PlayingBar() {
   return (
     <div className="w-full bg-[#121212] h-[10%] sm:h-[12%] grid items-center grid-cols-1 sm:grid-cols-4 mt-0 ">
       <div className="flex sm:inline-block justify-between items-center px-2 sm:px-0">
-        <Song
-          onClick={() => {}}
-          Id={lsSong[mark]?.Id || "0"}
-          image={lsSong[mark]?.SongImage}
-          name={lsSong[mark]?.SongName||","}
-          singer={lsSong[mark]?.Singer||","}
-          user_id={lsSong[mark]?.user_id||" "}
-        />
-        <div>
-          <button
-            className=" p-2 inline-block sm:hidden"
-            onClick={() => {
-              var mu = document.querySelector(".g") as HTMLAudioElement;
-              if (mu.paused) {
-                mu.play();
-                dispatch(SetStop(false));
-              } else {
-                mu.pause();
-                dispatch(SetStop(true));
-              }
-            }}
-          >
-            {stop ? (
-              <PlaySoundIcon className="fill-white size-8" />
-            ) : (
-              <PauseSoundIcon className="fill-white size-8" />
-            )}
-          </button>
+        <div
+          onClick={() => {
+            if (devicetype == "mobile") {
+              dispatch(SetPlaylistmobile(true));
+            }
+          }}
+        >
+          <Song
+            onClick={() => {}}
+            Id={lsSong[mark]?.Id || "0"}
+            image={lsSong[mark]?.SongImage}
+            name={lsSong[mark]?.SongName || ","}
+            singer={lsSong[mark]?.Singer || ","}
+            user_id={lsSong[mark]?.user_id || " "}
+          />
         </div>
+
+        <button
+          className=" p-2 inline-block sm:hidden"
+          onClick={() => {
+            var mu = document.querySelector(".g") as HTMLAudioElement;
+            if (mu.paused) {
+              mu.play();
+              dispatch(SetStop(false));
+            } else {
+              mu.pause();
+              dispatch(SetStop(true));
+            }
+          }}
+        >
+          {stop ? (
+            <PlaySoundIcon className="fill-white size-8" />
+          ) : (
+            <PauseSoundIcon className="fill-white size-8" />
+          )}
+        </button>
       </div>
+
       <Audio2
         RandomNext={RandomNext}
         path={lsSong[mark]?.filePath}

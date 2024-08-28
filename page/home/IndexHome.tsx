@@ -41,6 +41,7 @@ import { SuggestPlaylist } from "@/page/component/Playlist";
 import NaviLoveSong from "./NaviHome/NaviLoveSong";
 import Home from "./NaviHome/Home";
 import { Outlet, Route, Routes, useRouteError } from "react-router-dom";
+import PlayingPlaylistMobile from "@/page/home/Route/PlayingPlaylistMobile";
 
 function useIndex() {
   const [queue, SetQueue] = useState(false);
@@ -64,6 +65,9 @@ export default function IndexTest() {
   const BoxList = useSelector((state: RootHome) => state.rootHome.BoxList);
   const isLogin = useSelector((state: RootHome) => state.rootHome.isLogin);
   const titleXY = useSelector((state: RootHome) => state.rootHome.titleXY);
+  const playlistmobile = useSelector(
+    (state: RootHome) => state.audioroot.playlistmobile
+  );
   const screem = () => {
     if (window.innerWidth > 900) {
       dispatch(SetDeviceType("pc"));
@@ -140,6 +144,7 @@ export default function IndexTest() {
       ) : (
         <></>
       )}
+      {playlistmobile && mobiletype == "mobile" ? <PlayingPlaylistMobile /> : <></>}
     </div>
   );
 }

@@ -8,6 +8,7 @@ interface AudioRedux {
   mark: number;
   random: boolean;
   autoplay: boolean;
+  playlistmobile: boolean;
 }
 interface Song {
   oldindex: number;
@@ -20,6 +21,7 @@ interface Song {
   filePath: string;
 }
 const initialState: AudioRedux = {
+  playlistmobile: false,
   random: false,
   lsSong: [],
   stop: true,
@@ -95,13 +97,19 @@ const audioSlice = createSlice({
           state.mark = i;
           let s = state.lsSong[state.mark];
           iHelp.Title(`${s.SongName} • ${s.Singer}`);
-          localStorage.setItem("song", JSON.stringify(state.lsSong[state.mark]));
+          localStorage.setItem(
+            "song",
+            JSON.stringify(state.lsSong[state.mark])
+          );
           break;
         }
       }
     },
     SetAutoPlay: (state, action: PayloadAction<boolean>) => {
       state.autoplay = action.payload;
+    },
+    SetPlaylistmobile: (state, action: PayloadAction<boolean>) => {
+      state.playlistmobile = !state.playlistmobile;
     },
   },
   extraReducers(builder) {},
@@ -116,5 +124,6 @@ export const {
   RepeatPlaylist,
   RandomSong,
   SetAutoPlay,
+  SetPlaylistmobile,
 } = audioSlice.actions;
 export default audioSlice;

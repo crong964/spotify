@@ -115,7 +115,7 @@ function RecentPlaySongs(p: MenberQueue) {
     </>
   );
 }
-function SongQueueInplayList(p: MenberQueue) {
+export function SongQueueInplayList(p: MenberQueue) {
   const lsSong = useSelector((state: RootHome) => state.audioroot.lsSong);
   const mark = useSelector((state: RootHome) => state.audioroot.mark);
   const dispatch = useDispatch();
@@ -144,7 +144,7 @@ function SongQueueInplayList(p: MenberQueue) {
               key={lsSong[mark].Id}
             ></Song>
           )}
-          <div className="px-2">Tiếp theo </div>
+          <div className="px-2 py-3">Tiếp theo </div>
           {lsSong
             .filter((v, i) => {
               return mark < i;

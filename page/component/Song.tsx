@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Duration, post } from "@/page/config/req";
 import { useDispatch, useSelector } from "react-redux";
 import { PlaySong, RootHome } from "@/page/home/RootRedux";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import { CheckCircleIcon, PlusCircleIcon } from "@/icon/Icon";
 import { SetAutoPlay } from "@/page/home/Audio/AudioRedux";
 const ArtistLink = React.lazy(() => import("@/page/component/ArtistLink"));
@@ -21,17 +21,29 @@ interface SongList {
 }
 export default function Song(d: Song) {
   const dispatch = useDispatch();
+  const devicetype = useSelector(
+    (state: RootHome) => state.rootHome.devicetype
+  );
   return (
     <div
-      onDoubleClick={d.onClick}
-      className="flex justify-center items-center px-1 cursor-pointer"
+      onDoubleClick={() => {
+        if (devicetype == "pc") {
+          d.onClick();
+        }
+      }}
+      onClick={() => {
+        if (devicetype == "mobile") {
+          d.onClick();
+        }
+      }}
+      className="flex justify-center items-center py-2 sm:px-1 sm:py-0  cursor-pointer"
     >
       {d.image != "" && d.image ? (
         <img
           src={d.image}
           alt=""
           srcSet=""
-          className="size-[32px] sm:size-[50px] rounded-lg"
+          className="size-[50px] rounded-lg"
         />
       ) : (
         <></>
