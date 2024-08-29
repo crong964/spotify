@@ -82,7 +82,7 @@ export default function Foot() {
           </svg>
         </div>
       </div>
-      <div className="h-[50px]"></div>
+      <div className="h-[100px] sm:h-[50px]"></div>
     </div>
   );
 }

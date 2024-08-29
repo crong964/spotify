@@ -6,7 +6,7 @@ module.exports = {
         app: `${process.cwd()}/page/home/App.tsx`,
         dashboard: `${process.cwd()}/page/dashboard/App.tsx`,
         admin: path.join(process.cwd(), 'admin/App.tsx')
-       
+
     },
     module: {
         rules: [
@@ -15,7 +15,10 @@ module.exports = {
                 use: 'ts-loader',
                 exclude: /node_modules/,
             },
-
+            {
+                test: /\.css$/i,
+                use: ['style-loader', 'css-loader'],
+            },
             {
                 test: /\.(woff|woff2|svg|eot|ttf|otf)$/i,
                 type: 'asset/resource',
@@ -36,7 +39,3 @@ module.exports = {
     }
 };
 
-// {
-//     test: /\.css$/i,
-//     use: ['style-loader', 'css-loader'],
-// },

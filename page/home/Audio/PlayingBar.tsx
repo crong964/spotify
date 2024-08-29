@@ -88,27 +88,27 @@ export default function PlayingBar() {
   }, [volume]);
   return (
     <div className="w-full bg-[#121212] h-[10%] sm:h-[12%] grid items-center grid-cols-1 sm:grid-cols-4 mt-0 ">
-      <div className="flex sm:inline-block justify-between items-center px-2 sm:px-0">
-        <div
-          onClick={() => {
-            if (devicetype == "mobile") {
-              dispatch(SetPlaylistmobile(true));
-            }
-          }}
-        >
-          <Song
-            onClick={() => {}}
-            Id={lsSong[mark]?.Id || "0"}
-            image={lsSong[mark]?.SongImage}
-            name={lsSong[mark]?.SongName || ","}
-            singer={lsSong[mark]?.Singer || ","}
-            user_id={lsSong[mark]?.user_id || " "}
-          />
-        </div>
+      <div
+        onClick={() => {
+          if (devicetype == "mobile") {
+            dispatch(SetPlaylistmobile(true));
+          }
+        }}
+        className="flex sm:inline-block justify-between items-center px-2 sm:px-0"
+      >
+        <Song
+          onClick={() => {}}
+          Id={lsSong[mark]?.Id || "0"}
+          image={lsSong[mark]?.SongImage}
+          name={lsSong[mark]?.SongName || ","}
+          singer={lsSong[mark]?.Singer || ","}
+          user_id={lsSong[mark]?.user_id || " "}
+        />
 
         <button
           className=" p-2 inline-block sm:hidden"
-          onClick={() => {
+          onClick={(e) => {
+            e.stopPropagation();
             var mu = document.querySelector(".g") as HTMLAudioElement;
             if (mu.paused) {
               mu.play();

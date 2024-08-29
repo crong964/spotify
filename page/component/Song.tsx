@@ -26,12 +26,14 @@ export default function Song(d: Song) {
   );
   return (
     <div
-      onDoubleClick={() => {
+      onDoubleClick={(e) => {
+        e.stopPropagation();
         if (devicetype == "pc") {
           d.onClick();
         }
       }}
-      onClick={() => {
+      onClick={(e) => {
+        e.stopPropagation();
         if (devicetype == "mobile") {
           d.onClick();
         }
@@ -82,7 +84,7 @@ export function SongInPlayList(v: SongInPlayList) {
   return (
     <div
       key={v.Id}
-      className="grid grid-cols-7 h-[56px]  text-[13px] sm:text-[14px]  cursor-pointer sm:space-x-2 hover:bg-[#2D2D2D] text-white font-bold rounded-lg items-center"
+      className="grid grid-cols-7 text-[13px] sm:text-[14px] p-2 my-1 cursor-pointer sm:space-x-2 hover:bg-[#2D2D2D] text-white font-bold rounded-lg items-center"
     >
       <div
         className="col-span-5 grid grid-cols-5"
@@ -101,17 +103,21 @@ export function SongInPlayList(v: SongInPlayList) {
           dispatch(SetAutoPlay(true));
         }}
       >
-        <div className="col-span-1 flex items-center space-x-2">
-          <div className="sm:inline-block hidden">{v.stt}</div>
+        <div className="col-span-5 sm:col-span-3 flex items-center space-x-2">
+          <div className="sm:inline-block hidden mx-2">{v.stt}</div>
           <img className="size-9" src={v.SongImage} alt="" srcSet="" />
-        </div>
-        <div className="col-span-4 sm:col-span-2 p-2 ">
-          <div className="block">{v.SongName}</div>
-          {v.type != "artist" ? (
-            <ArtistLink key={v.Id} idArtist={v.user_id} nameArtist={v.Singer} />
-          ) : (
-            <></>
-          )}
+          <div className="flex-col">
+            <div className="block">{v.SongName}</div>
+            {v.type != "artist" ? (
+              <ArtistLink
+                key={v.Id}
+                idArtist={v.user_id}
+                nameArtist={v.Singer}
+              />
+            ) : (
+              <></>
+            )}
+          </div>
         </div>
 
         <div className="sm:block hidden col-span-2 p-2 text-[14px] text-stone-500">
@@ -160,12 +166,9 @@ export function SongList(d: SongList) {
     <>
       {d.data.length > 0 ? (
         <>
-          <div className="hidden sm:grid grid-cols-7 text-[13px] sm:text-[14px]  cursor-pointer sm:space-x-2 hover:bg-[#2D2D2D] text-white font-bold p-2 rounded-lg items-center">
-            <div className="col-span-1 flex items-center space-x-2">
-              <div className="inline-block">Số thứ tự</div>
-            </div>
-            <div className="col-span-2 p-2 ">
-              <div className="block">Tên nhạc</div>
+          <div className="hidden sm:grid grid-cols-7 text-[13px] sm:text-[14px]  cursor-pointer sm:space-x-2 hover:bg-[#2D2D2D] text-white font-bold rounded-lg items-center">
+            <div className="col-span-3 flex items-center space-x-2">
+              <div className="inline-block"># Tên nhạc</div>
             </div>
             <div className="sm:block hidden col-span-2 text-[14px] ">
               Lượt xem

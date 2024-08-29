@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 const PlayingBar = React.lazy(() => import("./Audio/PlayingBar"));
 const ChatBox = React.lazy(() => import("./boxchat/SingleBox"));
 const Header = React.lazy(() => import("./Header/Header"));
+import PlayingPlaylistMobile from "@/page/home/Route/PlayingPlaylistMobile";
 
 import {
   NaviPage,
@@ -31,17 +32,18 @@ const Right = React.lazy(() => import("./Right/Right"));
 const PlaylistLike = React.lazy(
   () => import("@/page/home/NaviHome/PlaylistLike")
 );
-
+const NaviLoveSong = React.lazy(
+  () => import("@/page/home/NaviHome/NaviLoveSong")
+);
+const Home = React.lazy(() => import("@/page/home/NaviHome/Home"));
 import { socket } from "@/page/socket/Socket";
 import { MobileSearchButtom } from "./NaviHome/SearchButtom";
 
 import { NaviHomeMobile } from "./NaviHome/NaviHome";
 
 import { SuggestPlaylist } from "@/page/component/Playlist";
-import NaviLoveSong from "./NaviHome/NaviLoveSong";
-import Home from "./NaviHome/Home";
+
 import { Outlet, Route, Routes, useRouteError } from "react-router-dom";
-import PlayingPlaylistMobile from "@/page/home/Route/PlayingPlaylistMobile";
 
 function useIndex() {
   const [queue, SetQueue] = useState(false);
@@ -117,7 +119,7 @@ export default function IndexTest() {
         </div>
       </main>
       <div className="absolute block sm:hidden bg-black h-[10%] opacity-40 z-30 left-0 bottom-0 w-full"></div>
-      <div className="absolute sm:block z-40 left-0 bottom-0 w-full p-2">
+      <div className="absolute sm:block z-40 left-0 bottom-0 w-full">
         <PlayingBar />
         <NaviHomeMobile />
       </div>
@@ -144,7 +146,11 @@ export default function IndexTest() {
       ) : (
         <></>
       )}
-      {playlistmobile && mobiletype == "mobile" ? <PlayingPlaylistMobile /> : <></>}
+      {playlistmobile && mobiletype == "mobile" ? (
+        <PlayingPlaylistMobile />
+      ) : (
+        <></>
+      )}
     </div>
   );
 }
