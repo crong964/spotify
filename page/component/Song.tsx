@@ -5,6 +5,7 @@ import { PlaySong, RootHome } from "@/page/home/RootRedux";
 import { v4 as uuidv4 } from "uuid";
 import { CheckCircleIcon, PlusCircleIcon } from "@/icon/Icon";
 import { SetAutoPlay } from "@/page/home/Audio/AudioRedux";
+import Time from "./Time";
 const ArtistLink = React.lazy(() => import("@/page/component/ArtistLink"));
 
 interface Song {
@@ -155,7 +156,7 @@ export function SongInPlayList(v: SongInPlayList) {
         ) : (
           <></>
         )}
-        <Duration Duration={v.Duration} />
+        <Time d={parseInt(v.Duration + "")} />
       </div>
     </div>
   );

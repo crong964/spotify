@@ -32,7 +32,7 @@ export function get(url: string, cb: any) {
 }
 interface Duration {
   Duration: string;
-}
+} 
 export function Duration(d: Duration) {
   var da = parseInt(d.Duration + "");
   var minutes = Math.floor(da / 60);

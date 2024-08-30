@@ -118,8 +118,8 @@ export default function IndexTest() {
           </div>
         </div>
       </main>
-      <div className="absolute block sm:hidden bg-black h-[10%] opacity-40 z-30 left-0 bottom-0 w-full"></div>
-      <div className="absolute sm:block z-40 left-0 bottom-0 w-full">
+      <div className="absolute block sm:hidden bg-[#121212] h-[10%] opacity-40 z-30 left-0 bottom-0 w-full"></div>
+      <div className="absolute bg-[#121212] sm:block z-40 left-0 bottom-0 w-full py-1 sm:py-2 px-2">
         <PlayingBar />
         <NaviHomeMobile />
       </div>

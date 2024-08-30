@@ -87,7 +87,7 @@ export default function PlayingBar() {
     VolumeAudio(volume);
   }, [volume]);
   return (
-    <div className="w-full bg-[#121212] h-[10%] sm:h-[12%] grid items-center grid-cols-1 sm:grid-cols-4 mt-0 ">
+    <div className="w-full  h-[10%] sm:h-[12%] grid items-center grid-cols-1 sm:grid-cols-4 mt-0 ">
       <div
         onClick={() => {
           if (devicetype == "mobile") {

@@ -121,7 +121,7 @@ export default function PlaylistPage() {
       </div>
 
       <div className="h-[320px]"></div>
-      <div className="px-4">
+      <div className="px-4 py-2">
         <div className="flex items-center py-0 sm:py-4 space-x-5">
           <button
             onClick={() => {
