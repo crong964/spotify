@@ -85,7 +85,7 @@ app.use((req, res, next) => {
         next();
     }, production ? 0 : 10);
 });
-app.use("/static", express_1.default.static(path_1.default.join(process.cwd(), "web", "static"), { maxAge: production ? 60 * 60 * 24 * 3 : 0, cacheControl: true, immutable: true }));
+app.use("/static", express_1.default.static(path_1.default.join(process.cwd(), "web", "static"), { maxAge: production ? 1000 * 60 * 60 * 24 * 3 : 0, cacheControl: true, immutable: true }));
 app.use("/public", express_1.default.static(path_1.default.join(process.cwd(), "public"), { maxAge: 100000000000 }));
 app.use("/i", express_1.default.static(path_1.default.join(process.cwd(), "public", "upload")));
 app.get("/swagger", (req, res) => {

@@ -28,9 +28,16 @@ class RecentSongService {
     }
     GetAllByidUser(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            var sql = `SELECT song.* FROM recentsong, song WHERE recentsong.user_id=? AND song.Id =recentsong.Id ORDER BY recentsong.Time ASC limit 0,10`;
+            var sql = `SELECT song.* FROM recentsong, song WHERE recentsong.user_id=? AND song.Id =recentsong.Id ORDER BY recentsong.Time DESC limit 0,10`;
             var check = yield Config_1.default.query(sql, [id]);
             return this.SetLs(check);
+        });
+    }
+    GetLastRecentSong(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var sql = `SELECT song.* FROM recentsong, song WHERE recentsong.user_id=? AND song.Id =recentsong.Id ORDER BY recentsong.Time DESC limit 0,1`;
+            var check = yield Config_1.default.query(sql, [id]);
+            return check.length > 0 ? this.SetLs(check)[0] : undefined;
         });
     }
     Get(user_id, Id_song) {

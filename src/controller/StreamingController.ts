@@ -99,9 +99,7 @@ class StreamingController {
     async Streaming(req: Request, res: Response) {
         res.setHeader("Cache-Control", "max-age=315360000, no-transform, must-revalidate")
         const { segment, path, sign } = req.body
-        if (req.cookies.id) {
-            recentSongService.Add(req.cookies.id, path)
-        }
+        let id = req.cookies.id
         let read: internal.Readable
         if (segment == "1") {
             let sign = jwt.sign({ path: path, time: 0, level: 0 }, StreamingController.KEYTREAMING, { expiresIn: 60 * 9 })
@@ -109,6 +107,11 @@ class StreamingController {
         }
         if (segment == "0") {
             read = firebase.DownloadFile(`streaming/${path}/${path}.init`)
+            let lastSong = await recentSongService.GetLastRecentSong(id)
+
+            if (req.cookies.id && (lastSong == undefined || lastSong.Id != path)) {
+                recentSongService.Add(id, path)
+            }
         } else {
             read = firebase.DownloadFile(`streaming/${path}/${path}-${segment}`)
             if (StreamingController.segment[segment + ""]) {

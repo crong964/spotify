@@ -105,9 +105,7 @@ class StreamingController {
         return __awaiter(this, void 0, void 0, function* () {
             res.setHeader("Cache-Control", "max-age=315360000, no-transform, must-revalidate");
             const { segment, path, sign } = req.body;
-            if (req.cookies.id) {
-                RecentSongService_1.default.Add(req.cookies.id, path);
-            }
+            let id = req.cookies.id;
             let read;
             if (segment == "1") {
                 let sign = jsonwebtoken_1.default.sign({ path: path, time: 0, level: 0 }, StreamingController.KEYTREAMING, { expiresIn: 60 * 9 });
@@ -115,6 +113,10 @@ class StreamingController {
             }
             if (segment == "0") {
                 read = Firebase_1.default.DownloadFile(`streaming/${path}/${path}.init`);
+                let lastSong = yield RecentSongService_1.default.GetLastRecentSong(id);
+                if (req.cookies.id && (lastSong == undefined || lastSong.Id != path)) {
+                    RecentSongService_1.default.Add(id, path);
+                }
             }
             else {
                 read = Firebase_1.default.DownloadFile(`streaming/${path}/${path}-${segment}`);
