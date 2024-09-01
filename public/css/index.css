@@ -42,6 +42,7 @@
         width: 20px;
 
     }
+
     to {
         width: 40px;
     }
@@ -65,9 +66,9 @@
 
 .loader {
     border-radius: 100%;
-    -webkit-animation: spin 10s linear infinite;
+    -webkit-animation: spin 14s linear infinite;
     /* Safari */
-    animation: spin 10s linear infinite;
+    animation: spin 14s linear infinite;
 }
 
 /* Safari */
@@ -77,7 +78,17 @@
     }
 
     100% {
-        -webkit-transform: rotate(-360deg);
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
     }
 }
 
@@ -93,6 +104,7 @@
         left: 0px;
     }
 }
+
 @keyframes disppearTop {
     from {
         top: 0px;
@@ -101,14 +113,16 @@
     }
 
     to {
-        top:100%;
+        top: 100%;
         left: 0px;
-        
+
     }
 }
+
 .appearBottomToTop {
     animation: appearTop 2s;
 }
+
 .disppearTopToBottom {
     animation: disppearTop 2s;
 }

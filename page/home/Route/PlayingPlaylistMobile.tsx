@@ -70,7 +70,7 @@ export default function PlayingPlaylistMobile() {
       <div className="px-3 py-1 my-3">
         <button
           onClick={() => {
-            SetShow(false)
+            SetShow(false);
             setTimeout(() => {
               dispatch(SetPlaylistmobile(false));
             }, 2100);
@@ -98,16 +98,14 @@ export default function PlayingPlaylistMobile() {
           className="rounded-lg flex-1 sm:flex-none mx-3  cursor-pointer overflow-hidden appearance-none bg-gray-400 h-[6px] sm:w-[70%]"
           max={duration + ""}
           value={curTime}
-          onChange={(e) => {
-            SetCurTime(parseInt(e.currentTarget.value));
-            SetTimeUpdate(false);
+          onChange={(ev) => {
+            SetCurTime(parseInt(ev.currentTarget.value + ""));
           }}
-          onMouseUp={() => {
+          onTouchEnd={(ev) => {
             let g = document.querySelector(".g") as HTMLVideoElement;
             if (g) {
-              g.currentTime = curTime;
+              g.currentTime = parseInt(ev.currentTarget.value + "");
             }
-            SetTimeUpdate(true);
           }}
         />
         <Time d={duration} key={1} />
