@@ -63,6 +63,7 @@ export function PlayList(d: PlayList) {
 interface PlayLists {
   d: PlayList[];
   title: string;
+  link?: string;
 }
 export default function PlayLists(p: PlayLists) {
   var children = p.d.map((v) => {
@@ -82,10 +83,23 @@ export default function PlayLists(p: PlayLists) {
     <>
       {children.length > 0 ? (
         <>
-          <div className="w-full overflow-auto sm:overflow-hidden relative ">
-            <div className="text-[24px] font-bold my-5 sticky top-0 left-0">
-              {p.title}
+          <div className="w-full overflow-auto sm:overflow-hidden  ">
+            <div className="w-full flex justify-between items-center p-2">
+              <Link to={p.link || "#"} className="text-[24px] font-bold border-0 sm:border-2 border-black hover:border-b-white">
+                {p.title}
+              </Link>
+              {children.length >= 7 ? (
+                <Link
+                  className="text-[#B3B3B3] text-[14px] font-bold border-0 sm:border-2 border-black hover:border-b-[#B3B3B3]"
+                  to={p.link || "#"}
+                >
+                  Hiện tất cả
+                </Link>
+              ) : (
+                <></>
+              )}
             </div>
+
             <div
               className={`flex w-max sm:w-full overflow-x-scroll sm:grid gap-2 grid-cols-7`}
             >

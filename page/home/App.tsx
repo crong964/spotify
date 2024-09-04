@@ -10,11 +10,12 @@ const IndexTest = React.lazy(() => import("./IndexHome"));
 const RecentList = React.lazy(() => import("./Right/RecentPlaylist"));
 import { SetionList } from "./Setion";
 import { SuggestPlaylist } from "@/page/component/Playlist";
+import ArtistsListPage from "./Route/ArtistsListPage";
 const IdGenre = React.lazy(() => import("./IdGenre"));
 const Genre = React.lazy(() => import("./Genre"));
 const PlaylistPage = React.lazy(() => import("@/page/home/Route/PlayListPage"));
 const ArtistPage = React.lazy(() => import("@/page/home/Route/ArtistPage"));
-const LikedSongListPage = React.lazy( 
+const LikedSongListPage = React.lazy(
   () => import("@/page/home/Route/LikedSongListPage")
 );
 const Search = React.lazy(() => import("@/page/home/Search"));
@@ -40,7 +41,11 @@ root.render(
               element={
                 <div className="h-full">
                   <RecentList />
-                  <SetionList name="Danh sách các nghệ sĩ" type="artist" />
+                  <SetionList
+                    link="section"
+                    name="Danh sách các nghệ sĩ"
+                    type="artist"
+                  />
                   <SuggestPlaylist />
                 </div>
               }
@@ -49,13 +54,11 @@ root.render(
               <Route path=":id" element={<IdGenre></IdGenre>} />
               <Route index element={<Genre></Genre>} />
             </Route>
-            <Route path="playlist/:id" element={<PlaylistPage />}></Route>
-            <Route path="likedsongs" element={<LikedSongListPage />}></Route>
-            <Route
-              path="artist/:id"
-              element={<ArtistPage></ArtistPage>}
-            ></Route>
-            <Route path="search/:s" element={<Search></Search>}></Route>
+            <Route path="playlist/:id" element={<PlaylistPage />} />
+            <Route path="likedsongs" element={<LikedSongListPage />} />
+            <Route path="artist/:id" element={<ArtistPage />} />
+            <Route path="search/:s" element={<Search />} />
+            <Route path="section" element={<ArtistsListPage />} />
             <Route element={<div>ko ti d</div>}></Route>
           </Route>
           <Route path="auth" element={<CenterShare></CenterShare>}>

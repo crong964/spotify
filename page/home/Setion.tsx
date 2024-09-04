@@ -13,6 +13,7 @@ const PlayButtom = React.lazy(() => import("@/page/component/PlayButtom"));
 interface SetionList {
   name: string;
   type: "artist" | "album" | "normal";
+  link?: string;
 }
 export function SetionList(params: SetionList) {
   const [artist, SetaAtist] = useState<PlayList[]>([]);
@@ -22,7 +23,13 @@ export function SetionList(params: SetionList) {
       SetaAtist(v.ls);
     });
   }, []);
-  return <PlayLists d={artist} title="Danh sách nghệ sĩ"></PlayLists>;
+  return (
+    <PlayLists
+      link={params.link ? params.link : "#"}
+      d={artist}
+      title="Danh sách nghệ sĩ"
+    />
+  );
 }
 interface SetionData {
   pathImage: string;

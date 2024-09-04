@@ -598,7 +598,7 @@ Account.post("/sendCodeVertifyEmail", async (req, res) => {
   }
 
 
-  let token = jwt.sign({ Account: account }, code + "", {
+  let token = jwt.sign({ Account: account }, code + (secret || "888"), {
     expiresIn: "3h"
   })
   res.json({
@@ -613,7 +613,7 @@ Account.post("/createACC", async (req, res) => {
 
   let id = `user-${uuidv4()}-${Date.now()}`
 
-  let decode = VertifyJWT(token, code + "")
+  let decode = VertifyJWT(token, code + (secret || "888"))
   if (decode == undefined) {
     res.json({
       err: true,
@@ -627,6 +627,14 @@ Account.post("/createACC", async (req, res) => {
     res.json({
       err: true,
       mess: "GMAIL KHÔNG ĐÚNG"
+    })
+    return
+  }
+  let acc_check = await accountService.GetAccount(Account)
+  if (acc_check != undefined) {
+    res.json({
+      err: true,
+      mess: "tài khoản đã tồn tại"
     })
     return
   }

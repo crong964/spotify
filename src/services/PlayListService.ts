@@ -1,3 +1,4 @@
+import { RowDataPacket } from "mysql2"
 import Mysql2 from "../config/Config"
 import PlayListDatabase from "../database/PlayListDatabase"
 import { PlayListModel } from "../model/PlayListModel"
@@ -5,7 +6,7 @@ import { PlayListModel } from "../model/PlayListModel"
 export class PlayListService {
     playlist: PlayListDatabase
     constructor(playlist: PlayListDatabase) {
-        this.playlist = playlist 
+        this.playlist = playlist
     }
     async Add(d: PlayListModel) {
         var sql = "INSERT INTO playlist(id, User_id, Genre_ID, Type, ImagePath, PlayListName, Likes, Songs, Duration, Status, Discripition) VALUES (?,?,?,?,?,?,?,?,?,?,?)"
@@ -83,7 +84,12 @@ export class PlayListService {
         var sql = `SELECT * FROM playlist where Type='artist' AND status=1 LIMIT ?,?`
         var ls = await Mysql2.query(sql, [start, count])
         return this.SetLs(ls)
-    } 
+    }
+    async CountPlayListArtist() {
+        var sql = `SELECT count(*) as count FROM playlist where Type='artist' AND status=1 `
+        var ls = await Mysql2.query(sql, []) as RowDataPacket[]
+        return ls[0]
+    }
     async GetPlayListArtist(User_id: string) {
         var sql = `SELECT * FROM playlist where User_id=? AND Type='artist'`
         var ls = await Mysql2.query(sql, [User_id])

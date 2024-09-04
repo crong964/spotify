@@ -26,9 +26,9 @@ export class PlayListController {
     static Playlistlike = playListLikeService
 
     async AddPlayListByAdmin(req: Request, res: Response) {
-        var file = req.file?.filename as any as string
+        let file = req.file?.filename as any as string
 
-        var playlistmodel = new PlayListModel()
+        let playlistmodel = new PlayListModel()
         playlistmodel.setAll(req.body)
         playlistmodel.id = `playlist-${uuidv4()}`
         playlistmodel.User_id = req.cookies.id
@@ -45,33 +45,33 @@ export class PlayListController {
         }
 
 
-        var check = await playListService.Add(playlistmodel)
+        let check = await playListService.Add(playlistmodel)
 
-        var ls = req.body.ls as string[]
+        let ls = req.body.ls as string[]
 
-        var list = ls.map(async (Song_id) => {
-            var temp = new ContainModel()
+        let list = ls.map(async (Song_id) => {
+            let temp = new ContainModel()
             temp.PlayList_id = playlistmodel.id
             temp.Song_id = Song_id
             return await PlayListController.contain.Add(temp)
         })
 
-        var checkls = await Promise.all(list)
+        let checkls = await Promise.all(list)
         res.json({
             err: false
         })
     }
     async GetByGenreAdmin(req: Request, res: Response) {
-        var Genre_ID = req.body.Genre_ID
-        var ls = await PlayListController.playlist.GetByGenre(Genre_ID, 0, 10)
+        let Genre_ID = req.body.Genre_ID
+        let ls = await PlayListController.playlist.GetByGenre(Genre_ID, 0, 10)
 
         res.json({
             ls: ls, err: true
         })
     }
     async PlayListDetailAdmin(req: Request, res: Response) {
-        var idplaylist = req.params.idplaylist
-        var ls = await Promise.all([PlayListController.playlist.Get(idplaylist),
+        let idplaylist = req.params.idplaylist
+        let ls = await Promise.all([PlayListController.playlist.Get(idplaylist),
         PlayListController.contain.GetAllByPlayList(idplaylist), PlayListController.
             genre.GetIdParentByIdplaylist(idplaylist)])
         res.json({
@@ -82,14 +82,14 @@ export class PlayListController {
         })
     }
     async UpdatePlayListDetailAdmin(req: Request, res: Response) {
-        var oldplaylist = await PlayListController.playlist.Get(req.body.id)
+        let oldplaylist = await PlayListController.playlist.Get(req.body.id)
         if (!oldplaylist) {
             res.json({
                 err: true
             })
             return
         }
-        var playlistmodel = new PlayListModel()
+        let playlistmodel = new PlayListModel()
         playlistmodel.setAll(req.body)
 
         if (req.file) {
@@ -105,26 +105,26 @@ export class PlayListController {
         playlistmodel.Type = "playlist"
         if (req.body.ls) {
             playlistmodel.Songs = req.body.ls.length + oldplaylist.Songs
-            var ls = req.body.ls as string[]
-            var list = ls.map(async (Song_id) => {
-                var temp = new ContainModel()
+            let ls = req.body.ls as string[]
+            let list = ls.map(async (Song_id) => {
+                let temp = new ContainModel()
                 temp.PlayList_id = playlistmodel.id
                 temp.Song_id = Song_id
                 return await PlayListController.contain.Add(temp)
             })
 
-            var checkls = await Promise.all(list)
+            let checkls = await Promise.all(list)
         }
-        var check = await playListService.Update(playlistmodel)
+        let check = await playListService.Update(playlistmodel)
         res.json({
             err: check == undefined
         })
     }
     async GetPlayListById(req: Request, res: Response) {
-        var id_playlist = req.params.idplaylist
+        let id_playlist = req.params.idplaylist
 
-        var id = req.cookies.id
-        var ls = await Promise.all([PlayListController.playlist.Get(id_playlist),
+        let id = req.cookies.id
+        let ls = await Promise.all([PlayListController.playlist.Get(id_playlist),
         PlayListController.likedSong.GetAllByIdPlayList(id, id_playlist),
         PlayListController.Playlistlike.Get(id, id_playlist)])
 
@@ -136,26 +136,32 @@ export class PlayListController {
         })
     }
     async NextPlayListLimit(req: Request, res: Response) {
-        var start = req.body.start || 0
-        var count = req.body.count || 10
-        var ls = await PlayListController.playlist.GetPlayListLimit(start, count)
+        let start = req.body.start || 0
+        let count = req.body.count || 10
+        let ls = await PlayListController.playlist.GetPlayListLimit(start, count)
         res.json({
             err: false,
             ls: ls
         })
     }
     async NextPlayArtistListLimit(req: Request, res: Response) {
-        var start = req.body.start || 0
-        var count = req.body.count || 7
-        var ls = await PlayListController.playlist.GetPlayListArtistLimit(start, count)
+
+        let count = req.body.count || 10
+        let start = req.body.start * count || 0
+
+
+        let ls = await Promise.all([PlayListController.playlist.GetPlayListArtistLimit(start, count),
+        PlayListController.playlist.CountPlayListArtist()])
+
         res.json({
             err: false,
-            ls: ls
+            ls: ls[0],
+            count: ls[1].count
         })
     }
 
 }
 
-var playListController: PlayListController = new PlayListController()
+let playListController: PlayListController = new PlayListController()
 
 export default playListController

@@ -117,6 +117,13 @@ class PlayListService {
             return this.SetLs(ls);
         });
     }
+    CountPlayListArtist() {
+        return __awaiter(this, void 0, void 0, function* () {
+            var sql = `SELECT count(*) as count FROM playlist where Type='artist' AND status=1 `;
+            var ls = yield Config_1.default.query(sql, []);
+            return ls[0];
+        });
+    }
     GetPlayListArtist(User_id) {
         return __awaiter(this, void 0, void 0, function* () {
             var sql = `SELECT * FROM playlist where User_id=? AND Type='artist'`;

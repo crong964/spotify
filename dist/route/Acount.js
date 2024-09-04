@@ -519,7 +519,7 @@ Account.post("/sendCodeVertifyEmail", (req, res) => __awaiter(void 0, void 0, vo
     }
     catch (error) {
     }
-    let token = jsonwebtoken_1.default.sign({ Account: account }, code + "", {
+    let token = jsonwebtoken_1.default.sign({ Account: account }, code + (secret || "888"), {
         expiresIn: "3h"
     });
     res.json({
@@ -532,7 +532,7 @@ Account.post("/createACC", (req, res) => __awaiter(void 0, void 0, void 0, funct
     let code = req.body.code;
     let token = req.body.token;
     let id = `user-${(0, uuid_1.v4)()}-${Date.now()}`;
-    let decode = (0, Helper_1.VertifyJWT)(token, code + "");
+    let decode = (0, Helper_1.VertifyJWT)(token, code + (secret || "888"));
     if (decode == undefined) {
         res.json({
             err: true,
@@ -544,6 +544,14 @@ Account.post("/createACC", (req, res) => __awaiter(void 0, void 0, void 0, funct
         res.json({
             err: true,
             mess: "GMAIL KHÔNG ĐÚNG"
+        });
+        return;
+    }
+    let acc_check = yield AccountService_1.default.GetAccount(Account);
+    if (acc_check != undefined) {
+        res.json({
+            err: true,
+            mess: "tài khoản đã tồn tại"
         });
         return;
     }
