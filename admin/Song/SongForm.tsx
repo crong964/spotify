@@ -7,6 +7,7 @@ import IndexGenres from "@/admin/GenreLs";
 import { useParams } from "react-router-dom";
 import { ImageIcon, MusicIcon } from "@/icon/Icon";
 import useSelectedArtist from "./Handlle";
+import DateReact from "../componnt/Date";
 
 type Genre = {
   Id: string;
@@ -195,18 +196,18 @@ export default function SongForm() {
           </div>
 
           <div>Ngày phát hành</div>
-          <div>
-            <input
-              onChange={(e) => {
-                SetSong({
-                  ...song,
-                  publicDate: new Date(e.currentTarget.value).getTime() + "",
-                });
-              }}
-              type="datetime-local"
-              className="border-2 border-[#404040] rounded-lg p-2 w-full"
-            />
-          </div>
+
+          <DateReact
+            cellClassName="p-2"
+            className="p-2"
+            onChange={(p) => {
+              SetSong({
+                ...song,
+                publicDate: p,
+              });
+            }}
+          />
+
           <div>Mô tả</div>
           <div className="w-full">
             <textarea

@@ -6,6 +6,7 @@ import { RootState, SongListAndInforArtistPage } from "@/admin/Redux";
 import IndexGenres from "@/admin/GenreLs";
 import { useParams } from "react-router-dom";
 import useSelectedArtist from "./Handlle";
+import DateReact from "../componnt/Date";
 
 type Genre = {
   Id: string;
@@ -205,20 +206,18 @@ export default function SongEdit() {
             )}
           </div>
           <div>Ngày phát hành</div>
-          <div>
-            <input
-              onChange={(e) => {
-                SetSong({
-                  ...song,
-                  publicDate:
-                    new Date(e.currentTarget.value).getTime() / 1000 + "",
-                });
-              }}
-              type="date"
-              value={convertYYYMMDD(song.publicDate)}
-              className="border-2 border-[#404040] rounded-lg p-2 w-full"
-            />
-          </div>
+
+          <DateReact
+            cellClassName="p-2"
+            int={song.publicDate}
+            className="p-2"
+            onChange={(p) => {
+              SetSong({
+                ...song,
+                publicDate: p,
+              });
+            }}
+          />
           <div>Mô tả</div>
           <div className="w-full">
             <textarea
