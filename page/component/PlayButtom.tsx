@@ -17,10 +17,10 @@ export default function PlayButtom(p: Playing) {
       var mu = document.querySelector(".g") as HTMLAudioElement;
       if (mu.paused) {
         mu.play();
-        dispatch(SetStop(!stopAudio));
+        dispatch(SetStop(false));
       } else {
         mu.pause();
-        dispatch(SetStop(!stopAudio));
+        dispatch(SetStop(true));
       }
       return;
     }
@@ -29,6 +29,7 @@ export default function PlayButtom(p: Playing) {
         if (!v.err) {
           dispatch(SetPlaying({ id: p.id, page: p.page }));
           dispatch(SetSongs(v.ls));
+          dispatch(SetStop(false));
         }
       });
       return;
@@ -37,6 +38,7 @@ export default function PlayButtom(p: Playing) {
       if (v && !v.err) {
         dispatch(SetPlaying({ id: p.id, page: p.page }));
         dispatch(SetSongs(v.ls));
+        dispatch(SetStop(false));
       }
     });
   };

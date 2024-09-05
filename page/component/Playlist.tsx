@@ -18,6 +18,8 @@ interface PlayLists {
 }
 export function PlayList(d: PlayList) {
   const [show, SetShow] = useState(false);
+  const playing = useSelector((state: RootHome) => state.rootHome.playing);
+  const stopAudio = useSelector((state: RootHome) => state.audioroot.stop);
   const dispatch = useDispatch();
   return (
     <div className=" overflow-hidden bg-black hover:bg-[#1A1A1A] p-3 rounded-lg">
@@ -48,7 +50,7 @@ export function PlayList(d: PlayList) {
             srcSet=""
           />
         </Link>
-        {show ? (
+        {show || (playing.id == d.id && playing.page == d.Type && !stopAudio) ? (
           <div className="absolute bottom-0 right-0">
             <PlayButtom id={d.id} page={d.Type} />
           </div>

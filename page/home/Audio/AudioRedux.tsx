@@ -25,7 +25,7 @@ const initialState: AudioRedux = {
   random: false,
   lsSong: [],
   stop: true,
-  modplay: 0,
+  modplay: parseInt(localStorage.getItem("moplay") || "0"),
   mark: 0,
   autoplay: false,
 };
@@ -40,6 +40,7 @@ const audioSlice = createSlice({
     },
     SetModPlay: (state) => {
       state.modplay = (state.modplay + 1) % 3;
+      localStorage.setItem("moplay", state.modplay + "");
     },
     SetSongs: (state, pay: PayloadAction<Song[]>) => {
       state.lsSong = pay.payload;
