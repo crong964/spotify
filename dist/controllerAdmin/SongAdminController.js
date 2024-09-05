@@ -42,6 +42,8 @@ class SongAdminController {
             }
             var song = new SongModel_1.default();
             song.setAll(req.body);
+            console.log(req.body);
+            console.log(song);
             if (req.file != undefined) {
                 try {
                     song.SongImage = (yield Firebase_1.default.UploadImageBuffer(`SongImage/${song.Id}`, req.file.buffer));
@@ -129,17 +131,6 @@ class SongAdminController {
                 return parseInt(v);
             });
             var s2 = Buffer.from(s);
-            let checksum = 0;
-            for (let i = 0; i < s.length; i++) {
-                const element = s[i];
-                checksum += element;
-                if (checksum > 10000) {
-                    checksum %= 10000;
-                }
-            }
-            if (req.body.checksum != checksum) {
-                console.log(`trên client ${req.body.checksum} dưới server ${checksum}`);
-            }
             write.on("close", () => {
                 res.json({
                     name: f,

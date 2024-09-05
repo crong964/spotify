@@ -66,18 +66,22 @@ interface PlayLists {
   link?: string;
 }
 export default function PlayLists(p: PlayLists) {
-  var children = p.d.map((v) => {
-    return (
-      <PlayList
-        Type={v.Type}
-        Genre_ID={v.Genre_ID}
-        ImagePath={v.ImagePath}
-        PlayListName={v.PlayListName}
-        id={v.id}
-        key={v.id}
-      />
-    );
-  });
+  var children = p.d
+    .filter((v, i) => {
+      return i < 7;
+    })
+    .map((v) => {
+      return (
+        <PlayList
+          Type={v.Type}
+          Genre_ID={v.Genre_ID}
+          ImagePath={v.ImagePath}
+          PlayListName={v.PlayListName}
+          id={v.id}
+          key={v.id}
+        />
+      );
+    });
   const Right = useSelector((s: RootHome) => s.rootHome.Right);
   return (
     <>
@@ -85,7 +89,10 @@ export default function PlayLists(p: PlayLists) {
         <>
           <div className="w-full overflow-auto sm:overflow-hidden  ">
             <div className="w-full flex justify-between items-center p-2">
-              <Link to={p.link || "#"} className="text-[24px] font-bold border-0 sm:border-2 border-black hover:border-b-white">
+              <Link
+                to={p.link || "#"}
+                className="text-[24px] font-bold border-0 sm:border-2 border-black hover:border-b-white"
+              >
                 {p.title}
               </Link>
               {children.length >= 7 ? (

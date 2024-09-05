@@ -21,7 +21,7 @@ type Song = {
   SongImage: string;
   Duration: number;
   description: string;
-  PublicTime: string;
+  publicDate: string;
   filePath: string;
   user_id: string;
 };
@@ -29,6 +29,12 @@ type Song = {
 type SongEidt = {
   idSong: string;
 };
+function convertYYYMMDD(params: string) {
+  let d = new Date(parseInt(params) * 1000);
+  return `${d.getFullYear()}-${
+    d.getMonth() + 1 > 10 ? d.getMonth() + 1 : "0" + (d.getMonth() + 1)
+  }-${d.getDate() > 10 ? d.getDate() : "0" + d.getDate()}`;
+}
 export default function SongEdit() {
   const name = useRef<HTMLInputElement>(null);
   const data = useSelectedArtist();
@@ -41,7 +47,7 @@ export default function SongEdit() {
     SongName: "",
     description: "",
     Duration: 0,
-    PublicTime: "",
+    publicDate: "",
     filePath: "",
     Singer: "",
     user_id: "",
@@ -204,10 +210,12 @@ export default function SongEdit() {
               onChange={(e) => {
                 SetSong({
                   ...song,
-                  PublicTime: e.currentTarget.value,
+                  publicDate:
+                    new Date(e.currentTarget.value).getTime() / 1000 + "",
                 });
               }}
-              type="datetime-local"
+              type="date"
+              value={convertYYYMMDD(song.publicDate)}
               className="border-2 border-[#404040] rounded-lg p-2 w-full"
             />
           </div>
@@ -308,7 +316,7 @@ export default function SongEdit() {
                 </div>
 
                 <audio
-                  controls 
+                  controls
                   src={`/s?id=${song.filePath}`}
                   onCanPlay={(e) => {
                     console.log(e.currentTarget.duration);
@@ -347,6 +355,10 @@ export default function SongEdit() {
 
                 for (const key in myObj) {
                   form.set(key, myObj[key]);
+                }
+                if (myObj.publicDate == "" || myObj.publicDate == undefined) {
+                  alert("chưa nhập ngày");
+                  return;
                 }
                 form.set("Genre_id", slectGenre[floor]);
                 if (file != undefined) {

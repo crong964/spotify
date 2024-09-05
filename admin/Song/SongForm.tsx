@@ -22,7 +22,7 @@ type Song = {
   SongImage: string;
   Duration: number;
   description: string;
-  PublicTime: string;
+  publicDate: string;
   filePath: string;
 };
 export default function SongForm() {
@@ -39,7 +39,7 @@ export default function SongForm() {
     SongName: "",
     description: "",
     Duration: 0,
-    PublicTime: "",
+    publicDate: "",
     filePath: "",
     Singer: "",
   });
@@ -200,7 +200,7 @@ export default function SongForm() {
               onChange={(e) => {
                 SetSong({
                   ...song,
-                  PublicTime: e.currentTarget.value,
+                  publicDate: new Date(e.currentTarget.value).getTime() + "",
                 });
               }}
               type="datetime-local"
@@ -344,6 +344,11 @@ export default function SongForm() {
 
                 for (const key in myObj) {
                   form.set(key, myObj[key]);
+                }
+
+                if (myObj.publicDate == "" || myObj.publicDate == undefined) {
+                  alert("chưa nhập ngày");
+                  return;
                 }
                 if (file != undefined) {
                   form.set("avatar", file);
