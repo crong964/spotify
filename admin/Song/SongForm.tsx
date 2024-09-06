@@ -198,6 +198,7 @@ export default function SongForm() {
           <div>Ngày phát hành</div>
 
           <DateReact
+            int={song.publicDate}
             cellClassName="p-2"
             className="p-2"
             onChange={(p) => {

@@ -23,10 +23,10 @@ interface Song {
 const initialState: AudioRedux = {
   playlistmobile: false,
   random: false,
-  lsSong: [],
+  lsSong: JSON.parse(localStorage.getItem("songs") || "[]"),
   stop: true,
   modplay: parseInt(localStorage.getItem("moplay") || "0"),
-  mark: 0,
+  mark: parseInt(localStorage.getItem("mark") || "0"),
   autoplay: false,
 };
 
@@ -49,6 +49,8 @@ const audioSlice = createSlice({
         return v;
       });
       state.mark = 0;
+      localStorage.setItem("songs", JSON.stringify(state.lsSong));
+      localStorage.setItem("mark", "0");
       if (state.lsSong[state.mark]) {
         localStorage.setItem("song", JSON.stringify(state.lsSong[state.mark]));
         let s = state.lsSong[state.mark];
@@ -59,6 +61,7 @@ const audioSlice = createSlice({
       state.mark = state.mark + pay.payload;
       if (state.lsSong[state.mark]) {
         localStorage.setItem("song", JSON.stringify(state.lsSong[state.mark]));
+        localStorage.setItem("mark", JSON.stringify(state.mark));
         let s = state.lsSong[state.mark];
         iHelp.Title(`${s.SongName} • ${s.Singer}`);
       }
@@ -67,6 +70,7 @@ const audioSlice = createSlice({
       state.mark = state.mark + 1;
       if (state.mark == state.lsSong.length) {
         state.mark = 0;
+        localStorage.setItem("mark", JSON.stringify(state.mark));
       }
       if (state.lsSong[state.mark]) {
         localStorage.setItem("song", JSON.stringify(state.lsSong[state.mark]));
@@ -102,6 +106,7 @@ const audioSlice = createSlice({
             "song",
             JSON.stringify(state.lsSong[state.mark])
           );
+          localStorage.setItem("mark", JSON.stringify(state.mark));
           break;
         }
       }

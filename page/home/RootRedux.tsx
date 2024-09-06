@@ -46,7 +46,6 @@ interface Root {
   mess: mess;
   BoxList: string[];
   command: Commamd;
-  idSong: string;
   isLogin: boolean;
   Right: string;
   DeleteDiscuss: string;
@@ -72,7 +71,6 @@ const initialState: Root = {
   },
   NotificationPageIdSong: "",
   NotificationPage: "list",
-  idSong: ParseJson(localStorage.getItem("song") || "{}").Id || "",
   isLogin: false,
   Right: "",
   DeleteDiscuss: "",
@@ -99,9 +97,6 @@ const rootslice = createSlice({
   reducers: {
     RemoveRight: (state) => {
       state.Right = "";
-    },
-    PlaySong: (state, action: PayloadAction<string>) => {
-      state.idSong = action.payload;
     },
     NaviPage: (state, action: PayloadAction<Commamd>) => {
       state.command.page = action.payload.page;
@@ -219,7 +214,6 @@ export type RootDispatch = RootTy["dispatch"];
 export const {
   ShowTopbarContent,
   SetCurName,
-  PlaySong,
   NaviPage,
   IsLogin,
   NaviRight,

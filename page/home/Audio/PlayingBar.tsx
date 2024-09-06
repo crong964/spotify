@@ -35,7 +35,6 @@ interface SongI {
 }
 export default function PlayingBar() {
   const stop = useSelector((state: RootHome) => state.audioroot.stop);
-  const idsong = useSelector((state: RootHome) => state.rootHome.idSong);
   const isLogin = useSelector((state: RootHome) => state.rootHome.isLogin);
   const lsSong = useSelector((state: RootHome) => state.audioroot.lsSong);
   const mark = useSelector((state: RootHome) => state.audioroot.mark);
@@ -69,20 +68,7 @@ export default function PlayingBar() {
       dispatch(SetSongs([v.song]));
     });
   };
-  useEffect(() => {
-    post(
-      "/song/get",
-      {
-        idsong: idsong,
-      },
-      (v: any) => {
-        if (v && !v.err) {
-          dispatch(SetSongs([v.song]));
-          localStorage.setItem("song", JSON.stringify(v.song));
-        }
-      }
-    );
-  }, [idsong]);
+
   useEffect(() => {
     VolumeAudio(volume);
   }, [volume]);

@@ -7,7 +7,14 @@ type DateReact = {
   int?: string;
 };
 export default function DateReact(param: DateReact) {
-  const [d, Sd] = useState({ d: 0, m: 0, y: 0 });
+  console.log(param.int);
+
+  let da;
+  if (param.int == undefined || param.int == "") {
+    da = new Date();
+  } else {
+    da = new Date(parseInt(param.int) * 1000);
+  }
 
   let day = [];
   for (let i = 1; i <= 31; i++) {
@@ -22,34 +29,17 @@ export default function DateReact(param: DateReact) {
     year.push(<option value={i} />);
   }
 
-  useMemo(() => {
-    console.log(d);
-
-    let da;
-    if (param.int == undefined || param.int == "") {
-      da = new Date();
-    } else {
-      da = new Date(parseInt(param.int) * 1000);
-    }
-    Sd({ d: da.getDate(), m: da.getMonth() + 1, y: da.getFullYear() });
-  }, [param.int]);
-  useEffect(() => {
-    let date = new Date();
-    date.setDate(d.d);
-    date.setMonth(d.m - 1);
-    date.setFullYear(d.y);
-    param.onChange(Math.floor(date.getTime() / 1000) + "");
-  }, [d]);
   return (
     <div className={param.className}>
       <input
         onChange={(e) => {
-          Sd({ ...d, d: parseInt(e.currentTarget.value) });
+          da.setDate(parseInt(e.target.value));
+          param.onChange(da.getTime() / 1000 + "");
         }}
         placeholder="ngày"
         className={param.cellClassName}
         list="day"
-        value={d.d}
+        value={da.getDate()}
         type="number"
       />
       <datalist id="day" className={param.cellClassName}>
@@ -57,9 +47,11 @@ export default function DateReact(param: DateReact) {
       </datalist>
       <input
         onChange={(e) => {
-          Sd({ ...d, m: parseInt(e.currentTarget.value) });
+         
+          da.setMonth(parseInt(e.target.value) - 1);
+          param.onChange(da.getTime() / 1000 + "");
         }}
-        value={d.m}
+        value={da.getMonth() + 1}
         placeholder="tháng"
         className={param.cellClassName}
         list="month"
@@ -71,9 +63,11 @@ export default function DateReact(param: DateReact) {
 
       <input
         onChange={(e) => {
-          Sd({ ...d, y: parseInt(e.currentTarget.value) });
+        
+          da.setFullYear(parseInt(e.target.value));
+          param.onChange(da.getTime() / 1000 + "");
         }}
-        value={d.y}
+        value={da.getFullYear()}
         placeholder="năm"
         type="number"
         className={param.cellClassName}

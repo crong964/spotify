@@ -203,7 +203,6 @@ app.get(/admin/, ADMIN, (req, res) => {
     res.sendFile(join(process.cwd(), "web/admin.html"))
 })
 app.get(/\//, (req, res) => {
-    res.setHeader("Cache-Control", "public, max-age=720000000000")
     res.sendFile(path.join(process.cwd(), "web/home.html"))
 })
 httpServer.listen(8000, () => {
@@ -228,7 +227,7 @@ io.on("connection", (socket) => {
 
     socket.join(id)
     socket.on("disconnect", () => {
-        io.socketsLeave("")
+        io.socketsLeave(id)
     })
 
 });

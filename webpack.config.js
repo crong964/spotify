@@ -35,6 +35,7 @@ module.exports = {
     },
     output: {
         filename: path.join('[name].js'),
+        chunkFilename: path.join('[name].[contenthash].js'),
         path: path.join(process.cwd(), 'web', 'static',),
         clean: true,
     }
