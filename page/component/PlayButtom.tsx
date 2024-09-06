@@ -13,7 +13,6 @@ export default function PlayButtom(p: Playing) {
 
   const PlayingPlaylist = () => {
     if (playing.id == p.id && p.page == playing.page) {
-      dispatch(SetStop(!stopAudio));
       var mu = document.querySelector(".g") as HTMLAudioElement;
       if (mu.paused) {
         mu.play();

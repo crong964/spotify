@@ -100,7 +100,7 @@ function RecentPlaySongs(p: MenberQueue) {
             return (
               <Song
                 onClick={() => {
-                  dispatch(PlaySong(v.Id));
+                  dispatch(SetSongs(v as any));
                   dispatch(SetAutoPlay(true));
                 }}
                 user_id={v.user_id}

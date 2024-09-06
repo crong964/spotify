@@ -34,7 +34,9 @@ export default function Discuss(data: Discuss) {
   );
 
   const [mainDiscussList, SetMainDiscussList] = useState<MainDiscuss[]>([]);
-  const idsong = useSelector((state: RootHome) => state.rootHome.idSong);
+  const lsSong = useSelector((state: RootHome) => state.audioroot.lsSong);
+  const mark = useSelector((state: RootHome) => state.audioroot.mark);
+  const idsong = lsSong[mark]?.Id || "";
   const [dicussquality, SetDicussQuality] = useState(0);
   const [content, SetContent] = useState("");
 
@@ -118,7 +120,10 @@ function MainDiscuss(d: MainDiscuss) {
   const [content, SetContent] = useState("");
   const [replaylist, SetReplayList] = useState<Replay[]>([]);
   const [avatar, SetAvatar] = useState("");
-  const idsong = useSelector((state: RootHome) => state.rootHome.idSong);
+  const lsSong = useSelector((state: RootHome) => state.audioroot.lsSong);
+  const mark = useSelector((state: RootHome) => state.audioroot.mark);
+  const idsong = lsSong[mark]?.Id || "";
+
   const delateDiscuss = useSelector(
     (state: RootHome) => state.rootHome.DeleteDiscuss
   );
@@ -385,7 +390,9 @@ function Replay(d: Replay) {
   const [avatar, SetAvatar] = useState("");
   const [content, SetContent] = useState("");
   const [isExpand, SetIsExpand] = useState(false);
-  const idsong = useSelector((state: RootHome) => state.rootHome.idSong);
+  const lsSong = useSelector((state: RootHome) => state.audioroot.lsSong);
+  const mark = useSelector((state: RootHome) => state.audioroot.mark);
+  const idsong = lsSong[mark].Id;
   async function handle() {
     if (contentRef && contentRef.current) {
       SetClamped(

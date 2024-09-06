@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import PlayButtom from "@/page/component/PlayButtom";
 import React from "react";
 import { post } from "@/page/config/req";
-import { useDispatch } from "react-redux";
-import { NaviPage } from "@/page/home/RootRedux";
+import { useDispatch, useSelector } from "react-redux";
+import { NaviPage, RootHome } from "@/page/home/RootRedux";
 import { Link } from "react-router-dom";
 
 interface RecentPlaylist {
@@ -19,6 +19,8 @@ interface List {
 }
 export function RecentPlaylist(params: RecentPlaylist) {
   const dispatch = useDispatch();
+  const playing = useSelector((state: RootHome) => state.rootHome.playing);
+  const stopAudio = useSelector((state: RootHome) => state.audioroot.stop);
   const [hidden, SetHidden] = useState(true);
   return (
     <div
@@ -65,12 +67,12 @@ export function RecentPlaylist(params: RecentPlaylist) {
         <div className="hidden sm:block size-6"></div>
       </Link>
 
-      {hidden ? (
-        <></>
-      ) : (
+      {!hidden || (playing.id == params.ID && playing.page == params.Type && !stopAudio) ? (
         <button className="absolute right-2 bottom-2 sm:block hidden">
           <PlayButtom id={params.ID} page={params.Type} />
         </button>
+      ) : (
+        <></>
       )}
     </div>
   );
