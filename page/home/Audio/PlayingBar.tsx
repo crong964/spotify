@@ -1,7 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import Song from "@/page/component/Song";
 import { useDispatch, useSelector } from "react-redux";
-import { NaviRight, PlaySong, RootHome } from "@/page/home/RootRedux";
+import {
+  NaviRight,
+  PlaySong,
+  RootHome,
+  SetPlaying,
+} from "@/page/home/RootRedux";
 import Audio from "./Audio";
 import { post } from "@/page/config/req";
 import {
@@ -37,8 +42,8 @@ export default function PlayingBar() {
   const stop = useSelector((state: RootHome) => state.audioroot.stop);
   const isLogin = useSelector((state: RootHome) => state.rootHome.isLogin);
   const lsSong = useSelector((state: RootHome) => state.audioroot.lsSong);
+  const idsong = useSelector((state: RootHome) => state.rootHome.idSong);
   const mark = useSelector((state: RootHome) => state.audioroot.mark);
-  const autoplay = useSelector((state: RootHome) => state.audioroot.autoplay);
   const devicetype = useSelector(
     (state: RootHome) => state.rootHome.devicetype
   );
@@ -69,6 +74,24 @@ export default function PlayingBar() {
       dispatch(SetSongs([v.song]));
     });
   };
+  useEffect(() => {
+    if (lsSong[mark]?.Id == idsong) {
+      return;
+    }
+    post(
+      "/song/get",
+      {
+        idsong: idsong,
+      },
+      (v: any) => {
+        if (v && !v.err) {
+          dispatch(SetSongs([v.song]));
+          dispatch(SetPlaying({ id: "", page: "" }));
+          localStorage.setItem("song", JSON.stringify(v.song));
+        }
+      }
+    );
+  }, [idsong]);
   useEffect(() => {
     VolumeAudio(volume);
   }, [volume]);

@@ -78,7 +78,7 @@ export default function ArtistPage() {
       <div className="h-[320px]"></div>
       <div className="px-4">
         <div className="flex items-center py-4 space-x-4">
-          <PlayButtom id={idpage} page="artist" />
+          <PlayButtom id={id || ""} page="artist" />
           {isLogin ? (
             <>
               {like ? (

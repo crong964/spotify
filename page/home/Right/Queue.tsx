@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { RemoveRight, RootHome } from "@/page/home/RootRedux";
+import { PlaySong, RemoveRight, RootHome } from "@/page/home/RootRedux";
 import { get } from "@/page/config/req";
 import {
   JumpingSong,
@@ -100,7 +100,7 @@ function RecentPlaySongs(p: MenberQueue) {
             return (
               <Song
                 onClick={() => {
-                  dispatch(SetSongs([v as any]));
+                  dispatch(PlaySong(v.Id));
                   dispatch(SetAutoPlay(true));
                 }}
                 user_id={v.user_id}
