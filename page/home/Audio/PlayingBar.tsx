@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Song from "@/page/component/Song";
 import { useDispatch, useSelector } from "react-redux";
-import { NaviRight, RootHome } from "@/page/home/RootRedux";
+import { NaviRight, PlaySong, RootHome } from "@/page/home/RootRedux";
 import Audio from "./Audio";
 import { post } from "@/page/config/req";
 import {
@@ -57,6 +57,7 @@ export default function PlayingBar() {
   const RandomNext = (n: number) => {
     if (mark + n >= 0 && mark + n < lsSong.length) {
       dispatch(NextSong(n));
+      dispatch(PlaySong(lsSong[mark].Id));
       return;
     }
 
@@ -68,7 +69,6 @@ export default function PlayingBar() {
       dispatch(SetSongs([v.song]));
     });
   };
-
   useEffect(() => {
     VolumeAudio(volume);
   }, [volume]);
