@@ -94,6 +94,7 @@ const audioSlice = createSlice({
       }
 
       state.lsSong = newSongList;
+      localStorage.setItem("songs", JSON.stringify(state.lsSong));
     },
     JumpingSong: (state, action: PayloadAction<string>) => {
       for (let i = 0; i < state.lsSong.length; i++) {
