@@ -5,7 +5,6 @@ import BoxModel from "../model/BoxModel";
 import { v4 as uuidv4 } from 'uuid';
 import haveListBoxChatService, { HaveListBoxChatService } from "../services/HaveListBoxChatService";
 import messService, { MessService } from "../services/MessService";
-import MessModel from "../model/MessModel";
 import haveListFriendsService, { HaveListFriendsService } from "../services/HaveListFriendsService";
 export class BoxController {
     static box: BoxService = boxService

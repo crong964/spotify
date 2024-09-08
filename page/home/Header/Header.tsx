@@ -57,9 +57,7 @@ export default function Header() {
   useEffect(() => {}, [search]);
 
   return (
-    <div
-      className={`h-max w-full sticky bg-black top-0 z-10 px-3 py-2 space-y-2`}
-    >
+    <div className="h-max w-full sticky bg-black top-0 z-10 px-3 p-0 sm:py-2 space-y-2">
       <div className="flex items-center space-x-2 mx-0 sm:mx-3 sm:justify-between">
         <div className="flex space-x-3  items-center">
           <Back />
@@ -108,7 +106,9 @@ export default function Header() {
           <>
             {isLogin ? (
               <>
-                {pathname == "/" || pathname == "/artist" ? (
+                {pathname == "/" ||
+                pathname == "/artist" ||
+                pathname == "/section" ? (
                   <div className="flex sm:hidden items-center">
                     <Avatar Name="" Vertify="" pathImage={infor.pathImage} />
                     <GenreInHome />

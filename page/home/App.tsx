@@ -14,7 +14,7 @@ import ArtistsListPage from "./Route/ArtistsListPage";
 const IdGenre = React.lazy(() => import("./IdGenre"));
 const Genre = React.lazy(() => import("./Genre"));
 const PlaylistPage = React.lazy(() => import("@/page/home/Route/PlayListPage"));
-const ArtistPage = React.lazy(() => import("@/page/home/Route/ArtistPage"));
+const SingleArtistPage = React.lazy(() => import("@/page/home/Route/SingleArtistPage"));
 const LikedSongListPage = React.lazy(
   () => import("@/page/home/Route/LikedSongListPage")
 );
@@ -56,7 +56,7 @@ root.render(
             </Route>
             <Route path="playlist/:id" element={<PlaylistPage />} />
             <Route path="likedsongs" element={<LikedSongListPage />} />
-            <Route path="artist/:id" element={<ArtistPage />} />
+            <Route path="artist/:id" element={<SingleArtistPage />} />
             <Route path="search/:s" element={<Search />} />
             <Route path="section" element={<ArtistsListPage />} />
             <Route element={<div>ko ti d</div>}></Route>

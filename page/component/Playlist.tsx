@@ -50,7 +50,8 @@ export function PlayList(d: PlayList) {
             srcSet=""
           />
         </Link>
-        {show || (playing.id == d.id && playing.page == d.Type && !stopAudio) ? (
+        {show ||
+        (playing.id == d.id && playing.page == d.Type && !stopAudio) ? (
           <div className="absolute bottom-0 right-0">
             <PlayButtom id={d.id} page={d.Type} />
           </div>
@@ -89,7 +90,7 @@ export default function PlayLists(p: PlayLists) {
     <>
       {children.length > 0 ? (
         <>
-          <div className="w-full overflow-auto sm:overflow-hidden  ">
+          <div className="">
             <div className="w-full flex justify-between items-center p-2">
               <Link
                 to={p.link || "#"}
@@ -108,11 +109,12 @@ export default function PlayLists(p: PlayLists) {
                 <></>
               )}
             </div>
-
-            <div
-              className={`flex w-max sm:w-full overflow-x-scroll sm:grid gap-2 grid-cols-7`}
-            >
-              {children}
+            <div className="w-full overflow-auto sm:overflow-hidden">
+              <div
+                className={`flex w-max sm:w-full overflow-x-scroll sm:grid gap-2 grid-cols-7`}
+              >
+                {children}
+              </div>
             </div>
           </div>
         </>

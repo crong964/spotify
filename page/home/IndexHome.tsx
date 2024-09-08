@@ -5,7 +5,7 @@ import { SetionList } from "./Setion";
 const RecentList = React.lazy(() => import("./Right/RecentPlaylist"));
 const Genre = React.lazy(() => import("./Genre"));
 const PlaylistPage = React.lazy(() => import("@/page/home/Route/PlayListPage"));
-const ArtistPage = React.lazy(() => import("@/page/home/Route/ArtistPage"));
+const SingleArtistPage = React.lazy(() => import("@/page/home/Route/SingleArtistPage"));
 const LikedSongListPage = React.lazy(
   () => import("@/page/home/Route/LikedSongListPage")
 );
@@ -93,7 +93,7 @@ export default function IndexTest() {
     <div className="h-full w-full relative p-0 m-0 bg-black CircularSpUIv3T-Book overflow-hidden">
       <main title="main" className="flex h-full sm:h-[90%] space-x-1 relative">
         <nav title="left" className="w-[80px] hidden sm:block px-1 space-y-1">
-          <div className="h-[20%] bg-[#121212] rounded-lg py-2">
+          <div className="h-[20%] bg-[#121212] rounded-lg p-0 sm:py-2">
             <div className="h-full  ">
               <Home />
               <MobileSearchButtom />
@@ -119,7 +119,7 @@ export default function IndexTest() {
         </div>
       </main>
       <div className="absolute block sm:hidden bg-[#121212] h-[10%] opacity-40 z-30 left-0 bottom-0 w-full"></div>
-      <div className="absolute bg-[#121212] sm:block z-40 left-0 bottom-0 w-full py-1 sm:py-2 px-2">
+      <div className="absolute bg-[#121212] sm:block z-40 left-0 bottom-0 w-full py-0 sm:py-2 px-2">
         <PlayingBar />
         <NaviHomeMobile />
       </div>
@@ -264,7 +264,7 @@ function NaviRoute() {
           </Route>
           <Route path="playlist/:id" element={<PlaylistPage />}></Route>
           <Route path="likedsongs" element={<LikedSongListPage />}></Route>
-          <Route path="artist/:id" element={<ArtistPage></ArtistPage>}></Route>
+          <Route path="artist/:id" element={<SingleArtistPage/>}></Route>
           <Route path="search/:s" element={<Search></Search>}></Route>
           <Route element={<div>ko ti d</div>}></Route>
         </Route>
