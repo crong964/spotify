@@ -1,11 +1,13 @@
-import React, { Suspense, useEffect, useState } from "react";
+import React, { memo, Suspense, useEffect, useState } from "react";
 
 import { SetionList } from "./Setion";
 
 const RecentList = React.lazy(() => import("./Right/RecentPlaylist"));
 const Genre = React.lazy(() => import("./Genre"));
 const PlaylistPage = React.lazy(() => import("@/page/home/Route/PlayListPage"));
-const SingleArtistPage = React.lazy(() => import("@/page/home/Route/SingleArtistPage"));
+const SingleArtistPage = React.lazy(
+  () => import("@/page/home/Route/SingleArtistPage")
+);
 const LikedSongListPage = React.lazy(
   () => import("@/page/home/Route/LikedSongListPage")
 );
@@ -264,7 +266,7 @@ function NaviRoute() {
           </Route>
           <Route path="playlist/:id" element={<PlaylistPage />}></Route>
           <Route path="likedsongs" element={<LikedSongListPage />}></Route>
-          <Route path="artist/:id" element={<SingleArtistPage/>}></Route>
+          <Route path="artist/:id" element={<SingleArtistPage />}></Route>
           <Route path="search/:s" element={<Search></Search>}></Route>
           <Route element={<div>ko ti d</div>}></Route>
         </Route>

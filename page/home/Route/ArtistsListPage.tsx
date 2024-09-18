@@ -41,7 +41,7 @@ export default function ArtistsListPage() {
       <div
         className={`${
           Right == ""
-            ? "w-full flex flex-wrap sm:grid sm:grid-cols-7 "
+            ? "w-full flex justify-center flex-wrap sm:grid sm:grid-cols-7 "
             : "w-full grid grid-cols-5"
         }`}
       >

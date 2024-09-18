@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { Playing, RootHome, SetPlaying } from "@/page/home/RootRedux";
 import { useDispatch, useSelector } from "react-redux";
 import { get, post } from "@/page/config/req";
@@ -11,7 +11,7 @@ export default function PlayButtom(p: Playing) {
   const [load, SetLoad] = useState(false);
   const dispatch = useDispatch();
 
-  const PlayingPlaylist = () => {
+  const PlayingPlaylist = useCallback(() => {
     if (playing.id == p.id && p.page == playing.page) {
       var mu = document.querySelector(".g") as HTMLAudioElement;
       if (mu.paused) {
@@ -40,7 +40,7 @@ export default function PlayButtom(p: Playing) {
         dispatch(SetStop(false));
       }
     });
-  };
+  }, []);
   return (
     <div
       onClick={() => {

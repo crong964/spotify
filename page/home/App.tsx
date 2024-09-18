@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
 import rootHome from "./RootRedux";
 
-import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Outlet, Route, Routes } from "react-router-dom";
 
 const IndexTest = React.lazy(() => import("./IndexHome"));
 
@@ -59,7 +59,6 @@ root.render(
             <Route path="artist/:id" element={<SingleArtistPage />} />
             <Route path="search/:s" element={<Search />} />
             <Route path="section" element={<ArtistsListPage />} />
-            <Route element={<div>ko ti d</div>}></Route>
           </Route>
           <Route path="auth" element={<CenterShare></CenterShare>}>
             <Route index element={<SignIn />}></Route>
@@ -68,6 +67,7 @@ root.render(
             <Route path="Forgot" element={<Forgot />}></Route>
             <Route path="ChangePassword" element={<ChangePassword />}></Route>
           </Route>
+          <Route path="*" element={<Navigate replace to="" />} />
         </Routes>
       </Suspense>
     </Provider>

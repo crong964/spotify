@@ -9,6 +9,7 @@ interface AudioRedux {
   random: boolean;
   autoplay: boolean;
   playlistmobile: boolean;
+  pip: boolean;
 }
 interface Song {
   oldindex: number;
@@ -22,6 +23,7 @@ interface Song {
 }
 const initialState: AudioRedux = {
   playlistmobile: false,
+  pip: false,
   random: false,
   lsSong: JSON.parse(localStorage.getItem("songs") || "[]"),
   stop: true,
@@ -118,8 +120,10 @@ const audioSlice = createSlice({
     SetPlaylistmobile: (state, action: PayloadAction<boolean>) => {
       state.playlistmobile = !state.playlistmobile;
     },
+    SetPip: (state, action: PayloadAction<boolean>) => {
+      state.pip = action.payload;
+    },
   },
-  extraReducers(builder) {},
 });
 
 export const {
@@ -132,5 +136,6 @@ export const {
   RandomSong,
   SetAutoPlay,
   SetPlaylistmobile,
+  SetPip,
 } = audioSlice.actions;
 export default audioSlice;

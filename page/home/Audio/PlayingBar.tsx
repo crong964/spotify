@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
-import Song from "@/page/component/Song";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+const Song = React.lazy(() => import("@/page/component/Song"));
 import { useDispatch, useSelector } from "react-redux";
 import {
   NaviRight,
@@ -7,11 +7,12 @@ import {
   RootHome,
   SetPlaying,
 } from "@/page/home/RootRedux";
-import Audio from "./Audio";
+
 import { post } from "@/page/config/req";
 import {
   NextSong,
   SetAutoPlay,
+  SetPip,
   SetPlaylistmobile,
   SetSongs,
   SetStop,
@@ -23,12 +24,14 @@ import {
   MediumVolumeIcon,
   MuteVolumeIcon,
   PauseSoundIcon,
+  PiPIcon,
   PlaySoundIcon,
   QueueIcon,
   SmallVolumeIcon,
 } from "@/icon/Icon";
-import Volume from "./Volume";
-import Audio2 from "./Audio2";
+const Volume = React.lazy(() => import("@/page/home/Audio/Volume"));
+const Audio2 = React.lazy(() => import("@/page/home/Audio/Audio2"));
+const Pip = React.lazy(() => import("@/page/component/Pip"));
 
 interface SongI {
   Id: string;
@@ -44,6 +47,7 @@ export default function PlayingBar() {
   const lsSong = useSelector((state: RootHome) => state.audioroot.lsSong);
   const idsong = useSelector((state: RootHome) => state.rootHome.idSong);
   const mark = useSelector((state: RootHome) => state.audioroot.mark);
+  const pip = useSelector((state: RootHome) => state.audioroot.pip);
   const devicetype = useSelector(
     (state: RootHome) => state.rootHome.devicetype
   );
@@ -53,13 +57,12 @@ export default function PlayingBar() {
 
   localStorage.setItem("volume", volume + "");
   const dispatch = useDispatch();
-
   var temp: SongI | undefined = undefined;
   if (localStorage.getItem("song") != null) {
     temp = ParseJson(localStorage.getItem("song") || "{}");
   }
 
-  const RandomNext = (n: number) => {
+  const RandomNext = useCallback((n: number) => {
     if (mark + n >= 0 && mark + n < lsSong.length) {
       dispatch(NextSong(n));
       dispatch(PlaySong(lsSong[mark].Id));
@@ -73,7 +76,8 @@ export default function PlayingBar() {
       localStorage.setItem("song", JSON.stringify(v.song));
       dispatch(SetSongs([v.song]));
     });
-  };
+  }, []);
+
   useEffect(() => {
     if (lsSong[mark]?.Id == idsong) {
       return;
@@ -141,7 +145,7 @@ export default function PlayingBar() {
         path={lsSong[mark]?.filePath}
         id={lsSong[mark]?.Id}
       />
-      <div className="hidden sm:flex space-x-2  justify-center items-center">
+      <div className="hidden sm:flex space-x-2 justify-center items-center">
         {isLogin ? (
           <>
             <button
@@ -163,7 +167,7 @@ export default function PlayingBar() {
           <></>
         )}
         <div
-          className="flex items-center cursor-pointer space-x-2 hover:border-2 hover:border-gray-400 p-2 rounded-xl"
+          className="flex items-center cursor-pointer space-x-2 border-2 border-black hover:border-gray-400 p-2 rounded-xl"
           onWheel={(e) => {
             var cur = e.deltaY;
             var o = 4;
@@ -193,6 +197,16 @@ export default function PlayingBar() {
             className="rounded-lg overflow-hidden appearance-none bg-gray-400 h-[4px]"
           />
         </div>
+        <button
+          onClick={() => {
+            dispatch(SetPip(true));
+          }}
+          className="focus:outline-none"
+          title="Mở trình duyệt thu nhỏ"
+        >
+          <PiPIcon className="fill-white size-5 hover:fill-green-600" />
+          {pip ? <Pip imagePath={lsSong[mark]?.SongImage}></Pip> : <></>}
+        </button>
       </div>
     </div>
   );

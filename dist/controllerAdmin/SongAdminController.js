@@ -46,7 +46,7 @@ class SongAdminController {
             console.log(song);
             if (req.file != undefined) {
                 try {
-                    song.SongImage = (yield Firebase_1.default.UploadImageBuffer(`SongImage/${song.Id}`, req.file.buffer));
+                    song.SongImage = (yield Firebase_1.default.UploadImageBuffer(`SongImage/${song.Id}`, req.file.buffer, 20000));
                 }
                 catch (error) {
                     console.log(error);
@@ -187,7 +187,7 @@ class SongAdminController {
             if (req.file != undefined) {
                 try {
                     yield Firebase_1.default.MoveImage(`SongImage/${song.Id}`, `delete/SongImage/${song.Id}_${d}`);
-                    song.SongImage = (yield Firebase_1.default.UploadImageBuffer(`SongImage/${song.Id}`, req.file.buffer));
+                    song.SongImage = (yield Firebase_1.default.UploadImageBuffer(`SongImage/${song.Id}`, req.file.buffer, 20000));
                 }
                 catch (error) {
                     console.log(error);
@@ -198,7 +198,11 @@ class SongAdminController {
                 let con = new ContainModel_1.default();
                 con.PlayList_id = v.id;
                 con.Song_id = song.Id;
-                return yield SongAdminController.contain.Add(con);
+                let check = yield SongAdminController.contain.Get(con);
+                if (check == undefined) {
+                    return yield SongAdminController.contain.Add(con);
+                }
+                return true;
             }));
             if (c) {
                 res.json({

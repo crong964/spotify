@@ -22,7 +22,7 @@ export function PlayList(d: PlayList) {
   const stopAudio = useSelector((state: RootHome) => state.audioroot.stop);
   const dispatch = useDispatch();
   return (
-    <div className=" overflow-hidden bg-black hover:bg-[#1A1A1A] p-3 rounded-lg">
+    <div className=" overflow-hidden bg-black hover:bg-[#1A1A1A] p-1 sm:p-3 rounded-lg">
       <div
         className="cursor-pointer relative"
         onMouseEnter={() => {

@@ -44,11 +44,11 @@ class SongAdminController {
         song.setAll(req.body)
         console.log(req.body);
         console.log(song);
-        
+
 
         if (req.file != undefined) {
             try {
-                song.SongImage = await firebase.UploadImageBuffer(`SongImage/${song.Id}`, req.file.buffer) as string
+                song.SongImage = await firebase.UploadImageBuffer(`SongImage/${song.Id}`, req.file.buffer, 20000) as string
             } catch (error) {
                 console.log(error);
 
@@ -191,14 +191,11 @@ class SongAdminController {
             })
             return
         }
-
-
-
         let d = Date.now() + ""
         if (req.file != undefined) {
             try {
                 await firebase.MoveImage(`SongImage/${song.Id}`, `delete/SongImage/${song.Id}_${d}`)
-                song.SongImage = await firebase.UploadImageBuffer(`SongImage/${song.Id}`, req.file.buffer) as string
+                song.SongImage = await firebase.UploadImageBuffer(`SongImage/${song.Id}`, req.file.buffer, 20000) as string
             } catch (error) {
                 console.log(error);
             }
@@ -209,7 +206,11 @@ class SongAdminController {
             let con = new ContainModel()
             con.PlayList_id = v.id
             con.Song_id = song.Id
-            return await SongAdminController.contain.Add(con)
+            let check = await SongAdminController.contain.Get(con)
+            if (check == undefined) {
+                return await SongAdminController.contain.Add(con)
+            }
+            return true
         })
         if (c) {
             res.json({

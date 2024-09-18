@@ -1,6 +1,6 @@
-import React from "react";
-
-export default function Foot() {
+import React, { memo } from "react";
+function Foot() {
+  console.log("foot");
   return (
     <div className="grid grid-cols-2 sm:grid-cols-6  text-[16px] p-4 sm:px-9 sm:py-[20px] my-16 border-y-2 border-[#121212] ">
       <div className="col-span-1">
@@ -86,3 +86,7 @@ export default function Foot() {
     </div>
   );
 }
+
+
+
+export default memo(Foot)

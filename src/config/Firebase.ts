@@ -29,10 +29,14 @@ class Firebase {
     /*
     https://firebasestorage.googleapis.com/v0/b/supple-league-394102.appspot.com/o/g%2Fa.png?alt=media&token=51ef5ff0-f858-4adc-a7f5-9bba021c0131
     **/
-    async UploadImageBuffer(name: string, data: Buffer) {
-        let percentOutput = 100
-        if (data.length > 40000) {
-            percentOutput = parseInt((40000 / data.length) * 100 + "")
+    async UploadImageBuffer(name: string, data: Buffer, q?: number) {
+        let percentOutput = 20
+        let quality = q || 40000
+        console.log(quality, data.length, parseInt((quality / data.length) * 100 + ""));
+
+
+        if (data.length > quality) {
+            percentOutput = parseInt((quality / data.length) * 100 + "")
         }
         return new Promise((res, rea) => {
             sharp(data).
