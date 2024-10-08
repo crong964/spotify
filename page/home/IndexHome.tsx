@@ -14,7 +14,7 @@ const LikedSongListPage = React.lazy(
 const Foot = React.lazy(() => import("./Foot"));
 import { useDispatch, useSelector } from "react-redux";
 
-const PlayingBar = React.lazy(() => import("./Audio/PlayingBar"));
+const PlayingBar = React.lazy(() => import("../component/Audio/PlayingBar"));
 const ChatBox = React.lazy(() => import("./boxchat/SingleBox"));
 const Header = React.lazy(() => import("./Header/Header"));
 import PlayingPlaylistMobile from "@/page/home/Route/PlayingPlaylistMobile";

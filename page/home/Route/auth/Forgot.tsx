@@ -3,7 +3,7 @@ import { Page } from "./RootAuth";
 import React, { useState } from "react";
 import { post } from "@/page/config/req";
 import { Link } from "react-router-dom";
-import { RootHome } from "../home/RootRedux";
+import { RootHome } from "@/page/home/RootRedux";
 export default function Forgot() {
   const dispatch = useDispatch();
   const page = useSelector((state: RootHome) => state.rootauth.page);

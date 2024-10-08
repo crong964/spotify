@@ -1,7 +1,7 @@
 import React, { Suspense, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  Check,
+ 
   IsLogin,
   NaviPage,
   NaviRight,

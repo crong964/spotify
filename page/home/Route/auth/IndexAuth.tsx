@@ -5,13 +5,14 @@ import { Infor, Page } from "./RootAuth";
 import { post } from "@/page/config/req";
 
 import { Route, Routes } from "react-router-dom";
-
-const SignIn = React.lazy(() => import("./SignIn"));
-const Signup = React.lazy(() => import("./Signup"));
-const CreateAccount = React.lazy(() => import("./CreateAccount"));
-const Forgot = React.lazy(() => import("./Forgot"));
-const ChangePassword = React.lazy(() => import("./ChangePassword"));
-const CenterShare = React.lazy(() => import("./CenterShare"));
+import {
+  CenterShare,
+  ChangePassword,
+  CreateAccount,
+  Forgot,
+  SignIn,
+  Signup,
+} from "./Index";
 
 export default function IndexAuth() {
   const dispatch = useDispatch();

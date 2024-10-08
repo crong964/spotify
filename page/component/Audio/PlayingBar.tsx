@@ -19,18 +19,14 @@ import {
 } from "./AudioRedux";
 import { ParseJson, VolumeAudio } from "@/page/socket/Socket";
 import {
-  BigVolumeIcon,
   DiscussIcon,
-  MediumVolumeIcon,
-  MuteVolumeIcon,
   PauseSoundIcon,
   PiPIcon,
   PlaySoundIcon,
   QueueIcon,
-  SmallVolumeIcon,
 } from "@/icon/Icon";
-const Volume = React.lazy(() => import("@/page/home/Audio/Volume"));
-const Audio2 = React.lazy(() => import("@/page/home/Audio/Audio2"));
+import { Audio2, Volume } from "./Index";
+
 const Pip = React.lazy(() => import("@/page/component/Pip"));
 
 interface SongI {

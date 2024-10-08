@@ -6,7 +6,7 @@ import {
   RandomSong,
   RepeatPlaylist,
   SetStop,
-} from "@/page/home/Audio/AudioRedux";
+} from "@/page/component/Audio/AudioRedux";
 import Time from "@/page/component/Time";
 import {
   PauseSoundIcon,
@@ -14,8 +14,8 @@ import {
   SkipNextIcon,
   SkipPreviousIcon,
 } from "@/icon/Icon";
-import ModPlay from "@/page/home/Audio/ModPlay";
-import ButtonRandomPlay from "@/page/home/Audio/ButtonRandomPlay";
+import { ButtonRandomPlay, ModPlay } from "./Index";
+
 
 interface Audio {
   path: string;

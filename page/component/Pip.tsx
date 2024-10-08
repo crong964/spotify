@@ -7,7 +7,7 @@ import {
   SetPip,
   SetSongs,
   SetStop,
-} from "@/page/home/Audio/AudioRedux";
+} from "@/page/component/Audio/AudioRedux";
 import { PlaySong, RootHome } from "@/page/home/RootRedux";
 import { post } from "@/page/config/req";
 import {

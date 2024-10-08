@@ -7,7 +7,7 @@ import {
   JumpingSong,
   SetAutoPlay,
   SetSongs,
-} from "@/page/home/Audio/AudioRedux";
+} from "@/page/component/Audio/AudioRedux";
 const Song = React.lazy(() => import("@/page/component/Song"));
 interface RecentSong {
   Id: string;

@@ -8,8 +8,8 @@ import {
   SetPlaylistmobile,
   SetSongs,
   SetStop,
-} from "@/page/home/Audio/AudioRedux";
-import ButtonRandomPlay from "@/page/home/Audio/ButtonRandomPlay";
+} from "@/page/component/Audio/AudioRedux";
+
 import {
   ChevronDownIcon,
   PauseSoundIcon,
@@ -18,9 +18,10 @@ import {
   SkipPreviousIcon,
 } from "@/icon/Icon";
 import { post } from "@/page/config/req";
-import ModPlay from "@/page/home/Audio/ModPlay";
+
 import { SongQueueInplayList } from "@/page/home/Right/Queue";
 import "@/public/css/index.css";
+import { ButtonRandomPlay, ModPlay } from "@/page/component/Audio/Index";
 export default function PlayingPlaylistMobile() {
   const lsSong = useSelector((state: RootHome) => state.audioroot.lsSong);
   const mark = useSelector((state: RootHome) => state.audioroot.mark);
@@ -157,7 +158,7 @@ export default function PlayingPlaylistMobile() {
         >
           <SkipNextIcon className="hover:fill-green-500 fill-white size-8" />
         </button>
-        <ModPlay></ModPlay>
+        <ModPlay/>
       </div>
       <div className="p-3"></div>
       <SongQueueInplayList cur="" type="" />

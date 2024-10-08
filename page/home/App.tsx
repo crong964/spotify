@@ -11,6 +11,7 @@ const RecentList = React.lazy(() => import("./Right/RecentPlaylist"));
 import { SetionList } from "./Setion";
 import { SuggestPlaylist } from "@/page/component/Playlist";
 import ArtistsListPage from "./Route/ArtistsListPage";
+import { CenterShare, ChangePassword, CreateAccount, Forgot, SignIn, Signup } from "./Route/auth/Index";
 const IdGenre = React.lazy(() => import("./IdGenre"));
 const Genre = React.lazy(() => import("./Genre"));
 const PlaylistPage = React.lazy(() => import("@/page/home/Route/PlayListPage"));
@@ -19,16 +20,9 @@ const LikedSongListPage = React.lazy(
   () => import("@/page/home/Route/LikedSongListPage")
 );
 const Search = React.lazy(() => import("@/page/home/Search"));
-
-const IndexAuth = React.lazy(() => import("@/page/auth/IndexAuth"));
 //@ts-ignore
 const root = createRoot(document.getElementById("root"));
-const SignIn = React.lazy(() => import("@/page/auth/SignIn"));
-const Signup = React.lazy(() => import("@/page/auth/Signup"));
-const CreateAccount = React.lazy(() => import("@/page/auth/CreateAccount"));
-const Forgot = React.lazy(() => import("@/page/auth/Forgot"));
-const ChangePassword = React.lazy(() => import("@/page/auth/ChangePassword"));
-const CenterShare = React.lazy(() => import("@/page/auth/CenterShare"));
+
 
 root.render(
   <BrowserRouter>

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { post } from "@/page/config/req";
-import { RootHome } from "../home/RootRedux";
+import { RootHome } from "@/page/home/RootRedux";
 import { Page } from "./RootAuth";
 export default function CreateAccount() {
   const dispatch = useDispatch();

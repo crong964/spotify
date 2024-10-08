@@ -6,7 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Infor, Page } from "./RootAuth";
 import { Eye, EyeSlashIcon, LogoIcon } from "@/icon/Icon";
 import { Link } from "react-router-dom";
-import { RootHome } from "../home/RootRedux";
+import { RootHome } from "@/page/home/RootRedux";
+
 type User = {
   Password: string;
   Account: string;

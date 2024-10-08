@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { singleMess } from "@/page/home/Mess/SingleMess";
+import { singleMess } from "@/page/component/Mess/SingleMess";
 
-const SingleMess = React.lazy(() => import("@/page/home/Mess/SingleMess"));
+const SingleMess = React.lazy(() => import("@/page/component/Mess/SingleMess"));
 import { post } from "@/page/config/req";
 import { useDispatch, useSelector } from "react-redux";
 import {

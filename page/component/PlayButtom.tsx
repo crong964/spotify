@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react";
 import { Playing, RootHome, SetPlaying } from "@/page/home/RootRedux";
 import { useDispatch, useSelector } from "react-redux";
 import { get, post } from "@/page/config/req";
-import { SetSongs, SetStop } from "@/page/home/Audio/AudioRedux";
+import { SetSongs, SetStop } from "@/page/component/Audio/AudioRedux";
 
 export default function PlayButtom(p: Playing) {
   const playing = useSelector((state: RootHome) => state.rootHome.playing);

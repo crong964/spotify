@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { PlaySong, RootHome } from "@/page/home/RootRedux";
 import { v4 as uuidv4 } from "uuid";
 import { CheckCircleIcon, PlusCircleIcon } from "@/icon/Icon";
-import { SetAutoPlay, SetSongs } from "@/page/home/Audio/AudioRedux";
+import { SetAutoPlay, SetSongs } from "@/page/component/Audio/AudioRedux";
 import Time from "./Time";
 const ArtistLink = React.lazy(() => import("@/page/component/ArtistLink"));
 

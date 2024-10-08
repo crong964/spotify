@@ -1,9 +1,10 @@
 import { PayloadAction, configureStore, createSlice } from "@reduxjs/toolkit";
 import { useSelector } from "react-redux";
-import audioSlice from "./Audio/AudioRedux";
+import audioSlice from "../component/Audio/AudioRedux";
 import mobileRedux from "./NaviHome/NaviRedux";
 import { ParseJson } from "@/page/socket/Socket";
-import { authRedux } from "@/page/auth/RootAuth";
+import { authRedux } from "./Route/auth/RootAuth";
+
 
 interface mess {
   idMess: string;
@@ -238,8 +239,3 @@ export const {
 } = rootslice.actions;
 
 export default rootHome;
-
-export function Check() {
-  const page = useSelector((state: RootHome) => state.rootHome.command.page);
-  return page == "artist" || page == "playlist";
-}

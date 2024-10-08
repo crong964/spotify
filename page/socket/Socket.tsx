@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import { io } from "socket.io-client";
-import { SetMess } from "../home/RootRedux";
+import { SetMess } from "@/page/home/RootRedux";
 
 export const socket = io();
 
