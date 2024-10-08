@@ -2,7 +2,7 @@ import React, { memo, Suspense, useEffect, useState } from "react";
 
 import { SetionList } from "./Setion";
 
-const RecentList = React.lazy(() => import("./Right/RecentPlaylist"));
+const RecentList = React.lazy(() => import("./Route/Right/RecentPlaylist"));
 const Genre = React.lazy(() => import("./Genre"));
 const PlaylistPage = React.lazy(() => import("@/page/home/Route/PlayListPage"));
 const SingleArtistPage = React.lazy(
@@ -30,7 +30,7 @@ import Search from "./Search";
 import Profile from "./Profile";
 import IdGenre from "./IdGenre";
 
-const Right = React.lazy(() => import("./Right/Right"));
+const Right = React.lazy(() => import("./Route/Right/Right"));
 const PlaylistLike = React.lazy(
   () => import("@/page/home/NaviHome/PlaylistLike")
 );

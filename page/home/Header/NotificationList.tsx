@@ -8,7 +8,7 @@ import {
   SetNotificationPage,
   SetNotificationPageIdSong,
 } from "@/page/home/RootRedux";
-import Discuss, { MainDiscussList } from "@/page/home/Right/Discuss";
+import Discuss, { MainDiscussList } from "@/page/home/Route/Right/Discuss";
 
 interface Notification {
   Discuss_Id: string;

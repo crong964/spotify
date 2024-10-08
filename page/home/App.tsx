@@ -7,7 +7,7 @@ import { BrowserRouter, Navigate, Outlet, Route, Routes } from "react-router-dom
 
 const IndexTest = React.lazy(() => import("./IndexHome"));
 
-const RecentList = React.lazy(() => import("./Right/RecentPlaylist"));
+const RecentList = React.lazy(() => import("./Route/Right/RecentPlaylist"));
 import { SetionList } from "./Setion";
 import { SuggestPlaylist } from "@/page/component/Playlist";
 import ArtistsListPage from "./Route/ArtistsListPage";

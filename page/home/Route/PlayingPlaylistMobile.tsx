@@ -19,7 +19,7 @@ import {
 } from "@/icon/Icon";
 import { post } from "@/page/config/req";
 
-import { SongQueueInplayList } from "@/page/home/Right/Queue";
+import { SongQueueInplayList } from "@/page/home/Route/Right/Queue";
 import "@/public/css/index.css";
 import { ButtonRandomPlay, ModPlay } from "@/page/component/Audio/Index";
 export default function PlayingPlaylistMobile() {
