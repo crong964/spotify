@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react";
-import { Playing, RootHome, SetPlaying } from "@/page/home/RootRedux";
+import { Playing, RootHome, SetPlaying } from "@/page/Route/home/RootRedux";
 import { useDispatch, useSelector } from "react-redux";
 import { get, post } from "@/page/config/req";
 import { SetSongs, SetStop } from "@/page/component/Audio/AudioRedux";

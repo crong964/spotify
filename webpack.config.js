@@ -4,7 +4,7 @@ module.exports = {
     mode: 'production',
 
     entry: {
-        app: `${process.cwd()}/page/home/App.tsx`,
+        app: `${process.cwd()}/page/App.tsx`,
         dashboard: `${process.cwd()}/page/dashboard/App.tsx`,
         admin: path.join(process.cwd(), 'admin/App.tsx')
 

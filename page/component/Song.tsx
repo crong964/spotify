@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Duration, post } from "@/page/config/req";
 import { useDispatch, useSelector } from "react-redux";
-import { PlaySong, RootHome } from "@/page/home/RootRedux";
+import { PlaySong, RootHome } from "@/page/Route/home/RootRedux";
 import { v4 as uuidv4 } from "uuid";
 import { CheckCircleIcon, PlusCircleIcon } from "@/icon/Icon";
 import { SetAutoPlay, SetSongs } from "@/page/component/Audio/AudioRedux";

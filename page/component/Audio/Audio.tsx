@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RootHome } from "@/page/home/RootRedux";
+
 import {
   RandomSong,
   RepeatPlaylist,
@@ -15,6 +15,7 @@ import {
   SkipPreviousIcon,
 } from "@/icon/Icon";
 import { ButtonRandomPlay, ModPlay } from "./Index";
+import { RootHome } from "@/page/Route/home/RootRedux";
 
 
 interface Audio {

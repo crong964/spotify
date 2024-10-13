@@ -1,7 +1,7 @@
 import React, { useId } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { NaviPage, RootHome } from "@/page/home/RootRedux";
+import { NaviPage, RootHome } from "@/page/Route/home/RootRedux";
 type tArtistLink = {
   idArtist: string;
   nameArtist: string;

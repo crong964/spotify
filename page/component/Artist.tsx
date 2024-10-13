@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PlayButtom from "./PlayButtom";
 import { useDispatch, useSelector } from "react-redux";
-import { NaviPage, RootHome } from "@/page/home/RootRedux";
+import { NaviPage, RootHome } from "@/page/Route/home/RootRedux";
 interface artist {
   pathImage: string;
   ChanalName: string;

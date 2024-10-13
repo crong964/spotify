@@ -6,7 +6,7 @@ import {
   PlaySong,
   RootHome,
   SetPlaying,
-} from "@/page/home/RootRedux";
+} from "@/page/Route/home/RootRedux";
 
 import { post } from "@/page/config/req";
 import {

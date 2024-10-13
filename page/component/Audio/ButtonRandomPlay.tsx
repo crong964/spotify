@@ -1,5 +1,6 @@
 import { RandomPlayIcon } from "@/icon/Icon";
-import { RootHome } from "@/page/home/RootRedux";
+import { RootHome } from "@/page/Route/home/RootRedux";
+
 import React from "react";
 import { useSelector } from "react-redux";
 

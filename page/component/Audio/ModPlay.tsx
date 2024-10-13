@@ -1,5 +1,5 @@
 import React from "react";
-import { RootHome } from "@/page/home/RootRedux";
+import { RootHome } from "@/page/Route/home//RootRedux";
 import { useDispatch, useSelector } from "react-redux";
 import { NoRepeat, RepeatPlaylistIcon, RepeatSongIcon } from "@/icon/Icon";
 import { SetModPlay } from "@/page/component/Audio/AudioRedux";

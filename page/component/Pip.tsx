@@ -8,9 +8,9 @@ import {
   SetSongs,
   SetStop,
 } from "@/page/component/Audio/AudioRedux";
-import { PlaySong, RootHome } from "@/page/home/RootRedux";
+import { PlaySong, RootHome } from "@/page/Route/home/RootRedux";
 import { post } from "@/page/config/req";
-import {
+import { 
   PauseSoundIcon,
   PlaySoundIcon,
   SkipNextIcon,
