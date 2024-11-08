@@ -1,0 +1,31 @@
+@keyframes disappear1 {
+    from {
+        top: 0px;
+        right: 0px;
+
+    }
+
+    to {
+        top: 0px;
+        right: 100%;
+    }
+}
+@keyframes appear2 {
+    from {
+        top: 0px;
+        left: -100%;
+
+    }
+
+    to {
+        top: 0px;
+        left: 0px;
+    }
+}
+.apearLefttoRight {
+    animation: appear2 2s;
+}
+
+.disappearRighttoLeft {
+    animation: disappear1 2s;
+}

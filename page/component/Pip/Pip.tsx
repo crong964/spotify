@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useCallback } from "react";
 import { createPortal } from "react-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,25 +10,15 @@ import {
 } from "@/page/component/Audio/AudioRedux";
 import { PlaySong, RootHome } from "@/page/Route/home/RootRedux";
 import { post } from "@/page/config/req";
-import { 
+import {
   PauseSoundIcon,
   PlaySoundIcon,
   SkipNextIcon,
   SkipPreviousIcon,
 } from "@/icon/Icon";
-type PiPWindowProps = {
-  pipWindow: Window;
-  children: React.ReactNode;
-};
-type PiP = {
-  imagePath: string;
-};
-export function PiPWindow({ pipWindow, children }: PiPWindowProps) {
-  if (pipWindow == null) {
-    return <></>;
-  }
-  return createPortal(children, pipWindow.document.body);
-}
+import { PiP } from "./Type";
+import { PiPWindow } from "@/page/component/Pip/index";
+
 export default function Pip({ imagePath }: PiP) {
   let [pipWindow, SetPipWindow] = useState<any>(null);
   const dispatch = useDispatch();

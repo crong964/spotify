@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useId } from "react";
 import { useState } from "react";
 import "@/public/css/index.css";
 
-var color = [
+export var color = [
   "#E8115B",
   "#DC148C",
   "#006450",
@@ -17,20 +17,20 @@ var color = [
   "#E91429",
 ];
 interface iCarouselSlide {
-  l: React.JSX.Element[];
+  l: string[];
 }
 export default function CarouselSlide(p: iCarouselSlide) {
   const [index, SetIndex] = useState(0);
   const [stop, Stop] = useState(true);
   const [key, SetKey] = useState(0);
-  
+  const [drag, SetDrag] = useState(false);
   useEffect(() => {
     if (stop) {
       Stop(false);
       return;
     }
     var time = setTimeout(() => {
-      SetKey(Math.random())
+      SetKey(Math.random());
       if (index == p.l.length) {
         SetIndex(0);
       } else {
@@ -44,8 +44,16 @@ export default function CarouselSlide(p: iCarouselSlide) {
   }, [index, stop]);
   return (
     <div
-      onClick={(ev) => {
-        alert(ev.currentTarget);
+      onMouseDown={(e) => {
+        SetDrag(false);
+      }}
+      onMouseMove={(e) => {
+        SetDrag(true);
+      }}
+      onMouseUp={(e) => {
+        console.log((drag ? 'drag' : 'click'));
+
+        SetDrag(false);
       }}
       className="w-full h-[350px] overflow-hidden bg-white m-auto relative"
     >
@@ -55,7 +63,11 @@ export default function CarouselSlide(p: iCarouselSlide) {
       >
         {index - 1 < 0 ? p.l[p.l.length - 1] : p.l[index - 1]}
       </div>
-      <div key={key} className="w-full h-full absolute apearRightToLeft">
+      <div
+        key={key}
+        style={{ backgroundColor: p.l[index] }}
+        className="w-full h-full absolute apearRightToLeft"
+      >
         {p.l[index]}
       </div>
 
@@ -65,7 +77,7 @@ export default function CarouselSlide(p: iCarouselSlide) {
             if (i == index) {
               return (
                 <div
-                  className={`expend w-[40px] h-[15px] border border-black rounded-full bg-[${color[index]}]`}
+                  className={` w-[40px] h-[15px] border border-black rounded-full bg-[${color[index]}]`}
                 ></div>
               );
             }

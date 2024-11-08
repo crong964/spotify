@@ -26,8 +26,7 @@ import {
   QueueIcon,
 } from "@/icon/Icon";
 import { Audio2, Volume } from "./Index";
-
-const Pip = React.lazy(() => import("@/page/component/Pip"));
+import { Pip } from "@/page/component/Pip/index";
 
 interface SongI {
   Id: string;

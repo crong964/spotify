@@ -1,17 +1,9 @@
-import React, { memo, Suspense, useEffect, useState } from "react";
-
-import { SetionList } from "./Setion";
-
-
+import React, { useEffect, useState } from "react";
 const Genre = React.lazy(() => import("./GenrePage/GenrePage"));
-
-
-
-const Foot = React.lazy(() => import("../../component/Foot"));
+const Foot = React.lazy(() => import("@/page/component/Foot"));
 import { useDispatch, useSelector } from "react-redux";
 
 const Header = React.lazy(() => import("./Header/Header"));
-
 
 import {
   NaviPage,
@@ -20,9 +12,6 @@ import {
   SetMess,
   ShowTopbarContent,
 } from "./RootRedux";
-
-
-
 
 const PlaylistLike = React.lazy(
   () => import("@/page/Route/home/NaviHome/PlaylistLike")
@@ -36,14 +25,15 @@ import { MobileSearchButtom } from "./NaviHome/SearchButtom";
 
 import { NaviHomeMobile } from "./NaviHome/NaviHome";
 
-
-
 import { Outlet, Route, Routes, useRouteError } from "react-router-dom";
 import Home from "./NaviHome/Home";
 import Right from "./Right/Right";
 import { PlayingBar } from "@/page/component/Audio/Index";
 import PlayingPlaylistMobile from "./mobie/PlayingPlaylistMobile";
 import ChatBox from "@/page/component/boxchat/SingleBox";
+import CarouselSlide, {
+  color,
+} from "@/page/component/CarouselSlide/CarouselSlide";
 
 function useIndex() {
   const [queue, SetQueue] = useState(false);
@@ -59,7 +49,7 @@ function useIndex() {
 
   return { Set, queue, SetQueue, scroll };
 }
-export default function IndexTest() {
+export default function Index() {
   const { Set, queue, SetQueue, scroll } = useIndex();
   const mobiletype = useSelector(
     (state: RootHome) => state.rootHome.devicetype
@@ -155,142 +145,6 @@ export default function IndexTest() {
   );
 }
 
-// function Center() {
-//   var color = [
-//     "#E8115B",
-//     "#DC148C",
-//     "#006450",
-//     "#8400E7",
-//     "#1E3264",
-//     "#E8115B",
-//     "#27856A",
-//     "#608108",
-//     "#148A08",
-//     "#D84000",
-//     "#7D4B32",
-//     "#E91429",
-//   ];
-//   const [n, SetN] = useState(0);
-//   var carou = color.map((v) => {
-//     return <div className={`size-full bg-[${v}] `}></div>;
-//   });
-//   const page = useSelector((state: RootHome) => state.rootHome.command.page);
-//   const topbarcontent = useSelector(
-//     (state: RootHome) => state.rootHome.topbarcontent
-//   );
-//   const dispatch = useDispatch();
-//   var children: React.JSX.Element;
-//   switch (page) {
-//     case "genre":
-//       children = <Genre></Genre>;
-//       break;
-//     case "playlist":
-//       children = <PlaylistPage></PlaylistPage>;
-//       break;
-//     case "likedsongs":
-//       children = <LikedSongListPage></LikedSongListPage>;
-//       break;
-//     case "artist":
-//       children = <ArtistPage></ArtistPage>;
-//       break;
-//     case "search":
-//       children = <Search></Search>;
-//       break;
-//     case "profile":
-//       children = <Profile></Profile>;
-//       break;
-//     case "idgenre":
-//       children = <IdGenre></IdGenre>;
-//       break;
-//     default:
-//       children = (
-//         <div className="h-full">
-//           <RecentList />
-//           <SetionList name="Danh sách các nghệ sĩ" type="artist" />
-//           <SuggestPlaylist />
-//         </div>
-//       );
-//   }
-//   return (
-//     <div
-//       onScroll={(e) => {
-//         var h = e.currentTarget.scrollTop;
-//         if (h < 320) {
-//           dispatch(ShowTopbarContent(false));
-//           return;
-//         }
-//         if (
-//           (page == "artist" || page == "playlist") &&
-//           e.currentTarget.scrollTop >= 320 &&
-//           !topbarcontent
-//         ) {
-//           dispatch(ShowTopbarContent(true));
-//         }
-//       }}
-//       className="flex-1 h-full overflow-y-scroll"
-//     >
-//       {page == "home" ? (
-//         <div className="hidden sm:inline-block ">
-//           <GenreInHome></GenreInHome>
-//         </div>
-//       ) : (
-//         <></>
-//       )}
-
-//       <div className=" h-max relative">{children}</div>
-//       <Foot />
-//     </div>
-//   );
-// }
-
-// function NaviRoute() {
-//   return (
-//     <Suspense fallback={<div>Loading...</div>}>
-//       <Routes>
-//         <Route path="/" element={<CenterShare></CenterShare>}>
-//           <Route
-//             index
-//             element={
-//               <div className="h-full">
-//                 <RecentList />
-//                 <SetionList name="Danh sách các nghệ sĩ" type="artist" />
-//                 <SuggestPlaylist />
-//               </div>
-//             }
-//           />
-//           <Route path="genre" element={<Outlet></Outlet>}>
-//             <Route path=":id" element={<IdGenre></IdGenre>} />
-//             <Route index element={<Genre></Genre>} />
-//           </Route>
-//           <Route path="playlist/:id" element={<PlaylistPage />}></Route>
-//           <Route path="likedsongs" element={<LikedSongListPage />}></Route>
-//           <Route path="artist/:id" element={<SingleArtistPage />}></Route>
-//           <Route path="search/:s" element={<SearchPage></SearchPage>}></Route>
-//           <Route element={<div>ko ti d</div>}></Route>
-//         </Route>
-//       </Routes>
-//     </Suspense>
-//   );
-// }
-// function PcBody() {
-//   return (
-//     <>
-//       <NaviRoute />
-//       <Right />
-//     </>
-//   );
-// }
-
-// function MobileBody() {
-//   const side = useSelector((state: RootHome) => state.rootHome.side);
-//   switch (side) {
-//     case "right":
-//       return <NaviRoute />;
-//     default:
-//       return <Right />;
-//   }
-// }
-
 export function GenreInHome() {
   return (
     <div className="text-white flex justify-start space-x-1 items-center sticky top-0 z-[2] bg-black p-2">
@@ -333,7 +187,6 @@ function CenterShare() {
       ) : (
         <></>
       )}
-
       <div className=" h-max relative">
         <Outlet></Outlet>
       </div>

@@ -12,9 +12,9 @@ import { join } from "path";
 import { unlink } from "fs";
 export class MessController {
 
-    static haveListBoxChat: HaveListBoxChatService = haveListBoxChatService
-    static mess: MessService = messService
-    static box: BoxService = boxService
+    static haveListBoxChat = haveListBoxChatService
+    static mess = messService
+    static box = boxService
     static hiddenMess = hiddenMessService
     constructor() {
 

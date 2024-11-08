@@ -11,7 +11,7 @@ import {
   Routes,
 } from "react-router-dom";
 
-const IndexTest = React.lazy(() => import("./Route/home/IndexHome"));
+const Index = React.lazy(() => import("./Route/home/IndexHome"));
 
 import { SetionList } from "./Route/home/Setion";
 import { SuggestPlaylist } from "@/page/component/Playlist";
@@ -40,7 +40,7 @@ root.render(
     <Provider store={rootHome}>
       <Suspense fallback={<div>Loading...</div>}>
         <Routes>
-          <Route path="/" element={<IndexTest></IndexTest>}>
+          <Route path="/" element={<Index></Index>}>
             <Route
               index
               element={
