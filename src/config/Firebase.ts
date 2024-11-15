@@ -10,6 +10,7 @@ const CLIENTMAIL = process.env.CLIENTMAIL;
 const PRIVATEKEY = process.env.PRIVATEKEY;
 const DATABASEURL = process.env.DATABASEURL;
 const STORAGEBUCKET = process.env.STORAGEBUCKET
+
 const defaultApp = admin.initializeApp(
     {
         databaseURL: DATABASEURL,

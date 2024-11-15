@@ -11,6 +11,7 @@ import playListService, { PlayListService } from "../services/PlayListService";
 import containService, { ContainService } from "../services/ContainService";
 import ContainModel from "../model/ContainModel";
 import firebase from "../config/Firebase";
+import googleDrive from "../config/GoogleDrive";
 type singer = {
     id: string;
     ChanalName: string;
@@ -42,8 +43,6 @@ class SongAdminController {
         var song = new SongModel()
 
         song.setAll(req.body)
-        console.log(req.body);
-        console.log(song);
 
 
         if (req.file != undefined) {
@@ -263,7 +262,8 @@ class SongAdminController {
         let d = Date.now() + ""
         if (check) {
             try {
-                await firebase.Move(`song/${data[1]?.filePath}`, `delete/song/${data[1]?.filePath}_${d}`)
+                let idfolder = await googleDrive.SearchNameFolder(data[1]?.filePath || "")
+                googleDrive.Trashed(idfolder[0])
             } catch (error) {
                 console.log(error);
             }

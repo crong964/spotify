@@ -22,6 +22,7 @@ const PlayListService_1 = __importDefault(require("../services/PlayListService")
 const ContainService_1 = __importDefault(require("../services/ContainService"));
 const ContainModel_1 = __importDefault(require("../model/ContainModel"));
 const Firebase_1 = __importDefault(require("../config/Firebase"));
+const GoogleDrive_1 = __importDefault(require("../config/GoogleDrive"));
 class SongAdminController {
     Add(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -42,8 +43,6 @@ class SongAdminController {
             }
             var song = new SongModel_1.default();
             song.setAll(req.body);
-            console.log(req.body);
-            console.log(song);
             if (req.file != undefined) {
                 try {
                     song.SongImage = (yield Firebase_1.default.UploadImageBuffer(`SongImage/${song.Id}`, req.file.buffer, 20000));
@@ -242,7 +241,7 @@ class SongAdminController {
     }
     DeleteSong(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            var _a, _b, _c, _d;
+            var _a, _b, _c;
             let id = req.body.idArtist;
             let idsong = req.body.idsong;
             var data = yield Promise.all([
@@ -258,7 +257,8 @@ class SongAdminController {
             let d = Date.now() + "";
             if (check) {
                 try {
-                    yield Firebase_1.default.Move(`song/${(_c = data[1]) === null || _c === void 0 ? void 0 : _c.filePath}`, `delete/song/${(_d = data[1]) === null || _d === void 0 ? void 0 : _d.filePath}_${d}`);
+                    let idfolder = yield GoogleDrive_1.default.SearchNameFolder(((_c = data[1]) === null || _c === void 0 ? void 0 : _c.filePath) || "");
+                    GoogleDrive_1.default.Trashed(idfolder[0]);
                 }
                 catch (error) {
                     console.log(error);

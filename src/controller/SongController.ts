@@ -185,11 +185,6 @@ class SongController {
             })
             return
         }
-
-        console.log(req.file);
-        
-
-
         if (req.file != undefined) {
             song.SongImage = "public/image/" + req.file.filename
 

@@ -26,7 +26,7 @@ import {
   QueueIcon,
 } from "@/icon/Icon";
 import { Audio2, Volume } from "./Index";
-import { Pip } from "@/page/component/Pip/index";
+import { Pip } from "@/page/component/Pip/Index";
 
 interface SongI {
   Id: string;

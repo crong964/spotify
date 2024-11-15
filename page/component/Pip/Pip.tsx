@@ -17,7 +17,7 @@ import {
   SkipPreviousIcon,
 } from "@/icon/Icon";
 import { PiP } from "./Type";
-import { PiPWindow } from "@/page/component/Pip/index";
+import { PiPWindow } from "@/page/component/Pip/Index";
 
 export default function Pip({ imagePath }: PiP) {
   let [pipWindow, SetPipWindow] = useState<any>(null);
