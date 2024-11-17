@@ -38,7 +38,7 @@ import { unlink } from "fs/promises";
 import CmdRoute from "./route/CmdRoute";
 import StreamingRoute from "./route/StreamingRoute";
 import PlayListLikeRoute from "./route/PlayListLikeRoute";
-import teststreaming from "./route/Test";
+
 
 const secret = process.env.SECRET || "1"
 const production = process.env.MODE == "production"
@@ -77,7 +77,7 @@ app.get("/swagger", (req, res) => {
     res.sendFile(join(process.cwd(), "web/swagger.html"))
 })
 
-app.use("/teststreaming", teststreaming)
+
 app.use(bodyParser.urlencoded({ extended: false, limit: "50mb" }))
 app.use(bodyParser.json())
 

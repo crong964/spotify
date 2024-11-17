@@ -59,7 +59,6 @@ const SongAdminRoute_1 = __importDefault(require("./admin/SongAdminRoute"));
 const CmdRoute_1 = __importDefault(require("./route/CmdRoute"));
 const StreamingRoute_1 = __importDefault(require("./route/StreamingRoute"));
 const PlayListLikeRoute_1 = __importDefault(require("./route/PlayListLikeRoute"));
-const Test_1 = __importDefault(require("./route/Test"));
 const secret = process.env.SECRET || "1";
 const production = process.env.MODE == "production";
 const app = (0, express_1.default)();
@@ -92,7 +91,6 @@ app.use("/i", express_1.default.static(path_1.default.join(process.cwd(), "publi
 app.get("/swagger", (req, res) => {
     res.sendFile((0, path_1.join)(process.cwd(), "web/swagger.html"));
 });
-app.use("/teststreaming", Test_1.default);
 app.use(body_parser_1.default.urlencoded({ extended: false, limit: "50mb" }));
 app.use(body_parser_1.default.json());
 app.use("/mess", admin_1.USER, MessRoute_1.default);

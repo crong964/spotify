@@ -20,7 +20,7 @@ export default function Navi() {
           to="/songlist"
           className={({ isActive, isPending }) =>
             [isActive ? "active-nav-link" : "", ""].join(
-              " flex items-center hover:opacity-100 text-white py-4 pl-6 nav-item cursor-pointer"
+              " flex items-center hover:opacity-100 text-white py-3 pl-6 nav-item cursor-pointer"
             )
           }
         >
@@ -32,7 +32,7 @@ export default function Navi() {
           end
           className={({ isActive, isPending }) =>
             [isActive ? "active-nav-link" : "", ""].join(
-              " flex items-center hover:opacity-100 text-white py-4 pl-6 nav-item cursor-pointer"
+              " flex items-center hover:opacity-100 text-white py-3 pl-6 nav-item cursor-pointer"
             )
           }
         >
@@ -41,7 +41,7 @@ export default function Navi() {
         </NavLink>
 
         <Dropdown>
-          <a className="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item cursor-pointer">
+          <a className="flex items-center text-white opacity-75 hover:opacity-100 py-3 pl-6 nav-item cursor-pointer">
             <i className="fas fa-align-left mr-3"></i>
             Playlist
           </a>
@@ -50,7 +50,7 @@ export default function Navi() {
             end
             className={({ isActive, isPending }) =>
               [isActive ? "active-nav-link" : "", ""].join(
-                " flex items-center hover:opacity-100 text-white py-4 pl-6 nav-item cursor-pointer"
+                " flex items-center hover:opacity-100 text-white py-3 pl-6 nav-item cursor-pointer"
               )
             }
           >
@@ -62,7 +62,7 @@ export default function Navi() {
             end
             className={({ isActive, isPending }) =>
               [isActive ? "active-nav-link" : "", ""].join(
-                " flex items-center hover:opacity-100 text-white py-4 pl-6 nav-item cursor-pointer"
+                " flex items-center hover:opacity-100 text-white py-3 pl-6 nav-item cursor-pointer"
               )
             }
           >
@@ -71,7 +71,7 @@ export default function Navi() {
           </NavLink>
         </Dropdown>
         <Dropdown>
-          <div className="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item cursor-pointer">
+          <div className="flex items-center text-white opacity-75 hover:opacity-100 py-3 pl-6 nav-item cursor-pointer">
             {/* <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -92,7 +92,7 @@ export default function Navi() {
             end
             className={({ isActive, isPending }) =>
               [isActive ? "active-nav-link" : "", ""].join(
-                " flex items-center hover:opacity-100 text-white py-4 pl-6 nav-item cursor-pointer"
+                " flex items-center hover:opacity-100 text-white py-3 pl-6 nav-item cursor-pointer"
               )
             }
           >
@@ -101,7 +101,7 @@ export default function Navi() {
           </NavLink>
         </Dropdown>
         <Dropdown>
-          <div className="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item cursor-pointer">
+          <div className="flex items-center text-white opacity-75 hover:opacity-100 py-3 pl-6 nav-item cursor-pointer">
             <HumanIcon className="size-6 fill-white mr-3" />
             Danh sách tài khoản
           </div>
@@ -110,7 +110,7 @@ export default function Navi() {
             end
             className={({ isActive, isPending }) =>
               [isActive ? "active-nav-link" : "", ""].join(
-                " flex items-center hover:opacity-100 text-white py-4 pl-6 nav-item cursor-pointer"
+                " flex items-center hover:opacity-100 text-white py-3 pl-6 nav-item cursor-pointer"
               )
             }
           >
@@ -122,7 +122,7 @@ export default function Navi() {
             end
             className={({ isActive, isPending }) =>
               [isActive ? "active-nav-link" : "", ""].join(
-                " flex items-center hover:opacity-100 text-white py-4 pl-6 nav-item cursor-pointer"
+                " flex items-center hover:opacity-100 text-white py-3 pl-6 nav-item cursor-pointer"
               )
             }
           >
@@ -135,7 +135,7 @@ export default function Navi() {
             end
             className={({ isActive, isPending }) =>
               [isActive ? "active-nav-link" : "", ""].join(
-                " flex items-center hover:opacity-100 text-white py-4 pl-6 nav-item cursor-pointer"
+                " flex items-center hover:opacity-100 text-white py-3 pl-6 nav-item cursor-pointer"
               )
             }
           >
@@ -144,7 +144,7 @@ export default function Navi() {
           </NavLink>
         <a
           href="/auth/logout"
-          className="flex items-center text-white opacity-75 hover:opacity-100 py-4 pl-6 nav-item cursor-pointer"
+          className="flex items-center text-white opacity-75 hover:opacity-100 py-3 pl-6 nav-item cursor-pointer"
         >
           <i className="fas fa-calendar mr-3"></i>
           Đăng xuất
