@@ -8,6 +8,8 @@ import { useParams } from "react-router-dom";
 import { ImageIcon, MusicIcon } from "@/icon/Icon";
 import useSelectedArtist from "./Handlle";
 import DateReact from "../componnt/Date";
+import { Audio2 } from "@/page/component/Audio/Index";
+import Audio3 from "@/page/component/Audio/Audio3";
 
 type Genre = {
   Id: string;
@@ -80,7 +82,9 @@ export default function SongForm() {
         }
       });
     } else {
-      SetFish(true);
+      post("/s", { id: pa }, (v: any) => {
+        SetFish(true);
+      });
     }
   }
 
@@ -309,18 +313,16 @@ export default function SongForm() {
                   </>
                 ) : (
                   <>
-                    <audio
-                      src={`/s?id=${song.Id}`}
-                      controls
-                      onCanPlay={(e) => {
+                    <Audio3
+                      GetTIme={(v) => {
                         SetSong({
                           ...song,
-                          Duration: e.currentTarget.duration,
+                          Duration: v,
                         });
                       }}
-                    >
-                      <source src={`/s?id=${song.Id}`} />
-                    </audio>
+                      path={song.filePath}
+                      id={song.Id}
+                    />
                   </>
                 )}
               </label>

@@ -55,6 +55,31 @@ export default function CmdPage() {
           gửi
         </button>
       </div>
+      <div className="flex space-x-3 items-center">
+        <div>run</div>
+        <input
+          placeholder="vị trí tới"
+          onChange={(e) => {
+            let v = e.currentTarget.value;
+            SetData(v);
+          }}
+          value={data}
+          contentEditable
+          className="p-2 w-[400px] focus:outline-none border-2"
+        />
+        <button
+          onClick={() => {
+            AddStack(data);
+            post("/admin/cmd/", { cmd: `${data}` }, (v: any) => {
+              if (v) {
+                SetRes(v.data);
+              }
+            });
+          }}
+        >
+          gửi
+        </button>
+      </div>
       <div className="p-2 text-center text-[50px] font-bold">dữ liệu</div>
       <div className="flex space-x-4 my-4">
         {pos > 0 ? (

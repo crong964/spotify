@@ -128,7 +128,7 @@ class StreamingController {
     }
     StreamingMusicUpload2(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            let { id } = req.query;
+            let { id } = req.body;
             let filename = id;
             let filepath = (0, path_1.join)(process.cwd(), "public/music", filename);
             let s = yield ProcessVideo_1.default.FileType(filepath);
@@ -136,25 +136,22 @@ class StreamingController {
             let input = (0, path_1.join)(process.cwd(), "public", "music", filename);
             if (s.data.indexOf("mp3") >= 0) {
                 f = yield ProcessVideo_1.default.ConvertMp3ToMp4(input, (0, path_1.join)(process.cwd(), "public", "music", "mp4", filename));
-                (0, fs_1.unlinkSync)(input);
+                s.data = "mp3";
             }
             if (s.data.indexOf("mp4") >= 0) {
                 fs_1.default.cpSync(input, (0, path_1.join)(process.cwd(), "public", "music", "mp4", filename));
-                (0, fs_1.unlinkSync)(input);
+                s.data = "mp4";
                 f = true;
             }
+            (0, fs_1.unlinkSync)(input);
             let baseinput = (0, path_1.join)(process.cwd(), "public", "music", "mp4", filename);
             let fragmentoutput = (0, path_1.join)(process.cwd(), "public", "music", "Fragment", filename);
             let fram = yield ProcessVideo_1.default.Mp4Fragment(baseinput, fragmentoutput);
-            if (!fram.err) {
-                (0, fs_1.unlinkSync)(baseinput);
-            }
+            (0, fs_1.unlinkSync)(baseinput);
             let slipinput = (0, path_1.join)(process.cwd(), "public", "music", filename);
             fs_1.default.mkdirSync(slipinput);
             let slip = yield ProcessVideo_1.default.Mp4Split(fragmentoutput, (0, path_1.join)(slipinput, filename));
-            if (!slip.err) {
-                (0, fs_1.unlinkSync)(fragmentoutput);
-            }
+            (0, fs_1.unlinkSync)(fragmentoutput);
             let d = yield GoogleDrive_1.default.CreateFoder(filename);
             if (d.err || !d.id) {
                 res.redirect("/teststreaming?err=lỗi");
@@ -192,8 +189,10 @@ class StreamingController {
                 console.log(`${j}/${files.length}`);
             } while (j < files.length);
             pathslip = `${filename}_init.txt`;
-            GoogleDrive_1.default.CreateTxt(pathslip, idparent, JSON.stringify(ids));
-            res.redirect("/teststreaming");
+            yield GoogleDrive_1.default.CreateTxt(pathslip, idparent, JSON.stringify(ids));
+            res.json({
+                id: id
+            });
             fs_1.default.rmSync(slipinput, { recursive: true, force: true });
         });
     }

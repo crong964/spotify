@@ -21,11 +21,16 @@ class ProcessVideo {
     }
     async Mp4Fragment(input: string, out: string) {
         let s = await this.Command(`${mp4fragment} --fragment-duration 5000 ${input} ${out}`)
+        console.log(s.ok);
         return s
     }
 
     async Mp4Split(input: string, out: string) {
+        console.log(mp4split);
+        
         let s = await this.Command(`${mp4split} --init-segment ${out}.init --audio --media-segment ${out}-%llu.%llu.m4s ${input}`)
+        console.log(s.ok);
+        
         return s
     }
     FileType(path: string): Promise<{ err: string, data: string }> {

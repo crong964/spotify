@@ -32,12 +32,15 @@ class ProcessVideo {
     Mp4Fragment(input, out) {
         return __awaiter(this, void 0, void 0, function* () {
             let s = yield this.Command(`${mp4fragment} --fragment-duration 5000 ${input} ${out}`);
+            console.log(s.ok);
             return s;
         });
     }
     Mp4Split(input, out) {
         return __awaiter(this, void 0, void 0, function* () {
+            console.log(mp4split);
             let s = yield this.Command(`${mp4split} --init-segment ${out}.init --audio --media-segment ${out}-%llu.%llu.m4s ${input}`);
+            console.log(s.ok);
             return s;
         });
     }

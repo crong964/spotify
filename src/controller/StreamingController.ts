@@ -102,7 +102,9 @@ class StreamingController {
         read.pipe(res)
     }
     async StreamingMusicUpload2(req: Request, res: Response) {
-        let { id } = req.query as any
+        let { id } = req.body as any
+
+
         let filename = id
         let filepath = join(process.cwd(), "public/music", filename)
         let s = await processvideo.FileType(filepath)
@@ -112,31 +114,27 @@ class StreamingController {
         if (s.data.indexOf("mp3") >= 0) {
             f = await processvideo.ConvertMp3ToMp4(input,
                 join(process.cwd(), "public", "music", "mp4", filename))
-            unlinkSync(input)
+            s.data = "mp3"
 
         }
         if (s.data.indexOf("mp4") >= 0) {
             fs.cpSync(input, join(process.cwd(), "public", "music", "mp4", filename))
-            unlinkSync(input)
+            s.data = "mp4"
             f = true
 
         }
-
+        unlinkSync(input)
         let baseinput = join(process.cwd(), "public", "music", "mp4", filename)
         let fragmentoutput = join(process.cwd(), "public", "music", "Fragment", filename)
         let fram = await processvideo.Mp4Fragment(baseinput, fragmentoutput)
 
-        if (!fram.err) {
-            unlinkSync(baseinput)
-        }
+
+        unlinkSync(baseinput)
+
         let slipinput = join(process.cwd(), "public", "music", filename)
         fs.mkdirSync(slipinput)
         let slip = await processvideo.Mp4Split(fragmentoutput, join(slipinput, filename))
-
-        if (!slip.err) {
-            unlinkSync(fragmentoutput)
-        }
-
+        unlinkSync(fragmentoutput)
         let d = await googleDrive.CreateFoder(filename)
 
         if (d.err || !d.id) {
@@ -179,10 +177,12 @@ class StreamingController {
 
 
         pathslip = `${filename}_init.txt`
-        googleDrive.CreateTxt(pathslip, idparent, JSON.stringify(ids))
+        await googleDrive.CreateTxt(pathslip, idparent, JSON.stringify(ids))
 
 
-        res.redirect("/teststreaming")
+        res.json({
+            id: id
+        })
         fs.rmSync(slipinput, { recursive: true, force: true });
     }
     async Streaming(req: Request, res: Response) {
