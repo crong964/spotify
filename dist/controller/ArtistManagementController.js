@@ -108,9 +108,10 @@ class ArtistManagementController {
         return __awaiter(this, void 0, void 0, function* () {
             let start = req.body.start || 0;
             let count = (req.body.page || 1) * 10;
-            let ls = yield ArtistManagementController.artistManagement.GetAll(start, count);
+            let ls = yield Promise.all([ArtistManagementController.artistManagement.GetAll(start, count), ArtistManagementController.artistManagement.GetCount()]);
             res.json({
-                ls: ls,
+                ls: ls[0],
+                count: ls[1].count,
                 err: false
             });
         });

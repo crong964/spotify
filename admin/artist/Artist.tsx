@@ -18,11 +18,12 @@ type Toggle = {
 export default function Artist() {
   const navigate = useNavigate();
   const [ls, SetLs] = useState<Artist[]>([]);
-
+  const [count, SetCount] = useState(0);
   useEffect(() => {
     post("/admin/artist/", {}, (v: any) => {
       if (v && v.err != undefined && !v.err) {
         SetLs(v.ls);
+        SetCount(v.count);
       }
     });
   }, []);
@@ -132,6 +133,27 @@ export default function Artist() {
           })}
         </tbody>
       </table>
+      <div className="flex justify-center">
+       
+        {count > ls.length ? (
+          <>
+            <button
+              onClick={() => {
+                post("/admin/artist/", { start: ls.length }, (v: any) => {
+                  if (v && v.err != undefined && !v.err) {
+                    SetLs([...ls, ...v.ls]);
+                    SetCount(v.count);
+                  }
+                });
+              }}
+            >
+              Tiếp
+            </button>
+          </>
+        ) : (
+          <></>
+        )}
+      </div>
     </div>
   );
 }

@@ -29,6 +29,13 @@ class ArtistManagementService {
             return this.Setls(check)[0];
         });
     }
+    GetCount() {
+        return __awaiter(this, void 0, void 0, function* () {
+            var sql = `SELECT count(*) as count FROM artistmanagement`;
+            var check = yield Config_1.default.query(sql, []);
+            return check[0];
+        });
+    }
     GetAll(start, count) {
         return __awaiter(this, void 0, void 0, function* () {
             var sql = `SELECT * FROM artistmanagement a ,user u WHERE a.idArtist=u.id LIMIT ?,?`;

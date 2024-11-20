@@ -10,9 +10,10 @@ import { PlayListModel } from "../model/PlayListModel";
 import { v4 } from "uuid";
 
 class ArtistManagementController {
-    static user: UserService = userService
+    static user = userService
     static artistManagement = artistManagementService
-    static playlist: PlayListService = playListService
+    static playlist = playListService
+
     constructor() {
 
     }
@@ -112,9 +113,10 @@ class ArtistManagementController {
     async GetAll(req: Request, res: Response) {
         let start = req.body.start || 0
         let count = (req.body.page || 1) * 10
-        let ls = await ArtistManagementController.artistManagement.GetAll(start, count)
+        let ls = await Promise.all([ArtistManagementController.artistManagement.GetAll(start, count), ArtistManagementController.artistManagement.GetCount()])
         res.json({
-            ls: ls,
+            ls: ls[0],
+            count: ls[1].count,
             err: false
         })
     }

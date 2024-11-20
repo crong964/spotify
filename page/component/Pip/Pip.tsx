@@ -109,7 +109,8 @@ export default function Pip({ imagePath }: PiP) {
             backgroundPosition: "center",
             backgroundAttachment: "fixed",
             alignItems: " flex-end",
-            height: "100%",
+            height: "100vh",
+            width:"100vw"
           }}
         >
           <div

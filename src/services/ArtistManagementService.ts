@@ -12,6 +12,11 @@ class ArtistManagementService {
         var check = await Mysql2.query(sql, [idArtist])
         return this.Setls(check)[0]
     }
+    async GetCount() {
+        var sql = `SELECT count(*) as count FROM artistmanagement`
+        var check = await Mysql2.query(sql, []) as any
+        return check[0]
+    } 
     async GetAll(start: number, count: number) {
         var sql = `SELECT * FROM artistmanagement a ,user u WHERE a.idArtist=u.id LIMIT ?,?`
         var check = await Mysql2.query(sql, [start, count])
