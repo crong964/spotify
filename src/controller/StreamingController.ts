@@ -123,18 +123,33 @@ class StreamingController {
             f = true
 
         }
-        unlinkSync(input)
+        try {
+            unlinkSync(input)
+        } catch (error) {
+            console.log(error);
+
+        }
         let baseinput = join(process.cwd(), "public", "music", "mp4", filename)
         let fragmentoutput = join(process.cwd(), "public", "music", "Fragment", filename)
         let fram = await processvideo.Mp4Fragment(baseinput, fragmentoutput)
 
 
-        unlinkSync(baseinput)
+        try {
+            unlinkSync(baseinput)
+        } catch (error) {
+            console.log(error);
+        }
 
         let slipinput = join(process.cwd(), "public", "music", filename)
         fs.mkdirSync(slipinput)
         let slip = await processvideo.Mp4Split(fragmentoutput, join(slipinput, filename))
-        unlinkSync(fragmentoutput)
+
+        try {
+            unlinkSync(fragmentoutput)
+        } catch (error) {
+            console.log(error);
+
+        }
         let d = await googleDrive.CreateFoder(filename)
 
         if (d.err || !d.id) {
@@ -183,7 +198,12 @@ class StreamingController {
         res.json({
             id: id
         })
-        fs.rmSync(slipinput, { recursive: true, force: true });
+        try {
+            fs.rmSync(slipinput, { recursive: true, force: true });
+        } catch (error) {
+            console.log(error);
+
+        }
     }
     async Streaming(req: Request, res: Response) {
         res.setHeader("Cache-Control", "max-age=315360000, no-transform, must-revalidate")

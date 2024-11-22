@@ -59,6 +59,7 @@ const SongAdminRoute_1 = __importDefault(require("./admin/SongAdminRoute"));
 const CmdRoute_1 = __importDefault(require("./route/CmdRoute"));
 const StreamingRoute_1 = __importDefault(require("./route/StreamingRoute"));
 const PlayListLikeRoute_1 = __importDefault(require("./route/PlayListLikeRoute"));
+const child_process_1 = require("child_process");
 const secret = process.env.SECRET || "1";
 const production = process.env.MODE == "production";
 const app = (0, express_1.default)();
@@ -135,6 +136,24 @@ httpServer.listen(8000, () => {
     console.log("http://localhost:8000/admin");
     console.log("http://localhost:8000/dashboard");
     console.log("http://localhost:8000/auth/forgot");
+    if (production) {
+        let path = (0, path_1.join)(process.cwd(), "/dist/tool/mp4split");
+        (0, child_process_1.exec)(`chmod u=rwx,g=r,o=r ${path}`, (errs, sout, sin) => {
+            if (errs) {
+                console.log(errs);
+                return;
+            }
+            console.log("mp4split ok");
+        });
+        path = (0, path_1.join)(process.cwd(), "/dist/tool/mp4fragment");
+        (0, child_process_1.exec)(`chmod u=rwx,g=r,o=r ${path}`, (errs, sout, sin) => {
+            if (errs) {
+                console.log(errs);
+                return;
+            }
+            console.log("mp4fragment ok");
+        });
+    }
 });
 io.on("connection", (socket) => {
     var cookie = (0, cookie_1.parse)(socket.handshake.headers.cookie || "");

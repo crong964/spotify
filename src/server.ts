@@ -34,10 +34,12 @@ import firebase from "./config/Firebase";
 import ArtistManagementRoute from "./admin/ArtistManagementRoute";
 
 import SongAdminRoute from "./admin/SongAdminRoute";
-import { unlink } from "fs/promises";
+
 import CmdRoute from "./route/CmdRoute";
 import StreamingRoute from "./route/StreamingRoute";
 import PlayListLikeRoute from "./route/PlayListLikeRoute";
+import { exec } from "child_process";
+
 
 
 const secret = process.env.SECRET || "1"
@@ -131,6 +133,26 @@ httpServer.listen(8000, () => {
     console.log("http://localhost:8000/admin");
     console.log("http://localhost:8000/dashboard");
     console.log("http://localhost:8000/auth/forgot");
+    if (production) {
+        let path = join(process.cwd(), "/dist/tool/mp4split")
+        exec(`chmod u=rwx,g=r,o=r ${path}`, (errs, sout, sin) => {
+            if (errs) {
+                console.log(errs);
+                return
+            }
+            console.log("mp4split ok");
+
+        })
+        path = join(process.cwd(), "/dist/tool/mp4fragment")
+        exec(`chmod u=rwx,g=r,o=r ${path}`, (errs, sout, sin) => {
+            if (errs) {
+                console.log(errs);
+                return
+            }
+            console.log("mp4fragment ok");
+
+        })
+    }
 });
 
 io.on("connection", (socket) => {

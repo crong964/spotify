@@ -143,15 +143,30 @@ class StreamingController {
                 s.data = "mp4";
                 f = true;
             }
-            (0, fs_1.unlinkSync)(input);
+            try {
+                (0, fs_1.unlinkSync)(input);
+            }
+            catch (error) {
+                console.log(error);
+            }
             let baseinput = (0, path_1.join)(process.cwd(), "public", "music", "mp4", filename);
             let fragmentoutput = (0, path_1.join)(process.cwd(), "public", "music", "Fragment", filename);
             let fram = yield ProcessVideo_1.default.Mp4Fragment(baseinput, fragmentoutput);
-            (0, fs_1.unlinkSync)(baseinput);
+            try {
+                (0, fs_1.unlinkSync)(baseinput);
+            }
+            catch (error) {
+                console.log(error);
+            }
             let slipinput = (0, path_1.join)(process.cwd(), "public", "music", filename);
             fs_1.default.mkdirSync(slipinput);
             let slip = yield ProcessVideo_1.default.Mp4Split(fragmentoutput, (0, path_1.join)(slipinput, filename));
-            (0, fs_1.unlinkSync)(fragmentoutput);
+            try {
+                (0, fs_1.unlinkSync)(fragmentoutput);
+            }
+            catch (error) {
+                console.log(error);
+            }
             let d = yield GoogleDrive_1.default.CreateFoder(filename);
             if (d.err || !d.id) {
                 res.redirect("/teststreaming?err=lỗi");
@@ -193,7 +208,12 @@ class StreamingController {
             res.json({
                 id: id
             });
-            fs_1.default.rmSync(slipinput, { recursive: true, force: true });
+            try {
+                fs_1.default.rmSync(slipinput, { recursive: true, force: true });
+            }
+            catch (error) {
+                console.log(error);
+            }
         });
     }
     Streaming(req, res) {
