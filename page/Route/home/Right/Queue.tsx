@@ -132,7 +132,12 @@ export function SongQueueInplayList(p: MenberQueue) {
     <>
       {p.cur == p.type ? (
         <>
-          <div className="px-2">Đang phát </div>
+          <div className="px-2">
+            Đang phát
+            <span className="text-xs text-[#818181] mx-1">
+              {mark}/{lsSong.length}
+            </span>
+          </div>
           {lsSong[mark] == undefined ? (
             <></>
           ) : (
@@ -148,7 +153,7 @@ export function SongQueueInplayList(p: MenberQueue) {
               key={lsSong[mark].Id}
             ></Song>
           )}
-          <div className="px-2 py-3">Tiếp theo </div>
+          <div className="px-2 py-1">Tiếp theo</div>
           {lsSong
             .filter((v, i) => {
               return mark < i;
