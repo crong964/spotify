@@ -93,14 +93,36 @@ export function SongInPlayList(v: SongInPlayList) {
           if (typeDevice == "pc") {
             return;
           }
-          dispatch(SetSongs(v as any));
+          post(
+            "/song/get",
+            {
+              idsong: v.Id,
+            },
+            (v: any) => {
+              if (v && !v.err) {
+                dispatch(SetSongs([v.song]));
+                localStorage.setItem("song", JSON.stringify(v.song));
+              }
+            }
+          );
           dispatch(SetAutoPlay(true));
         }}
         onDoubleClick={() => {
           if (typeDevice == "mobile") {
             return;
           }
-          dispatch(PlaySong(v.Id));
+          post(
+            "/song/get",
+            {
+              idsong: v.Id,
+            },
+            (v: any) => {
+              if (v && !v.err) {
+                dispatch(SetSongs([v.song]));
+                localStorage.setItem("song", JSON.stringify(v.song));
+              }
+            }
+          );
           dispatch(SetAutoPlay(true));
         }}
       >

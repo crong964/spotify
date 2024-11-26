@@ -57,7 +57,7 @@ export default function PlayingBar() {
     temp = ParseJson(localStorage.getItem("song") || "{}");
   }
 
-  const RandomNext = useCallback((n: number) => {
+  const RandomNext = (n: number) => {
     if (mark + n >= 0 && mark + n < lsSong.length) {
       dispatch(NextSong(n));
       dispatch(PlaySong(lsSong[mark].Id));
@@ -71,26 +71,8 @@ export default function PlayingBar() {
       localStorage.setItem("song", JSON.stringify(v.song));
       dispatch(SetSongs([v.song]));
     });
-  }, []);
+  };
 
-  useEffect(() => {
-    if (lsSong[mark]?.Id == idsong) {
-      return;
-    }
-    post(
-      "/song/get",
-      {
-        idsong: idsong,
-      },
-      (v: any) => {
-        if (v && !v.err) {
-          dispatch(SetSongs([v.song]));
-          dispatch(SetPlaying({ id: "", page: "" }));
-          localStorage.setItem("song", JSON.stringify(v.song));
-        }
-      }
-    );
-  }, [idsong]);
   useEffect(() => {
     VolumeAudio(volume);
   }, [volume]);
