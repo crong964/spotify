@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  Suspense,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 const Song = React.lazy(() => import("@/page/component/Song"));
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -182,7 +188,13 @@ export default function PlayingBar() {
           title="Mở trình duyệt thu nhỏ"
         >
           <PiPIcon className="fill-white size-5 hover:fill-green-600" />
-          {pip ? <Pip imagePath={lsSong[mark]?.SongImage}></Pip> : <></>}
+          {pip ? (
+            <Suspense fallback={<></>}>
+              <Pip imagePath={lsSong[mark]?.SongImage} />
+            </Suspense>
+          ) : (
+            <></>
+          )}
         </button>
       </div>
     </div>

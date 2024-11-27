@@ -72,13 +72,13 @@ const audioSlice = createSlice({
       state.mark = state.mark + 1;
       if (state.mark == state.lsSong.length) {
         state.mark = 0;
-        localStorage.setItem("mark", JSON.stringify(state.mark));
       }
       if (state.lsSong[state.mark]) {
         localStorage.setItem("song", JSON.stringify(state.lsSong[state.mark]));
         let s = state.lsSong[state.mark];
         iHelp.Title(`${s.SongName} • ${s.Singer}`);
       }
+      localStorage.setItem("mark", JSON.stringify(state.mark));
     },
     RandomSong: (state) => {
       state.random = !state.random;
