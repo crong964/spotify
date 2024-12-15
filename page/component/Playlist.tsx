@@ -45,7 +45,7 @@ export function PlayList(d: PlayList) {
             src={d.ImagePath}
             className={`${
               d.Type == "artist" ? "rounded-full" : " rounded-2xl"
-            }`.concat(" size-[150px] sm:size-full")}
+            }`.concat(" size-[150px] sm:size-[180px]")}
             alt=""
             srcSet=""
           />
@@ -59,7 +59,7 @@ export function PlayList(d: PlayList) {
           <></>
         )}
       </div>
-      <div className="text-[16px] line-clamp-1 w-[150px]">{d.PlayListName}</div>
+      <div className="text-[16px] mt-2 line-clamp-1 w-[150px]">{d.PlayListName}</div>
     </div>
   );
 }

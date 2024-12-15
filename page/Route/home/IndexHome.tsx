@@ -60,13 +60,20 @@ export default function Index() {
   const playlistmobile = useSelector(
     (state: RootHome) => state.audioroot.playlistmobile
   );
-  const screem = () => {
+  const screem = async () => {
     if (window.innerWidth > 900) {
       dispatch(SetDeviceType("pc"));
     } else {
       dispatch(SetDeviceType("mobile"));
     }
+    try {
+      let wakelock = await navigator.wakeLock.request("screen");
+      wakelock.addEventListener("release", () => {
+        console.log("Wake Lock was released");
+      });
+    } catch (error) {}
   };
+
   const dispatch = useDispatch();
   useEffect(() => {
     function res(v: any) {
@@ -74,6 +81,7 @@ export default function Index() {
     }
     screem();
     socket.on("mess", res);
+
     return () => {
       socket.off("mess", res);
     };
