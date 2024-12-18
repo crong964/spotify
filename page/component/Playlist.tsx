@@ -22,9 +22,13 @@ export function PlayList(d: PlayList) {
   const stopAudio = useSelector((state: RootHome) => state.audioroot.stop);
   const dispatch = useDispatch();
   return (
-    <div className=" overflow-hidden bg-black hover:bg-[#1A1A1A] p-1 sm:p-3 rounded-lg">
+    <div className=" relative overflow-hidden bg-black hover:bg-[#1A1A1A] p-1 sm:p-3 rounded-lg">
       <div
-        className="cursor-pointer relative"
+        className={`${
+          d.Type == "artist" ? "rounded-[50%]" : " rounded-2xl"
+        }`.concat(
+          " cursor-pointer relative w-full pt-[180px] overflow-hidden "
+        )}
         onMouseEnter={() => {
           SetShow(true);
         }}
@@ -43,23 +47,22 @@ export function PlayList(d: PlayList) {
               );
             }}
             src={d.ImagePath}
-            className={`${
-              d.Type == "artist" ? "rounded-full" : " rounded-2xl"
-            }`.concat(" size-[150px] sm:size-[180px]")}
+            className="size-full absolute top-0 left-0 z-10"
             alt=""
             srcSet=""
           />
         </Link>
-        {show ||
-        (playing.id == d.id && playing.page == d.Type && !stopAudio) ? (
-          <div className="absolute bottom-0 right-0">
-            <PlayButtom id={d.id} page={d.Type} />
-          </div>
-        ) : (
-          <></>
-        )}
       </div>
-      <div className="text-[16px] mt-2 line-clamp-1 w-[150px]">{d.PlayListName}</div>
+      <div className="text-[16px] mt-2 line-clamp-1 w-[150px] ">
+        {d.PlayListName}
+      </div>
+      {show || (playing.id == d.id && playing.page == d.Type && !stopAudio) ? (
+        <div className="absolute  top-[180px] right-0 z-[11]">
+          <PlayButtom id={d.id} page={d.Type} />
+        </div>
+      ) : (
+        <></>
+      )}
     </div>
   );
 }
