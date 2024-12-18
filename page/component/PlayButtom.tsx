@@ -46,7 +46,7 @@ export default function PlayButtom(p: Playing) {
       onClick={() => {
         PlayingPlaylist();
       }}
-      className="size-12 rounded-full hover:bg-[#1ED760] bg-[#1FDC62] flex justify-center items-center"
+      className="size-12 cursor-pointer rounded-full hover:bg-[#1ED760] bg-[#1FDC62] flex justify-center items-center"
     >
       {stopAudio || playing.id != p.id || p.page != playing.page ? (
         <svg

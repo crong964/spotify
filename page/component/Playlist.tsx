@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import PlayButtom from "./PlayButtom";
+const PlayButtom = React.lazy(() => import("@/page/component/PlayButtom"));
 import { useDispatch, useSelector } from "react-redux";
 import { post } from "@/page/config/req";
 import { Link } from "react-router-dom";
@@ -22,19 +22,21 @@ export function PlayList(d: PlayList) {
   const stopAudio = useSelector((state: RootHome) => state.audioroot.stop);
   const dispatch = useDispatch();
   return (
-    <div className=" relative overflow-hidden bg-black hover:bg-[#1A1A1A] p-1 sm:p-3 rounded-lg">
+    <div
+      onMouseEnter={() => {
+        SetShow(true);
+      }}
+      onMouseLeave={() => {
+        SetShow(false);
+      }}
+      className=" relative cursor-pointer overflow-hidden bg-black hover:bg-[#1A1A1A] p-1 sm:p-3 rounded-lg"
+    >
       <div
         className={`${
           d.Type == "artist" ? "rounded-[50%]" : " rounded-2xl"
         }`.concat(
           " cursor-pointer relative w-full pt-[180px] overflow-hidden "
         )}
-        onMouseEnter={() => {
-          SetShow(true);
-        }}
-        onMouseLeave={() => {
-          SetShow(false);
-        }}
       >
         <Link to={`/${d.Type}/${d.id}`}>
           <img
@@ -57,7 +59,7 @@ export function PlayList(d: PlayList) {
         {d.PlayListName}
       </div>
       {show || (playing.id == d.id && playing.page == d.Type && !stopAudio) ? (
-        <div className="absolute  top-[180px] right-0 z-[11]">
+        <div className="absolute top-[130px] right-0 z-[11]">
           <PlayButtom id={d.id} page={d.Type} />
         </div>
       ) : (

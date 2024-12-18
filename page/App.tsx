@@ -24,12 +24,24 @@ import {
   SignIn,
   Signup,
 } from "@/page/Route/auth/Index";
-import SingleArtistPage from "./Route/home/SingleArtistPage/SingleArtistPage";
-import PlaylistPage from "./Route/home/PlayListPage/PlayListPage";
-import LikedSongListPage from "./Route/home/LikedSongListPage/LikedSongListPage";
-import SearchPage from "./Route/home/SearchPage/SearchPage";
-import ArtistsListPage from "./Route/home/ArtistsListPage/ArtistsListPage";
-import RecentList from "./Route/home/Right/RecentPlaylist";
+const SingleArtistPage = React.lazy(
+  () => import("./Route/home/SingleArtistPage/SingleArtistPage")
+);
+const PlaylistPage = React.lazy(
+  () => import("./Route/home/PlayListPage/PlayListPage")
+);
+const LikedSongListPage = React.lazy(
+  () => import("./Route/home/LikedSongListPage/LikedSongListPage")
+);
+const SearchPage = React.lazy(
+  () => import("./Route/home/SearchPage/SearchPage")
+);
+const ArtistsListPage = React.lazy(
+  () => import("./Route/home/ArtistsListPage/ArtistsListPage")
+);
+const RecentList = React.lazy(
+  () => import("./Route/home/Right/RecentPlaylist")
+);
 const IdGenre = React.lazy(() => import("./Route/home/GenrePage/IdGenre"));
 const Genre = React.lazy(() => import("./Route/home/GenrePage/GenrePage"));
 //@ts-ignore
