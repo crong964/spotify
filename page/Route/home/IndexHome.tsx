@@ -106,7 +106,7 @@ export default function Index() {
             <></>
           )}
         </nav>
-        <div title="center" className=" w-full  space-y-1">
+        <div title="center" className="w-full sm:w-[calc(100%-88px)]  space-y-1">
           <div className="relative min-h-max max-h-[10%]">
             <Header></Header>
           </div>

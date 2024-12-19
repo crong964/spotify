@@ -38,13 +38,9 @@ export default function ArtistsListPage() {
         console.log("s");
       }}
     >
-      <div className="text-3xl px-4 py-2 z-10 sticky top-0 left-0 bg-[#212121]">Danh sách nghế sĩ</div>
+      <div className="text-3xl px-4 py-2 z-10 sticky top-0 left-0 bg-black">Danh sách nghệ sĩ</div>
       <div
-        className={`${
-          Right == ""
-            ? "w-full flex justify-center flex-wrap sm:grid sm:grid-cols-7 "
-            : "w-full grid grid-cols-5"
-        }`}
+        className="w-full flex flex-wrap"
       >
         {children}
       </div>

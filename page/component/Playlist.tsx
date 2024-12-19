@@ -29,7 +29,7 @@ export function PlayList(d: PlayList) {
       onMouseLeave={() => {
         SetShow(false);
       }}
-      className=" relative cursor-pointer overflow-hidden bg-black hover:bg-[#1A1A1A] p-1 sm:p-3 rounded-lg"
+      className="w-[190px] relative cursor-pointer overflow-hidden bg-black hover:bg-[#1A1A1A] p-1 sm:p-3 rounded-lg"
     >
       <div
         className={`${
@@ -49,7 +49,7 @@ export function PlayList(d: PlayList) {
               );
             }}
             src={d.ImagePath}
-            className="size-full absolute top-0 left-0 z-10"
+            className="size-full absolute top-0 left-0 z-1"
             alt=""
             srcSet=""
           />
@@ -59,7 +59,7 @@ export function PlayList(d: PlayList) {
         {d.PlayListName}
       </div>
       {show || (playing.id == d.id && playing.page == d.Type && !stopAudio) ? (
-        <div className="absolute top-[130px] right-0 z-[11]">
+        <div className="absolute top-[130px] right-0 z-[2]">
           <PlayButtom id={d.id} page={d.Type} />
         </div>
       ) : (
@@ -74,6 +74,7 @@ interface PlayLists {
   link?: string;
 }
 export default function PlayLists(p: PlayLists) {
+  const Right = useSelector((s: RootHome) => s.rootHome.Right);
   var children = p.d
     .filter((v, i) => {
       return i < 7;
@@ -90,12 +91,12 @@ export default function PlayLists(p: PlayLists) {
         />
       );
     });
-  const Right = useSelector((s: RootHome) => s.rootHome.Right);
+
   return (
     <>
       {children.length > 0 ? (
         <>
-          <div className="">
+          <div className="w-full">
             <div className="w-full flex justify-between items-center p-2">
               <Link
                 to={p.link || "#"}
@@ -115,11 +116,7 @@ export default function PlayLists(p: PlayLists) {
               )}
             </div>
             <div className="w-full overflow-auto sm:overflow-hidden">
-              <div
-                className={`flex w-max sm:w-full overflow-x-scroll sm:grid gap-2 grid-cols-7`}
-              >
-                {children}
-              </div>
+              <div className={`flex w-max overflow-x-scroll `}>{children}</div>
             </div>
           </div>
         </>
