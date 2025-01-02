@@ -270,14 +270,12 @@ class StreamingController {
         let id = req.cookies.id
         let read: GaxiosPromise<internal.Readable>
         if (segment == "1") {
-            let sign = jwt.sign({ path: idSong, time: 0, level: 0 }, StreamingController.KEYTREAMING, { expiresIn: 60 * 9 })
+            let sign = jwt.sign({ idSong: idSong, time: 0, level: 0 }, StreamingController.KEYTREAMING, { expiresIn: 60 * 9 })
             res.cookie("sign", sign)
         }
         read = StreamingController.ggdrive.DownloadStreamFile(path)
         if (segment == "0") {
-
             let lastSong = await recentSongService.GetLastRecentSong(id)
-
             if (req.cookies.id && (lastSong == undefined || lastSong.Id != idSong)) {
                 recentSongService.Add(id, idSong)
             }
@@ -286,12 +284,15 @@ class StreamingController {
                 try {
                     let sign = req.cookies.sign || ""
                     let oldign = jwt.verify(sign, StreamingController.KEYTREAMING) as jwt.JwtPayload
+                    console.log(`oldign ${JSON.stringify(oldign)}`);
+                    
                     if (oldign.level < segment) {
                         let newtime = parseInt(oldign.time + "") + 1
                         if (newtime == 4) {
-                            songService.IncreaseView(path)
+                            songService.IncreaseView(idSong)
                         } else {
-                            let newsign = jwt.sign({ path: path, time: newtime, level: segment }, StreamingController.KEYTREAMING, { expiresIn: 60 * 9 })
+                            let newsign = jwt.sign({ idSong: idSong, time: newtime, level: segment }, StreamingController.KEYTREAMING, { expiresIn: 60 * 9 })
+                            console.log(`newsign ${JSON.stringify({ idSong: idSong, time: newtime, level: segment })}`);
                             res.cookie("sign", newsign)
                         }
                     }
@@ -299,12 +300,11 @@ class StreamingController {
                 }
             }
         }
-
         try {
             let r = await read
             r.data.pipe(res)
         } catch (error) {
-            console.log(__filename);
+            console.log(`Streaming2 ${__filename}`);
             res.end()
         }
     }

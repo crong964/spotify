@@ -135,7 +135,7 @@ export function SongQueueInplayList(p: MenberQueue) {
           <div className="px-2">
             Đang phát
             <span className="text-xs text-[#818181] mx-1">
-              {mark}/{lsSong.length}
+              {mark + 1}/{lsSong.length}
             </span>
           </div>
           {lsSong[mark] == undefined ? (
@@ -151,7 +151,7 @@ export function SongQueueInplayList(p: MenberQueue) {
               singer={lsSong[mark].Singer}
               Id={lsSong[mark].Id}
               key={lsSong[mark].Id}
-            ></Song>
+            />
           )}
           <div className="px-2 py-1">Tiếp theo</div>
           {lsSong

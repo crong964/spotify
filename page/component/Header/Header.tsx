@@ -1,7 +1,6 @@
 import React, { Suspense, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
- 
   IsLogin,
   NaviPage,
   NaviRight,
@@ -13,9 +12,7 @@ import {
 
 import { get, post } from "@/page/config/req";
 
-
 const PlayButtom = React.lazy(() => import("@/page/component/PlayButtom"));
-
 
 import { BackIcon, ForwardIcon, MessIcon } from "@/icon/Icon";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -29,6 +26,7 @@ interface Infor {
 }
 export default function Header() {
   const curName = useSelector((state: RootHome) => state.rootHome.curName);
+  const right = useSelector((state: RootHome) => state.rootHome.Right);
   const [search, SetSearch] = useState("");
   const topbarcontent = useSelector(
     (state: RootHome) => state.rootHome.topbarcontent
@@ -67,7 +65,7 @@ export default function Header() {
           {topbarcontent ? (
             <button className="flex items-center text-white text-2xl font-bold space-x-2">
               <PlayButtom id="" page="" />
-              <div className="">{curName}</div>
+              <div className="">f</div>
             </button>
           ) : (
             <></>
@@ -134,12 +132,16 @@ export default function Header() {
                     Cài đặt ứng dụng
                   </div>
                   <div
-                    className=""
+                    className="cursor-pointer"
                     onClick={() => {
                       dispatch(NaviRight("Mess"));
                     }}
                   >
-                    <MessIcon className="fill-white hover:fill-[#1FDF64]"></MessIcon>
+                    {right == "Mess" ? (
+                       <MessIcon className="fill-[#1FDF64]" />
+                    ) : (
+                      <MessIcon className="fill-white hover:fill-[#1FDF64]" />
+                    )}
                   </div>
                   <button
                     onBlur={() => {

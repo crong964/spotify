@@ -1,7 +1,6 @@
 import React, { Suspense, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
- 
   IsLogin,
   NaviPage,
   NaviRight,
@@ -13,12 +12,10 @@ import {
 
 import { get, post } from "@/page/config/req";
 
-
 const PlayButtom = React.lazy(() => import("@/page/component/PlayButtom"));
 
-
 import { BackIcon, ForwardIcon, MessIcon } from "@/icon/Icon";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { GenreInHome } from "../IndexHome";
 import NotificationPage from "@/page/component/Header/NotificationList";
 
@@ -38,8 +35,18 @@ export default function Header() {
   const navigate = useNavigate();
   const update = useSelector((state: RootHome) => state.rootHome.update);
   const isLogin = useSelector((state: RootHome) => state.rootHome.isLogin);
+  const right = useSelector((state: RootHome) => state.rootHome.Right);
   const dispatch = useDispatch();
   const { pathname } = useLocation();
+  let segpath = (pathname: string) => {
+    if (pathname.indexOf("artist") >= 0) {
+      return "artist";
+    }
+    if (pathname.indexOf("playlist")) {
+      return "playlist";
+    }
+    return "";
+  };
 
   const [infor, SetInfor] = useState<Infor>({
     Name: "",
@@ -57,16 +64,16 @@ export default function Header() {
   }, [update]);
 
   useEffect(() => {}, [search]);
-
+  const { id } = useParams();
   return (
-    <div className="h-max w-full sticky bg-black top-0 z-10 px-3 p-0 sm:py-2 space-y-2">
+    <div className="h-max w-full rounded-tl-lg sticky bg-gradient-to-r from-red-500 via-pink-400 to-black top-0 z-10 px-3 p-0 sm:py-2 space-y-2">
       <div className="flex items-center space-x-2 mx-0 sm:mx-3 sm:justify-between">
         <div className="flex space-x-3  items-center">
           <Back />
           <Forward />
           {topbarcontent ? (
             <button className="flex items-center text-white text-2xl font-bold space-x-2">
-              <PlayButtom id="" page="" />
+              <PlayButtom id={id || ""} page={segpath(pathname)} />
               <div className="">{curName}</div>
             </button>
           ) : (
@@ -139,7 +146,11 @@ export default function Header() {
                       dispatch(NaviRight("Mess"));
                     }}
                   >
-                    <MessIcon className="fill-white hover:fill-[#1FDF64]"></MessIcon>
+                    {right == "Mess" ? (
+                      <MessIcon className="fill-[#1FDF64]" />
+                    ) : (
+                      <MessIcon className="fill-white hover:fill-[#1FDF64]" />
+                    )}
                   </div>
                   <button
                     onBlur={() => {
@@ -173,7 +184,7 @@ export default function Header() {
               </>
             ) : (
               <>
-                <div className="flex  items-center space-x-3">
+                <div className="flex  items-center space-x-3 pt-1">
                   <Link
                     to={"/auth/Signup"}
                     className="font-bold hover:text-blue-500 px-3 py-1 rounded-2xl"

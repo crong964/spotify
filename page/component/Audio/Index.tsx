@@ -2,7 +2,7 @@ import React from "react";
 
 export const ModPlay = React.lazy(
   () => import("@/page/component/Audio/ModPlay")
-);
+); 
 export const ButtonRandomPlay = React.lazy(
   () => import("@/page/component/Audio/ButtonRandomPlay")
 );

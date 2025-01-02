@@ -43,12 +43,12 @@ interface SongI {
   filePath: string;
 }
 export default function PlayingBar() {
-  const stop = useSelector((state: RootHome) => state.audioroot.stop);
+  const stopMobie = useSelector((state: RootHome) => state.audioroot.stop);
   const isLogin = useSelector((state: RootHome) => state.rootHome.isLogin);
   const lsSong = useSelector((state: RootHome) => state.audioroot.lsSong);
-  const idsong = useSelector((state: RootHome) => state.rootHome.idSong);
   const mark = useSelector((state: RootHome) => state.audioroot.mark);
   const pip = useSelector((state: RootHome) => state.audioroot.pip);
+  const right = useSelector((state: RootHome) => state.rootHome.Right);
   const devicetype = useSelector(
     (state: RootHome) => state.rootHome.devicetype
   );
@@ -115,10 +115,10 @@ export default function PlayingBar() {
             }
           }}
         >
-          {stop ? (
-            <PlaySoundIcon className="fill-white size-8" />
+          {stopMobie ? (
+            <PlaySoundIcon className="fill-black bg-white rounded-full size-9" />
           ) : (
-            <PauseSoundIcon className="fill-white size-8" />
+            <PauseSoundIcon className="fill-black bg-white rounded-full size-9" />
           )}
         </button>
       </div>
@@ -136,14 +136,22 @@ export default function PlayingBar() {
                 dispatch(NaviRight("Discuss"));
               }}
             >
-              <DiscussIcon className="fill-white size-4 hover:fill-[#1FDF64]" />
+              {right == "Discuss" ? (
+                <DiscussIcon className="size-4 fill-[#1FDF64]" />
+              ) : (
+                <DiscussIcon className="fill-white size-4 hover:fill-[#1FDF64]" />
+              )}
             </button>
             <button
               onClick={() => {
                 dispatch(NaviRight("Queue"));
               }}
             >
-              <QueueIcon className="fill-white size-4" />
+              {right == "Queue" ? (
+                <QueueIcon className="size-4 fill-[#1FDF64]" />
+              ) : (
+                <QueueIcon className="fill-white size-4 hover:fill-[#1FDF64]" />
+              )}
             </button>
           </>
         ) : (

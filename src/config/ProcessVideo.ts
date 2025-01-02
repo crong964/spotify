@@ -44,7 +44,7 @@ class ProcessVideo {
     ConvertMp3ToMp4(input: string, output: string): Promise<boolean> {
         return new Promise((res, rej) => {
             ffmpeg(input)
-                .addOptions("-map", "0:0", "-c:a", "aac", "-c:v:0", "copy")
+                .addOptions("-map", "0:0", "-c:a", "aac", "-c:v:0", "copy","-ab","320k")
                 .outputFormat("mp4")
                 .saveToFile(output)
                 .on('end', (stdout, stderr) => {

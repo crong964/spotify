@@ -29,13 +29,13 @@ export function PlayList(d: PlayList) {
       onMouseLeave={() => {
         SetShow(false);
       }}
-      className="w-[190px] relative cursor-pointer overflow-hidden bg-black hover:bg-[#1A1A1A] p-1 sm:p-3 rounded-lg"
+      className=" relative cursor-pointer bg-black hover:bg-[#1A1A1A] p-1 sm:p-2"
     >
       <div
         className={`${
-          d.Type == "artist" ? "rounded-[50%]" : " rounded-2xl"
+          d.Type == "artist" ? "rounded-full" : " rounded-2xl"
         }`.concat(
-          " cursor-pointer relative w-full pt-[180px] overflow-hidden "
+          " cursor-pointer relative  size-[calc(1987px/11)] overflow-hidden "
         )}
       >
         <Link to={`/${d.Type}/${d.id}`}>
@@ -74,7 +74,6 @@ interface PlayLists {
   link?: string;
 }
 export default function PlayLists(p: PlayLists) {
-  const Right = useSelector((s: RootHome) => s.rootHome.Right);
   var children = p.d
     .filter((v, i) => {
       return i < 7;

@@ -25,7 +25,13 @@ import { MobileSearchButtom } from "./NaviHome/SearchButtom";
 
 import { NaviHomeMobile } from "./NaviHome/NaviHome";
 
-import { Outlet, Route, Routes, useRouteError } from "react-router-dom";
+import {
+  Outlet,
+  Route,
+  Routes,
+  useLocation,
+  useRouteError,
+} from "react-router-dom";
 import Home from "./NaviHome/Home";
 import Right from "./Right/Right";
 import { PlayingBar } from "@/page/component/Audio/Index";
@@ -69,7 +75,7 @@ export default function Index() {
     try {
       let wakelock = await navigator.wakeLock.request("screen");
       wakelock.addEventListener("release", () => {
-        console.log("Wake Lock was released");
+       
       });
     } catch (error) {}
   };
@@ -88,8 +94,8 @@ export default function Index() {
   }, []);
 
   return (
-    <div className="h-full w-full relative p-0 m-0 bg-black CircularSpUIv3T-Book overflow-hidden">
-      <main title="main" className="flex h-full sm:h-[90%] space-x-1 relative">
+    <div className="h-full w-full relative p-0 m-0 bg-black overflow-hidden font-normal">
+      <main title="main" className="flex h-full  sm:h-[90%] space-x-1 relative">
         <nav title="left" className="w-[80px] hidden sm:block px-1 space-y-1">
           <div className="h-[20%] bg-[#121212] rounded-lg p-0 sm:py-2">
             <div className="h-full  ">
@@ -106,11 +112,14 @@ export default function Index() {
             <></>
           )}
         </nav>
-        <div title="center" className="w-full sm:w-[calc(100%-88px)]  space-y-1">
-          <div className="relative min-h-max max-h-[10%]">
+        <div
+          title="center"
+          className="w-full sm:w-[calc(100%-88px)] space-y-1"
+        >
+          <div className="relative min-h-max max-h-[10%] ">
             <Header></Header>
           </div>
-          <div className="flex h-[90%] w-full ">
+          <div className="flex h-[90%] w-full px-3">
             <CenterShare />
             <Right />
           </div>
@@ -155,7 +164,7 @@ export default function Index() {
 
 export function GenreInHome() {
   return (
-    <div className="text-white flex justify-start space-x-1 items-center sticky top-0 z-[2] bg-black p-2">
+    <div className="text-white flex justify-start space-x-1 items-center sticky top-0 z-[2] sm:bg-black p-2">
       <button className="px-2 py-1 rounded-2xl bg-[#1FDC62] text-black">
         Tất cả
       </button>
@@ -170,6 +179,7 @@ function CenterShare() {
   const topbarcontent = useSelector(
     (state: RootHome) => state.rootHome.topbarcontent
   );
+  const { pathname } = useLocation();
   return (
     <div
       onScroll={(e) => {
@@ -179,17 +189,18 @@ function CenterShare() {
           return;
         }
         if (
-          (page == "artist" || page == "playlist") &&
+          (pathname.indexOf("/artist") >= 0 ||
+            pathname.indexOf("/playlist") >= 0) &&
           e.currentTarget.scrollTop >= 320 &&
           !topbarcontent
         ) {
           dispatch(ShowTopbarContent(true));
         }
       }}
-      className="flex-1 h-full overflow-y-scroll"
+      className="flex-1 h-full overflow-y-scroll relative"
     >
-      {page == "home" ? (
-        <div className="hidden sm:inline-block ">
+      {pathname == "/" ? (
+        <div className="hidden sm:inline-block sticky top-0 left-0 z-10 w-full bg-black">
           <GenreInHome></GenreInHome>
         </div>
       ) : (

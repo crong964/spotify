@@ -34,40 +34,23 @@ export function RecentPlaylist(params: RecentPlaylist) {
     >
       <Link
         to={`${params.Type}/${params.ID}`}
-        className="flex items-center space-x-1 sm:space-x-2 p-2 mx-1 cursor-pointer bg-[#1A1A1A] "
-        onClick={() => {
-          dispatch(
-            NaviPage({
-              page: params.Type as any,
-              param: params.ID,
-            })
-          );
-        }}
+        className="flex items-center space-x-1 sm:space-x-2 cursor-pointer bg-[#1A1A1A] rounded-md "
+        onClick={() => {}}
       >
-        <>
-          {params.Type == "artist" ? (
-            <img
-              className="rounded-full size-10 lg:size-[60px] "
-              src={params.ImagePath}
-              alt=""
-              srcSet=""
-            />
-          ) : (
-            <img
-              className=" size-10 lg:size-[60px]"
-              src={params.ImagePath}
-              alt=""
-              srcSet=""
-            />
-          )}
-        </>
+        <img
+          className=" size-10 lg:size-[60px]"
+          src={params.ImagePath}
+          alt=""
+          srcSet=""
+        />
         <div className="text-white text-base font-bold line-clamp-2">
           {params.PlayListName}
         </div>
         <div className="hidden sm:block size-6"></div>
       </Link>
 
-      {!hidden || (playing.id == params.ID && playing.page == params.Type && !stopAudio) ? (
+      {!hidden ||
+      (playing.id == params.ID && playing.page == params.Type && !stopAudio) ? (
         <button className="absolute right-2 bottom-2 sm:block hidden">
           <PlayButtom id={params.ID} page={params.Type} />
         </button>
@@ -88,7 +71,7 @@ export default function RecentList() {
   }, []);
 
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-4 gap-1 py-2">
+    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 px-3">
       {recentList.map((v, i) => {
         return (
           <RecentPlaylist

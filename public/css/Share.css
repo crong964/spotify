@@ -1,13 +1,12 @@
 @font-face {
     font-family: "Book";
     src:
-        url("./SpotifyMixUI-Bold-4264b799009b1db5c491778b1bc8e5b7.woff2")format("woff2"),
-        url("./SpotifyMixUI-Regular-cc3b1de388efa4cbca6c75cebc24585e.woff2")format("woff2") url("./SpotifyMixUITitle-Bold-37290f1de77f297fcc26d71e9afcf43f.woff2")format("woff2"),
-        url("./SpotifyMixUITitle-Extrabold-ba6c73cd7f82c81e49cf2204017803ed.woff2")format("woff2") url("./SpotifyMixUITitleVariable-8769ccfde3379b7ebcadd9529b49d0cc.woff2")format("woff2"), ;
+        url("./s.woff2")format("woff2"), ;
     font-weight: normal;
     font-style: normal;
     font-display: swap;
 }
+
 body {
     font-family: 'Book';
 }

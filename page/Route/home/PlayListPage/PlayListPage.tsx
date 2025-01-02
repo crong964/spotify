@@ -8,7 +8,7 @@ import { TimeString } from "@/page/component/Time";
 import { useParams } from "react-router-dom";
 
 import { CheckCircleIcon, PlusCircleIcon, ThreeDotsIcon } from "@/icon/Icon";
-import { SetAutoPlay } from "../../../component/Audio/AudioRedux";
+import { SetAutoPlay } from "@/page/component/Audio/AudioRedux";
 
 var g = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 6, 7];
 export interface artist {
@@ -124,26 +124,7 @@ export default function PlaylistPage() {
       <div className="h-[320px]"></div>
       <div className="px-4 py-2">
         <div className="flex items-center py-0 sm:py-4 space-x-5">
-          <button
-            onClick={() => {
-              if (load == true) {
-                return;
-              }
-              post(
-                "/recentPlaylist/play",
-                { id: id, type: "playlist" },
-                (v: any) => {
-                  dispatch(SetAutoPlay(true));
-                  SetLoad(false);
-                }
-              );
-              SetLoad(true);
-            }}
-            className={load ? "cursor-wait" : "cursor-pointer"}
-          >
-            <PlayButtom id={id + ""} page="playlist" />
-          </button>
-
+          <PlayButtom id={id + ""} page="playlist" />
           {isLogin ? (
             <>
               {like ? (

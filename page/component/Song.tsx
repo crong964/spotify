@@ -43,6 +43,7 @@ export default function Song(d: Song) {
     >
       {d.image != "" && d.image ? (
         <img
+          loading="lazy"
           src={d.image}
           alt=""
           srcSet=""

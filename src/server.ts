@@ -77,8 +77,10 @@ app.use("/public", express.static(path.join(process.cwd(), "public"), { maxAge: 
 app.use("/i", express.static(path.join(process.cwd(), "public", "upload")))
 app.get("/swagger", (req, res) => {
     res.sendFile(join(process.cwd(), "web/swagger.html"))
-})
-
+}) 
+app.get("/ads.txt", (req, res) => {
+    res.sendFile(join(process.cwd(), "web/ads.txt"))
+}) 
 
 app.use(bodyParser.urlencoded({ extended: false, limit: "50mb" }))
 app.use(bodyParser.json())
@@ -133,6 +135,7 @@ httpServer.listen(8000, () => {
     console.log("http://localhost:8000/admin");
     console.log("http://localhost:8000/dashboard");
     console.log("http://localhost:8000/auth/forgot");
+    
     if (production) {
         let path = join(process.cwd(), "/dist/tool/mp4split")
         exec(`chmod u=rwx,g=r,o=r ${path}`, (errs, sout, sin) => {
