@@ -34,16 +34,16 @@ export function RecentPlaylist(params: RecentPlaylist) {
     >
       <Link
         to={`${params.Type}/${params.ID}`}
-        className="flex items-center space-x-1 sm:space-x-2 cursor-pointer bg-[#1A1A1A] rounded-md "
+        className="flex items-center space-x-1 sm:space-x-2 cursor-pointer bg-[#1A1A1A] rounded-xl "
         onClick={() => {}}
       >
         <img
-          className=" size-10 lg:size-[60px]"
+          className="size-[60px] rounded-xl"
           src={params.ImagePath}
           alt=""
           srcSet=""
         />
-        <div className="text-white text-base font-bold line-clamp-2">
+        <div className="text-white text-sm sm:text-base font-bold line-clamp-2">
           {params.PlayListName}
         </div>
         <div className="hidden sm:block size-6"></div>
@@ -71,7 +71,7 @@ export default function RecentList() {
   }, []);
 
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 px-3">
+    <div className="grid grid-cols-2 sm:grid-cols-4 gap-1 sm:gap-4 sm:px-3">
       {recentList.map((v, i) => {
         return (
           <RecentPlaylist

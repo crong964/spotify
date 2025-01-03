@@ -35,7 +35,7 @@ export function PlayList(d: PlayList) {
         className={`${
           d.Type == "artist" ? "rounded-full" : " rounded-2xl"
         }`.concat(
-          " cursor-pointer relative  size-[calc(1987px/11)] overflow-hidden "
+          " cursor-pointer relative size-[150px] sm:size-[180px] overflow-hidden "
         )}
       >
         <Link to={`/${d.Type}/${d.id}`}>

@@ -3,12 +3,14 @@ import PlayButtom from "@/page/component/PlayButtom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootHome, SetCurName } from "@/page/Route/home/RootRedux";
 import { get, post } from "@/page/config/req";
-import { SongInPlayList, SongList } from "@/page/component/Song";
+import { SongList } from "@/page/component/Song/Index";
+
 import { TimeString } from "@/page/component/Time";
 import { useParams } from "react-router-dom";
 
 import { CheckCircleIcon, PlusCircleIcon, ThreeDotsIcon } from "@/icon/Icon";
 import { SetAutoPlay } from "@/page/component/Audio/AudioRedux";
+import { SongInPlayList } from "@/page/component/Song/interface";
 
 var g = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 6, 7];
 export interface artist {
@@ -122,7 +124,7 @@ export default function PlaylistPage() {
       </div>
 
       <div className="h-[320px]"></div>
-      <div className="px-4 py-2">
+      <div className="sm:px-4 py-2">
         <div className="flex items-center py-0 sm:py-4 space-x-5">
           <PlayButtom id={id + ""} page="playlist" />
           {isLogin ? (

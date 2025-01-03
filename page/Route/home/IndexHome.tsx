@@ -74,9 +74,7 @@ export default function Index() {
     }
     try {
       let wakelock = await navigator.wakeLock.request("screen");
-      wakelock.addEventListener("release", () => {
-       
-      });
+      wakelock.addEventListener("release", () => {});
     } catch (error) {}
   };
 
@@ -112,10 +110,7 @@ export default function Index() {
             <></>
           )}
         </nav>
-        <div
-          title="center"
-          className="w-full sm:w-[calc(100%-88px)] space-y-1"
-        >
+        <div title="center" className="w-full sm:w-[calc(100%-88px)] space-y-1">
           <div className="relative min-h-max max-h-[10%] ">
             <Header></Header>
           </div>
@@ -125,8 +120,7 @@ export default function Index() {
           </div>
         </div>
       </main>
-      <div className="absolute block sm:hidden bg-[#121212] h-[10%] opacity-40 z-30 left-0 bottom-0 w-full"></div>
-      <div className="absolute bg-[#121212] sm:block z-40 left-0 bottom-0 w-full py-0 sm:py-2 px-2">
+      <div className="absolute  sm:block z-40 left-0 bottom-0 w-full py-0 sm:py-2 px-2">
         <PlayingBar />
         <NaviHomeMobile />
       </div>

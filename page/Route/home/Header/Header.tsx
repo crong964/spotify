@@ -72,7 +72,7 @@ export default function Header() {
           <Back />
           <Forward />
           {topbarcontent ? (
-            <button className="flex items-center text-white text-2xl font-bold space-x-2">
+            <button className="flex items-center text-white text-2xl font-bold space-x-2 py-1">
               <PlayButtom id={id || ""} page={segpath(pathname)} />
               <div className="">{curName}</div>
             </button>

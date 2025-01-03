@@ -41,7 +41,9 @@ export default function ArtistsListPage() {
       <div className="text-3xl px-4 py-2 z-10 sticky top-0 left-0 bg-black">
         Danh sách nghệ sĩ
       </div>
-      <div className="w-full flex justify-around sm:justify-start flex-wrap">{children}</div>
+      <div className=" grid grid-cols-[repeat(auto-fill,minmax(150px,1fr))] sm:grid-cols-[repeat(auto-fill,minmax(180px,1fr))]">
+        {children}
+      </div>
       {playlists.length < count ? (
         <div
           onClick={() => {

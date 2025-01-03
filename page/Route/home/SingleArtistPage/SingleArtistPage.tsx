@@ -2,7 +2,7 @@ import { LegacyRef, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootHome, SetCurName } from "@/page/Route/home/RootRedux";
 import { artist } from "../PlayListPage/PlayListPage";
-import { SongInPlayList, SongList } from "@/page/component/Song";
+import { SongList } from "@/page/component/Song/Index";
 import { useParams } from "react-router-dom";
 import { get, post } from "@/page/config/req";
 import React from "react";
@@ -10,6 +10,7 @@ import PlayButtom from "@/page/component/PlayButtom";
 import { PlayList } from "@/page/component/Playlist";
 import { CheckCircleIcon, PlusCircleIcon } from "@/icon/Icon";
 import TypeFriend from "@/page/component/friend/TypeFriend";
+import { SongInPlayList } from "@/page/component/Song/interface";
 const PlayLists = React.lazy(() => import("@/page/component/Playlist"));
 
 export default function ArtistPage() {
@@ -76,7 +77,7 @@ export default function ArtistPage() {
       </div>
 
       <div className="h-[320px]"></div>
-      <div className="px-4">
+      <div className="sm:px-4">
         <div className="flex items-center py-4 space-x-4">
           <PlayButtom id={id || ""} page="artist" />
           {isLogin ? (

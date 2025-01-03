@@ -1,5 +1,6 @@
 import PlayButtom from "@/page/component/PlayButtom";
-import { SongInPlayList, SongList } from "@/page/component/Song";
+import { SongList } from "@/page/component/Song/Index";
+import { SongInPlayList } from "@/page/component/Song/interface";
 import { get } from "@/page/config/req";
 import React, { useState } from "react";
 import { useEffect } from "react";
@@ -42,7 +43,7 @@ export default function LikedSongListPage() {
       </div>
 
       <div className="h-[320px]"></div>
-      <div className="px-4">
+      <div className="sm:px-4">
         <div className="flex items-center py-4 space-x-4">
           <div>
             <PlayButtom id="" page="likesong" />
