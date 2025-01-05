@@ -28,13 +28,15 @@ export default function Song(d: Song) {
       className="flex justify-center items-center py-2 sm:px-1 sm:py-0  cursor-pointer"
     >
       {d.image != "" && d.image ? (
-        <img
-          loading="lazy"
-          src={d.image}
-          alt=""
-          srcSet=""
-          className="size-[50px] rounded-lg"
-        />
+        <div className="relative size-[50px] rounded-lg overflow-hidden">
+          <img
+            loading="lazy"
+            src={d.image}
+            alt=""
+            srcSet=""
+            className="absolute -z-0 top-0 left-0"
+          />
+        </div>
       ) : (
         <></>
       )}

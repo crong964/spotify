@@ -5,9 +5,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { post } from "@/page/config/req";
 import PlayLists, { PlayList } from "@/page/component/Playlist";
 import { Artists } from "@/page/component/Artist";
-import { SongInPlayList, SongList } from "@/page/component/Song";
+import { SongList } from "@/page/component/Song/Index";
 import { useParams } from "react-router-dom";
 import { NaviPage } from "../RootRedux";
+import { SongInPlayList } from "@/page/component/Song/interface";
 
 interface artist {
   pathImage: string;

@@ -284,15 +284,12 @@ class StreamingController {
                 try {
                     let sign = req.cookies.sign || ""
                     let oldign = jwt.verify(sign, StreamingController.KEYTREAMING) as jwt.JwtPayload
-                    console.log(`oldign ${JSON.stringify(oldign)}`);
-                    
                     if (oldign.level < segment) {
                         let newtime = parseInt(oldign.time + "") + 1
                         if (newtime == 4) {
                             songService.IncreaseView(idSong)
                         } else {
                             let newsign = jwt.sign({ idSong: idSong, time: newtime, level: segment }, StreamingController.KEYTREAMING, { expiresIn: 60 * 9 })
-                            console.log(`newsign ${JSON.stringify({ idSong: idSong, time: newtime, level: segment })}`);
                             res.cookie("sign", newsign)
                         }
                     }

@@ -5,7 +5,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-const Song = React.lazy(() => import("@/page/component/Song"));
+
 import { useDispatch, useSelector } from "react-redux";
 import {
   NaviRight,
@@ -33,6 +33,7 @@ import {
 } from "@/icon/Icon";
 import { Audio2, Volume } from "./Index";
 import { Pip } from "@/page/component/Pip/Index";
+import { Song } from "@/page/component/Song/Index";
 
 interface SongI {
   Id: string;

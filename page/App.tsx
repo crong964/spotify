@@ -24,6 +24,8 @@ import {
   SignIn,
   Signup,
 } from "@/page/Route/auth/Index";
+import IndexMoblie from "./Route/mobile/IndexMoblie";
+import BoxChat from "./Route/home/Right/BoxChat";
 const SingleArtistPage = React.lazy(
   () => import("./Route/home/SingleArtistPage/SingleArtistPage")
 );
@@ -76,6 +78,9 @@ root.render(
             <Route path="artist/:id" element={<SingleArtistPage />} />
             <Route path="search/:s" element={<SearchPage />} />
             <Route path="section" element={<ArtistsListPage />} />
+            <Route path="mobile">
+              <Route path="chatbox" element={<BoxChat></BoxChat>}></Route>
+            </Route>
           </Route>
           <Route path="auth" element={<CenterShare></CenterShare>}>
             <Route index element={<SignIn />}></Route>
@@ -84,6 +89,7 @@ root.render(
             <Route path="Forgot" element={<Forgot />}></Route>
             <Route path="ChangePassword" element={<ChangePassword />}></Route>
           </Route>
+
           <Route path="*" element={<Navigate replace to="" />} />
         </Routes>
       </Suspense>

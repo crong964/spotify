@@ -15,9 +15,9 @@ import { get, post } from "@/page/config/req";
 const PlayButtom = React.lazy(() => import("@/page/component/PlayButtom"));
 
 import { BackIcon, ForwardIcon, MessIcon } from "@/icon/Icon";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { GenreInHome } from "@/page/Route/home/IndexHome";
-import NotificationPage from "@/page/Route/home/Header/NotificationList";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { GenreInHome } from "../../Route/home/IndexHome";
+import NotificationPage from "@/page/component/Header2/NotificationList";
 
 interface Infor {
   pathImage: string;
@@ -26,7 +26,6 @@ interface Infor {
 }
 export default function Header() {
   const curName = useSelector((state: RootHome) => state.rootHome.curName);
-  const right = useSelector((state: RootHome) => state.rootHome.Right);
   const [search, SetSearch] = useState("");
   const topbarcontent = useSelector(
     (state: RootHome) => state.rootHome.topbarcontent
@@ -36,8 +35,18 @@ export default function Header() {
   const navigate = useNavigate();
   const update = useSelector((state: RootHome) => state.rootHome.update);
   const isLogin = useSelector((state: RootHome) => state.rootHome.isLogin);
+  const right = useSelector((state: RootHome) => state.rootHome.Right);
   const dispatch = useDispatch();
   const { pathname } = useLocation();
+  let segpath = (pathname: string) => {
+    if (pathname.indexOf("artist") >= 0) {
+      return "artist";
+    }
+    if (pathname.indexOf("playlist")) {
+      return "playlist";
+    }
+    return "";
+  };
 
   const [infor, SetInfor] = useState<Infor>({
     Name: "",
@@ -55,24 +64,24 @@ export default function Header() {
   }, [update]);
 
   useEffect(() => {}, [search]);
-
+  const { id } = useParams();
   return (
-    <div className="h-max w-full sticky bg-black top-0 z-10 px-3 p-0 sm:py-2 space-y-2">
+    <div className="h-max w-full rounded-tl-lg sticky bg-gradient-to-r from-red-500 via-pink-400 to-black top-0 z-10 px-3 p-0 sm:py-2 space-y-2">
       <div className="flex items-center space-x-2 mx-0 sm:mx-3 sm:justify-between">
         <div className="flex space-x-3  items-center">
           <Back />
           <Forward />
           {topbarcontent ? (
-            <button className="flex items-center text-white text-2xl font-bold space-x-2">
-              <PlayButtom id="" page="" />
-              <div className="">f</div>
+            <button className="flex items-center text-white text-2xl font-bold space-x-2 py-1">
+              <PlayButtom id={id || ""} page={segpath(pathname)} />
+              <div className="">{curName}</div>
             </button>
           ) : (
             <></>
           )}
           <>
             {pathname == "/genre" || pathname.indexOf("/search") >= 0 ? (
-              <div className="hidden sm:flex items-center border-white border-2 py-2 px-3 bg-[#2A2A2A] rounded-3xl">
+              <div className="hidden sm:flex items-center border-white border-2 py-2 px-3 bg-white rounded-3xl">
                 <input
                   onChange={(v) => {
                     var value = v.currentTarget.value;
@@ -84,11 +93,11 @@ export default function Header() {
                     navigate(`/search/${value}`);
                   }}
                   type="text"
-                  className="searchname p-1 text-white w-[300px] bg-[#2A2A2A] border-[#2A2A2A]  focus:outline-none border-2 rounded-full"
+                  className="searchname p-1 text-black w-[300px] bg-white border-white  focus:outline-none border-2 rounded-full"
                 />
                 <svg
                   data-encore-id="icon"
-                  fill="white"
+                  fill="black"
                   role="img"
                   aria-hidden="true"
                   className="size-[16px] "
@@ -132,13 +141,13 @@ export default function Header() {
                     Cài đặt ứng dụng
                   </div>
                   <div
-                    className="cursor-pointer"
+                    className=""
                     onClick={() => {
                       dispatch(NaviRight("Mess"));
                     }}
                   >
                     {right == "Mess" ? (
-                       <MessIcon className="fill-[#1FDF64]" />
+                      <MessIcon className="fill-[#1FDF64]" />
                     ) : (
                       <MessIcon className="fill-white hover:fill-[#1FDF64]" />
                     )}
@@ -175,7 +184,7 @@ export default function Header() {
               </>
             ) : (
               <>
-                <div className="flex  items-center space-x-3">
+                <div className="flex  items-center space-x-3 pt-1">
                   <Link
                     to={"/auth/Signup"}
                     className="font-bold hover:text-blue-500 px-3 py-1 rounded-2xl"

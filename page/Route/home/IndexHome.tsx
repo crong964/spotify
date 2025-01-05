@@ -3,7 +3,7 @@ const Genre = React.lazy(() => import("./GenrePage/GenrePage"));
 const Foot = React.lazy(() => import("@/page/component/Foot"));
 import { useDispatch, useSelector } from "react-redux";
 
-const Header = React.lazy(() => import("./Header/Header"));
+const Header = React.lazy(() => import("@/page/component/Header/Header"));
 
 import {
   NaviPage,
@@ -40,6 +40,7 @@ import ChatBox from "@/page/component/boxchat/SingleBox";
 import CarouselSlide, {
   color,
 } from "@/page/component/CarouselSlide/CarouselSlide";
+import { NaviHomeMobile2 } from "@/page/component/NaviHome/NaviHome";
 
 function useIndex() {
   const [queue, SetQueue] = useState(false);
@@ -122,7 +123,7 @@ export default function Index() {
       </main>
       <div className="absolute  sm:block z-40 left-0 bottom-0 w-full py-0 sm:py-2 px-2">
         <PlayingBar />
-        <NaviHomeMobile />
+        <NaviHomeMobile2 />
       </div>
       {BoxList.length > 0 ? (
         <div className="absolute right-0 bottom-0 h-full w-full sm:right-[400px] sm:bottom-[100px] sm:h-max sm:w-max z-40 space-x-2 flex  ">

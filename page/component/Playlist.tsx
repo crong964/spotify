@@ -33,7 +33,7 @@ export function PlayList(d: PlayList) {
     >
       <div
         className={`${
-          d.Type == "artist" ? "rounded-full" : " rounded-2xl"
+          d.Type == "artist" ? " rounded-full" : " rounded-2xl"
         }`.concat(
           " cursor-pointer relative size-[150px] sm:size-[180px] overflow-hidden "
         )}
@@ -49,7 +49,7 @@ export function PlayList(d: PlayList) {
               );
             }}
             src={d.ImagePath}
-            className="size-full absolute top-0 left-0 z-1"
+            className="absolute top-0 left-0 z-1"
             alt=""
             srcSet=""
           />

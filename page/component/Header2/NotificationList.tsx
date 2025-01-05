@@ -8,12 +8,12 @@ import {
   SetNotificationPage,
   SetNotificationPageIdSong,
 } from "@/page/Route/home/RootRedux";
-import { MainDiscussList } from "../Right/Discuss";
+import { MainDiscussList } from "@/page/Route/home/Right/Discuss";
 
 
 interface Notification {
   Discuss_Id: string;
-  Parent_discuss_Id: string;
+  Parent_discuss_Id: string; 
   Content: string;
   Song_Id: string;
   Name: string;

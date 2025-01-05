@@ -62,12 +62,14 @@ export default function SongInPlayList(v: SongInPlayList) {
       >
         <div className="col-span-5 sm:col-span-3 flex items-center space-x-2">
           <div className="sm:inline-block hidden mx-2">{v.stt}</div>
-          <img
-            className="size-12 sm:size-9"
-            src={v.SongImage}
-            alt=""
-            srcSet=""
-          />
+          <div className="relative size-12 sm:size-9 overflow-hidden">
+            <img
+              className="absolute top-0 left-0"
+              src={v.SongImage}
+              alt=""
+              srcSet=""
+            />
+          </div>
           <div className="flex-col">
             <div className="block">{v.SongName}</div>
             {v.type != "artist" ? (
