@@ -63,7 +63,7 @@ export default function PlayingPlaylistMobile() {
   return (
     <div
       className={
-        "absolute  p-2 bg-black  z-[99999] w-full h-full overflow-y-scroll " +
+        "absolute bg-black  z-[90] w-[100vw] h-[100vh] overflow-y-scroll " +
         `${show ? "top-0 left-0 appearBottomToTop" : " disppearTopToBottom"}`
       }
     >
@@ -91,7 +91,7 @@ export default function PlayingPlaylistMobile() {
         <div className="text-2xl w-full">{lsSong[mark]?.SongName}</div>
         <div className="text-lg  w-full">{lsSong[mark]?.Singer}</div>
       </div>
-      <div className="flex p-2">
+      <div className="flex ">
         <Time d={curTime} key={0} />
         <input
           type="range"
@@ -157,9 +157,9 @@ export default function PlayingPlaylistMobile() {
         >
           <SkipNextIcon className="hover:fill-green-500 fill-white size-8" />
         </button>
-        <ModPlay/>
+        <ModPlay />
       </div>
-      <div className="p-3"></div>
+      <div className="py-3"></div>
       <SongQueueInplayList cur="" type="" />
     </div>
   );

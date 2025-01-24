@@ -11,7 +11,7 @@ import {
   Routes,
 } from "react-router-dom";
 
-const Index = React.lazy(() => import("./Route/home/IndexHome"));
+const Index = React.lazy(() => import("./Route/IndexHome"));
 
 import { SetionList } from "./Route/home/Setion";
 import { SuggestPlaylist } from "@/page/component/Playlist";
@@ -24,8 +24,9 @@ import {
   SignIn,
   Signup,
 } from "@/page/Route/auth/Index";
-import IndexMoblie from "./Route/mobile/IndexMoblie";
-import BoxChat from "./Route/home/Right/BoxChat";
+
+import BoxChat from "./Route/home/Right/BoxChatPage";
+import PlayingPlaylistMobile from "./Route/mobile/playslist/PlayingPlaylistMobile";
 const SingleArtistPage = React.lazy(
   () => import("./Route/home/SingleArtistPage/SingleArtistPage")
 );
@@ -79,7 +80,18 @@ root.render(
             <Route path="search/:s" element={<SearchPage />} />
             <Route path="section" element={<ArtistsListPage />} />
             <Route path="mobile">
-              <Route path="chatbox" element={<BoxChat></BoxChat>}></Route>
+              <Route
+                path="playlist"
+                element={<></>}
+              />
+               <Route
+                path="chatbox"
+                element={<></>}
+              />
+              <Route
+                path="singlebox/:idbox"
+                element={<></>}
+              />
             </Route>
           </Route>
           <Route path="auth" element={<CenterShare></CenterShare>}>

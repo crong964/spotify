@@ -10,6 +10,7 @@ test
 web/static/*
 page/component/Audio/Audio2.tsx
 page/component/Audio/Audio3.tsx
+page/component/ads*
 00ffb242e9294e771738.jpg
 f3ae430d1866bf38e677.jpg
 dist

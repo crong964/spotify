@@ -21,7 +21,7 @@
 
 
     <link href="/public/css/Share.css" rel="stylesheet">
-    
+
     <script type="application/ld+json">
         { 
             "@context": "https://schema.org/",
@@ -41,6 +41,12 @@
     body {
         padding: 0px;
         margin: 0px;
+        -webkit-user-select: none;
+        /* Safari */
+        -ms-user-select: none;
+        /* IE 10 and IE 11 */
+        user-select: none;
+        /* Standard syntax */
     }
 
     input[type="range"]::-webkit-slider-thumb {
@@ -53,6 +59,7 @@
         box-shadow: -405px 0 0 400px #605E5C;
         border-radius: 100%;
     }
+
     /* width */
     ::-webkit-scrollbar {
         width: 1px;
@@ -101,6 +108,7 @@
 </style>
 
 <body style="height: 100%; " class=" text-white bg-[#121212]">
+
     <div id="root" style="height: 100%;">
 
     </div>
@@ -108,5 +116,6 @@
 </body>
 <script defer src="/static/app.js"></script>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6755669442271417"
-     crossorigin="anonymous"></script>
+    crossorigin="anonymous"></script>
+
 </html>

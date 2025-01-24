@@ -5,7 +5,7 @@ import { RootHome } from "@/page/Route/home/RootRedux";
 import React from "react";
 
 const Discuss = React.lazy(() => import("./Discuss"));
-const BoxChat = React.lazy(() => import("./BoxChat"));
+const BoxChat = React.lazy(() => import("./BoxChatPage"));
 const Queue = React.lazy(() => import("./Queue"));
 
 export default function Right() {

@@ -117,9 +117,9 @@ export default function PlayingBar() {
           }}
         >
           {stopMobie ? (
-            <PlaySoundIcon className="fill-black bg-white rounded-full size-9" />
+            <PauseSoundIcon className="fill-white  rounded-full size-9" />
           ) : (
-            <PauseSoundIcon className="fill-black bg-white rounded-full size-9" />
+            <PlaySoundIcon className="fill-white rounded-full size-9" />
           )}
         </button>
       </div>

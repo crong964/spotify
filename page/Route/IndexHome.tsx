@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-const Genre = React.lazy(() => import("./GenrePage/GenrePage"));
+const Genre = React.lazy(() => import("./home/GenrePage/GenrePage"));
 const Foot = React.lazy(() => import("@/page/component/Foot"));
 import { useDispatch, useSelector } from "react-redux";
 
@@ -11,7 +11,7 @@ import {
   SetDeviceType,
   SetMess,
   ShowTopbarContent,
-} from "./RootRedux";
+} from "./home/RootRedux";
 
 const PlaylistLike = React.lazy(
   () => import("@/page/Route/home/NaviHome/PlaylistLike")
@@ -21,9 +21,9 @@ const NaviLoveSong = React.lazy(
 );
 
 import { socket } from "@/page/socket/Socket";
-import { MobileSearchButtom } from "./NaviHome/SearchButtom";
+import { MobileSearchButtom } from "./home/NaviHome/SearchButtom";
 
-import { NaviHomeMobile } from "./NaviHome/NaviHome";
+
 
 import {
   Outlet,
@@ -32,15 +32,18 @@ import {
   useLocation,
   useRouteError,
 } from "react-router-dom";
-import Home from "./NaviHome/Home";
-import Right from "./Right/Right";
+import Home from "./home/NaviHome/Home";
+import Right from "./home/Right/Right";
 import { PlayingBar } from "@/page/component/Audio/Index";
-import PlayingPlaylistMobile from "./mobie/PlayingPlaylistMobile";
+import PlayingPlaylistMobile from "./mobile/playslist/PlayingPlaylistMobile";
 import ChatBox from "@/page/component/boxchat/SingleBox";
 import CarouselSlide, {
   color,
 } from "@/page/component/CarouselSlide/CarouselSlide";
 import { NaviHomeMobile2 } from "@/page/component/NaviHome/NaviHome";
+import { ChatBoxMobliePage } from "./mobile/chatbox/ChatBoxMobliePage";
+import { SingleBoxChatPage } from "./mobile/SingleBox/SingleBoxChatPage";
+
 
 function useIndex() {
   const [queue, SetQueue] = useState(false);
@@ -64,6 +67,7 @@ export default function Index() {
   const BoxList = useSelector((state: RootHome) => state.rootHome.BoxList);
   const isLogin = useSelector((state: RootHome) => state.rootHome.isLogin);
   const titleXY = useSelector((state: RootHome) => state.rootHome.titleXY);
+  const { pathname } = useLocation();
   const playlistmobile = useSelector(
     (state: RootHome) => state.audioroot.playlistmobile
   );
@@ -115,13 +119,14 @@ export default function Index() {
           <div className="relative min-h-max max-h-[10%] ">
             <Header></Header>
           </div>
-          <div className="flex h-[90%] w-full px-3">
+
+          <div className="flex h-[90%] w-full px-0 sm:px-3">
             <CenterShare />
             <Right />
           </div>
         </div>
       </main>
-      <div className="absolute  sm:block z-40 left-0 bottom-0 w-full py-0 sm:py-2 px-2">
+      <div className="absolute sm:block z-40 left-0 bottom-0 w-full py-0 sm:py-2 px-2">
         <PlayingBar />
         <NaviHomeMobile2 />
       </div>
@@ -148,11 +153,13 @@ export default function Index() {
       ) : (
         <></>
       )}
-      {playlistmobile && mobiletype == "mobile" ? (
+      {pathname.indexOf("mobile/playlist") >= 0 ? (
         <PlayingPlaylistMobile />
       ) : (
         <></>
       )}
+      {pathname.indexOf("mobile/chatbox") >= 0 ? <ChatBoxMobliePage /> : <></>}
+      {pathname.indexOf("mobile/singlebox") >= 0 ? <SingleBoxChatPage /> : <></>}
     </div>
   );
 }

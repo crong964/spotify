@@ -25,7 +25,7 @@ export default function Song(d: Song) {
           d.onClick();
         }
       }}
-      className="flex justify-center items-center py-2 sm:px-1 sm:py-0  cursor-pointer"
+      className="flex justify-center items-center py-2 sm:px-0.5 sm:py-1  cursor-pointer"
     >
       {d.image != "" && d.image ? (
         <div className="relative size-[50px] rounded-lg overflow-hidden">

@@ -126,29 +126,58 @@ export function BigVolumeIcon(d: icon) {
     </svg>
   );
 }
-export function PlaySoundIcon(d: icon) {
+
+export function PauseSoundIcon(d: icon) {
   return (
     <svg
-      className={d.className}
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 512 512"
+      viewBox="0 -960 960 960"
+      className={d.className}
     >
-      <path d="M464 256A208 208 0 1 0 48 256a208 208 0 1 0 416 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zM188.3 147.1c7.6-4.2 16.8-4.1 24.3 .5l144 88c7.1 4.4 11.5 12.1 11.5 20.5s-4.4 16.1-11.5 20.5l-144 88c-7.4 4.5-16.7 4.7-24.3 .5s-12.3-12.2-12.3-20.9V168c0-8.7 4.7-16.7 12.3-20.9z" />
+      <path d="m379-303 279-177-279-178v355ZM479.68-59q-86.32 0-163.65-32.6-77.32-32.61-134.57-89.86T91.6-316.03Q59-393.35 59-479.86q0-87.41 32.66-164.28 32.67-76.86 90.21-134.41 57.54-57.55 134.41-90.5T479.34-902q87.55 0 164.88 32.86t134.56 90.25q57.23 57.4 90.22 134.52 33 77.11 33 164.91 0 86.74-32.95 163.38-32.95 76.65-90.5 134.2Q721-124.33 644.13-91.66 567.26-59 479.68-59Z" />
     </svg>
   );
 }
-export function PauseSoundIcon(d: icon) {
+export function PlaySoundIcon(d: icon) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       className={d.className}
       viewBox="0 0 16 16"
     >
-      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
-      <path d="M5 6.25a1.25 1.25 0 1 1 2.5 0v3.5a1.25 1.25 0 1 1-2.5 0zm3.5 0a1.25 1.25 0 1 1 2.5 0v3.5a1.25 1.25 0 1 1-2.5 0z" />
+      <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M6.25 5C5.56 5 5 5.56 5 6.25v3.5a1.25 1.25 0 1 0 2.5 0v-3.5C7.5 5.56 6.94 5 6.25 5m3.5 0c-.69 0-1.25.56-1.25 1.25v3.5a1.25 1.25 0 1 0 2.5 0v-3.5C11 5.56 10.44 5 9.75 5" />
     </svg>
   );
 }
+export function PausePlaylistIcon(params: icon) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="16"
+      height="16"
+      fill="currentColor"
+      className={params.className}
+      viewBox="0 0 16 16"
+    >
+      <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393" />
+    </svg>
+  );
+}
+export function PlayPlaylistIcon(params: icon) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="16"
+      height="16"
+      fill="currentColor"
+      className={params.className}
+      viewBox="0 0 16 16"
+    >
+      <path d="M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5m5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5" />
+    </svg>
+  );
+}
+
 export function DiscussIcon(d: icon) {
   return (
     <svg

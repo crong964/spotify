@@ -34,8 +34,8 @@ export default function Queue() {
     SetNaVi(params);
   }
   return (
-    <div className="w-full h-full text-[16px] bg-[#121212] rounded-lg  ">
-      <div className="bg-[#121212] top-0 left-0 flex space-x-3 h-min w-full justify-between px-3 rounded-lg py-4 ">
+    <div className="w-full h-full relative text-[16px] overflow-y-scroll bg-[#121212] rounded-lg  ">
+      <div className="bg-[#121212] sticky z-40 top-0 left-0 flex space-x-3 h-min w-full justify-between px-3 rounded-lg py-4 ">
         <div className="flex space-x-4">
           <div
             onClick={() => {
@@ -76,10 +76,9 @@ export default function Queue() {
           </svg>
         </div>
       </div>
-      <div className="bg-[#121212] h-full overflow-y-scroll text-white font-bold mt-1 rounded-lg space-y-3 pb-3">
-        <RecentPlaySongs cur={navi} key={"RecentPlaySongs"} type="2" />
-        <SongQueueInplayList cur={navi} key={"SongQueueInplayList"} type="1" />
-      </div>
+
+      <RecentPlaySongs cur={navi} key={"RecentPlaySongs"} type="2" />
+      <SongQueueInplayList cur={navi} key={"SongQueueInplayList"} type="1" />
     </div>
   );
 }

@@ -16,7 +16,7 @@ const PlayButtom = React.lazy(() => import("@/page/component/PlayButtom"));
 
 import { BackIcon, ForwardIcon, MessIcon } from "@/icon/Icon";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
-import { GenreInHome } from "../../Route/home/IndexHome";
+import { GenreInHome } from "../../Route/IndexHome";
 import NotificationPage from "@/page/component/Header2/NotificationList";
 
 interface Infor {

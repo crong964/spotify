@@ -1,23 +1,13 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { post } from "@/page/config/req";
+import React, { useEffect, useState } from "react";
+
 import { useDispatch, useSelector } from "react-redux";
-import { RootHome, SetBoxList, SetMess } from "@/page/Route/home/RootRedux";
+import { RootHome } from "@/page/Route/home/RootRedux";
 import { BoxButton } from "./BoxButton";
 import { TypeMess } from "./TypeMess";
 import { boxdata, lastmess } from "./Interface";
+import { useBoxList } from "./use";
+import { useNavigate } from "react-router-dom";
 
-export function useBoxList() {
-  const [data, SetData] = useState<boxdata[]>([]);
-  useEffect(() => {
-    post("/box/", {}, (v: any) => {
-      SetData(v.ls);
-    });
-  }, []);
-
-  return {
-    data,
-  };
-}
 function useBoxData() {
   const [show, SetShow] = useState(false);
 
@@ -26,6 +16,7 @@ function useBoxData() {
 
 function BoxData(data: boxdata) {
   const mess = useSelector((state: RootHome) => state.rootHome.mess);
+  let navigate = useNavigate();
   const va = useBoxData();
   const [bubble, SetBudbble] = useState(false);
   const [watch, SetWatch] = useState(true);
@@ -36,7 +27,7 @@ function BoxData(data: boxdata) {
     idUser: data.idUser,
     type: data.messType,
   });
-  const dispatch = useDispatch();
+
   var status = ["", "", "font-bold"];
   useEffect(() => {
     if (data.status == 2) {
@@ -71,17 +62,7 @@ function BoxData(data: boxdata) {
     >
       <div
         onClick={() => {
-          dispatch(SetBoxList(data.idBox));
-          dispatch(
-            SetMess({
-              idBox: data.idBox,
-              content: "",
-              idMess: "",
-              idUser: "",
-              ngay: "",
-              type: "",
-            })
-          );
+          navigate(`/mobile/singlebox/${data.idBox}`);
         }}
         className="px-2 h-18 py-3 flex items-center hover:bg-[#2A2A2A] cursor-pointer"
       >

@@ -47,7 +47,7 @@ class RecentPlaylistController {
 
     }
     async GetAllByIdUser(req: Request, res: Response) {
-        var ls = await RecentPlaylistController.r.GetByUser(req.cookies.id, 0, 6)
+        var ls = await RecentPlaylistController.r.GetByUser(req.cookies.id, 0, 8)
         res.json({
             err: false,
             ls: ls
