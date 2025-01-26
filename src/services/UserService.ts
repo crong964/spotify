@@ -98,6 +98,12 @@ export class UserService {
         ls = await Mysql2.query(sql, [id]) as []
         return this.SetList(ls)
     }
+    async DeleteArtist(id: string) {
+        let sql = "Delete FROM user WHERE id = ? "
+        let ls
+        ls = await Mysql2.query(sql, [id]) as []
+        return this.SetList(ls)
+    }
     async UpdateE(d: UserModel) {
         let sql = "UPDATE user SET Name=?, Password=? , role=? WHERE id= ?"
         let check = await Mysql2.query(sql, [d.Name, d.pathImage, d.role, d.id])

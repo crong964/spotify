@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { post } from "@/page/config/req";
 import { Link } from "react-router-dom";
 import { NaviPage, RootHome } from "../Route/home/RootRedux";
+import { Avatar } from "./avatar/Avatar";
 
 export interface PlayList {
   id: string;
@@ -11,6 +12,7 @@ export interface PlayList {
   ImagePath: string;
   PlayListName: string;
   Type: string;
+  className?: string;
 }
 interface PlayLists {
   d: PlayList[];
@@ -31,31 +33,17 @@ export function PlayList(d: PlayList) {
       }}
       className=" relative cursor-pointer bg-black hover:bg-[#1A1A1A] p-1 sm:p-2"
     >
-      <div
-        className={`${
-          d.Type == "artist" ? " rounded-full" : " rounded-2xl"
-        }`.concat(
-          " cursor-pointer relative size-[150px] sm:size-[180px] overflow-hidden "
-        )}
-      >
-        <Link to={`/${d.Type}/${d.id}`}>
-          <img
-            onClick={() => {
-              dispatch(
-                NaviPage({
-                  page: d.Type as any,
-                  param: d.id,
-                })
-              );
-            }}
-            src={d.ImagePath}
-            className="absolute top-0 left-0 z-1"
-            alt=""
-            srcSet=""
-          />
-        </Link>
-      </div>
-      <div className="text-[16px] mt-2 line-clamp-1 w-[150px] ">
+      <Link to={`/${d.Type}/${d.id}`}>
+        <Avatar
+          src={d.ImagePath}
+          className={`${
+            d.Type == "artist" ? " rounded-full" : " rounded-2xl"
+          }`.concat(
+            ` ${d.className || " cursor-pointer size-[150px] sm:size-[180px]"} `
+          )}
+        />
+      </Link>
+      <div className="text-[10px] sm:text-[16px] mt-2 line-clamp-1 w-[150px] ">
         {d.PlayListName}
       </div>
       {show || (playing.id == d.id && playing.page == d.Type && !stopAudio) ? (

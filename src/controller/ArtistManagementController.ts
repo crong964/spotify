@@ -8,15 +8,20 @@ import UserModel from "../model/UserModel";
 import playListService, { PlayListService } from "../services/PlayListService";
 import { PlayListModel } from "../model/PlayListModel";
 import { v4 } from "uuid";
+import processImage from "../config/ProcessImage";
+import { unlink } from "fs/promises";
+import songService from "../services/SongService";
 
 class ArtistManagementController {
     static user = userService
     static artistManagement = artistManagementService
     static playlist = playListService
-
+    static processImg = processImage
+    static song = songService
     constructor() {
 
     }
+    //bỏ
     async Add(req: Request, res: Response) {
         let files = req.files as any
         if (!files || !files["Banner"] || !files["pathImage"]) {
@@ -63,6 +68,77 @@ class ArtistManagementController {
         d.Status = "0"
         d.PlayListName = user.ChanalName
 
+        let check = await Promise.all([
+            ArtistManagementController.user.Add(user),
+            ArtistManagementController.artistManagement.Add(id),
+            ArtistManagementController.playlist.AddArtists(d)
+        ])
+
+
+        res.json({
+            err: false,
+            mess: ""
+        })
+    }
+    async Add2(req: Request, res: Response) {
+        let files = req.files as any
+        let id = `artist-${randomUUID()}-${Date.now()}`
+
+        if (!files || !files["pathImage"]) {
+            res.json({
+                err: true
+            })
+            return
+        }
+        let user = new UserModel()
+        let d = new PlayListModel()
+        user.setAll(req.body)
+        user.id = id
+
+
+
+
+        d.User_id = user.id
+        d.ImagePath = user.pathImage
+        d.id = user.id
+
+        d.Status = "0"
+        d.PlayListName = user.ChanalName
+        let pathImageFile = files["pathImage"][0] as Express.Multer.File
+        if (files["Banner"]) {
+            let BannerFile = files["Banner"][0] as Express.Multer.File
+
+            let check = await Promise.all([
+                ArtistManagementController.processImg.ConvertImgToWebp(BannerFile.path, `${BannerFile.path}.webp`),
+                ArtistManagementController.processImg.ConvertImgToWebp(pathImageFile.path, `${pathImageFile.path}.webp`)
+            ])
+            if (check[0] && check[1]) {
+                let name = await Promise.all([firebase.UploadStream(check[0], `Banner/${id}.webp`),
+                firebase.UploadStream(check[1], `PathImageFile/${id}.webp`)])
+                try {
+                    unlink(check[0])
+                    unlink(check[1])
+                    unlink(BannerFile.path)
+                    unlink(pathImageFile.path)
+                } catch (error) {
+
+                }
+                user.Banner = name[0] as string
+                user.pathImage = name[1] as string
+            }
+
+
+
+        } else {
+            let check = await ArtistManagementController.processImg.ConvertImgToWebp(pathImageFile.path, `${pathImageFile.path}.webp`)
+            if (check) {
+                let name = await firebase.UploadStream(check, `PathImageFile/${id}.webp`)
+                unlink(pathImageFile.path)
+                unlink(check)
+                user.pathImage = name as string
+            }
+        }
+        d.ImagePath = user.pathImage
         let check = await Promise.all([
             ArtistManagementController.user.Add(user),
             ArtistManagementController.artistManagement.Add(id),
@@ -161,15 +237,34 @@ class ArtistManagementController {
                     if (old.Banner.length > 0) {
                         await firebase.MoveImage(`Banner/${id}`, `delete/Banner/${id}_${date}`)
                     }
+                    let path = await ArtistManagementController.processImg.ConvertImgToWebp(BannerFile.path, `${BannerFile.path}.webp`)
+                    if (path) {
+                        user.Banner = await firebase.UploadStream(path, `Banner/${id}.webp`) as string
+                        try {
+                            unlink(path)
+                            unlink(BannerFile.path)
+                        } catch (error) {
 
-                    user.Banner = await firebase.UploadImageBuffer(`Banner/${id}`, BannerFile.buffer) as string
+                        }
+                    }
+
+
                 }
                 if (files["pathImage"]) {
                     let pathImageFile = files["pathImage"][0] as Express.Multer.File
                     if (old.pathImage.length > 0) {
                         await firebase.MoveImage(`PathImageFile/${id}`, `delete/PathImageFile/${id}_${date}`)
                     }
-                    user.pathImage = await firebase.UploadImageBuffer(`PathImageFile/${id}`, pathImageFile.buffer) as string
+                    let path = await ArtistManagementController.processImg.ConvertImgToWebp(pathImageFile.path, `${pathImageFile.path}.webp`)
+                    if (path) {
+                        user.pathImage = await firebase.UploadStream(path, `PathImageFile/${id}.webp`) as string
+                        try {
+                            unlink(path)
+                            unlink(pathImageFile.path)
+                        } catch (error) {
+
+                        }
+                    }
                 }
             } catch (error) {
                 console.log(error);
@@ -202,6 +297,22 @@ class ArtistManagementController {
         res.json({
             err: check == undefined
         })
+    }
+    async Delete(req: Request, res: Response) {
+        let id = req.body.id
+        let date = Date.now() + ""
+        let song = await ArtistManagementController.song.GetAll(id)
+        if (song.length == 0) {
+            ArtistManagementController.user.DeleteArtist(id)
+            ArtistManagementController.playlist.DeletePlaylist(id)
+            ArtistManagementController.artistManagement.Delete(id)
+            firebase.Move(`Banner/${id}.webp`, `delete/Banner/${id}_${date}.webp`)
+            firebase.Move(`PathImageFile/${id}.webp`, `delete/PathImageFile/${id}_${date}.webp`)
+        }
+        res.json({
+            err: false
+        })
+
     }
 }
 

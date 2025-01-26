@@ -26,7 +26,6 @@ class SongAdminController {
     async Add(req: Request, res: Response) {
         var id = req.body.id
         let singer: singer[] = JSON.parse(req.body.user_id)
-
         let check = await Promise.all(singer.map(async (v) => {
             return await SongAdminController.user.Get(v.id)
         }))
@@ -41,16 +40,12 @@ class SongAdminController {
             }
         }
         var song = new SongModel()
-
         song.setAll(req.body)
-
-
         if (req.file != undefined) {
             try {
                 song.SongImage = await firebase.UploadImageBuffer(`SongImage/${song.Id}`, req.file.buffer, 20000) as string
             } catch (error) {
                 console.log(error);
-
             }
         }
         let lsPlayListArtist = await Promise.all(singer.map(async (v) => {
@@ -58,7 +53,7 @@ class SongAdminController {
         }))
         song.user_id = singer.reduce((s, f, i) => {
             if (i == singer.length - 1) {
-                return `${f.id}`
+                return `${s}${f.id}`
             }
             return `${s}${f.id} `
         }, "")
@@ -74,7 +69,10 @@ class SongAdminController {
             let con = new ContainModel()
             con.PlayList_id = v.id
             con.Song_id = song.Id
-            return await SongAdminController.contain.Add(con)
+            let check = await SongAdminController.contain.Get(con)
+            if (check == undefined) {
+                return await SongAdminController.contain.Add(con)
+            }
         })
         if (c) {
             res.json({

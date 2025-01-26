@@ -33,7 +33,7 @@ class Firebase {
     async UploadImageBuffer(name: string, data: Buffer, q?: number) {
         let percentOutput = 20
         let quality = q || 40000
-        console.log(quality, data.length, parseInt((quality / data.length) * 100 + ""));
+
 
 
         if (data.length > quality) {
@@ -67,11 +67,9 @@ class Firebase {
                     })
                     w.end()
                 })
-
-
         })
-
     }
+
     async UploadImageBufferNoZip(name: string, data: Buffer) {
         return new Promise((res, rej) => {
             sharp(data).
@@ -116,8 +114,9 @@ class Firebase {
                 }
             })
 
-            w.on("finish", () => {
-                res(name)
+            w.on("finish", async() => {
+                var nameURL = await getDownloadURL(Firebase.bucket.file(name))
+                res(nameURL)
             })
             r.on("error", (err) => {
                 rej(err)

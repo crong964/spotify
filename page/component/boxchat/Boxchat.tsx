@@ -6,6 +6,9 @@ import UserSearchList, {
 } from "@/page/component/friend/UserSearchList";
 import { Search, Searching } from "@/page/component/boxchat/Search";
 import { Title } from "@/page/component/boxchat/Title";
+import Home from "@/page/Route/home/NaviHome/Home";
+import { Link, Navigate } from "react-router-dom";
+import { HomeIcon } from "@/icon/Icon";
 
 export default function BoxChat(p: { children: React.JSX.Element }) {
   const [search, SetSearch] = useState(false);
@@ -15,7 +18,10 @@ export default function BoxChat(p: { children: React.JSX.Element }) {
     <div className="bg-[#121212] relative overflow-y-auto px-0 sm:px-2 h-full w-full">
       <div className="  p-2">
         <>
-          <div className="text-[20px] flex justify-around sticky top-0 left-0 bg-[#121212] z-40  py-2 cursor-pointer">
+          <div className="text-[20px] flex items-center justify-around sticky top-0 left-0 bg-[#121212] z-40  py-2 cursor-pointer">
+            <Link to={"/"}>
+              <HomeIcon className="size-[20px] block sm:hidden  fill-white"></HomeIcon>
+            </Link>
             <Title Order={order} Select={SetOrder} value={0} data="Đoạn chat" />
             <Title Order={order} Select={SetOrder} value={1} data="Bạn bè" />
             <Title

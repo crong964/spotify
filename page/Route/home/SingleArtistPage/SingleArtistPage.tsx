@@ -11,6 +11,7 @@ import { PlayList } from "@/page/component/Playlist";
 import { CheckCircleIcon, PlusCircleIcon } from "@/icon/Icon";
 import TypeFriend from "@/page/component/friend/TypeFriend";
 import { SongInPlayList } from "@/page/component/Song/interface";
+import { Avatar } from "@/page/component/avatar/Avatar";
 const PlayLists = React.lazy(() => import("@/page/component/Playlist"));
 
 export default function ArtistPage() {
@@ -43,40 +44,51 @@ export default function ArtistPage() {
 
   return (
     <div className="relative " ref={refPage}>
-      <div
-        className="hidden sm:block bg-no-repeat bg-cover rounded-t-lg absolute top-0 left-0 w-full h-[320px] "
-        style={{ backgroundImage: `url(${artist?.Banner || ""})` }}
-      ></div>
+      {artist?.Banner !== "" ? (
+        <div
+          className="hidden sm:block bg-no-repeat bg-center bg-cover rounded-t-lg absolute top-0 left-0 w-full h-[40vh] "
+          style={{ backgroundImage: `url(${artist?.Banner || ""})` }}
+        ></div>
+      ) : (
+        <></>
+      )}
+
       <div
         className="block sm:hidden bg-no-repeat bg-cover rounded-t-lg absolute top-0 left-0 w-full h-[320px]"
         style={{ backgroundImage: `url(${artist?.pathImage || ""})` }}
       ></div>
       <div className="opacity-25 bg-black absolute top-0 left-0 w-full h-[320px]"></div>
-      <div className="flex flex-col justify-end absolute top-0 left-0 h-[320px] z-10 p-4">
-        <div className="flex items-center">
-          <svg
-            fill="blue"
-            aria-hidden="true"
-            className="fill-blue-600 size-[20px]"
-            viewBox="0 0 24 24"
-          >
-            <path d="M10.814.5a1.658 1.658 0 0 1 2.372 0l2.512 2.572 3.595-.043a1.658 1.658 0 0 1 1.678 1.678l-.043 3.595 2.572 2.512c.667.65.667 1.722 0 2.372l-2.572 2.512.043 3.595a1.658 1.658 0 0 1-1.678 1.678l-3.595-.043-2.512 2.572a1.658 1.658 0 0 1-2.372 0l-2.512-2.572-3.595.043a1.658 1.658 0 0 1-1.678-1.678l.043-3.595L.5 13.186a1.658 1.658 0 0 1 0-2.372l2.572-2.512-.043-3.595a1.658 1.658 0 0 1 1.678-1.678l3.595.043L10.814.5zm6.584 9.12a1 1 0 0 0-1.414-1.413l-6.011 6.01-1.894-1.893a1 1 0 0 0-1.414 1.414l3.308 3.308 7.425-7.425z"></path>
-          </svg>
-          <span className="font-normal text-[14px] text-white">
-            Nghệ sĩ được xác minh
+      <div className="flex items-end p-2">
+        {artist?.Banner !== "" ? (
+          <></>
+        ) : (
+          <Avatar className="size-[250px] rounded-full" src={artist?.pathImage || ""} />
+        )}
+        <div className="flex flex-col justify-end h-[320px] z-10 p-4">
+          <div className="flex items-center">
+            <svg
+              fill="blue"
+              aria-hidden="true"
+              className="fill-blue-600 size-[20px]"
+              viewBox="0 0 24 24"
+            >
+              <path d="M10.814.5a1.658 1.658 0 0 1 2.372 0l2.512 2.572 3.595-.043a1.658 1.658 0 0 1 1.678 1.678l-.043 3.595 2.572 2.512c.667.65.667 1.722 0 2.372l-2.572 2.512.043 3.595a1.658 1.658 0 0 1-1.678 1.678l-3.595-.043-2.512 2.572a1.658 1.658 0 0 1-2.372 0l-2.512-2.572-3.595.043a1.658 1.658 0 0 1-1.678-1.678l.043-3.595L.5 13.186a1.658 1.658 0 0 1 0-2.372l2.572-2.512-.043-3.595a1.658 1.658 0 0 1 1.678-1.678l3.595.043L10.814.5zm6.584 9.12a1 1 0 0 0-1.414-1.413l-6.011 6.01-1.894-1.893a1 1 0 0 0-1.414 1.414l3.308 3.308 7.425-7.425z"></path>
+            </svg>
+            <span className="font-normal text-[14px] text-white">
+              Nghệ sĩ được xác minh
+            </span>
+          </div>
+          <h1>
+            <span className="text-white font-bol text-[40px] sm:text-[96px] font-black">
+              {artist?.ChanalName}
+            </span>
+          </h1>
+          <span className="text-[16px] font-bold text-white">
+            1.235.194 người nghe hằng tháng
           </span>
         </div>
-        <h1>
-          <span className="text-white font-bol text-[40px] sm:text-[96px] font-black">
-            {artist?.ChanalName}
-          </span>
-        </h1>
-        <span className="text-[16px] font-bold text-white">
-          1.235.194 người nghe hằng tháng
-        </span>
       </div>
 
-      <div className="h-[320px]"></div>
       <div className="sm:px-4">
         <div className="flex items-center py-4 space-x-4">
           <PlayButtom id={id || ""} page="artist" />
