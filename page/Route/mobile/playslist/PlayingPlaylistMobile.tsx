@@ -21,19 +21,21 @@ import { post } from "@/page/config/req";
 import "@/public/css/index.css";
 import { ButtonRandomPlay, ModPlay } from "@/page/component/Audio/Index";
 import { SongQueueInplayList } from "@/page/Route/home/Right/Queue";
+import { useNavigate } from "react-router-dom";
 export default function PlayingPlaylistMobile() {
   const lsSong = useSelector((state: RootHome) => state.audioroot.lsSong);
   const mark = useSelector((state: RootHome) => state.audioroot.mark);
   const playlistmobile = useSelector(
     (state: RootHome) => state.audioroot.playlistmobile
   );
+
   const [duration, SetDuration] = useState(0);
   const [curTime, SetCurTime] = useState(0);
   const [timeUpdate, SetTimeUpdate] = useState(true);
   const [show, SetShow] = useState(true);
   const dispatch = useDispatch();
   const stop = useSelector((state: RootHome) => state.audioroot.stop);
-
+  const navigate = useNavigate();
   const RandomNext = (n: number) => {
     if (mark + n >= 0 && mark + n < lsSong.length) {
       dispatch(NextSong(n));
@@ -63,8 +65,8 @@ export default function PlayingPlaylistMobile() {
   return (
     <div
       className={
-        "absolute bg-black  z-[90] w-[100vw] h-[100vh] overflow-y-scroll " +
-        `${show ? "top-0 left-0 appearBottomToTop" : " disppearTopToBottom"}`
+        "absolute bg-black  z-[90] w-[100vw] h-[100vh] overflow-y-scroll overflow-x-hidden" +
+        `${show ? " top-0 left-0 appearBottomToTop" : " disppearTopToBottom"}`
       }
     >
       <div className="px-3 py-1 my-3">
@@ -72,7 +74,7 @@ export default function PlayingPlaylistMobile() {
           onClick={() => {
             SetShow(false);
             setTimeout(() => {
-              dispatch(SetPlaylistmobile(false));
+              navigate("/");
             }, 2100);
           }}
         >
@@ -91,11 +93,11 @@ export default function PlayingPlaylistMobile() {
         <div className="text-2xl w-full">{lsSong[mark]?.SongName}</div>
         <div className="text-lg  w-full">{lsSong[mark]?.Singer}</div>
       </div>
-      <div className="flex ">
+      <div className="flex justify-around items-center">
         <Time d={curTime} key={0} />
         <input
           type="range"
-          className="rounded-lg flex-1 sm:flex-none mx-3  cursor-pointer overflow-hidden appearance-none bg-gray-400 h-[6px] sm:w-[70%]"
+          className="rounded-lg sm:flex-none mx-3  cursor-pointer overflow-hidden appearance-none bg-gray-400 h-[6px] w-[70%]"
           max={duration + ""}
           value={curTime}
           onChange={(ev) => {
@@ -143,7 +145,7 @@ export default function PlayingPlaylistMobile() {
             }
           }}
         >
-          {stop ? (
+          {!stop ? (
             <PlaySoundIcon className="fill-white size-16" />
           ) : (
             <PauseSoundIcon className="fill-white size-16" />

@@ -23,8 +23,6 @@ const NaviLoveSong = React.lazy(
 import { socket } from "@/page/socket/Socket";
 import { MobileSearchButtom } from "./home/NaviHome/SearchButtom";
 
-
-
 import {
   Outlet,
   Route,
@@ -43,7 +41,6 @@ import CarouselSlide, {
 import { NaviHomeMobile2 } from "@/page/component/NaviHome/NaviHome";
 import { ChatBoxMobliePage } from "./mobile/chatbox/ChatBoxMobliePage";
 import { SingleBoxChatPage } from "./mobile/SingleBox/SingleBoxChatPage";
-
 
 function useIndex() {
   const [queue, SetQueue] = useState(false);
@@ -126,7 +123,7 @@ export default function Index() {
           </div>
         </div>
       </main>
-      <div className="absolute sm:block z-40 left-0 bottom-0 w-full py-0 sm:py-2 px-2">
+      <div className="absolute sm:block z-40 left-0 bottom-0 w-full px-0 py-0 sm:py-2 sm:px-2">
         <PlayingBar />
         <NaviHomeMobile2 />
       </div>
@@ -159,7 +156,12 @@ export default function Index() {
         <></>
       )}
       {pathname.indexOf("mobile/chatbox") >= 0 ? <ChatBoxMobliePage /> : <></>}
-      {pathname.indexOf("mobile/singlebox") >= 0 ? <SingleBoxChatPage /> : <></>}
+      {pathname.indexOf("mobile/singlebox") >= 0 ? (
+        <SingleBoxChatPage />
+      ) : (
+        <></>
+      )}
+
     </div>
   );
 }

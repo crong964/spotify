@@ -34,6 +34,7 @@ import {
 import { Audio2, Volume } from "./Index";
 import { Pip } from "@/page/component/Pip/Index";
 import { Song } from "@/page/component/Song/Index";
+import { useNavigate } from "react-router-dom";
 
 interface SongI {
   Id: string;
@@ -50,6 +51,7 @@ export default function PlayingBar() {
   const mark = useSelector((state: RootHome) => state.audioroot.mark);
   const pip = useSelector((state: RootHome) => state.audioroot.pip);
   const right = useSelector((state: RootHome) => state.rootHome.Right);
+  const navigate = useNavigate();
   const devicetype = useSelector(
     (state: RootHome) => state.rootHome.devicetype
   );
@@ -87,9 +89,7 @@ export default function PlayingBar() {
     <div className="w-full bg-black h-[10%] sm:h-[12%] grid items-center grid-cols-1 sm:grid-cols-4 mt-0 ">
       <div
         onClick={() => {
-          if (devicetype == "mobile") {
-            dispatch(SetPlaylistmobile(true));
-          }
+          navigate("mobile/playlist");
         }}
         className="flex sm:inline-block justify-between items-center px-2 sm:px-0"
       >
