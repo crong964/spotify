@@ -78,8 +78,8 @@ class SongController {
             contain.Song_id = f
             contain.PlayList_id = check1.id
 
-            var fcheck = await Promise.all([SongController.song.Add(song), 
-                SongController.contain.Add(contain)])
+            var fcheck = await Promise.all([SongController.song.Add(song),
+            SongController.contain.Add(contain)])
 
             if (fcheck[0] == undefined || fcheck[1] == undefined) {
                 res.json({
@@ -173,7 +173,7 @@ class SongController {
     }
     async NewUpdate(req: Request, res: Response) {
         var song = new SongModel();
-        
+
         song.setAll(req.body);
         var id = req.cookies.id
         var u = await SongController.user.Get(id)
@@ -209,8 +209,8 @@ class SongController {
             }
 
         }
-        
-        
+
+
         var c = await SongController.song.Update(song)
         if (c) {
             res.json({
@@ -222,7 +222,7 @@ class SongController {
             err: true
         })
     }
-   
+
     async UpStatus(req: Request, res: Response) {
         var idSong = req.body.idSong
         var status = req.body.status
@@ -255,20 +255,21 @@ class SongController {
             songs: ls
         })
     }
-    async GetSongByGenre(req: Request, res: Response) {
-        var idGenre = req.body.idGenre
+
+    async GetSongByTabs(req: Request, res: Response) {
+        var tabs = req.body.tabs
+        let idPlaylist = req.body.idPlaylist || ""
         var start = req.body.end | 0
         var l: limit = {
             start: start,
             end: start + 200
         }
-        var ls = await SongController.song.GetSongByGenre(idGenre, l)
+        var ls = await SongController.song.GetSongByTabs(tabs,idPlaylist, l)
         res.json({
             err: false,
             ls: ls
         })
     }
-
     async NextSong(req: Request, res: Response) {
         var idSong = req.body.idSong
         var ls = await SongController.song.NextSong(idSong)

@@ -7,6 +7,9 @@ import IndexGenres from "@/admin/GenreLs";
 import { useParams } from "react-router-dom";
 import useSelectedArtist from "./Handlle";
 import DateReact from "../componnt/Date";
+import { Tabs } from "@/page/component/tabs/Index";
+import InputArtist from "../componnt/artist/InputArtist";
+import { singer } from "../componnt/artist/interface";
 
 type Genre = {
   Id: string;
@@ -37,8 +40,7 @@ function convertYYYMMDD(params: string) {
   }-${d.getDate() > 10 ? d.getDate() : "0" + d.getDate()}`;
 }
 export default function SongEdit() {
-  const name = useRef<HTMLInputElement>(null);
-  const data = useSelectedArtist();
+  const [SelectedSingers, SetSelectedSingers] = useState<singer[]>([]);
   const [conut, SetConut] = useState(0);
   const [file, SetFile] = useState<File>();
   const { idArtist } = useParams();
@@ -53,8 +55,8 @@ export default function SongEdit() {
     Singer: "",
     user_id: "",
   });
-  const slectGenre = useSelector((state: RootState) => state.navi.slectGenre);
-  const floor = useSelector((state: RootState) => state.navi.floor);
+  const [tab, SetTabs] = useState("");
+
   const songListAndInforArtist = useSelector(
     (state: RootState) => state.navi.songListAndInforArtist
   );
@@ -63,6 +65,7 @@ export default function SongEdit() {
     post("/admin/song/get", { idsong: idSong }, (v: any) => {
       if (v.err != undefined && !v.err) {
         SetSong(v.song);
+        SetTabs(v.song.Genre_id);
       }
     });
   }, [idSong]);
@@ -79,132 +82,21 @@ export default function SongEdit() {
               <div className="font-extralight"></div>
             </div>
             <div className="rounded-lg w-full border h-[200px]">
-              <IndexGenres />
+              <Tabs
+                onchange={(v) => {
+                  SetTabs(v);
+                }}
+                value={tab}
+              />
             </div>
           </div>
-          <div>Tên nhạc</div>
-          <div>
-            <input
-              onChange={(e) => {
-                SetSong({
-                  ...song,
-                  SongName: e.currentTarget.value,
-                });
-              }}
-              type="text"
-              value={song.SongName}
-              className="border-2 border-[#404040] font-medium rounded-lg p-2 w-full"
-            />
-          </div>
-          <div>Ca sĩ</div>
-          {data.SelectedSingers.length > 0 ? (
-            <div className="w-full">
-              {data.SelectedSingers.map((v) => {
-                return (
-                  <div
-                    key={v.id}
-                    className="flex items-center space-x-4 my-2 p-2 cursor-pointer"
-                    onClick={() => {
-                      if (!confirm("bạn muốn xóa không")) {
-                        return;
-                      }
-                      data.SetSelectedSingers([
-                        ...data.SelectedSingers.filter((d) => {
-                          return v.id != d.id;
-                        }),
-                      ]);
-                    }}
-                  >
-                    <img
-                      src={v.pathImage}
-                      alt=""
-                      className="size-[3.6rem] rounded-full"
-                    />
-                    <div>{v.ChanalName}</div>
-                  </div>
-                );
-              })}
-            </div>
-          ) : (
-            <></>
-          )}
-          <div className="relative flex">
-            <input
-              ref={name}
-              onChange={(e) => {
-                let v = e.currentTarget.value;
-                if (v.length < 0) {
-                  return;
-                }
-                data.SetP(e.currentTarget.value);
-              }}
-              type="text"
-              className="rounded-lg p-2 flex-1 focus:outline-none"
-            />
+          <InputArtist
+            onChange={(v) => {
+              SetSelectedSingers(v);
+            }}
+            key={1}
+          />
 
-            {data.singers.length > 0 ? (
-              <div className="absolute top-full left-0 bg-black overflow-y-scroll text-white h-[300px] w-full">
-                {data.singers.map((v) => {
-                  return (
-                    <div
-                      key={v.id}
-                      className="flex items-center space-x-4 my-2 p-2 hover:bg-[#222222] cursor-pointer"
-                      onClick={() => {
-                        data.SetSelectedSingers([
-                          ...data.SelectedSingers,
-                          {
-                            ChanalName: v.ChanalName,
-                            id: v.id,
-                            pathImage: v.pathImage,
-                          },
-                        ]);
-                        data.Setsingers([]);
-                        if (name.current != null) {
-                          name.current.value = "";
-                        }
-                      }}
-                    >
-                      <img
-                        src={v.pathImage}
-                        alt=""
-                        className="size-[3.6rem] rounded-full"
-                      />
-                      <div>{v.ChanalName}</div>
-                    </div>
-                  );
-                })}
-              </div>
-            ) : (
-              <>
-                {name.current != null && name.current.value.length > 0 ? (
-                  <button
-                    onClick={() => {
-                      post(
-                        "/admin/artist/addQickly",
-                        {
-                          Name: name.current?.value,
-                          ChanalName: name.current?.value,
-                        },
-                        (v: any) => {
-                          if (v && v.data) {
-                            data.SetSelectedSingers([
-                              ...data.SelectedSingers,
-                              v.data,
-                            ]);
-                          }
-                        }
-                      );
-                    }}
-                    className="px-3 py-1 bg-blue-400 hover:bg-blue-500"
-                  >
-                    Thêm
-                  </button>
-                ) : (
-                  <></>
-                )}
-              </>
-            )}
-          </div>
           <div>Ngày phát hành</div>
 
           <DateReact
@@ -333,15 +225,12 @@ export default function SongEdit() {
           <div className="flex justify-end">
             <div
               onClick={() => {
-                if (data.SelectedSingers.length <= 0) {
+                if (SelectedSingers.length <= 0) {
                   alert("chưa chọn nghệ sĩ");
                   return;
                 }
-                let user_id = JSON.stringify(data.SelectedSingers);
-                if (floor == 0) {
-                  alert("chưa chọn thể loại");
-                  return;
-                }
+                let user_id = JSON.stringify(SelectedSingers);
+
                 if (song.Singer.length <= 0 || song.SongName.length <= 0) {
                   alert("chưa nhập tên hoặc chưa nhập tên ca sĩ");
                   if (!confirm("bạn muốn tiếp tục chứ")) {
@@ -359,7 +248,7 @@ export default function SongEdit() {
                   alert("chưa nhập ngày");
                   return;
                 }
-                form.set("Genre_id", slectGenre[floor]);
+                form.set("Genre_id", tab);
                 if (file != undefined) {
                   form.set("avatar", file);
                 }

@@ -11,6 +11,9 @@ import { redirect, useParams } from "react-router-dom";
 import { Song } from "@/admin/SongList";
 import IndexGenres from "@/admin/GenreLs";
 import { get, post } from "@/page/config/req";
+import SongAndGenrePage from "../SongAndGenre/SongAndGenrePage";
+import { iSong } from "../SongAndGenre/interface";
+import { Tabs } from "@/page/component/tabs/Index";
 interface SongForm {
   Id: string;
   user_id: string;
@@ -42,24 +45,37 @@ export default function PlayListEdit() {
 }
 
 function PlayListFormData() {
+  let { idPlaylistEdit } = useParams();
+  const [newsongs, SetNewSongs] = useState<iSong[]>([]);
+  const [tabs, setTabs] = useState("");
+  useEffect(() => {
+    if (tabs == "") {
+      return;
+    }
+    post(
+      "/song/GetSongByTabs",
+      { tabs: tabs, idPlaylist: idPlaylistEdit },
+      (v: any) => {
+        SetNewSongs(v.ls);
+      }
+    );
+  }, [tabs]);
   const dispatch = useDispatch();
-
   const floor = useSelector((state: RootState) => state.navi.floor);
   const slectGenre = useSelector((state: RootState) => state.navi.slectGenre);
   const SelectList = useSelector((state: RootState) => state.navi.SelectList);
   const [song, SetSongs] = useState<SongForm[]>([]);
-  let { idPlaylistEdit } = useParams();
 
   const [file, SetFile] = useState<File>();
   const [newSongImage, SetNewSongImage] = useState("");
-
   const [playlist, SetPlayList] = useState<PlayListFormData>({
     Discripition: "",
     Genre_ID: "",
     id: "",
     ImagePath: "",
-    PlayListName: "", 
+    PlayListName: "",
   });
+
   useEffect(() => {
     get(`/admin/playlist/playListDetailAdmin/${idPlaylistEdit}`, (v: any) => {
       if (!v.err) {
@@ -79,6 +95,7 @@ function PlayListFormData() {
       }
     });
   }, []);
+
   var stt = 0;
   var ls = song.map((element) => {
     dispatch(RemoveSelectSong(element.Id));
@@ -187,6 +204,31 @@ function PlayListFormData() {
         className="text-black px-3 py-1 border-2 rounded-lg w-max cursor-pointer"
       >
         Cập nhật
+      </div>
+      <div className="w-full ">
+        <Tabs
+          onchange={(v) => {
+            setTabs(v);
+          }}
+          value=""
+        />
+        {newsongs.map((v) => {
+          stt += 1;
+          return (
+            <Song
+              Duration={v.Duration}
+              Id={v.Id}
+              Singer={v.Singer}
+              SongName={v.SongName}
+              Viewer={v.Viewer}
+              filePath={v.filePath}
+              SongImage={v.SongImage}
+              stt={stt}
+              user_id={v.user_id}
+              key={v.Id}
+            />
+          );
+        })}
       </div>
       <div className="h-[100px]"></div>
     </div>

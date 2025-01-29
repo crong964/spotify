@@ -88,7 +88,7 @@ function Genres(d: Genres) {
           <button
             onClick={() => {
               post(
-                "/genre/Add",
+                "/admin/genre/Add",
                 {
                   Floor: d.Floor,
                   Name: vu,
@@ -177,7 +177,7 @@ function Genre(params: Genre) {
           <svg
             onClick={() => {
               post(
-                "genre/UpdateName",
+                "/admin/genre/UpdateName",
                 {
                   Name: name,
                   id: params.Id,

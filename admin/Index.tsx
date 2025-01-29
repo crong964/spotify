@@ -17,6 +17,7 @@ import SongListAndInforArtist from "./artist/SongListAndInforArtist";
 import CmdPage from "./Cmd/CmdPage";
 import { AddArtist } from "./artist/AddArtist";
 import { ArtistDetail } from "./artist/ArtistDetail";
+import SongAndGenrePage from "./SongAndGenre/SongAndGenrePage";
 
 export default function App() {
   var children: React.JSX.Element;
@@ -37,7 +38,7 @@ export default function App() {
             path="songlist"
             element={
               <Main title="Danh sách nhạc">
-                <SongAndGenre />
+                <SongAndGenrePage />
               </Main>
             }
           />

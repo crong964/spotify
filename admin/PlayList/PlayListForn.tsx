@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Page, ReSetSelectSong, RootState } from "@/admin/Redux";
-import { Song } from "@/admin/SongList";
+import { Song } from "@/admin/SongAndGenre/Song";
 import IndexGenres from "@/admin/GenreLs";
 import { get, post } from "@/page/config/req";
+import { iSong } from "../SongAndGenre/interface";
+import { Tabs } from "@/page/component/tabs/Index";
 
 interface PlayListFormData {
   id: string;
@@ -14,7 +16,16 @@ interface PlayListFormData {
 }
 export default function PlayListForm() {
   const SelectListl = useSelector((state: RootState) => state.navi.SelectList);
-
+  const [newsongs, SetNewSongs] = useState<iSong[]>([]);
+  const [tabs, setTabs] = useState("");
+  useEffect(() => {
+    if (tabs == "") {
+      return;
+    }
+    post("/song/GetSongByTabs", { tabs: tabs, idPlaylist: "" }, (v: any) => {
+      SetNewSongs(v.ls);
+    });
+  }, [tabs]);
   var ls: React.JSX.Element[] = [];
   var stt = 0;
   for (const key in SelectListl) {
@@ -29,7 +40,7 @@ export default function PlayListForm() {
         SongName={element.SongName}
         Viewer={element.Viewer}
         filePath={element.filePath}
-        SongImage={element.ImagePath}
+        SongImage={element.SongImage}
         stt={stt}
         user_id={element.user_id}
         key={element.Id}
@@ -41,6 +52,30 @@ export default function PlayListForm() {
       <IndexGenres />
       {ls}
       <PlayListFormData />
+      <div className="w-full ">
+        <Tabs
+          onchange={(v) => {
+            setTabs(v);
+          }}
+          value=""
+        />
+        {newsongs.map((v, i) => {
+          return (
+            <Song
+              Duration={v.Duration}
+              Id={v.Id}
+              Singer={v.Singer}
+              SongName={v.SongName}
+              Viewer={v.Viewer}
+              filePath={v.filePath}
+              SongImage={v.SongImage}
+              stt={i + 1}
+              user_id={v.user_id}
+              key={v.Id}
+            />
+          );
+        })}
+      </div>
     </div>
   );
 }
@@ -50,7 +85,7 @@ function PlayListFormData() {
   const slectGenre = useSelector((state: RootState) => state.navi.slectGenre);
   const [file, SetFile] = useState<File>();
   const SelectList = useSelector((state: RootState) => state.navi.SelectList);
-  
+
   const dispatch = useDispatch();
   const [playlist, SetPlayList] = useState<PlayListFormData>({
     Discripition: "",
@@ -154,7 +189,7 @@ function PlayListFormData() {
             form.set(key, element);
           }
           form.set("Genre_ID", slectGenre[floor]);
-          post("/playlist/AddNewPlayList", form, (v: any) => {
+          post("/admin/playlist/AddNewPlayList", form, (v: any) => {
             if (!v.err) {
               dispatch(Page("songlist"));
               dispatch(ReSetSelectSong());

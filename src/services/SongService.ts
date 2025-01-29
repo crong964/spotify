@@ -59,6 +59,13 @@ export class SongService {
         check = await this.songDatabase.GetSongByGenre(idGenre, p) as []
         return this.SetLs(check)
     }
+    async GetSongByTabs(idGenre: string, idPlaylist: string, p: limit) {
+        p.start = p.start | 0
+        p.end = p.end | 100
+        var check
+        check = await this.songDatabase.GetSongByTabs(idGenre, idPlaylist, p) as []
+        return this.SetLs(check)
+    }
     async IncreaseNumberDiscuss(SongId: string, n?: number) {
         n = n || 1
         var check

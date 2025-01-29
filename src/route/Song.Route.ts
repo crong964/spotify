@@ -53,5 +53,6 @@ SongRoute.get("/valisong/:idpage", songController.GetValidateAll)
 SongRoute.post("/NextSong", songController.NextSong)
 
 //admin
-SongRoute.post("/GetSongByGenre", songController.GetSongByGenre)//0k
+SongRoute.post("/GetSongByTabs", songController.GetSongByTabs)
+
 export default SongRoute

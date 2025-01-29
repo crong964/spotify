@@ -10,6 +10,9 @@ import useSelectedArtist from "./Handlle";
 import DateReact from "../componnt/Date";
 import { Audio2 } from "@/page/component/Audio/Index";
 import Audio3 from "@/page/component/Audio/Audio3";
+import { Tabs } from "@/page/component/tabs/Index";
+import InputArtist from "../componnt/artist/InputArtist";
+import { singer } from "../componnt/artist/interface";
 
 type Genre = {
   Id: string;
@@ -29,13 +32,12 @@ type Song = {
   filePath: string;
 };
 export default function SongForm() {
-  const name = useRef<HTMLInputElement>(null);
   const [conut, SetConut] = useState(0);
+  const [SelectedSingers, SetSelectedSingers] = useState<singer[]>([]);
   const [file, SetFile] = useState<File>();
   const [total, SetTotal] = useState(0);
   const [finsih, SetFish] = useState(false);
   const { idArtist } = useParams();
-  const data = useSelectedArtist();
   const [song, SetSong] = useState<Song>({
     Id: "",
     SongImage: "",
@@ -46,11 +48,10 @@ export default function SongForm() {
     filePath: "",
     Singer: "",
   });
-  const slectGenre = useSelector((state: RootState) => state.navi.slectGenre);
   const songListAndInforArtist = useSelector(
     (state: RootState) => state.navi.songListAndInforArtist
   );
-  const floor = useSelector((state: RootState) => state.navi.floor);
+
   function upload(params: Uint8Array, i: number, pa?: string) {
     let n = 10000;
     let checksum = 0;
@@ -87,7 +88,7 @@ export default function SongForm() {
       });
     }
   }
-
+  const [tab, SetTabs] = useState("");
   return (
     <>
       {songListAndInforArtist == "add" ? (
@@ -101,7 +102,12 @@ export default function SongForm() {
               <div className="font-extralight"></div>
             </div>
             <div className="rounded-lg w-full border h-[200px]">
-              <IndexGenres />
+              <Tabs
+                onchange={(v) => {
+                  SetTabs(v);
+                }}
+                value={tab}
+              />
             </div>
           </div>
           <div>Tên nhạc</div>
@@ -117,87 +123,12 @@ export default function SongForm() {
               className="border-2 border-[#404040] font-medium rounded-lg p-2 w-full"
             />
           </div>
-          <div>Ca sĩ</div>
-          {data.SelectedSingers.length > 0 ? (
-            <div className="w-full">
-              {data.SelectedSingers.map((v) => {
-                return (
-                  <div
-                    key={v.id}
-                    className="flex items-center space-x-4 my-2 p-2 cursor-pointer"
-                    onClick={() => {
-                      if (!confirm("bạn muốn xóa không")) {
-                        return;
-                      }
-                      data.SetSelectedSingers([
-                        ...data.SelectedSingers.filter((d) => {
-                          return v.id != d.id;
-                        }),
-                      ]);
-                    }}
-                  >
-                    <img
-                      src={v.pathImage}
-                      alt=""
-                      className="size-[3.6rem] rounded-full"
-                    />
-                    <div>{v.ChanalName}</div>
-                  </div>
-                );
-              })}
-            </div>
-          ) : (
-            <></>
-          )}
-          <div className="relative ">
-            <input
-              ref={name}
-              onChange={(e) => {
-                let v = e.currentTarget.value;
-                if (v.length < 0) {
-                  return;
-                }
-                data.SetP(e.currentTarget.value);
-              }}
-              type="text"
-              className="border-2 border-[#404040] rounded-lg p-2 w-full focus:outline-none"
-            />
-            {data.singers.length > 0 ? (
-              <div className="absolute top-full left-0 bg-black overflow-y-scroll text-white h-[300px] w-full">
-                {data.singers.map((v) => {
-                  return (
-                    <div
-                      key={v.id}
-                      className="flex items-center space-x-4 my-2 p-2 hover:bg-[#222222] cursor-pointer"
-                      onClick={() => {
-                        data.SetSelectedSingers([
-                          ...data.SelectedSingers,
-                          {
-                            ChanalName: v.ChanalName,
-                            id: v.id,
-                            pathImage: v.pathImage,
-                          },
-                        ]);
-                        data.Setsingers([]);
-                        if (name.current != null) {
-                          name.current.value = "";
-                        }
-                      }}
-                    >
-                      <img
-                        src={v.pathImage}
-                        alt=""
-                        className="size-[3.6rem] rounded-full"
-                      />
-                      <div>{v.ChanalName}</div>
-                    </div>
-                  );
-                })}
-              </div>
-            ) : (
-              <></>
-            )}
-          </div>
+          <InputArtist
+            onChange={(v) => {
+              SetSelectedSingers(v);
+            }}
+            key={1}
+          />
 
           <div>Ngày phát hành</div>
 
@@ -314,6 +245,7 @@ export default function SongForm() {
                 ) : (
                   <>
                     <Audio3
+                      className="fill-black  rounded-full size-9"
                       GetTIme={(v) => {
                         SetSong({
                           ...song,
@@ -331,19 +263,18 @@ export default function SongForm() {
           <div className="flex justify-end">
             <div
               onClick={() => {
-                if (data.SelectedSingers.length <= 0) {
+                if (SelectedSingers.length <= 0) {
                   alert("chưa chọn nghệ sĩ");
                   return;
                 }
-                let user_id = JSON.stringify(data.SelectedSingers);
-                if (floor == 0) {
-                  alert("chưa chọn thể loại");
-                  return;
-                }
+                let user_id = JSON.stringify(SelectedSingers);
 
                 var form = new FormData();
-
-                form.set("Genre_id", slectGenre[floor]);
+                if (tab.length == 0) {
+                  alert("chưa chon tab");
+                  return;
+                }
+                form.set("Genre_id", tab);
                 const myObj: { [key: string]: any } = song;
 
                 for (const key in myObj) {
