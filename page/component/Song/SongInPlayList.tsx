@@ -8,17 +8,22 @@ import Time from "@/page/component/Time";
 const ArtistLink = React.lazy(() => import("@/page/component/ArtistLink"));
 import { SetAutoPlay, SetSongs } from "@/page/component/Audio/AudioRedux";
 import { post } from "@/page/config/req";
+import { Pop } from "@/page/component/pop";
 
 export default function SongInPlayList(v: SongInPlayList) {
   const [liked, SetLike] = useState<string>(v.liked);
   const isLogin = useSelector((state: RootHome) => state.rootHome.isLogin);
+  const playlists = useSelector((state: RootHome) => state.rootHome.playlists);
   const typeDevice = useSelector(
     (state: RootHome) => state.rootHome.devicetype
   );
   const dispatch = useDispatch();
+  const [xy, XY] = useState({ x: 0, y: 0, s: false });
   return (
     <div
-      key={v.Id}
+      onContextMenu={(v) => {
+        XY({ x: v.pageX, y: v.pageY, s: true });
+      }}
       className="grid grid-cols-7 text-[13px] sm:text-[14px] sm:p-2 py-2 cursor-pointer sm:space-x-2 hover:bg-[#2D2D2D] text-white font-bold rounded-lg items-center"
     >
       <div
@@ -123,6 +128,37 @@ export default function SongInPlayList(v: SongInPlayList) {
         )}
         <Time d={parseInt(v.Duration + "")} />
       </div>
+      {xy.s ? (
+        <Pop left={xy.x} top={xy.y}>
+          <div
+            className="h-[350px] min-w-[250px] text-[14px] p-1 bg-[#282828]"
+            onMouseLeave={() => {
+              XY({ ...xy, s: false });
+            }}
+          >
+            <button
+              onClick={() => {
+                post("/playlist/addplaylist", { idsong: v.Id }, (v: any) => {
+                  alert(v.err == false);
+                });
+              }}
+              className="flex p-3 justify-start items-center gap-2 hover:bg-black w-full"
+            >
+              <PlusCircleIcon className="size-[14px] fill-white" />
+              <div>Tạo danh sách mới</div>
+            </button>
+            {playlists.map((v) => {
+              return (
+                <button className="p-3 flex hover:bg-black w-full">
+                  {v.PlayListName}
+                </button>
+              );
+            })}
+          </div>
+        </Pop>
+      ) : (
+        <></>
+      )}
     </div>
   );
 }

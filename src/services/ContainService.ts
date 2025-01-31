@@ -26,6 +26,12 @@ export class ContainService {
         check = await Mysql2.query(sql, [Song_id, PlayList_id])
         return check
     }
+    async DeleteAll(PlayList_id: string) {
+        var sql = `DELETE FROM contain WHERE  PlayList_id=? `
+        var check
+        check = await Mysql2.query(sql, [PlayList_id])
+        return check
+    }
     async GetAllByPlayList(PlayList_id: string) {
         var sql = "SELECT song.Id,song.SongName,song.Viewer,song.Singer,song.Duration,song.filePath,song.SongImage, contain.TimeCreate FROM contain,song WHERE contain.Song_ID=song.Id AND contain.PlayList_id=?"
         var check

@@ -3,7 +3,7 @@ import { Song } from "../PlayListPage/PlayListPage";
 import { useDispatch, useSelector } from "react-redux";
 
 import { post } from "@/page/config/req";
-import PlayLists, { PlayList } from "@/page/component/Playlist";
+import PlayLists, { iPlayList, PlayList } from "@/page/component/Playlist";
 import { Artists } from "@/page/component/Artist";
 import { SongList } from "@/page/component/Song/Index";
 import { useParams } from "react-router-dom";
@@ -27,7 +27,7 @@ export default function SearchPage() {
   const dispatch = useDispatch();
   const { s } = useParams();
   const [artist, SetArtis] = useState<artist[]>([]);
-  const [playlists, SetPlayLists] = useState<PlayList[]>([]);
+  const [playlists, SetPlayLists] = useState<iPlayList[]>([]);
   const [name, SetName] = useState("");
 
   const FetchSearch = () => {

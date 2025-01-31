@@ -1,33 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { NaviPage, NaviRight, RootHome, SetTitle } from "@/page/Route/home/RootRedux";
+import {
+  NaviPage,
+  NaviRight,
+  RootHome,
+  
+} from "@/page/Route/home/RootRedux";
 import Navi from "./Navi";
 import { Link } from "react-router-dom";
+import { Pop } from "@/page/component/pop";
 
 export default function NaviLoveSong() {
   const dispatch = useDispatch();
   const mobiletype = useSelector((state: RootHome) => state.mobile.type);
+  const [pop, SetPop] = useState(false);
+  const [top, SetTop] = useState(0);
   return (
     <Link
       onMouseMove={(ev) => {
-        dispatch(
-          SetTitle({
-            Name: "Bài hát bạn thích",
-            show: true,
-            type: "",
-            y: ev.currentTarget.getBoundingClientRect().top,
-          })
-        );
+        let top = ev.currentTarget.getBoundingClientRect().top;
+        SetPop(true);
+        SetTop(top)
       }}
       onMouseLeave={(ev) => {
-        dispatch(
-          SetTitle({
-            Name: "",
-            show: false,
-            type: "",
-            y: ev.currentTarget.getBoundingClientRect().top,
-          })
-        );
+        SetPop(false);
       }}
       to={"likedsongs"}
     >
@@ -71,6 +67,19 @@ export default function NaviLoveSong() {
         }
         page="likedsongs"
       />
+
+      {pop && mobiletype == "pc" ? (
+        <Pop left={80} top={top}>
+          <div className="absolute  bg-[#434242] p-2 rounded-lg">
+            <div className="text-base text-white min-w-max">
+              Bài hát yêu thích
+            </div>
+            <div className="text-sm text-gray-400">Danh sách phát</div>
+          </div>
+        </Pop>
+      ) : (
+        <></>
+      )}
     </Link>
   );
 }

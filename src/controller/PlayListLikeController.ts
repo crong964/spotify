@@ -13,9 +13,10 @@ class PlayListLikeController {
     async Delete(req: Request, res: Response) {
         let id = req.cookies.id
         let idPlaylist = req.body.idPlaylist
+
         let check = await PlayListLikeController.playListLikeService.Delete(id, idPlaylist)
         res.json({
-            err: check == undefined
+            err: check.affectedRows == 0
         })
     }
     async GetAll(req: Request, res: Response) {
@@ -23,7 +24,8 @@ class PlayListLikeController {
         let check = await PlayListLikeController.playListLikeService.GetAll(id)
         res.json({
             err: check == undefined,
-            ls: check
+            ls: check,
+            idU: id
         })
 
     }

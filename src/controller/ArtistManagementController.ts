@@ -162,9 +162,10 @@ class ArtistManagementController {
         user.id = id
         d.User_id = user.id
         d.ImagePath = user.pathImage
+        d.Type="playlist"
         d.id = id
         user.Vertify = "1"
-        d.Status = "0"
+        d.Status = "1"
         d.PlayListName = user.ChanalName
 
         try {

@@ -1,4 +1,4 @@
-import { RowDataPacket } from "mysql2/promise";
+import { ResultSetHeader, RowDataPacket } from "mysql2/promise";
 import Mysql2 from "../config/Config";
 import { PlayListLikeModel } from "../model/PlaylistLikeModel";
 
@@ -10,7 +10,7 @@ class PlayListLikeService {
     }
     async Delete(user_id: string, playlist_id: string) {
         let sql = "DELETE FROM playlistlikes WHERE User_ID=? AND PlayList_id=?"
-        let check = await Mysql2.query(sql, [user_id, playlist_id])
+        let check = await Mysql2.query(sql, [user_id, playlist_id]) as ResultSetHeader
         return check
     }
     async Get(user_id: string, playlist_id: string) {

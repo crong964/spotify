@@ -14,6 +14,8 @@ import haveListFriendsService, { HaveListFriendsService } from "../services/Have
 import LikedSongModel from "../model/LikedSongModel";
 import firebase from "../config/Firebase";
 import playListLikeService from "../services/PlayListLikeService";
+import { ResultSetHeader } from "mysql2";
+import processImage from "../config/ProcessImage";
 
 export class PlayListController {
 
@@ -24,7 +26,8 @@ export class PlayListController {
     static user: UserService = userService
     static HaveListFriends: HaveListFriendsService = haveListFriendsService
     static Playlistlike = playListLikeService
-
+    static processImage = processImage
+    static firebase = firebase
     async AddPlayListByAdmin(req: Request, res: Response) {
         let file = req.file?.filename as any as string
 
@@ -37,7 +40,7 @@ export class PlayListController {
         if (req.file) {
 
             try {
-                playlistmodel.ImagePath = await firebase.UploadImageBufferNoZip(`playlist/${playlistmodel.id}`, req.file.buffer) as string
+                playlistmodel.ImagePath = await PlayListController.firebase.UploadImageBufferNoZip(`playlist/${playlistmodel.id}`, req.file.buffer) as string
             } catch (error) {
                 console.log(error);
 
@@ -61,6 +64,8 @@ export class PlayListController {
             err: false
         })
     }
+
+
     async GetByGenreAdmin(req: Request, res: Response) {
         let Genre_ID = req.body.Genre_ID
         let ls = await PlayListController.playlist.GetByGenre(Genre_ID, 0, 10)
@@ -94,8 +99,8 @@ export class PlayListController {
 
         if (req.file) {
             try {
-                await firebase.MoveImage(`playlist/${playlistmodel.id}`, `deletePlaylist/playlist/${playlistmodel.id}`)
-                playlistmodel.ImagePath = await firebase.UploadImageBufferNoZip(`playlist/${playlistmodel.id}`, req.file.buffer) as string
+                await PlayListController.firebase.MoveImage(`playlist/${playlistmodel.id}`, `deletePlaylist/playlist/${playlistmodel.id}`)
+                playlistmodel.ImagePath = await PlayListController.firebase.UploadImageBufferNoZip(`playlist/${playlistmodel.id}`, req.file.buffer) as string
             } catch (error) {
                 console.log(error);
             }
@@ -132,7 +137,8 @@ export class PlayListController {
             playlist: ls[0],
             songs: ls[1],
             like: ls[2] != undefined,
-            err: ls[0] == undefined
+            err: ls[0] == undefined,
+            idU: req.cookies.id,
         })
     }
     async NextPlayListLimit(req: Request, res: Response) {
@@ -152,6 +158,7 @@ export class PlayListController {
 
         let ls = await Promise.all([PlayListController.playlist.GetPlayListArtistLimit(start, count),
         PlayListController.playlist.CountPlayListArtist()])
+        console.log(ls[1].count);
 
         res.json({
             err: false,
@@ -160,6 +167,80 @@ export class PlayListController {
         })
     }
 
+    async Add(req: Request, res: Response) {
+        let id = req.cookies.id
+        let idsong = req.body.idsong
+        let playlistmodel = new PlayListModel()
+        playlistmodel.PlayListName = "My Playlist"
+        playlistmodel.id = `playlist-${uuidv4()}`
+        playlistmodel.User_id = id
+        playlistmodel.Type = "person"
+        playlistmodel.Songs = 0
+        let check = await playListService.Add(playlistmodel)
+        if (check.affectedRows == 1) {
+            PlayListController.Playlistlike.Add(id, playlistmodel.id)
+            if (idsong) {
+                let d = new ContainModel()
+                d.Song_id = idsong
+                d.PlayList_id = playlistmodel.id
+                PlayListController.contain.Add(d)
+            }
+        }
+
+
+        res.json({
+            err: check.affectedRows == 0,
+            id: playlistmodel.id
+        })
+    }
+    async Delete(req: Request, res: Response) {
+        let id = req.cookies.id
+        let idplaylist = req.body.idplaylist
+        let playlist = await PlayListController.playlist.Get(idplaylist)
+        let s: ResultSetHeader | undefined = undefined
+        if (playlist?.User_id == id) {
+            await Promise.all([PlayListController.contain.DeleteAll(idplaylist),
+            PlayListController.Playlistlike.Delete(id, idplaylist)])
+            s = await PlayListController.playlist.DeletePlaylist(idplaylist)
+            PlayListController.firebase.Move(`playlist/${playlist?.id}.webp`, `delete/playlist/${playlist?.id}.webp`)
+        }
+        res.json({
+            err: s?.affectedRows == 0
+        })
+    }
+    async GetByUserid(req: Request, res: Response) {
+        let id = req.cookies.id
+        let s = await PlayListController.playlist.GetByUser_id(id)
+        res.json({
+            err: false,
+            ls: s
+        })
+    }
+    async Update(req: Request, res: Response) {
+        let id = req.cookies.id
+        let playlistmodel = new PlayListModel()
+        playlistmodel.setAll(req.body)
+        playlistmodel.User_id = id
+        if (req.file) {
+            try {
+                let path = req.file.path
+                let check = await PlayListController.processImage.ConvertImgToWebp(path, `${path}.webp`)
+                if (check) {
+                    playlistmodel.ImagePath = await PlayListController.firebase.UploadStream(check, `playlist/${playlistmodel.id}.webp`) as string
+                    unlink(path)
+                    unlink(check)
+                }
+            } catch (error) {
+                console.log(error);
+
+            }
+        }
+        let s = await PlayListController.playlist.UpdateNameImage(playlistmodel)
+        res.json({
+            err: false,
+            ls: s
+        })
+    }
 }
 
 let playListController: PlayListController = new PlayListController()

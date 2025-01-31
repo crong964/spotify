@@ -7,16 +7,17 @@ import { useParams } from "react-router-dom";
 import { get, post } from "@/page/config/req";
 import React from "react";
 import PlayButtom from "@/page/component/PlayButtom";
-import { PlayList } from "@/page/component/Playlist";
+import { iPlayList, PlayList } from "@/page/component/Playlist";
 import { CheckCircleIcon, PlusCircleIcon } from "@/icon/Icon";
 import TypeFriend from "@/page/component/friend/TypeFriend";
 import { SongInPlayList } from "@/page/component/Song/interface";
-import { Avatar } from "@/page/component/avatar/Avatar";
+import { Avatar } from "@/page/component/avatar";
+
 const PlayLists = React.lazy(() => import("@/page/component/Playlist"));
 
 export default function ArtistPage() {
   const idpage = useSelector((state: RootHome) => state.rootHome.command.param);
-  const [lsartist, SetLsAtist] = useState<PlayList[]>([]);
+  const [lsartist, SetLsAtist] = useState<iPlayList[]>([]);
   const [artist, SetaAtist] = useState<artist>();
   const [isfriend, SetIsfriend] = useState<"-1" | "0" | "1" | "2">();
   const [songs, SetSongS] = useState<SongInPlayList[]>([]);

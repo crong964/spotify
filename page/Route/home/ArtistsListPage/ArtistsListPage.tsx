@@ -1,4 +1,4 @@
-import { PlayList } from "@/page/component/Playlist";
+import { iPlayList, PlayList } from "@/page/component/Playlist";
 import { get, post } from "@/page/config/req";
 import React, { useEffect, useState } from "react";
 
@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { RootHome } from "../RootRedux";
 
 export default function ArtistsListPage() {
-  const [playlists, SetPlayLists] = useState<PlayList[]>([]);
+  const [playlists, SetPlayLists] = useState<iPlayList[]>([]);
   const [page, SetPage] = useState(0);
   const [count, SetCount] = useState(0);
   useEffect(() => {

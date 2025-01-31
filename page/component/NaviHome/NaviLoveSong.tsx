@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { NaviPage, NaviRight, RootHome, SetTitle } from "@/page/Route/home/RootRedux";
+import { NaviPage, NaviRight, RootHome } from "@/page/Route/home/RootRedux";
 import Navi from "./Navi";
 import { Link } from "react-router-dom";
 
@@ -8,29 +8,7 @@ export default function NaviLoveSong() {
   const dispatch = useDispatch();
   const mobiletype = useSelector((state: RootHome) => state.mobile.type);
   return (
-    <Link
-      onMouseMove={(ev) => {
-        dispatch(
-          SetTitle({
-            Name: "Bài hát bạn thích",
-            show: true,
-            type: "",
-            y: ev.currentTarget.getBoundingClientRect().top,
-          })
-        );
-      }}
-      onMouseLeave={(ev) => {
-        dispatch(
-          SetTitle({
-            Name: "",
-            show: false,
-            type: "",
-            y: ev.currentTarget.getBoundingClientRect().top,
-          })
-        );
-      }}
-      to={"likedsongs"}
-    >
+    <Link onMouseMove={(ev) => {}} onMouseLeave={(ev) => {}} to={"likedsongs"}>
       <Navi
         namepage="Yêu thích"
         onclick={() => {

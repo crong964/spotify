@@ -3,7 +3,7 @@ import rootHome, { NaviPage, RootHome } from "../RootRedux";
 import { useEffect, useState } from "react";
 import React from "react";
 import { get, post } from "@/page/config/req";
-import { PlayList } from "@/page/component/Playlist";
+import { iPlayList, PlayList } from "@/page/component/Playlist";
 import { useParams } from "react-router-dom";
 
 interface Genre {
@@ -17,7 +17,7 @@ interface Genre {
 export default function IdGenre() {
   const { id } = useParams();
 
-  const [playlists, SetPlayLists] = useState<PlayList[]>([]);
+  const [playlists, SetPlayLists] = useState<iPlayList[]>([]);
   const [genres, SetGernes] = useState<Genre[]>([]);
   useEffect(() => {
     post(`/genre/${id}`, {}, (v: any) => {
@@ -36,7 +36,7 @@ export default function IdGenre() {
 }
 interface PlayListByGenre {
   genre: Genre;
-  ls: PlayList[];
+  ls: iPlayList[];
 }
 function PlayListByGenre(d: PlayListByGenre) {
   const Right = useSelector((s: RootHome) => s.rootHome.Right);

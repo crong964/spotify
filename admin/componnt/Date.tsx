@@ -7,8 +7,6 @@ type DateReact = {
   int?: string;
 };
 export default function DateReact(param: DateReact) {
-  console.log(param.int);
-
   let da;
   if (param.int == undefined || param.int == "") {
     da = new Date();
@@ -47,7 +45,6 @@ export default function DateReact(param: DateReact) {
       </datalist>
       <input
         onChange={(e) => {
-         
           da.setMonth(parseInt(e.target.value) - 1);
           param.onChange(da.getTime() / 1000 + "");
         }}
@@ -63,7 +60,6 @@ export default function DateReact(param: DateReact) {
 
       <input
         onChange={(e) => {
-        
           da.setFullYear(parseInt(e.target.value));
           param.onChange(da.getTime() / 1000 + "");
         }}

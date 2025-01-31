@@ -6,8 +6,6 @@ import { ParseJson } from "@/page/socket/Socket";
 import audioSlice from "@/page/component/Audio/AudioRedux";
 import { authRedux } from "../auth/RootAuth";
 
-
-
 interface mess {
   idMess: string;
   content: string;
@@ -58,9 +56,10 @@ interface Root {
   stack: Commamd[];
   position: number;
   SearchName: string;
-  titleXY: TitleXY;
+  playlists: { idplaylist: string; PlayListName: string }[];
 }
 const initialState: Root = {
+  playlists: [],
   update: false,
   playing: { id: "", page: "" },
   topbarcontent: false,
@@ -88,12 +87,6 @@ const initialState: Root = {
     idUser: "",
     ngay: "",
     type: "",
-  },
-  titleXY: {
-    Name: "",
-    show: false,
-    type: "",
-    y: 0,
   },
 };
 const rootslice = createSlice({
@@ -202,8 +195,8 @@ const rootslice = createSlice({
       localStorage.setItem("queue", JSON.stringify(action.payload));
       state.playing = action.payload;
     },
-    SetTitle: (state, action: PayloadAction<TitleXY>) => {
-      state.titleXY = action.payload;
+    SetPlaylistRedux: (state, action) => {
+      state.playlists = action.payload;
     },
   },
 });
@@ -237,7 +230,7 @@ export const {
   RemoveRight,
   SetDeviceType,
   SetPlaying,
-  SetTitle,
+  SetPlaylistRedux,
 } = rootslice.actions;
 
 export default rootHome;

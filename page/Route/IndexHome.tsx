@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from "react-redux";
 const Header = React.lazy(() => import("@/page/component/Header/Header"));
 
 import {
-  NaviPage,
   RootHome,
   SetDeviceType,
   SetMess,
@@ -25,10 +24,7 @@ import { MobileSearchButtom } from "./home/NaviHome/SearchButtom";
 
 import {
   Outlet,
-  Route,
-  Routes,
   useLocation,
-  useRouteError,
 } from "react-router-dom";
 import Home from "./home/NaviHome/Home";
 import Right from "./home/Right/Right";
@@ -41,7 +37,7 @@ import CarouselSlide, {
 import { NaviHomeMobile2 } from "@/page/component/NaviHome/NaviHome";
 import { ChatBoxMobliePage } from "./mobile/chatbox/ChatBoxMobliePage";
 import { SingleBoxChatPage } from "./mobile/SingleBox/SingleBoxChatPage";
-
+import { Libarary } from "@/page/component/libarary";
 function useIndex() {
   const [queue, SetQueue] = useState(false);
   const [scroll, SetSroll] = useState(0);
@@ -57,17 +53,9 @@ function useIndex() {
   return { Set, queue, SetQueue, scroll };
 }
 export default function Index() {
-  const { Set, queue, SetQueue, scroll } = useIndex();
-  const mobiletype = useSelector(
-    (state: RootHome) => state.rootHome.devicetype
-  );
   const BoxList = useSelector((state: RootHome) => state.rootHome.BoxList);
   const isLogin = useSelector((state: RootHome) => state.rootHome.isLogin);
-  const titleXY = useSelector((state: RootHome) => state.rootHome.titleXY);
   const { pathname } = useLocation();
-  const playlistmobile = useSelector(
-    (state: RootHome) => state.audioroot.playlistmobile
-  );
   const screem = async () => {
     if (window.innerWidth > 900) {
       dispatch(SetDeviceType("pc"));
@@ -104,7 +92,10 @@ export default function Index() {
             </div>
           </div>
           {isLogin ? (
-            <div className="h-[80%] overflow-y-auto bg-[#121212] rounded-lg py-2 ">
+            <div className="relative h-[80%] overflow-y-auto bg-[#121212] rounded-lg pb-2 ">
+              <div className="sticky z-20 top-0 bg-black">
+                <Libarary />
+              </div>
               <NaviLoveSong />
               <PlaylistLike />
             </div>
@@ -136,20 +127,6 @@ export default function Index() {
       ) : (
         <></>
       )}
-
-      {titleXY.show && mobiletype == "pc" ? (
-        <div
-          style={{ left: 80, top: titleXY.y }}
-          className="absolute z-40 bg-[#434242] p-2 rounded-lg"
-        >
-          <div className="text-base text-white">{titleXY.Name}</div>
-          <div className="text-sm text-gray-400">
-            {titleXY.type == "artist" ? "Nghệ sĩ" : "Danh sách phát"}
-          </div>
-        </div>
-      ) : (
-        <></>
-      )}
       {pathname.indexOf("mobile/playlist") >= 0 ? (
         <PlayingPlaylistMobile />
       ) : (
@@ -161,7 +138,6 @@ export default function Index() {
       ) : (
         <></>
       )}
-
     </div>
   );
 }

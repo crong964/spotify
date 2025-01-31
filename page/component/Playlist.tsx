@@ -4,9 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { post } from "@/page/config/req";
 import { Link } from "react-router-dom";
 import { NaviPage, RootHome } from "../Route/home/RootRedux";
-import { Avatar } from "./avatar/Avatar";
-
-export interface PlayList {
+import Avatar from "./avatar/Avatar";
+export interface iPlayList {
   id: string;
   Genre_ID: string;
   ImagePath: string;
@@ -15,10 +14,10 @@ export interface PlayList {
   className?: string;
 }
 interface PlayLists {
-  d: PlayList[];
+  d: iPlayList[];
   title: string;
 }
-export function PlayList(d: PlayList) {
+export function PlayList(d: iPlayList) {
   const [show, SetShow] = useState(false);
   const playing = useSelector((state: RootHome) => state.rootHome.playing);
   const stopAudio = useSelector((state: RootHome) => state.audioroot.stop);
@@ -33,7 +32,7 @@ export function PlayList(d: PlayList) {
       }}
       className=" relative cursor-pointer bg-black hover:bg-[#1A1A1A] p-1 sm:p-2"
     >
-      <Link to={`/${d.Type}/${d.id}`}>
+      <Link to={`/${d.Type == "artist" ? d.Type : "playlist"}/${d.id}`}>
         <Avatar
           src={d.ImagePath}
           className={`${
@@ -57,7 +56,7 @@ export function PlayList(d: PlayList) {
   );
 }
 interface PlayLists {
-  d: PlayList[];
+  d: iPlayList[];
   title: string;
   link?: string;
 }
@@ -115,7 +114,7 @@ export default function PlayLists(p: PlayLists) {
 }
 
 export function SuggestPlaylist() {
-  const [playlists, SetPlayLists] = useState<PlayList[]>([]);
+  const [playlists, SetPlayLists] = useState<iPlayList[]>([]);
   useEffect(() => {
     post("/playlist/Nextplaylist", {}, (v: any) => {
       SetPlayLists(v.ls);

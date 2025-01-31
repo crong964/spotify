@@ -1,4 +1,4 @@
-import { RowDataPacket } from "mysql2"
+import { ResultSetHeader, RowDataPacket } from "mysql2"
 import Mysql2 from "../config/Config"
 import PlayListDatabase from "../database/PlayListDatabase"
 import { PlayListModel } from "../model/PlayListModel"
@@ -10,8 +10,8 @@ export class PlayListService {
     }
     async Add(d: PlayListModel) {
         var sql = "INSERT INTO playlist(id, User_id, Genre_ID, Type, ImagePath, PlayListName, Likes, Songs, Duration, Status, Discripition) VALUES (?,?,?,?,?,?,?,?,?,?,?)"
-        var check
-        check = await Mysql2.query(sql, [d.id, d.User_id, d.Genre_ID, d.Type, d.ImagePath, d.PlayListName, d.Likes, d.Songs, d.Duration, d.Status, d.Discripition])
+        var check: ResultSetHeader
+        check = await Mysql2.query(sql, [d.id, d.User_id, d.Genre_ID, d.Type, d.ImagePath, d.PlayListName, d.Likes, d.Songs, d.Duration, d.Status, d.Discripition]) as ResultSetHeader
         return check
     }
     async AddArtists(d: PlayListModel) {
@@ -48,6 +48,12 @@ export class PlayListService {
         var sql = "UPDATE playlist SET ImagePath=?,PlayListName=?,Likes=?,Songs=?,Duration=?,Status=?,Discripition=? WHERE id =?"
         var check
         check = await Mysql2.query(sql, [d.ImagePath, d.PlayListName, d.Likes, d.Songs, d.Duration, d.Status, d.Discripition, d.id])
+        return check
+    }
+    async UpdateNameImage(d: PlayListModel) {
+        var sql = "UPDATE playlist SET ImagePath=?,PlayListName=?,Discripition=? WHERE id =? AND User_id=?"
+        var check
+        check = await Mysql2.query(sql, [d.ImagePath, d.PlayListName, d.Discripition, d.id, d.User_id])
         return check
     }
     async VertifyPlaylist(idArtist: string, status: string) {
@@ -97,7 +103,7 @@ export class PlayListService {
     }
     async DeletePlaylist(id: string) {
         var sql = `Delete from playlist where id=?`
-        var ls = await Mysql2.query(sql, [id])
+        var ls = await Mysql2.query(sql, [id]) as ResultSetHeader
         return ls
     }
     async DeleteSongInPlayList(id: string) {
