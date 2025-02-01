@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import Home from "./Home";
 
 export function NaviHomeMobile() {
-  const isLogin = useSelector((state: RootHome) => state.rootHome.isLogin);
+  const isLogin = useSelector((state: RootHome) => state.rootauth.login.IsLogin);
   return (
     <div
       className={

@@ -158,7 +158,6 @@ export class PlayListController {
 
         let ls = await Promise.all([PlayListController.playlist.GetPlayListArtistLimit(start, count),
         PlayListController.playlist.CountPlayListArtist()])
-        console.log(ls[1].count);
 
         res.json({
             err: false,
@@ -177,7 +176,7 @@ export class PlayListController {
         playlistmodel.Type = "person"
         playlistmodel.Songs = 0
         let check = await playListService.Add(playlistmodel)
-        if (check.affectedRows == 1) {
+        if (check?.affectedRows == 1) {
             PlayListController.Playlistlike.Add(id, playlistmodel.id)
             if (idsong) {
                 let d = new ContainModel()
@@ -189,7 +188,7 @@ export class PlayListController {
 
 
         res.json({
-            err: check.affectedRows == 0,
+            err: check?.affectedRows == 0,
             id: playlistmodel.id
         })
     }

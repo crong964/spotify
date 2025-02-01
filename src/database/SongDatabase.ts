@@ -77,6 +77,22 @@ class SongDatabase {
         check = await Mysql2.query(sql, [...ps, idPlaylist, limit.start, limit.end])
         return check
     }
+    async GetCountSongByTabs(idGenre: string, idPlaylist: string) {
+        let ls = idGenre.split(" ")
+        let s = ""
+        let ps: string[] = []
+        for (let i = 0; i < ls.length - 1; i++) {
+            const element = ls[i];
+            s += `Genre_id LIKE ? AND `
+            ps.push(`%${element}%`)
+        }
+        s += `Genre_id LIKE ? `
+        ps.push(`%${ls[ls.length - 1]}%`)
+        var sql = `SELECT count(*) as count FROM song WHERE ${s} AND song.Id NOT IN (SELECT Song_ID FROM contain WHERE PlayList_id=?)`
+        var check
+        check = await Mysql2.query(sql, [...ps, idPlaylist])
+        return check
+    }
     async IncreaseNumberDiscuss(SongId: string, n: number) {
         var sql = `UPDATE song SET dicussquality=dicussquality + ? WHERE id=?`
         var check
@@ -87,6 +103,12 @@ class SongDatabase {
         var sql = `UPDATE song SET dicussquality=dicussquality - ? WHERE id=?`
         var check
         check = await Mysql2.query(sql, [n, SongId])
+        return check
+    }
+    async SearchSongNameWithoutPlaylist(SongName: string, idPlaylist: string, status = 1) {
+        var sql = `SELECT * FROM song WHERE song.SongName LIKE ? AND song.status= ? AND
+ song.Id NOT IN (SELECT contain.Song_ID FROM contain WHERE contain.PlayList_id =?) LIMIT 0,10`
+        var check = await Mysql2.query(sql, [`%${SongName}%`, status, idPlaylist]) as []
         return check
     }
 }

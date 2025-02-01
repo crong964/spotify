@@ -9,4 +9,5 @@ const SearchRoute = Router()
 SearchRoute.post("/", searchControll.SearchNameArtistAndSong)//0k
 SearchRoute.post("/user", searchControll.SearchName)//0k
 SearchRoute.post("/NameArtist", searchControll.SearchNameArtist)
+SearchRoute.post("/NameWithoutPlaylist", searchControll.SearchSongNameWithoutPlaylist)
 export default SearchRoute

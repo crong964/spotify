@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import PlayButtom from "@/page/component/PlayButtom";
 import { useDispatch, useSelector } from "react-redux";
-import { RootHome, SetCurName } from "@/page/Route/home/RootRedux";
+import { RootHome, SetCurName, SetPlaylist } from "@/page/Route/home/RootRedux";
 import { get, post } from "@/page/config/req";
-import { SongList } from "@/page/component/Song/Index";
+import { RecommendedSong, SongList } from "@/page/component/Song/Index";
 
 import { TimeString } from "@/page/component/Time";
 import { useParams } from "react-router-dom";
@@ -20,6 +20,7 @@ import { SetAutoPlay } from "@/page/component/Audio/AudioRedux";
 import { SongInPlayList } from "@/page/component/Song/interface";
 import { Avatar } from "@/page/component/avatar";
 import { Pop } from "@/page/component/pop";
+import { PopEditPlaylis } from "@/page/component/Playlist";
 
 var g = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 6, 7];
 export interface artist {
@@ -46,15 +47,6 @@ export interface Song {
   liked: string;
 }
 
-interface PlayList {
-  id: string;
-  ImagePath: string;
-  PlayListName: string;
-  Likes: number;
-  Songs: number;
-  Duration: string;
-  User_id: string;
-}
 interface SongList {
   data: Song[];
 }
@@ -69,24 +61,12 @@ export default function PlaylistPage() {
   const { id } = useParams();
   const [songs, SetSongS] = useState<SongInPlayList[]>([]);
   const [idU, SetIdU] = useState("");
-  const isLogin = useSelector((state: RootHome) => state.rootHome.isLogin);
-  const [playlist, SetPlayList] = useState<PlayList>({
-    Duration: "",
-    id: "",
-    ImagePath: "",
-    Likes: 0,
-    PlayListName: "",
-    Songs: 0,
-    User_id: "",
-  });
+  const isLogin = useSelector(
+    (state: RootHome) => state.rootauth.login.IsLogin
+  );
+  const playlist = useSelector((state: RootHome) => state.rootHome.playlist);
   const [like, SetLike] = useState(false);
-
-  const [playlistform, SetPlaylistForm] = useState<PlaylistForm>({
-    Discripition: "",
-    id: "",
-    ImagePath: "",
-    PlayListName: "",
-  });
+  const [tabs, SetTabs] = useState("");
   useEffect(() => {
     get(`/playlist/data/${id}`, (v: any) => {
       if (v && !v.err) {
@@ -100,18 +80,37 @@ export default function PlaylistPage() {
         }
         v.playlist.Duration = time;
         v.playlist.Songs = song;
-        SetPlayList(v.playlist);
-        SetPlaylistForm(v.playlist);
+
         SetLike(v.like);
         SetIdU(v.idU);
+        dispatch(SetPlaylist(v.playlist));
+        let ls = v.songs as SongInPlayList[];
+        let tab: any = {};
+        for (let i = 0; i < ls.length; i++) {
+          const e = ls[i];
+          if (e.Genre_id) {
+            tab[e.Genre_id] = !tab[e.Genre_id] ? 1 : tab[e.Genre_id] + 1;
+          }
+        }
+        let max = 0;
+        let maxtab = "";
+        for (const key in tab) {
+          if (Object.prototype.hasOwnProperty.call(tab, key)) {
+            const e = tab[key];
+            if (e > max) {
+              maxtab = key;
+              max = e;
+            }
+          }
+        }
+
+        SetTabs(maxtab);
         dispatch(SetCurName(v.playlist.PlayListName));
       }
     });
   }, [id]);
   const [sh, SH] = useState(false);
   const [edit, SetEdit] = useState(false);
-  const [file, SetFile] = useState<File>();
-
   return (
     <div className="relative">
       <div className="bg-gradient-to-r from-green-400 to-blue-500 rounded-t-lg absolute top-0 left-0 w-full h-[320px] flex flex-col justify-end ">
@@ -219,20 +218,59 @@ export default function PlaylistPage() {
           Các bài hát
         </div>
         <SongList data={songs} type="playlist" />
+        {isLogin && idU == playlist.User_id ? (
+          <RecommendedSong
+            tabs={tabs}
+            idPlaylist={playlist.id}
+            onclick={(v) => {
+              alert(v != undefined);
+              if (v != undefined) {
+                SetSongS([...songs, v]);
+              }
+            }}
+          />
+        ) : (
+          <></>
+        )}
         <footer className="h-5"></footer>
       </div>
       {edit ? (
-        <>
-          <Pop left={0} top={0}>
+        <PopEditPlaylis
+          Discripition=""
+          ImagePath={playlist.ImagePath}
+          id={playlist.id}
+          PlayListName={playlist.PlayListName}
+          onChange={(v) => {
+            dispatch(SetPlaylist({ ...playlist, ...v }));
+          }}
+          onShow={(v) => {
+            SetEdit(v);
+          }}
+        />
+      ) : (
+        <></>
+      )}
+    </div>
+  );
+}
+
+{
+  /* <Pop left={0} top={0}>
             <div className="  relative">
+              <div className="w-[100vw] h-[100vh] opacity-20 bg-black absolute top-0 left-0 z-0"></div>
               <div
                 onClick={() => {
                   SetEdit(false);
                 }}
-                className="w-[100vw] h-[100vh] opacity-20 bg-black absolute top-0 left-0 z-0"
-              ></div>
-              <div className="w-[100vw] h-[100vh] absolute top-0 left-0 z-10 flex justify-center items-center">
-                <div className="w-[524px] min-h-[384px] bg-[#282828] rounded-lg">
+                className="w-[100vw] h-[100vh] absolute top-0 left-0 z-10 flex justify-center items-center"
+              >
+                <div
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    SetEdit(true);
+                  }}
+                  className="w-[524px] min-h-[384px] bg-[#282828] rounded-lg"
+                >
                   <div className="p-6 flex items-center">
                     <div className="flex-1 text-[24px] font-bold">
                       Edit details
@@ -334,11 +372,5 @@ export default function PlaylistPage() {
                 </div>
               </div>
             </div>
-          </Pop>
-        </>
-      ) : (
-        <></>
-      )}
-    </div>
-  );
+          </Pop> */
 }

@@ -22,10 +22,7 @@ const NaviLoveSong = React.lazy(
 import { socket } from "@/page/socket/Socket";
 import { MobileSearchButtom } from "./home/NaviHome/SearchButtom";
 
-import {
-  Outlet,
-  useLocation,
-} from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import Home from "./home/NaviHome/Home";
 import Right from "./home/Right/Right";
 import { PlayingBar } from "@/page/component/Audio/Index";
@@ -38,23 +35,13 @@ import { NaviHomeMobile2 } from "@/page/component/NaviHome/NaviHome";
 import { ChatBoxMobliePage } from "./mobile/chatbox/ChatBoxMobliePage";
 import { SingleBoxChatPage } from "./mobile/SingleBox/SingleBoxChatPage";
 import { Libarary } from "@/page/component/libarary";
-function useIndex() {
-  const [queue, SetQueue] = useState(false);
-  const [scroll, SetSroll] = useState(0);
+import NotificationF from "../component/pop/Notification";
 
-  function Set(type: "page" | "scroll" | "playlist", va: any) {
-    switch (type) {
-      default:
-        SetSroll(va);
-        break;
-    }
-  }
-
-  return { Set, queue, SetQueue, scroll };
-}
 export default function Index() {
   const BoxList = useSelector((state: RootHome) => state.rootHome.BoxList);
-  const isLogin = useSelector((state: RootHome) => state.rootHome.isLogin);
+  const isLogin = useSelector(
+    (state: RootHome) => state.rootauth.login.IsLogin
+  );
   const { pathname } = useLocation();
   const screem = async () => {
     if (window.innerWidth > 900) {
@@ -138,6 +125,7 @@ export default function Index() {
       ) : (
         <></>
       )}
+      <NotificationF></NotificationF>
     </div>
   );
 }

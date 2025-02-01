@@ -40,6 +40,7 @@ import StreamingRoute from "./route/StreamingRoute";
 import PlayListLikeRoute from "./route/PlayListLikeRoute";
 import { exec } from "child_process";
 import TabRoute from "./admin/TabRoute";
+import ContainRoute from "./route/ContainRoute";
 
 
 
@@ -97,6 +98,7 @@ app.use("/recentPlaylist", USER, RecentPlaylistRoute)
 app.use("/rs", USER, RecentSongRoute)
 app.use("/search", SearchRoute)
 app.use("/discuss", USER, DiscussRoute)
+app.use("/contain", USER, ContainRoute)
 app.use("/notification", USER, NotificationRoute)
 app.use("/friend", USER, FriendRoute)
 app.get("/dashboard", USER, (req, res) => {

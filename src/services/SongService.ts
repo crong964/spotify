@@ -1,3 +1,4 @@
+import { RowDataPacket } from "mysql2";
 import Mysql2 from "../config/Config";
 import { limit } from "../config/Helper";
 import SongDatabase from "../database/SongDatabase";
@@ -60,11 +61,15 @@ export class SongService {
         return this.SetLs(check)
     }
     async GetSongByTabs(idGenre: string, idPlaylist: string, p: limit) {
-        p.start = p.start | 0
-        p.end = p.end | 100
+
         var check
         check = await this.songDatabase.GetSongByTabs(idGenre, idPlaylist, p) as []
         return this.SetLs(check)
+    }
+    async GetCountSongByTabs(idGenre: string, idPlaylist: string) {
+        var check
+        check = await this.songDatabase.GetCountSongByTabs(idGenre, idPlaylist) as RowDataPacket
+        return check[0]
     }
     async IncreaseNumberDiscuss(SongId: string, n?: number) {
         n = n || 1
@@ -83,6 +88,10 @@ export class SongService {
         var sql = `SELECT * FROM song WHERE id <> ?`
         var check
         check = await Mysql2.query(sql, [SongId])
+        return this.SetLs(check)
+    }
+    async SearchSongNameWithoutPlaylist(SongName: string, idPlaylist: string, status = 1) {
+        var check = await this.songDatabase.SearchSongNameWithoutPlaylist(SongName, idPlaylist, status)
         return this.SetLs(check)
     }
     SetLs(check: any) {

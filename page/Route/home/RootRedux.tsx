@@ -1,5 +1,4 @@
 import { PayloadAction, configureStore, createSlice } from "@reduxjs/toolkit";
-import { useSelector } from "react-redux";
 
 import mobileRedux from "./NaviHome/NaviRedux";
 import { ParseJson } from "@/page/socket/Socket";
@@ -14,16 +13,12 @@ interface mess {
   ngay: string;
   type: string;
 }
-interface TitleXY {
-  y: number;
-  Name: string;
-  type: string;
-  show: boolean;
-}
+
 export interface Playing {
   page: string;
   id: string;
 }
+
 interface Commamd {
   page:
     | "genre"
@@ -37,6 +32,15 @@ interface Commamd {
     | "";
   param: string;
 }
+interface PlayList {
+  id: string;
+  ImagePath: string;
+  PlayListName: string;
+  Likes: number;
+  Songs: number;
+  Duration: string;
+  User_id: string;
+}
 interface Root {
   playing: Playing;
   update: boolean;
@@ -48,7 +52,7 @@ interface Root {
   BoxList: string[];
   command: Commamd;
   idSong: string;
-  isLogin: boolean;
+  playlist: PlayList;
   Right: string;
   DeleteDiscuss: string;
   NotificationPage: string;
@@ -57,8 +61,19 @@ interface Root {
   position: number;
   SearchName: string;
   playlists: { idplaylist: string; PlayListName: string }[];
+  Notification: string;
 }
 const initialState: Root = {
+  playlist: {
+    Duration: "",
+    id: "",
+    ImagePath: "",
+    Likes: 0,
+    PlayListName: "",
+    Songs: 0,
+    User_id: "",
+  },
+  Notification: "",
   playlists: [],
   update: false,
   playing: { id: "", page: "" },
@@ -75,7 +90,7 @@ const initialState: Root = {
   NotificationPageIdSong: "",
   NotificationPage: "list",
   idSong: ParseJson(localStorage.getItem("song") || "{}").Id || "",
-  isLogin: false,
+
   Right: "",
   DeleteDiscuss: "",
   stack: [{ page: "home", param: "" }],
@@ -119,9 +134,6 @@ const rootslice = createSlice({
         state.stack = [...state.stack, action.payload];
         state.position = state.stack.length - 1;
       }
-    },
-    IsLogin: (state, action: PayloadAction<boolean>) => {
-      state.isLogin = action.payload;
     },
 
     NaviRight: (
@@ -198,6 +210,12 @@ const rootslice = createSlice({
     SetPlaylistRedux: (state, action) => {
       state.playlists = action.payload;
     },
+    SetNotification: (state, action: PayloadAction<string>) => {
+      state.Notification = action.payload;
+    },
+    SetPlaylist: (state, action: PayloadAction<PlayList>) => {
+      state.playlist = action.payload;
+    },
   },
 });
 
@@ -217,7 +235,6 @@ export const {
   SetCurName,
   PlaySong,
   NaviPage,
-  IsLogin,
   NaviRight,
   SetdeleteDiscuss,
   SetNotificationPage,
@@ -231,6 +248,8 @@ export const {
   SetDeviceType,
   SetPlaying,
   SetPlaylistRedux,
+  SetNotification,
+  SetPlaylist,
 } = rootslice.actions;
 
 export default rootHome;

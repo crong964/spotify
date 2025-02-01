@@ -9,7 +9,7 @@ export class ContainService {
     async Add(d: ContainModel) {
 
         var sql = " INSERT INTO contain(Song_id, PlayList_id) VALUES (?,?) "
-        var check
+        var check: ResultSetHeader
         check = await Mysql2.query(sql, [d.Song_id, d.PlayList_id]) as ResultSetHeader
         return check
     }
@@ -24,6 +24,12 @@ export class ContainService {
         var sql = `DELETE FROM contain WHERE Song_id=? AND PlayList_id=? `
         var check
         check = await Mysql2.query(sql, [Song_id, PlayList_id])
+        return check
+    }
+    async DeleteC(Song_id: string, PlayList_id: string, User_id: string) {
+        var sql = `DELETE FROM contain WHERE Song_id=? AND PlayList_id IN (SELECT playlist.id FROM playlist 
+        WHERE playlist.id=? AND playlist.User_id=? )`
+        var check = await Mysql2.query(sql, [Song_id, PlayList_id, User_id]) as ResultSetHeader
         return check
     }
     async DeleteAll(PlayList_id: string) {

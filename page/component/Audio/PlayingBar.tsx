@@ -46,7 +46,7 @@ interface SongI {
 }
 export default function PlayingBar() {
   const stopMobie = useSelector((state: RootHome) => state.audioroot.stop);
-  const isLogin = useSelector((state: RootHome) => state.rootHome.isLogin);
+  const isLogin = useSelector((state: RootHome) => state.rootauth.login.IsLogin);
   const lsSong = useSelector((state: RootHome) => state.audioroot.lsSong);
   const mark = useSelector((state: RootHome) => state.audioroot.mark);
   const pip = useSelector((state: RootHome) => state.audioroot.pip);

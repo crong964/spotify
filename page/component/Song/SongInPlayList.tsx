@@ -3,20 +3,28 @@ import { SongInPlayList } from "./interface";
 import { RootHome } from "@/page/Route/home/RootRedux";
 import { useDispatch, useSelector } from "react-redux";
 import React from "react";
-import { CheckCircleIcon, PlusCircleIcon } from "@/icon/Icon";
+import { CheckCircleIcon, PlusCircleIcon, TrashIcon } from "@/icon/Icon";
 import Time from "@/page/component/Time";
 const ArtistLink = React.lazy(() => import("@/page/component/ArtistLink"));
 import { SetAutoPlay, SetSongs } from "@/page/component/Audio/AudioRedux";
 import { post } from "@/page/config/req";
 import { Pop } from "@/page/component/pop";
+import { useParams } from "react-router-dom";
 
 export default function SongInPlayList(v: SongInPlayList) {
   const [liked, SetLike] = useState<string>(v.liked);
-  const isLogin = useSelector((state: RootHome) => state.rootHome.isLogin);
+  const isLogin = useSelector(
+    (state: RootHome) => state.rootauth.login.IsLogin
+  );
+
+  const idUser = useSelector((state: RootHome) => state.rootauth.login.idUser);
   const playlists = useSelector((state: RootHome) => state.rootHome.playlists);
+  const playlist = useSelector((state: RootHome) => state.rootHome.playlist);
+
   const typeDevice = useSelector(
     (state: RootHome) => state.rootHome.devicetype
   );
+  const { id } = useParams();
   const dispatch = useDispatch();
   const [xy, XY] = useState({ x: 0, y: 0, s: false });
   return (
@@ -136,6 +144,29 @@ export default function SongInPlayList(v: SongInPlayList) {
               XY({ ...xy, s: false });
             }}
           >
+            {idUser == playlist.User_id ? (
+              <button
+                onClick={() => {
+                  post(
+                    "/contain/deletesong",
+                    { Song_id: v.Id, PlayList_id: playlist.id },
+                    (v: any) => {
+                      if (v.err) {
+                        alert("xóa thất bại");
+                      } else {
+                        alert("xóa thành công");
+                      }
+                    }
+                  );
+                }}
+                className="flex p-3 justify-start items-center gap-2 hover:bg-black w-full"
+              >
+                <TrashIcon className="size-[14px] fill-white" />
+                <div>Xóa danh nhạc khỏi danh sách</div>
+              </button>
+            ) : (
+              <></>
+            )}
             <button
               onClick={() => {
                 post("/playlist/addplaylist", { idsong: v.Id }, (v: any) => {
@@ -147,10 +178,25 @@ export default function SongInPlayList(v: SongInPlayList) {
               <PlusCircleIcon className="size-[14px] fill-white" />
               <div>Tạo danh sách mới</div>
             </button>
-            {playlists.map((v) => {
+            {playlists.map((vp) => {
               return (
-                <button className="p-3 flex hover:bg-black w-full">
-                  {v.PlayListName}
+                <button
+                  onClick={() => {
+                    post(
+                      "/contain/addsong",
+                      { Song_id: v.Id, PlayList_id: vp.idplaylist },
+                      (v: any) => {
+                        if (v.err) {
+                          alert("thêm thất bại");
+                        } else {
+                          alert("thêm thành công");
+                        }
+                      }
+                    );
+                  }}
+                  className="p-3 flex hover:bg-black w-full"
+                >
+                  {vp.PlayListName}
                 </button>
               );
             })}

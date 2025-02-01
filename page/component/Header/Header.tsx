@@ -1,12 +1,9 @@
-import React, { Suspense, useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  IsLogin,
   NaviPage,
   NaviRight,
   RootHome,
-  SetNotificationPage,
-  SetNotificationPageIdSong,
   SetPosition,
 } from "@/page/Route/home/RootRedux";
 
@@ -16,14 +13,11 @@ const PlayButtom = React.lazy(() => import("@/page/component/PlayButtom"));
 
 import { BackIcon, ForwardIcon, MessIcon } from "@/icon/Icon";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
-import { GenreInHome } from "../../Route/IndexHome";
-import NotificationPage from "@/page/component/Header2/NotificationList";
+import { GenreInHome } from "@/page/Route/IndexHome";
+import { Infor } from "./interface";
+import { Avatar, Ring } from "@/page/component/Header";
+import { IsLogin } from "@/page/Route/auth/RootAuth";
 
-interface Infor {
-  pathImage: string;
-  Name: string;
-  Vertify: string;
-}
 export default function Header() {
   const curName = useSelector((state: RootHome) => state.rootHome.curName);
   const [search, SetSearch] = useState("");
@@ -31,10 +25,11 @@ export default function Header() {
     (state: RootHome) => state.rootHome.topbarcontent
   );
   const dispathch = useDispatch();
-  const [showNotification, SetShowNotification] = useState(false);
   const navigate = useNavigate();
   const update = useSelector((state: RootHome) => state.rootHome.update);
-  const isLogin = useSelector((state: RootHome) => state.rootHome.isLogin);
+  const isLogin = useSelector(
+    (state: RootHome) => state.rootauth.login.IsLogin
+  );
   const right = useSelector((state: RootHome) => state.rootHome.Right);
   const dispatch = useDispatch();
   const { pathname } = useLocation();
@@ -55,9 +50,9 @@ export default function Header() {
   });
   useEffect(() => {
     get("/user", (v: any) => {
-      dispatch(IsLogin(v.u != undefined));
       if (v.u) {
         SetInfor(v.u);
+        dispatch(IsLogin({ idUser: v.u.id, IsLogin: true }));
         localStorage.setItem("userinfor", JSON.stringify(v.u));
       }
     });
@@ -152,33 +147,7 @@ export default function Header() {
                       <MessIcon className="fill-white hover:fill-[#1FDF64]" />
                     )}
                   </div>
-                  <button
-                    onBlur={() => {
-                      if (showNotification) {
-                        SetShowNotification(false);
-                      }
-                    }}
-                  >
-                    <div className="bg-[#2A2A2A] p-2 rounded-full relative cursor-pointer ">
-                      <svg
-                        onClick={(e) => {
-                          SetShowNotification(!showNotification);
-                          if (showNotification == false) {
-                            dispathch(SetNotificationPage("list"));
-                            dispathch(SetNotificationPageIdSong(""));
-                          }
-                        }}
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="16"
-                        height="16"
-                        className="fill-white hover:fill-[#1FDF64]"
-                        viewBox="0 0 16 16"
-                      >
-                        <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2M8 1.918l-.797.161A4 4 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4 4 0 0 0-3.203-3.92zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5 5 0 0 1 13 6c0 .88.32 4.2 1.22 6" />
-                      </svg>
-                      {showNotification ? <NotificationPage /> : <></>}
-                    </div>
-                  </button>
+                  <Ring />
                   <Avatar Name="" Vertify="" pathImage={infor.pathImage} />
                 </div>
               </>
@@ -254,62 +223,6 @@ function Back() {
       } rounded-full size-[28px] hidden sm:flex justify-center items-center `}
     >
       <BackIcon className="fill-white size-4"></BackIcon>
-    </button>
-  );
-}
-
-function Avatar(p: Infor) {
-  const [show, SetShow] = useState(false);
-  const dispatch = useDispatch();
-  return (
-    <button
-      onBlur={() => {
-        if (show) {
-          SetShow(false);
-        }
-      }}
-      className="relative cursor-pointer focus:outline-none"
-    >
-      <div
-        onClick={(e) => {
-          SetShow(!show);
-        }}
-        className="text-[14px] "
-      >
-        <img
-          className="size-[40px] rounded-full cursor-pointer"
-          src={p.pathImage}
-          alt=""
-          srcSet=""
-        />
-      </div>
-      {show ? (
-        <div className="bg-[#3E3E3E]  z-[20] rounded-lg min-w-[200px] text-[16px] absolute top-full  sm:right-0">
-          <div className="text-white  cursor-pointer hover:bg-black">
-            <div
-              onClick={() => {
-                dispatch(NaviPage({ page: "profile", param: "" }));
-                SetShow(!show);
-              }}
-              className="p-2"
-            >
-              Tài khoản
-            </div>
-          </div>
-          <div
-            onClick={() => {
-              get("/auth/logout", (e: any) => {
-                window.location.replace("/auth");
-              });
-            }}
-            className="text-white cursor-pointer hover:bg-black"
-          >
-            <div className="p-2">Đăng xuất </div>
-          </div>
-        </div>
-      ) : (
-        <></>
-      )}
     </button>
   );
 }

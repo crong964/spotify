@@ -259,15 +259,41 @@ class SongController {
     async GetSongByTabs(req: Request, res: Response) {
         var tabs = req.body.tabs
         let idPlaylist = req.body.idPlaylist || ""
-        var start = req.body.end | 0
+        var start = req.body.start | 0
+
+
         var l: limit = {
             start: start,
-            end: start + 200
+            end: start + 10
         }
-        var ls = await SongController.song.GetSongByTabs(tabs,idPlaylist, l)
+        var ls = await Promise.all([SongController.song.GetSongByTabs(tabs, idPlaylist, l),
+        SongController.song.GetCountSongByTabs(tabs, idPlaylist)
+        ])
         res.json({
             err: false,
-            ls: ls
+            ls: ls[0],
+            count: ls[1].count
+        })
+    }
+    async GetSongByTabsAdmin(req: Request, res: Response) {
+        var tabs = req.body.tabs
+        let idPlaylist = req.body.idPlaylist || ""
+        var start = req.body.start | 0
+
+        var l: limit = {
+            start: start,
+            end: start + 100
+        }
+
+        var ls = await Promise.all([SongController.song.GetSongByTabs(tabs, idPlaylist, l),
+        SongController.song.GetCountSongByTabs(tabs, idPlaylist)
+        ])
+        console.log(ls[0].length);
+
+        res.json({
+            err: false,
+            ls: ls[0],
+            count: ls[1].count
         })
     }
     async NextSong(req: Request, res: Response) {

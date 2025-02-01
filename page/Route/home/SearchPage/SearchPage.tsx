@@ -3,12 +3,12 @@ import { Song } from "../PlayListPage/PlayListPage";
 import { useDispatch, useSelector } from "react-redux";
 
 import { post } from "@/page/config/req";
-import PlayLists, { iPlayList, PlayList } from "@/page/component/Playlist";
 import { Artists } from "@/page/component/Artist";
 import { SongList } from "@/page/component/Song/Index";
 import { useParams } from "react-router-dom";
 import { NaviPage } from "../RootRedux";
 import { SongInPlayList } from "@/page/component/Song/interface";
+import PlayLists, { iPlayList } from "@/page/component/Playlist/Playlist";
 
 interface artist {
   pathImage: string;
@@ -89,11 +89,8 @@ export default function SearchPage() {
       ) : (
         <>
           <SongList data={songname} type="" />
-
           <Artists d={artist} />
-
           <SongList data={songs} type="" />
-
           <PlayLists d={playlists} title="Danh sách phát nhạc" />
         </>
       )}

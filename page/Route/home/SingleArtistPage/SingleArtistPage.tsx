@@ -7,13 +7,14 @@ import { useParams } from "react-router-dom";
 import { get, post } from "@/page/config/req";
 import React from "react";
 import PlayButtom from "@/page/component/PlayButtom";
-import { iPlayList, PlayList } from "@/page/component/Playlist";
 import { CheckCircleIcon, PlusCircleIcon } from "@/icon/Icon";
 import TypeFriend from "@/page/component/friend/TypeFriend";
 import { SongInPlayList } from "@/page/component/Song/interface";
 import { Avatar } from "@/page/component/avatar";
+import { iPlayList } from "@/page/component/Playlist/interface";
+import PlayLists from "@/page/component/Playlist/Playlist";
 
-const PlayLists = React.lazy(() => import("@/page/component/Playlist"));
+
 
 export default function ArtistPage() {
   const idpage = useSelector((state: RootHome) => state.rootHome.command.param);
@@ -25,7 +26,7 @@ export default function ArtistPage() {
   const refPage = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
   const { id } = useParams();
-  const isLogin = useSelector((state: RootHome) => state.rootHome.isLogin);
+  const isLogin = useSelector((state: RootHome) => state.rootauth.login.IsLogin);
   useEffect(() => {
     get(`/user/artistpage/${id}`, (v: any) => {
       if (!v || v.err) {

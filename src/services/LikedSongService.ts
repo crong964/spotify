@@ -42,6 +42,7 @@ export class LikedSongService {
         var ls = await this.likedSongDatabase.SearchName(name, iduser)
         return this.SetLs(ls)
     }
+    
     async GetAllByIdPlayList(id_user_liked: string, id_playlist: string) {
         var ls = await this.likedSongDatabase.GetAllByIdPlayList(id_user_liked, id_playlist)
         return this.SetLs(ls)

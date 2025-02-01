@@ -16,7 +16,7 @@ class PlayListLikeController {
 
         let check = await PlayListLikeController.playListLikeService.Delete(id, idPlaylist)
         res.json({
-            err: check.affectedRows == 0
+            err: check?.affectedRows == 0
         })
     }
     async GetAll(req: Request, res: Response) {

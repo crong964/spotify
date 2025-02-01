@@ -9,7 +9,7 @@ import { NavLink } from "react-router-dom";
 import { MessIcon } from "@/icon/Icon";
 
 export function NaviHomeMobile() {
-  const isLogin = useSelector((state: RootHome) => state.rootHome.isLogin);
+  const isLogin = useSelector((state: RootHome) => state.rootauth.login.IsLogin);
   return (
     <div
       className={
@@ -32,7 +32,7 @@ export function NaviHomeMobile() {
   );
 }
 export function NaviHomeMobile2() {
-  const isLogin = useSelector((state: RootHome) => state.rootHome.isLogin);
+  const isLogin = useSelector((state: RootHome) => state.rootauth.login.IsLogin);
   return (
     <div
       className={

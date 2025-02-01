@@ -8,7 +8,7 @@ export default function SongList(d: SongList) {
     <>
       {d.data.length > 0 ? (
         <>
-          <div className="hidden sm:grid grid-cols-7 text-[13px] sm:text-[14px]  cursor-pointer sm:space-x-2 hover:bg-[#2D2D2D] text-white font-bold rounded-lg items-center">
+          <div className="hidden sm:grid grid-cols-7 text-[13px] sm:text-[14px]  cursor-pointer sm:space-x-2  text-white font-bold rounded-lg items-center">
             <div className="col-span-3 flex items-center space-x-2">
               <div className="inline-block"># Tên nhạc</div>
             </div>

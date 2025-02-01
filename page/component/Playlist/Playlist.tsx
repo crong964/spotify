@@ -3,8 +3,9 @@ const PlayButtom = React.lazy(() => import("@/page/component/PlayButtom"));
 import { useDispatch, useSelector } from "react-redux";
 import { post } from "@/page/config/req";
 import { Link } from "react-router-dom";
-import { NaviPage, RootHome } from "../Route/home/RootRedux";
-import Avatar from "./avatar/Avatar";
+import { RootHome } from "@/page/Route/home/RootRedux";
+import { Avatar } from "@/page/component/avatar";
+
 export interface iPlayList {
   id: string;
   Genre_ID: string;

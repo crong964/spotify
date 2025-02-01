@@ -4,13 +4,25 @@ import userService, { UserService } from "../services/UserService"
 import LikedSongModel from "../model/LikedSongModel"
 import haveListFriendsService from "../services/HaveListFriendsService"
 import playListService, { PlayListService } from "../services/PlayListService"
+import songService from "../services/SongService"
 
 class SearchControll {
     static user: UserService = userService
     static likedSong: LikedSongService = likedSongService
     static haveListFriends = haveListFriendsService
     static playlist: PlayListService = playListService
+    static song = songService
     constructor() {
+
+    }
+    async SearchSongNameWithoutPlaylist(req: Request, res: Response) {
+        var name = req.body.name
+        var idPlaylist = req.body.idPlaylist
+        var status = req.body.status
+        let ls = await SearchControll.song.SearchSongNameWithoutPlaylist(name, idPlaylist, status)
+        res.json({
+            songs: ls
+        })
 
     }
     async SearchNameArtistAndSong(req: Request, res: Response) {

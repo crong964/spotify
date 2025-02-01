@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { iPlayList } from "@/page/component/Playlist";
+
 import { post } from "@/page/config/req";
 import { Link } from "react-router-dom";
 import {
@@ -10,16 +10,16 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { Pop } from "@/page/component/pop";
 import { MusicNoteBeamedIcon, TrashIcon, XIcon } from "@/icon/Icon";
+import { iPlayList } from "@/page/component/Playlist/interface";
 
 export default function PlaylistLike() {
   const [playList, SetPlayLists] = useState<iPlaylistLikeC[]>([]);
-  const [iu, SetIu] = useState("");
+  const iduser = useSelector((state: RootHome) => state.rootauth.login.idUser);
   const dispatch = useDispatch();
   useEffect(() => {
     post("/likePlaylist/getall", {}, (v: any) => {
       if (v && v.ls) {
         SetPlayLists(v.ls);
-        SetIu(v.idU);
         let ls = [];
         for (let i = 0; i < v.ls.length; i++) {
           const element: iPlaylistLikeC = v.ls[i];
@@ -38,7 +38,7 @@ export default function PlaylistLike() {
   return (
     <>
       {playList.map((d) => {
-        return <PlaylistLikeC {...d} idU={iu} />;
+        return <PlaylistLikeC {...d} idU={iduser} />;
       })}
     </>
   );

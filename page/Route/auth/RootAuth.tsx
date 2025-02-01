@@ -6,6 +6,11 @@ export interface initialState {
   pathImage: string;
   Name: string;
   Sign: string;
+  login: Login;
+}
+interface Login {
+  IsLogin: boolean;
+  idUser: string;
 }
 interface Infor {
   Account: string;
@@ -19,6 +24,7 @@ var initialState: initialState = {
   pathImage: "",
   Name: "",
   Sign: "",
+  login: { idUser: "", IsLogin: false },
 };
 
 export const authRedux = createSlice({
@@ -39,9 +45,11 @@ export const authRedux = createSlice({
       state.Name = action.payload.Name;
       state.Sign = action.payload.Sign;
     },
+    IsLogin: (state, action: PayloadAction<Login>) => {
+      state.login = action.payload;
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { Page, Infor } = authRedux.actions;
-
+export const { Page, Infor, IsLogin } = authRedux.actions;

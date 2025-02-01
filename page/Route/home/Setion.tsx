@@ -5,9 +5,11 @@ import { get, post } from "@/page/config/req";
 import { useDispatch, useSelector } from "react-redux";
 import { NaviPage, RootHome } from "./RootRedux";
 import { Artists } from "@/page/component/Artist";
-import { iPlayList, PlayList } from "@/page/component/Playlist";
+import PlayLists from "@/page/component/Playlist/Playlist";
+import { iPlayList } from "@/page/component/Playlist/interface";
 
-const PlayLists = React.lazy(() => import("@/page/component/Playlist"));
+
+
 const PlayButtom = React.lazy(() => import("@/page/component/PlayButtom"));
 
 interface SetionList {

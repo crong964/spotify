@@ -11,15 +11,22 @@ export interface SongList {
   type: string;
 }
 export interface SongInPlayList {
-    Id: string;
-    user_id: string;
-    SongName: string;
-    Singer: string;
-    Duration: string;
-    Viewer: number;
-    SongImage: string;
-    filePath: string;
-    liked: string;
-    stt: number;
-    type: string;
-  }
+  Id: string;
+  user_id: string;
+  SongName: string;
+  Singer: string;
+  Duration: string;
+  Viewer: number;
+  SongImage: string;
+  filePath: string;
+  liked: string;
+  stt: number;
+  type: string;
+  Genre_id?: string;
+}
+
+export interface iRecommendedSong {
+  idPlaylist: string;
+  onclick(p: SongInPlayList | undefined): void;
+  tabs: string;
+}
