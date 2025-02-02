@@ -10,13 +10,13 @@ import { SetAutoPlay, SetSongs } from "@/page/component/Audio/AudioRedux";
 import { post } from "@/page/config/req";
 import { Pop } from "@/page/component/pop";
 import { useParams } from "react-router-dom";
+import { Avatar } from "../avatar";
 
 export default function SongInPlayList(v: SongInPlayList) {
   const [liked, SetLike] = useState<string>(v.liked);
   const isLogin = useSelector(
     (state: RootHome) => state.rootauth.login.IsLogin
   );
-
   const idUser = useSelector((state: RootHome) => state.rootauth.login.idUser);
   const playlists = useSelector((state: RootHome) => state.rootHome.playlists);
   const playlist = useSelector((state: RootHome) => state.rootHome.playlist);
@@ -24,12 +24,33 @@ export default function SongInPlayList(v: SongInPlayList) {
   const typeDevice = useSelector(
     (state: RootHome) => state.rootHome.devicetype
   );
-  const { id } = useParams();
   const dispatch = useDispatch();
   const [xy, XY] = useState({ x: 0, y: 0, s: false });
+  const addplaylist = () => {
+    post(
+      "/contain/deletesong",
+      { Song_id: v.Id, PlayList_id: playlist.id },
+      (v: any) => {
+        if (v.err) {
+          alert("xóa thất bại");
+        } else {
+          alert("xóa thành công");
+        }
+      }
+    );
+  };
+  const createplaylist = () => {
+    post("/playlist/addplaylist", { idsong: v.Id }, (v: any) => {
+      alert(v.err == false);
+    });
+  };
   return (
     <div
       onContextMenu={(v) => {
+        if (typeDevice == "mobile") {
+          XY({ x: 0, y: 0, s: true });
+          return;
+        }
         XY({ x: v.pageX, y: v.pageY, s: true });
       }}
       className="grid grid-cols-7 text-[13px] sm:text-[14px] sm:p-2 py-2 cursor-pointer sm:space-x-2 hover:bg-[#2D2D2D] text-white font-bold rounded-lg items-center"
@@ -75,14 +96,7 @@ export default function SongInPlayList(v: SongInPlayList) {
       >
         <div className="col-span-5 sm:col-span-3 flex items-center space-x-2">
           <div className="sm:inline-block hidden mx-2">{v.stt}</div>
-          <div className="relative size-12 sm:size-9 overflow-hidden">
-            <img
-              className="absolute top-0 left-0"
-              src={v.SongImage}
-              alt=""
-              srcSet=""
-            />
-          </div>
+          <Avatar className="size-12 sm:size-9" src={v.SongImage}></Avatar>
           <div className="flex-col">
             <div className="block">{v.SongName}</div>
             {v.type != "artist" ? (
@@ -138,68 +152,83 @@ export default function SongInPlayList(v: SongInPlayList) {
       </div>
       {xy.s ? (
         <Pop left={xy.x} top={xy.y}>
-          <div
-            className="h-[350px] min-w-[250px] text-[14px] p-1 bg-[#282828]"
-            onMouseLeave={() => {
-              XY({ ...xy, s: false });
-            }}
-          >
-            {idUser == playlist.User_id ? (
-              <button
-                onClick={() => {
-                  post(
-                    "/contain/deletesong",
-                    { Song_id: v.Id, PlayList_id: playlist.id },
-                    (v: any) => {
-                      if (v.err) {
-                        alert("xóa thất bại");
-                      } else {
-                        alert("xóa thành công");
-                      }
-                    }
-                  );
-                }}
-                className="flex p-3 justify-start items-center gap-2 hover:bg-black w-full"
-              >
-                <TrashIcon className="size-[14px] fill-white" />
-                <div>Xóa danh nhạc khỏi danh sách</div>
-              </button>
-            ) : (
-              <></>
-            )}
-            <button
+          <div className="text-[20px] sm:text-[15px] relative">
+            <div className="block absolute top-0 left-0 sm:hidden h-screen w-screen bg-black opacity-30"></div>
+            <div
               onClick={() => {
-                post("/playlist/addplaylist", { idsong: v.Id }, (v: any) => {
-                  alert(v.err == false);
-                });
+                XY({ ...xy, s: false });
               }}
-              className="flex p-3 justify-start items-center gap-2 hover:bg-black w-full"
+              className="absolute top-0 left-0 flex sm:block items-end h-screen w-screen sm:h-auto sm:w-min"
             >
-              <PlusCircleIcon className="size-[14px] fill-white" />
-              <div>Tạo danh sách mới</div>
-            </button>
-            {playlists.map((vp) => {
-              return (
+              <div
+                className=" bg-[#282828] h-[350px] w-full sm:min-w-[250px] text-[14px] p-1 "
+                onMouseLeave={() => {
+                  XY({ ...xy, s: false });
+                }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  XY({ ...xy, s: true });
+                }}
+              >
+                <div className="flex sm:hidden py-6 px-2">
+                  <Avatar className="size-12" src={v.SongImage} />
+                  <div className="flex flex-col pl-3">
+                    <div className="w-full text-[20px] font-bold">
+                      {v.SongName}
+                    </div>
+                    <div className="w-full text-[15px] flex space-x-2">
+                      <ArtistLink idArtist={v.user_id} nameArtist={v.Singer} />
+                      <div className="px-0.5">•</div>
+                      <div>{v.SongName}</div>
+                    </div>
+                  </div>
+                </div>
+                {idUser == playlist.User_id ? (
+                  <button
+                    onClick={() => {
+                      addplaylist();
+                    }}
+                    className="flex p-3 justify-start items-center gap-2 hover:bg-black w-full"
+                  >
+                    <TrashIcon className="size-[12px] fill-white" />
+                    <div>Xóa danh nhạc khỏi danh sách</div>
+                  </button>
+                ) : (
+                  <></>
+                )}
                 <button
                   onClick={() => {
-                    post(
-                      "/contain/addsong",
-                      { Song_id: v.Id, PlayList_id: vp.idplaylist },
-                      (v: any) => {
-                        if (v.err) {
-                          alert("thêm thất bại");
-                        } else {
-                          alert("thêm thành công");
-                        }
-                      }
-                    );
+                    createplaylist();
                   }}
-                  className="p-3 flex hover:bg-black w-full"
+                  className="flex p-3 justify-start items-center gap-2 hover:bg-black w-full"
                 >
-                  {vp.PlayListName}
+                  <PlusCircleIcon className="size-[14px] fill-white" />
+                  <div>Tạo danh sách mới</div>
                 </button>
-              );
-            })}
+                {playlists.map((vp) => {
+                  return (
+                    <button
+                      onClick={() => {
+                        post(
+                          "/contain/addsong",
+                          { Song_id: v.Id, PlayList_id: vp.idplaylist },
+                          (v: any) => {
+                            if (v.err) {
+                              alert("thêm thất bại");
+                            } else {
+                              alert("thêm thành công");
+                            }
+                          }
+                        );
+                      }}
+                      className="p-3 flex hover:bg-black w-full"
+                    >
+                      {vp.PlayListName}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
           </div>
         </Pop>
       ) : (

@@ -188,7 +188,7 @@ export class PlayListController {
 
 
         res.json({
-            err: check?.affectedRows == 0,
+            err: check == undefined,
             id: playlistmodel.id
         })
     }

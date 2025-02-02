@@ -16,12 +16,12 @@ export default function PopEditPlaylis(p: iPopEditPlaylis) {
   return (
     <Pop left={0} top={0}>
       <div className="  relative">
-        <div className="w-[100vw] h-[100vh] opacity-20 bg-black absolute top-0 left-0 z-0"></div>
+        <div className="w-screen h-[100vh] opacity-20 bg-black absolute top-0 left-0 z-0"></div>
         <div
           onClick={() => {
             p.onShow(false);
           }}
-          className="w-[100vw] h-[100vh] absolute top-0 left-0 z-10 flex justify-center items-center"
+          className="w-screen h-[100vh] absolute top-0 left-0 z-10 flex justify-center items-center"
         >
           <div
             onClick={(e) => {

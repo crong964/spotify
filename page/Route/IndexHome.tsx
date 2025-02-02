@@ -36,6 +36,7 @@ import { ChatBoxMobliePage } from "./mobile/chatbox/ChatBoxMobliePage";
 import { SingleBoxChatPage } from "./mobile/SingleBox/SingleBoxChatPage";
 import { Libarary } from "@/page/component/libarary";
 import NotificationF from "../component/pop/Notification";
+import Left from "../component/Left/Left";
 
 export default function Index() {
   const BoxList = useSelector((state: RootHome) => state.rootHome.BoxList);
@@ -71,25 +72,7 @@ export default function Index() {
   return (
     <div className="h-full w-full relative p-0 m-0 bg-black overflow-hidden font-normal">
       <main title="main" className="flex h-full  sm:h-[90%] space-x-1 relative">
-        <nav title="left" className="w-[80px] hidden sm:block px-1 space-y-1">
-          <div className="h-[20%] bg-[#121212] rounded-lg p-0 sm:py-2">
-            <div className="h-full  ">
-              <Home />
-              <MobileSearchButtom />
-            </div>
-          </div>
-          {isLogin ? (
-            <div className="relative h-[80%] overflow-y-auto bg-[#121212] rounded-lg pb-2 ">
-              <div className="sticky z-20 top-0 bg-black">
-                <Libarary />
-              </div>
-              <NaviLoveSong />
-              <PlaylistLike />
-            </div>
-          ) : (
-            <></>
-          )}
-        </nav>
+        <Left />
         <div title="center" className="w-full sm:w-[calc(100%-88px)] space-y-1">
           <div className="relative min-h-max max-h-[10%] ">
             <Header></Header>

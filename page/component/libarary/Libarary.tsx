@@ -16,7 +16,12 @@ export default function Libarary() {
       className="p-3 flex justify-center items-center"
       onClick={() => {
         post("/playlist/addplaylist", {}, (v: any) => {
-          console.log(v);
+          if (v.err) {
+            alert("tạo thất bại");
+          }
+          else{
+            alert("tạo thành công");
+          }
         });
       }}
       onMouseMove={(ev) => {

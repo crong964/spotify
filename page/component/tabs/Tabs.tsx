@@ -31,7 +31,6 @@ export default function Tabs(p: iTabs) {
           s += `${key} `;
         }
       }
-      
     }
     return s.trim();
   };
@@ -69,7 +68,7 @@ export default function Tabs(p: iTabs) {
                 selected[v.id] = undefined;
                 p.onchange(value(selected));
               }}
-              id={v.id}
+              id={v.id + 1}
               key={v.id}
               nameTab={v.nameTab}
             />
@@ -80,7 +79,7 @@ export default function Tabs(p: iTabs) {
                 selected[v.id] = true;
                 p.onchange(value(selected));
               }}
-              id={v.id}
+              id={v.id + 1}
               key={v.id}
               nameTab={v.nameTab}
             />

@@ -21,6 +21,7 @@ interface Song {
   SongImage: string;
   filePath: string;
 }
+
 const initialState: AudioRedux = {
   playlistmobile: false,
   pip: false,
@@ -46,6 +47,20 @@ const audioSlice = createSlice({
     },
     SetSongs: (state, pay: PayloadAction<Song[]>) => {
       state.lsSong = pay.payload;
+
+      if (state.random) {
+        let newSongList: any[] = [];
+        state.mark = 0;
+        while (state.lsSong.length > 0) {
+          let i = parseInt(`${(Math.random() * 100) % state.lsSong.length}`);
+
+          newSongList.push(state.lsSong[i]);
+          state.lsSong.splice(i, 1);
+        }
+
+        state.lsSong = newSongList;
+      }
+
       state.lsSong = state.lsSong.map((v, i) => {
         v.oldindex = i;
         return v;

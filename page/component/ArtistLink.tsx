@@ -14,7 +14,7 @@ export default function ArtistLink(v: tArtistLink) {
   let name = v.nameArtist.split(",");
   const dispatch = useDispatch();
   return (
-    <div className="flex text-stone-500 font-normal">
+    <div className="flex text-white sm:text-stone-500 font-normal">
       {id.map((va, ix) => {
         if (ix == id.length - 1) {
           return (
@@ -27,7 +27,7 @@ export default function ArtistLink(v: tArtistLink) {
                   })
                 );
               }}
-              className="hover:text-white"
+              className="sm:hover:text-white"
               to={devicetype == "pc" ? `/artist/${va}` : "#"}
             >
               {name[ix]}
@@ -45,7 +45,7 @@ export default function ArtistLink(v: tArtistLink) {
                   })
                 );
               }}
-              className="hover:text-white"
+              className="sm:hover:text-white"
               to={devicetype == "pc" ? `/artist/${va}` : "#"}
             >
               {name[ix]}
