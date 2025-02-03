@@ -10,12 +10,7 @@ export default function Avatar(p: Infor) {
   const [xy, XY] = useState({ x: 0, y: 0 });
   const dispatch = useDispatch();
   return (
-    <button
-      onBlur={() => {
-        SetShow(false);
-      }}
-      className="relative cursor-pointer focus:outline-none"
-    >
+    <button className="relative cursor-pointer focus:outline-none">
       <div
         onClick={(e) => {
           SetShow(!show);
@@ -34,7 +29,9 @@ export default function Avatar(p: Infor) {
       </div>
       {show ? (
         <Pop top={xy.y} left={xy.x - 200}>
-          <div className="bg-[#3E3E3E] rounded-lg min-w-[200px] text-[16px]  sm:right-0">
+          <div onMouseLeave={()=>{
+            SetShow(false)
+          }} className="bg-[#3E3E3E] rounded-lg min-w-[200px] text-[16px]  sm:right-0">
             <div className="text-white  cursor-pointer hover:bg-black">
               <div
                 onClick={() => {
@@ -47,7 +44,9 @@ export default function Avatar(p: Infor) {
               </div>
             </div>
             <div
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
+                SetShow(true);
                 get("/auth/logout", (e: any) => {
                   window.location.replace("/auth");
                 });
