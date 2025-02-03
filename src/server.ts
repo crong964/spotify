@@ -74,8 +74,13 @@ app.use((req, res, next) => {
     }, production ? 0 : 10);
 });
 
-app.use("/main", express.static(path.join(process.cwd(), "web", "static"), { maxAge: production ? 1000 * 60 : 0, cacheControl: true, immutable: true }))
-app.use("/static", express.static(path.join(process.cwd(), "web", "static"), { maxAge: production ? 100000000000 : 0, cacheControl: true, immutable: true }))
+app.use("/static", express.static(path.join(process.cwd(), "web", "static"), {
+    setHeaders(res, path, stat) {
+        if (path.indexOf("app.js") < 0) {
+            res.setHeader("cache-control", `public, max-age=${production ? 31536000000 : 31},immutable`)
+        }
+    }
+}))
 
 app.use("/public", express.static(path.join(process.cwd(), "public"), { maxAge: 100000000000 }))
 app.use("/i", express.static(path.join(process.cwd(), "public", "upload")))
