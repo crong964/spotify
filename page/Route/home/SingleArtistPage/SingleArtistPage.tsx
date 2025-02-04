@@ -14,19 +14,21 @@ import { Avatar } from "@/page/component/avatar";
 import { iPlayList } from "@/page/component/Playlist/interface";
 import PlayLists from "@/page/component/Playlist/Playlist";
 
-
-
 export default function ArtistPage() {
-  const idpage = useSelector((state: RootHome) => state.rootHome.command.param);
+  const Right = useSelector((state: RootHome) => state.rootHome.Right);
   const [lsartist, SetLsAtist] = useState<iPlayList[]>([]);
   const [artist, SetaAtist] = useState<artist>();
   const [isfriend, SetIsfriend] = useState<"-1" | "0" | "1" | "2">();
   const [songs, SetSongS] = useState<SongInPlayList[]>([]);
   const [like, SetLike] = useState(false);
   const refPage = useRef<HTMLDivElement>(null);
+  const refText = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
   const { id } = useParams();
-  const isLogin = useSelector((state: RootHome) => state.rootauth.login.IsLogin);
+  const isLogin = useSelector(
+    (state: RootHome) => state.rootauth.login.IsLogin
+  );
+  const [fontsize, SetFontSire] = useState(96);
   useEffect(() => {
     get(`/user/artistpage/${id}`, (v: any) => {
       if (!v || v.err) {
@@ -44,6 +46,19 @@ export default function ArtistPage() {
     });
   }, [id]);
 
+  useEffect(() => {
+    let leg = refText.current?.innerText;
+    if (leg && Right != "") {
+      let width = leg.length * 46;
+      let limit = 650;
+      if (width > limit) {
+        let fs = Math.floor(96 * (1 - (width - limit) / width));
+        SetFontSire(fs);
+      }
+    } else {
+      SetFontSire(96);
+    }
+  }, [Right]);
   return (
     <div className="relative " ref={refPage}>
       {artist?.Banner !== "" ? (
@@ -64,7 +79,10 @@ export default function ArtistPage() {
         {artist?.Banner !== "" ? (
           <></>
         ) : (
-          <Avatar className="size-[250px] rounded-full" src={artist?.pathImage || ""} />
+          <Avatar
+            className="size-[250px] hidden sm:block  rounded-full"
+            src={artist?.pathImage || ""}
+          />
         )}
         <div className="flex flex-col justify-end h-[320px] z-10 p-4">
           <div className="flex items-center">
@@ -81,7 +99,17 @@ export default function ArtistPage() {
             </span>
           </div>
           <h1>
-            <span className="text-white font-bol text-[40px] sm:text-[55px] font-black">
+            <span
+              style={{ fontSize: artist?.Banner == "" ? fontsize : 96 }}
+              ref={refText}
+              onClick={() => {
+                alert(refText.current?.innerText.length);
+              }}
+              className="text-white ChanalName hidden sm:block font-bol text-[40px] line-clamp-1  font-black"
+            >
+              {artist?.ChanalName}
+            </span>
+            <span className="text-white ChanalName block sm:hidden font-bol text-[40px] line-clamp-1  font-black">
               {artist?.ChanalName}
             </span>
           </h1>
