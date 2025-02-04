@@ -40,6 +40,7 @@ export default function PlaylistLike() {
       {playList.map((d) => {
         return <PlaylistLikeC {...d} idU={iduser} />;
       })}
+      
     </>
   );
 }

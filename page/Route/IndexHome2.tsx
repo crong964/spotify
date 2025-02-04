@@ -36,7 +36,6 @@ import { Libarary } from "@/page/component/libarary";
 import NotificationF from "../component/pop/Notification";
 import Left from "../component/Left/Left";
 
-
 export default function Index() {
   const BoxList = useSelector((state: RootHome) => state.rootHome.BoxList);
   const isLogin = useSelector(
@@ -71,12 +70,18 @@ export default function Index() {
 
   return (
     <div className="h-full w-full relative p-0 m-0 bg-black overflow-hidden font-normal">
-      <div className={`${Right2 == "" ? "gridSpotify" : "gridSpotify2"} h-full`}>
+      <div
+        className={`${Right2 == "" ? "gridSpotify" : "gridSpotify2"} h-full`}
+      >
         <Left />
-        <Header /><Right/>
+        <Header />
+        <Right />
         <CenterShare />
-        
-        <div className="f absolute sm:block z-40 left-0 bottom-0 w-full px-0 py-0 sm:py-2 sm:px-2">
+
+        <div className="f  hidden sm:block z-40 w-full px-0 py-0 sm:py-2 sm:px-2">
+          <PlayingBar />
+        </div>
+        <div className=" absolute block sm:hidden z-40 left-0 bottom-0 w-full px-0 py-0 sm:py-2 sm:px-2">
           <PlayingBar />
           <NaviHomeMobile2 />
         </div>

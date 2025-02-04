@@ -51,15 +51,20 @@ export class PlayListController {
         let check = await playListService.Add(playlistmodel)
 
         let ls = req.body.ls as string[]
-
-        let list = ls.map(async (Song_id) => {
+        if (Array.isArray(ls)) {
+            let list = ls.map(async (Song_id) => {
+                let temp = new ContainModel()
+                temp.PlayList_id = playlistmodel.id
+                temp.Song_id = Song_id
+                return await PlayListController.contain.Add(temp)
+            })
+            let checkls = await Promise.all(list)
+        } else {
             let temp = new ContainModel()
             temp.PlayList_id = playlistmodel.id
-            temp.Song_id = Song_id
+            temp.Song_id = req.body.ls
             return await PlayListController.contain.Add(temp)
-        })
-
-        let checkls = await Promise.all(list)
+        }
         res.json({
             err: false
         })
@@ -111,14 +116,21 @@ export class PlayListController {
         if (req.body.ls) {
             playlistmodel.Songs = req.body.ls.length + oldplaylist.Songs
             let ls = req.body.ls as string[]
-            let list = ls.map(async (Song_id) => {
+            if (Array.isArray(ls)) {
+                let list = ls.map(async (Song_id) => {
+                    let temp = new ContainModel()
+                    temp.PlayList_id = playlistmodel.id
+                    temp.Song_id = Song_id
+                    return await PlayListController.contain.Add(temp)
+                })
+                let checkls = await Promise.all(list)
+            } else {
                 let temp = new ContainModel()
                 temp.PlayList_id = playlistmodel.id
-                temp.Song_id = Song_id
+                temp.Song_id = req.body.ls
                 return await PlayListController.contain.Add(temp)
-            })
+            }
 
-            let checkls = await Promise.all(list)
         }
         let check = await playListService.Update(playlistmodel)
         res.json({

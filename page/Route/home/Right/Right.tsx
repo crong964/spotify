@@ -24,7 +24,7 @@ export default function Right() {
     child = <BoxChat></BoxChat>;
   }
   return (
-    <div className="r h-full overflow-y-scroll w-full sm:w-[400px] self-stretch">{child}</div>
+    <div className="r h-full overflow-y-scroll w-full sm:w-[400px] self-stretch pb-4">{child}</div>
   );
 }
 
