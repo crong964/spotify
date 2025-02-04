@@ -168,7 +168,7 @@ export default function Pip({ imagePath }: PiP) {
                       }
                     }}
                   >
-                    {stop ? (
+                    {!stop ? (
                       <PlaySoundIcon className="fill-white size-8" />
                     ) : (
                       <PauseSoundIcon className="fill-white size-8" />

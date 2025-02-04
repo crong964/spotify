@@ -61,7 +61,7 @@ export default function Header() {
   useEffect(() => {}, [search]);
   const { id } = useParams();
   return (
-    <div className="h-max w-full rounded-tl-lg sticky bg-gradient-to-r from-red-500 via-pink-400 to-black top-0 z-10 px-3 p-0 sm:py-2 space-y-2">
+    <div className="b h-max w-full rounded-tl-lg sticky bg-gradient-to-r from-red-500 via-pink-400 to-black top-0 z-10 px-3 p-0 sm:py-2 space-y-2">
       <div className="flex items-center space-x-2 mx-0 sm:mx-3 sm:justify-between">
         <div className="flex space-x-3  items-center">
           <Back />

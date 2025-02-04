@@ -77,7 +77,7 @@ app.use((req, res, next) => {
 app.use("/static", express.static(path.join(process.cwd(), "web", "static"), {
     setHeaders(res, path, stat) {
         if (path.indexOf("app.js") < 0) {
-            res.setHeader("cache-control", `public, max-age=${production ? 31536000000 : 31},immutable`)
+            res.setHeader("cache-control", `public, max-age=${production ? 31536000000 : 0},immutable`)
         }
     }
 }))

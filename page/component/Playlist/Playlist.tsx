@@ -31,7 +31,7 @@ export function PlayList(d: iPlayList) {
       onMouseLeave={() => {
         SetShow(false);
       }}
-      className=" relative cursor-pointer bg-black hover:bg-[#1A1A1A] p-1 sm:p-2"
+      className="inline-block relative cursor-pointer bg-black hover:bg-[#1A1A1A] p-1 sm:p-2"
     >
       <Link to={`/${d.Type == "artist" ? d.Type : "playlist"}/${d.id}`}>
         <Avatar
@@ -47,7 +47,7 @@ export function PlayList(d: iPlayList) {
         {d.PlayListName}
       </div>
       {show || (playing.id == d.id && playing.page == d.Type && !stopAudio) ? (
-        <div className="absolute top-[130px] right-0 z-[2]">
+        <div className="absolute top-[130px] right-0 -z-2">
           <PlayButtom id={d.id} page={d.Type} />
         </div>
       ) : (
@@ -103,7 +103,7 @@ export default function PlayLists(p: PlayLists) {
               )}
             </div>
             <div className="w-full overflow-auto sm:overflow-hidden">
-              <div className={`flex w-max overflow-x-scroll `}>{children}</div>
+              <div className={`flex w-max `}>{children}</div>
             </div>
           </div>
         </>

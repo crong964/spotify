@@ -81,7 +81,7 @@ export default function ArtistPage() {
             </span>
           </div>
           <h1>
-            <span className="text-white font-bol text-[40px] sm:text-[96px] font-black">
+            <span className="text-white font-bol text-[40px] sm:text-[55px] font-black">
               {artist?.ChanalName}
             </span>
           </h1>

@@ -4,7 +4,7 @@ const Foot = React.lazy(() => import("@/page/component/Foot"));
 import { useDispatch, useSelector } from "react-redux";
 
 const Header = React.lazy(() => import("@/page/component/Header/Header"));
-
+import "./IndexHome2.css";
 import {
   RootHome,
   SetDeviceType,
@@ -28,9 +28,7 @@ import Right from "./home/Right/Right";
 import { PlayingBar } from "@/page/component/Audio/Index";
 import PlayingPlaylistMobile from "./mobile/playslist/PlayingPlaylistMobile";
 import ChatBox from "@/page/component/boxchat/SingleBox";
-import CarouselSlide, {
-  color,
-} from "@/page/component/CarouselSlide/CarouselSlide";
+
 import { NaviHomeMobile2 } from "@/page/component/NaviHome/NaviHome";
 import { ChatBoxMobliePage } from "./mobile/chatbox/ChatBoxMobliePage";
 import { SingleBoxChatPage } from "./mobile/SingleBox/SingleBoxChatPage";
@@ -38,11 +36,13 @@ import { Libarary } from "@/page/component/libarary";
 import NotificationF from "../component/pop/Notification";
 import Left from "../component/Left/Left";
 
+
 export default function Index() {
   const BoxList = useSelector((state: RootHome) => state.rootHome.BoxList);
   const isLogin = useSelector(
     (state: RootHome) => state.rootauth.login.IsLogin
   );
+  const Right2 = useSelector((state: RootHome) => state.rootHome.Right);
   const { pathname } = useLocation();
   const screem = async () => {
     if (window.innerWidth > 900) {
@@ -71,23 +71,17 @@ export default function Index() {
 
   return (
     <div className="h-full w-full relative p-0 m-0 bg-black overflow-hidden font-normal">
-      <main title="main" className="flex h-full  sm:h-[90%] space-x-1 relative">
+      <div className={`${Right2 == "" ? "gridSpotify" : "gridSpotify2"} h-full`}>
         <Left />
-        <div title="center" className="w-full sm:w-[calc(100%-88px)] space-y-1">
-          <div className="relative min-h-max max-h-[10%] ">
-            <Header></Header>
-          </div>
-
-          <div className="flex h-[90%] w-full px-0 sm:px-3">
-            <CenterShare />
-            <Right />
-          </div>
+        <Header /><Right/>
+        <CenterShare />
+        
+        <div className="f absolute sm:block z-40 left-0 bottom-0 w-full px-0 py-0 sm:py-2 sm:px-2">
+          <PlayingBar />
+          <NaviHomeMobile2 />
         </div>
-      </main>
-      <div className="absolute sm:block z-40 left-0 bottom-0 w-full px-0 py-0 sm:py-2 sm:px-2">
-        <PlayingBar />
-        <NaviHomeMobile2 />
       </div>
+
       {BoxList.length > 0 ? (
         <div className="absolute right-0 bottom-0 h-full w-full sm:right-[400px] sm:bottom-[100px] sm:h-max sm:w-max z-40 space-x-2 flex  ">
           {BoxList.map((v) => {
@@ -148,7 +142,7 @@ function CenterShare() {
           dispatch(ShowTopbarContent(true));
         }
       }}
-      className=" h-full overflow-y-scroll relative"
+      className=" h-full m overflow-y-scroll relative"
     >
       {pathname == "/" ? (
         <div className="hidden sm:inline-block sticky top-0 left-0 z-10 w-full bg-black">

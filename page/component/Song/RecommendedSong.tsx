@@ -86,7 +86,7 @@ export default function RecommendedSong(p: iRecommendedSong) {
         {songsearch.map((v) => {
           return (
             <div className="grid grid-cols-7 text-[13px] sm:text-[14px] sm:p-2 py-2 cursor-pointer sm:space-x-2 hover:bg-[#2D2D2D] text-white font-bold rounded-lg items-center">
-              <div className="col-span-5 grid grid-cols-5 ">
+              <div className="col-span-6 grid grid-cols-5 ">
                 <div className="flex items-center col-span-3">
                   <Avatar className="size-12 sm:size-9" src={v.SongImage} />
                   <div className="flex flex-col px-2">
@@ -95,7 +95,7 @@ export default function RecommendedSong(p: iRecommendedSong) {
                   </div>
                 </div>
               </div>
-              <div className="col-span-2">
+              <div className="col-span-1">
                 <button className="border-2 border-white px-3 py-2 rounded-2xl hover:bg-white hover:text-black"
                   onClick={() => {
                     post(
@@ -131,7 +131,7 @@ export default function RecommendedSong(p: iRecommendedSong) {
       {songs.map((v) => {
         return (
           <div className="grid grid-cols-7 text-[13px] sm:text-[14px] sm:p-2 py-2 cursor-pointer sm:space-x-2 hover:bg-[#2D2D2D] text-white font-bold rounded-lg items-center">
-            <div className="col-span-5 grid grid-cols-5 ">
+            <div className="col-span-6 grid grid-cols-5 ">
               <div className="flex items-center col-span-3">
                 <Avatar className="size-12 sm:size-9" src={v.SongImage} />
                 <div className="flex flex-col px-2">
@@ -140,7 +140,7 @@ export default function RecommendedSong(p: iRecommendedSong) {
                 </div>
               </div>
             </div>
-            <div className="col-span-2">
+            <div className="col-span-1">
               <button
                 className="border-2 border-white px-3 py-2 rounded-2xl hover:bg-white hover:text-black"
                 onClick={() => {

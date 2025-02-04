@@ -11,7 +11,7 @@ import {
   Routes,
 } from "react-router-dom";
 
-const Index = React.lazy(() => import("./Route/IndexHome"));
+const Index = React.lazy(() => import("./Route/IndexHome2"));
 
 import { SetionList } from "./Route/home/Setion";
 import { SuggestPlaylist } from "@/page/component/Playlist";
@@ -25,8 +25,6 @@ import {
   Signup,
 } from "@/page/Route/auth/Index";
 
-import BoxChat from "./Route/home/Right/BoxChatPage";
-import PlayingPlaylistMobile from "./Route/mobile/playslist/PlayingPlaylistMobile";
 const SingleArtistPage = React.lazy(
   () => import("./Route/home/SingleArtistPage/SingleArtistPage")
 );

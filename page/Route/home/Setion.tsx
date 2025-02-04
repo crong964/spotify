@@ -1,14 +1,12 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import React from "react";
-import { get, post } from "@/page/config/req";
-import { useDispatch, useSelector } from "react-redux";
-import { NaviPage, RootHome } from "./RootRedux";
-import { Artists } from "@/page/component/Artist";
-import PlayLists from "@/page/component/Playlist/Playlist";
+import { post } from "@/page/config/req";
+import { useDispatch } from "react-redux";
+import { NaviPage } from "./RootRedux";
+
 import { iPlayList } from "@/page/component/Playlist/interface";
-
-
+import PlayLists from "@/page/component/Playlist/Playlist";
 
 const PlayButtom = React.lazy(() => import("@/page/component/PlayButtom"));
 
@@ -19,18 +17,19 @@ interface SetionList {
 }
 export function SetionList(params: SetionList) {
   const [artist, SetaAtist] = useState<iPlayList[]>([]);
-  const Right = useSelector((state: RootHome) => state.rootHome.Right);
   useEffect(() => {
     post("/playlist/NextPlaylistArtist", {}, (v: any) => {
       SetaAtist(v.ls);
     });
   }, []);
   return (
-    <PlayLists
-      link={params.link ? params.link : "#"}
-      d={artist}
-      title="Danh sách nghệ sĩ"
-    />
+    <div>
+      <PlayLists
+        link={params.link ? params.link : "#"}
+        d={artist}
+        title="Danh sách nghệ sĩ"
+      />
+    </div>
   );
 }
 interface SetionData {

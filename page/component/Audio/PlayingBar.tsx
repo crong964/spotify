@@ -86,7 +86,7 @@ export default function PlayingBar() {
     VolumeAudio(volume);
   }, [volume]);
   return (
-    <div className="w-full bg-black h-[10%] sm:h-[12%] grid items-center grid-cols-1 sm:grid-cols-4 mt-0 ">
+    <div className="w-full bg-black py-0 sm:py-1 h-[10%] sm:h-[12%] grid items-center grid-cols-1 sm:grid-cols-4 mt-0 ">
       <div
         onClick={() => {
           navigate("mobile/playlist");

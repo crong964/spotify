@@ -1,0 +1,41 @@
+@media (min-width:640px) {
+    .gridSpotify {
+        display: grid;
+        height: 100vh;
+        width: 100%;
+        gap: 8px;
+        grid-template:
+            "a b" auto "a m" 80px
+            "a m" 1fr
+            "f f" auto
+            / 80px 1fr
+    }
+
+    .gridSpotify2 {
+        display: grid;
+        height: 100vh;
+        width: 100%;
+        gap: 8px;
+        grid-template:
+            "a b b" auto 
+            "a m r" 1fr
+            "f f f" auto
+            / 80px 1fr 400px
+    }
+
+    .a {
+        grid-area: a;
+    }
+
+    .b {
+        grid-area: b;
+    }
+
+    .m {
+        grid-area: m;
+    }
+
+    .f {
+        grid-area: f;
+    }
+}
