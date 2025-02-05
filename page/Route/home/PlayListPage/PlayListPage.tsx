@@ -241,6 +241,7 @@ export default function PlaylistPage() {
           id={playlist.id}
           PlayListName={playlist.PlayListName}
           onChange={(v) => {
+            
             dispatch(SetPlaylist({ ...playlist, ...v }));
           }}
           onShow={(v) => {

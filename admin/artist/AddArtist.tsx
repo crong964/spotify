@@ -43,6 +43,11 @@ export function AddArtist() {
     SetLoad(true);
     post("/admin/artist/add", form, (v: any) => {
       SetLoad(false);
+      if (!v.err) {
+        alert("thành công");
+      } else {
+        alert("Thất bại");
+      }
     });
   };
   return (

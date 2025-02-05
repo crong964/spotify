@@ -63,18 +63,27 @@ export default function ArtistPage() {
     <div className="relative " ref={refPage}>
       {artist?.Banner !== "" ? (
         <div
-          className="hidden sm:block bg-no-repeat bg-center bg-cover rounded-t-lg absolute top-0 left-0 w-full h-[40vh] "
-          style={{ backgroundImage: `url(${artist?.Banner || ""})` }}
+          className="hidden sm:block bg-no-repeat bg-cover bg-blend-color rounded-t-lg absolute top-0 left-0 w-full h-[340px] "
+          style={{
+            backgroundImage: `url(${artist?.Banner || ""})`,
+          }}
         ></div>
       ) : (
-        <></>
+        <>
+          <div
+            className="hidden sm:block bg-no-repeat bg-cover rounded-t-lg absolute top-0 left-0 w-full h-[340px] "
+            style={{
+              backgroundImage: `url(${artist?.pathImage || ""})`,
+            }}
+          ></div>
+        </>
       )}
 
       <div
         className="block sm:hidden bg-no-repeat bg-cover rounded-t-lg absolute top-0 left-0 w-full h-[320px]"
         style={{ backgroundImage: `url(${artist?.pathImage || ""})` }}
       ></div>
-      <div className="opacity-25 bg-black absolute top-0 left-0 w-full h-[320px]"></div>
+      <div className="opacity-25 bg-black absolute top-0 left-0 w-full h-[340px]"></div>
       <div className="flex items-end p-2">
         {artist?.Banner !== "" ? (
           <></>

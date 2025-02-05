@@ -8,10 +8,10 @@ import { post } from "@/page/config/req";
 export default function PopEditPlaylis(p: iPopEditPlaylis) {
   const [file, SetFile] = useState<File>();
   const [playlistform, SetPlaylistForm] = useState<PlaylistForm>({
-    Discripition: "",
-    id: "",
-    ImagePath: "",
-    PlayListName: "",
+    Discripition: p.Discripition,
+    id: p.id,
+    ImagePath: p.ImagePath,
+    PlayListName: p.PlayListName,
   });
   return (
     <Pop left={0} top={0}>
