@@ -38,9 +38,7 @@ import Left from "../component/Left/Left";
 
 export default function Index() {
   const BoxList = useSelector((state: RootHome) => state.rootHome.BoxList);
-  const isLogin = useSelector(
-    (state: RootHome) => state.rootauth.login.IsLogin
-  );
+  const typeDevice = useSelector((state: RootHome) => state.mobile.type);
   const Right2 = useSelector((state: RootHome) => state.rootHome.Right);
   const { pathname } = useLocation();
   const screem = async () => {
@@ -78,13 +76,16 @@ export default function Index() {
         <Right />
         <CenterShare />
 
-        <div className="f  hidden sm:block z-40 w-full px-0 py-0 sm:py-2 sm:px-2">
-          <PlayingBar />
-        </div>
-        <div className=" absolute block sm:hidden z-40 left-0 bottom-0 w-full px-0 py-0 sm:py-2 sm:px-2">
-          <PlayingBar />
-          <NaviHomeMobile2 />
-        </div>
+        {typeDevice == "mobile" ? (
+          <div className=" absolute sm:relative block sm:hidden z-40 left-0 bottom-0 w-full px-0 py-0 sm:py-2 sm:px-2">
+            <PlayingBar />
+            <NaviHomeMobile2 />
+          </div>
+        ) : (
+          <div className="f  w-full px-0 py-0 sm:py-2 sm:px-2">
+            <PlayingBar />
+          </div>
+        )}
       </div>
 
       {BoxList.length > 0 ? (
