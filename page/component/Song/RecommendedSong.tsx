@@ -41,8 +41,13 @@ export default function RecommendedSong(p: iRecommendedSong) {
       "/song/GetSongByTabs",
       { idPlaylist: p.idPlaylist, start: start, tabs: p.tabs },
       (v: any) => {
-        SetStart((start) => start + v.ls.length);
-        SetSongs(v.ls);
+        if (v.ls.length > 0) {
+          SetStart((start) => start + v.ls.length);
+          SetSongs(v.ls);
+        } else {
+          SetStart(0);
+          SetSongs(v.ls);
+        }
       }
     );
   };
@@ -96,7 +101,8 @@ export default function RecommendedSong(p: iRecommendedSong) {
                 </div>
               </div>
               <div className="col-span-1">
-                <button className="border-2 border-white px-3 py-2 rounded-2xl hover:bg-white hover:text-black"
+                <button
+                  className="border-2 border-white px-3 py-2 rounded-2xl hover:bg-white hover:text-black"
                   onClick={() => {
                     post(
                       "/contain/addsong",
@@ -172,10 +178,11 @@ export default function RecommendedSong(p: iRecommendedSong) {
         );
       })}
       <div className="flex justify-end">
-        {start >= count ? (
+        {songs.length <= 0 ? (
           <></>
         ) : (
           <button
+            className="border-2 border-white px-3 py-2 rounded-2xl hover:bg-white hover:text-black"
             onClick={() => {
               getsong();
             }}

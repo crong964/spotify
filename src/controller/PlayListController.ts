@@ -209,11 +209,15 @@ export class PlayListController {
         let idplaylist = req.body.idplaylist
         let playlist = await PlayListController.playlist.Get(idplaylist)
         let s: ResultSetHeader | undefined = undefined
-        if (playlist?.User_id == id) {
+        if (playlist && playlist?.User_id == id) {
             await Promise.all([PlayListController.contain.DeleteAll(idplaylist),
             PlayListController.Playlistlike.Delete(id, idplaylist)])
             s = await PlayListController.playlist.DeletePlaylist(idplaylist)
-            PlayListController.firebase.Move(`playlist/${playlist?.id}.webp`, `delete/playlist/${playlist?.id}.webp`)
+            if (playlist?.ImagePath.length > 0) {
+                PlayListController.firebase.Move(`playlist/${playlist?.id}.webp`, `delete/playlist/${playlist?.id}.webp`)
+
+
+            }
         }
         res.json({
             err: s?.affectedRows == 0
@@ -229,7 +233,7 @@ export class PlayListController {
     }
     async Update(req: Request, res: Response) {
         let id = req.cookies.id
-              
+
         let playlistmodel = new PlayListModel()
         playlistmodel.setAll(req.body)
         playlistmodel.User_id = id

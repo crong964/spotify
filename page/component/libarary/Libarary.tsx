@@ -14,16 +14,6 @@ export default function Libarary() {
   return (
     <div
       className="p-3 flex justify-center items-center"
-      onClick={() => {
-        post("/playlist/addplaylist", {}, (v: any) => {
-          if (v.err) {
-            alert("tạo thất bại");
-          }
-          else{
-            alert("tạo thành công");
-          }
-        });
-      }}
       onMouseMove={(ev) => {
         SetPop(true);
         let top = ev.currentTarget.getBoundingClientRect().top;

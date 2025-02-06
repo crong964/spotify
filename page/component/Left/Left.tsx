@@ -1,19 +1,20 @@
 import Home from "@/page/Route/home/NaviHome/Home";
 import { MobileSearchButtom } from "@/page/Route/home/NaviHome/SearchButtom";
 import { RootHome } from "@/page/Route/home/RootRedux";
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Libarary } from "@/page/component/libarary";
 import NaviLoveSong from "@/page/Route/home/NaviHome/NaviLoveSong";
 import PlaylistLike from "@/page/Route/home/NaviHome/PlaylistLike";
 import { SetExtend } from "./LeftRedux";
+import { post } from "@/page/config/req";
 
 export default function Left() {
   const isLogin = useSelector(
     (state: RootHome) => state.rootauth.login.IsLogin
   );
   const extend = useSelector((state: RootHome) => state.leftRedux.extend);
-  const dispatch = useDispatch();
+  const [key, SetKey] = useState(0);
   return (
     <nav
       title="left"
@@ -31,14 +32,22 @@ export default function Left() {
         <div className="relative h-[80%] overflow-y-auto bg-[#121212] rounded-lg pb-2 ">
           <div
             onClick={() => {
-              
+              post("/playlist/addplaylist", {}, (v: any) => {
+                if (v.err) {
+                  alert("tạo thất bại");
+                } else {
+                  alert("tạo thành công");
+                  let key = Math.floor(Math.random() * 10);
+                  SetKey(key);
+                }
+              });
             }}
             className="sticky z-20 top-0 bg-black"
           >
             <Libarary />
           </div>
           <NaviLoveSong />
-          <PlaylistLike />
+          <PlaylistLike key={key} />
         </div>
       ) : (
         <></>

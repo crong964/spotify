@@ -19,8 +19,13 @@ class PlayListLikeService {
         return check.length > 0 ? this.Setls(check)[0] : undefined
     }
     async GetAll(user_id: string) {
-        let sql = "SELECT playlist.* FROM playlistlikes, playlist WHERE playlistlikes.User_ID =? AND playlist.id = playlistlikes.PlayList_id"
+        let sql = "SELECT playlist.* FROM playlistlikes, playlist WHERE playlistlikes.User_ID =? AND playlist.id = playlistlikes.PlayList_id ORDER BY playlistlikes.data DESC"
         let check = await Mysql2.query(sql, [user_id])
+        return this.Setls(check)
+    }
+    async UpdateDate(user_id: string, PlayList_id: string) {
+        let sql = "UPDATE playlistlikes SET `data`=CURRENT_TIMESTAMP() WHERE PlayList_id =? AND User_ID=? "
+        let check = await Mysql2.query(sql, [PlayList_id,user_id])
         return this.Setls(check)
     }
     Setls(ls: any) {

@@ -12,7 +12,7 @@ export default function PlayButtom(p: Playing) {
   const [load, SetLoad] = useState(false);
   const dispatch = useDispatch();
 
-  const PlayingPlaylist = useCallback(() => {
+  const PlayingPlaylist = () => {
     if (playing.id == p.id && p.page == playing.page) {
       var mu = document.querySelector(".g") as HTMLAudioElement;
       if (mu.paused) {
@@ -41,7 +41,7 @@ export default function PlayButtom(p: Playing) {
         dispatch(SetStop(false));
       }
     });
-  }, []);
+  };
   return (
     <div
       onClick={() => {

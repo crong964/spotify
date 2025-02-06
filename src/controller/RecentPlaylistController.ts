@@ -2,6 +2,7 @@ import LikedSongModel from "../model/LikedSongModel";
 import RecentPlaylistModel from "../model/RecentPlaylistModel";
 import SongModel from "../model/SongModel";
 import likedSongService, { LikedSongService } from "../services/LikedSongService";
+import PlayListLikeService from "../services/PlayListLikeService";
 import playListService, { PlayListService } from "../services/PlayListService";
 
 import recentPlaylistService, { RecentPlaylistService } from "../services/RecentPlaylistService";
@@ -14,6 +15,7 @@ class RecentPlaylistController {
     static playlist: PlayListService = playListService
     static song: SongService = songService
     static likesong: LikedSongService = likedSongService
+    static likePlaylist = PlayListLikeService
     static r: RecentPlaylistService = recentPlaylistService
     constructor() {
 
@@ -31,6 +33,7 @@ class RecentPlaylistController {
         let s = await RecentPlaylistController.playlist.Get(d.ID)
         if (s != undefined) {
             ls = await RecentPlaylistController.likesong.GetAllByIdPlayList(d.User_ID, s.id)
+            RecentPlaylistController.likePlaylist.UpdateDate(User_ID, d.ID)
         }
         var check = await RecentPlaylistController.r.Get8FirstRecentPlaylist(d.User_ID, d.ID)
 
