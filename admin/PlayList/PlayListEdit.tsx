@@ -48,17 +48,22 @@ function PlayListFormData() {
   let { idPlaylistEdit } = useParams();
   const [newsongs, SetNewSongs] = useState<iSong[]>([]);
   const [tabs, setTabs] = useState("");
+  const [start, SetStart] = useState(0);
+  const GetSongbyTas = (start: number) => {
+    post(
+      "/song/GetSongByTabs",
+      { tabs: tabs, idPlaylist: idPlaylistEdit, start: start },
+      (v: any) => {
+        SetNewSongs(v.ls);
+        SetStart(start + v.ls.length);
+      }
+    );
+  };
   useEffect(() => {
     if (tabs == "") {
       return;
     }
-    post(
-      "/song/GetSongByTabs",
-      { tabs: tabs, idPlaylist: idPlaylistEdit },
-      (v: any) => {
-        SetNewSongs(v.ls);
-      }
-    );
+    GetSongbyTas(0);
   }, [tabs]);
   const dispatch = useDispatch();
   const floor = useSelector((state: RootState) => state.navi.floor);
@@ -229,6 +234,20 @@ function PlayListFormData() {
             />
           );
         })}
+        {newsongs.length > 0 ? (
+          <div className="flex justify-end">
+            <button
+              onClick={() => {
+                GetSongbyTas(start);
+              }}
+              className="px-4 py-2 rounded-xl font-bold border-2 border-black text-black hover:bg-green-500 hover:text-white"
+            >
+              Làm mới
+            </button>
+          </div>
+        ) : (
+          <></>
+        )}
       </div>
       <div className="h-[100px]"></div>
     </div>

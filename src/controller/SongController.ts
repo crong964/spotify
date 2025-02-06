@@ -264,7 +264,7 @@ class SongController {
 
         var l: limit = {
             start: start,
-            end: start + 10
+            end: 10
         }
         var ls = await Promise.all([SongController.song.GetSongByTabs(tabs, idPlaylist, l),
         SongController.song.GetCountSongByTabs(tabs, idPlaylist)

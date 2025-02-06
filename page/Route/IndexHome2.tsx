@@ -38,15 +38,20 @@ import Left from "../component/Left/Left";
 
 export default function Index() {
   const BoxList = useSelector((state: RootHome) => state.rootHome.BoxList);
-  const typeDevice = useSelector((state: RootHome) => state.mobile.type);
+  const typeDevice = useSelector(
+    (state: RootHome) => state.rootHome.devicetype
+  );
   const Right2 = useSelector((state: RootHome) => state.rootHome.Right);
   const { pathname } = useLocation();
   const screem = async () => {
-    if (window.innerWidth > 900) {
-      dispatch(SetDeviceType("pc"));
-    } else {
-      dispatch(SetDeviceType("mobile"));
-    }
+    window.addEventListener("resize", () => {
+            
+      if (window.innerWidth > 900) {
+        dispatch(SetDeviceType("pc"));
+      } else {
+        dispatch(SetDeviceType("mobile"));
+      }
+    });
     try {
       let wakelock = await navigator.wakeLock.request("screen");
       wakelock.addEventListener("release", () => {});
@@ -76,16 +81,10 @@ export default function Index() {
         <Right />
         <CenterShare />
 
-        {typeDevice == "mobile" ? (
-          <div className=" absolute sm:relative block sm:hidden z-40 left-0 bottom-0 w-full px-0 py-0 sm:py-2 sm:px-2">
-            <PlayingBar />
-            <NaviHomeMobile2 />
-          </div>
-        ) : (
-          <div className="f  w-full px-0 py-0 sm:py-2 sm:px-2">
-            <PlayingBar />
-          </div>
-        )}
+        <div className=" f absolute sm:relative z-40 left-0 bottom-0 w-full px-0 py-0 sm:py-2 sm:px-2">
+          <PlayingBar />
+          <NaviHomeMobile2 />
+        </div>
       </div>
 
       {BoxList.length > 0 ? (
