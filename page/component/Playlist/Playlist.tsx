@@ -41,7 +41,7 @@ export default function PlayList(d: iPlayList) {
               ? " rounded-full"
               : " rounded-2xl"
           }`.concat(
-            ` ${d.className || " cursor-pointer size-[150px] sm:size-[180px]"} `
+            ` ${d.className || " cursor-pointer size-[100px] sm:size-[180px]"} `
           )}
         />
       </Link>

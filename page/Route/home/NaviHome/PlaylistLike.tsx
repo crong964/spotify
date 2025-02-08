@@ -41,7 +41,7 @@ export default function PlaylistLike() {
   return (
     <div className="min-h-[300px]">
       {playList.map((d) => {
-        return <PlaylistLikeC {...d} idU={iduser} />;
+        return <PlaylistLikeC {...d} key={d.id} idU={iduser} />;
       })}
 
       <Link to={"/mobile/ArtistsListPage"} className="grid grid-cols-7 gap-16 my-4 sm:hidden">

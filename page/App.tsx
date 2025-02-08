@@ -26,6 +26,7 @@ import {
 } from "@/page/Route/auth/Index";
 import PlaylistLike from "./Route/home/NaviHome/PlaylistLike";
 import ArtistsListPageMobile from "./Route/mobile/ArtistsListPage/ArtistsListPageMobile";
+import PlayListSectionPage from "./Route/home/PlayListPage/PlayListSectionPage";
 
 const SingleArtistPage = React.lazy(
   () => import("./Route/home/SingleArtistPage/SingleArtistPage")
@@ -79,6 +80,7 @@ root.render(
             <Route path="artist/:id" element={<SingleArtistPage />} />
             <Route path="search/:s" element={<SearchPage />} />
             <Route path="section" element={<ArtistsListPage />} />
+            <Route path="PlayListSectionPage" element={<PlayListSectionPage />} />
             <Route path="mobile">
               <Route path="playlist" element={<></>} />
               <Route path="chatbox" element={<></>} />

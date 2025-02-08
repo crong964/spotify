@@ -13,5 +13,11 @@ export default function SuggestPlaylist() {
     });
   }, []);
 
-  return <PlayLists d={playlists} title="Danh sách đề cử" />;
+  return (
+    <PlayLists
+      d={playlists}
+      title="Danh sách đề cử"
+      link="PlayListSectionPage"
+    />
+  );
 }

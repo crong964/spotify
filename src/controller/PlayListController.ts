@@ -156,10 +156,12 @@ export class PlayListController {
     async NextPlayListLimit(req: Request, res: Response) {
         let start = req.body.start || 0
         let count = req.body.count || 10
-        let ls = await PlayListController.playlist.GetPlayListLimit(start, count)
+        let ls = await Promise.all([PlayListController.playlist.GetPlayListLimit(start, count),
+        PlayListController.playlist.GetCountPlayListLimit()])
         res.json({
             err: false,
-            ls: ls
+            ls: ls[0],
+            count: ls[1]
         })
     }
     async NextPlayArtistListLimit(req: Request, res: Response) {

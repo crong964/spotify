@@ -86,6 +86,11 @@ export class PlayListService {
         var ls = await Mysql2.query(sql, [start, count])
         return this.SetLs(ls)
     }
+    async GetCountPlayListLimit() {
+        var sql = "SELECT count(*) as count FROM playlist where Type='playlist' "
+        var ls = await Mysql2.query(sql, [])
+        return this.SetLs(ls)
+    }
     async GetPlayListArtistLimit(start: number, count: number, User_ID: string) {
         var sql = `SELECT * FROM playlist where Type='artist' AND playlist.id NOT IN (SELECT playlistlikes.PlayList_id FROM playlistlikes WHERE playlistlikes.User_ID =?) AND  status=1 LIMIT ?,?`
         var ls = await Mysql2.query(sql, [User_ID, start, count])
