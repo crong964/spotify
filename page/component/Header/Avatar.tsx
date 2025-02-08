@@ -4,6 +4,9 @@ import { useDispatch } from "react-redux";
 import { NaviPage } from "@/page/Route/home/RootRedux";
 import { Infor } from "./interface";
 import { get } from "@/page/config/req";
+import { AvatarIcon } from "@/icon/Icon";
+import CalcXY from "../pop/CalcXY";
+import Modal from "../pop/Modal";
 
 export default function Avatar(p: Infor) {
   const [show, SetShow] = useState(false);
@@ -14,24 +17,39 @@ export default function Avatar(p: Infor) {
       <div
         onClick={(e) => {
           SetShow(!show);
-          let x = e.currentTarget.getBoundingClientRect().right;
-          let y = e.currentTarget.getBoundingClientRect().bottom;
-          XY({ x: x, y: y });
+
+          let xy = CalcXY({
+            wE: 200,
+            hE: 100,
+            dom: e.currentTarget.getBoundingClientRect(),
+          });
+
+          XY(xy);
         }}
         className="text-[14px] "
       >
-        <img
-          className="size-[40px] rounded-full cursor-pointer"
-          src={p.pathImage}
-          alt=""
-          srcSet=""
-        />
+        {p.pathImage == "" ? (
+          <div className="bg-[#2A2A2A] p-2 rounded-2xl">
+            <AvatarIcon className="size-[20px] fill-white" />
+          </div>
+        ) : (
+          <img
+            className="size-[40px] rounded-full cursor-pointer"
+            src={p.pathImage}
+            alt=""
+            srcSet=""
+          />
+        )}
       </div>
       {show ? (
-        <Pop top={xy.y} left={xy.x - 200}>
-          <div onMouseLeave={()=>{
-            SetShow(false)
-          }} className="bg-[#3E3E3E] rounded-lg min-w-[200px] text-[16px]  sm:right-0">
+        <Modal
+          top={xy.y}
+          left={xy.x}
+          show={() => {
+            SetShow(false);
+          }}
+        >
+          <div className="bg-[#3E3E3E] rounded-lg min-w-[200px] text-[16px]">
             <div className="text-white  cursor-pointer hover:bg-black">
               <div
                 onClick={() => {
@@ -56,7 +74,7 @@ export default function Avatar(p: Infor) {
               <div className="p-2">Đăng xuất </div>
             </div>
           </div>
-        </Pop>
+        </Modal>
       ) : (
         <></>
       )}

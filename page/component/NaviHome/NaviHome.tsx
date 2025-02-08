@@ -6,10 +6,12 @@ import { RootHome } from "@/page/Route/home/RootRedux";
 import { useSelector } from "react-redux";
 import Home from "./Home";
 import { NavLink } from "react-router-dom";
-import { MessIcon } from "@/icon/Icon";
+import { LibraryIcon, MessIcon } from "@/icon/Icon";
 
 export function NaviHomeMobile() {
-  const isLogin = useSelector((state: RootHome) => state.rootauth.login.IsLogin);
+  const isLogin = useSelector(
+    (state: RootHome) => state.rootauth.login.IsLogin
+  );
   return (
     <div
       className={
@@ -32,7 +34,9 @@ export function NaviHomeMobile() {
   );
 }
 export function NaviHomeMobile2() {
-  const isLogin = useSelector((state: RootHome) => state.rootauth.login.IsLogin);
+  const isLogin = useSelector(
+    (state: RootHome) => state.rootauth.login.IsLogin
+  );
   return (
     <div
       className={
@@ -57,7 +61,18 @@ export function NaviHomeMobile2() {
               </span>
             )}
           </NavLink>
-          <NaviLoveSong />
+          <NavLink to="/mobile/library">
+            {({ isActive }) => (
+              <span className="w-full h-full grid place-items-center grid-cols-1 sm:h-[60px] sm:flex sm:justify-center sm:items-center">
+                {isActive ? (
+                  <LibraryIcon className="fill-green-600 size-[32px] sm:size-[20px]"></LibraryIcon>
+                ) : (
+                  <LibraryIcon className="fill-white size-[32px] sm:size-[20px]"></LibraryIcon>
+                )}
+                Thư viện
+              </span>
+            )}
+          </NavLink>
         </>
       ) : (
         <></>

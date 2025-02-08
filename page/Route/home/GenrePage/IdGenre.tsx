@@ -6,7 +6,8 @@ import { get, post } from "@/page/config/req";
 
 import { useParams } from "react-router-dom";
 import { iPlayList } from "@/page/component/Playlist/interface";
-import { PlayList } from "@/page/component/Playlist/Playlist";
+import PlayList from "@/page/component/Playlist/Playlist";
+
 
 interface Genre {
   Id: string;

@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { NaviPage } from "./RootRedux";
 
 import { iPlayList } from "@/page/component/Playlist/interface";
-import PlayLists from "@/page/component/Playlist/Playlist";
+import { Playlists } from "@/page/component/Playlist";
 
 const PlayButtom = React.lazy(() => import("@/page/component/PlayButtom"));
 
@@ -24,7 +24,7 @@ export function SetionList(params: SetionList) {
   }, []);
   return (
     <div>
-      <PlayLists
+      <Playlists
         link={params.link ? params.link : "#"}
         d={artist}
         title="Danh sách nghệ sĩ"
@@ -38,6 +38,7 @@ interface SetionData {
   artist: string;
   id: string;
   type: string;
+  click(url: string): void;
 }
 export default function SetionData(params: SetionData) {
   const [hidden, SetHidden] = useState(true);
@@ -83,3 +84,5 @@ export default function SetionData(params: SetionData) {
     </div>
   );
 }
+
+export function SetionDataMobile() {}

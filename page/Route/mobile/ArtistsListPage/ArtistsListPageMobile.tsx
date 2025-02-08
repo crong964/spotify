@@ -1,10 +1,9 @@
-import { get, post } from "@/page/config/req";
-import React, { useEffect, useState } from "react";
-
-import { useSelector } from "react-redux";
-import { RootHome } from "../RootRedux";
+import { HumanIcon } from "@/icon/Icon";
 import { iPlayList } from "@/page/component/Playlist/interface";
 import PlayList from "@/page/component/Playlist/Playlist";
+import { post } from "@/page/config/req";
+import React from "react";
+import { useEffect, useState } from "react";
 
 export default function ArtistsListPage() {
   const [playlists, SetPlayLists] = useState<iPlayList[]>([]);
@@ -23,16 +22,26 @@ export default function ArtistsListPage() {
     return (
       <PlayList
         className="cursor-pointer size-[100px] sm:size-[180px]"
-        Type={v.Type}
+        Type={"#"}
         Genre_ID={v.Genre_ID}
         ImagePath={v.ImagePath}
         PlayListName={v.PlayListName}
         id={v.id}
         key={v.id}
+        click={(id) => {
+          post("/likePlaylist/add", { idPlaylist: id }, (v: any) => {
+            if (!v.err) {
+              SetPlayLists([
+                ...playlists.filter((val) => {
+                  return val.id != id;
+                }),
+              ]);
+            }
+          });
+        }}
       />
     );
   });
-  const Right = useSelector((s: RootHome) => s.rootHome.Right);
   return (
     <div
       className="w-full relative"
@@ -60,7 +69,7 @@ export default function ArtistsListPage() {
                 }
               );
             }}
-            className="bg-[#B3B3B3] cursor-pointer text-white hover:text-black hover:bg-[#3BE477] flex size-[100px] sm:size-[180px] rounded-full justify-center items-center"
+            className="bg-[#B3B3B3] flex size-[100px] sm:size-[180px] rounded-full justify-center items-center"
           >
             <div>Thêm ca sĩ</div>
           </div>

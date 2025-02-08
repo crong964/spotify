@@ -12,13 +12,6 @@ import {
   ShowTopbarContent,
 } from "./home/RootRedux";
 
-const PlaylistLike = React.lazy(
-  () => import("@/page/Route/home/NaviHome/PlaylistLike")
-);
-const NaviLoveSong = React.lazy(
-  () => import("@/page/Route/home/NaviHome/NaviLoveSong")
-);
-
 import { socket } from "@/page/socket/Socket";
 import { MobileSearchButtom } from "./home/NaviHome/SearchButtom";
 
@@ -32,26 +25,27 @@ import ChatBox from "@/page/component/boxchat/SingleBox";
 import { NaviHomeMobile2 } from "@/page/component/NaviHome/NaviHome";
 import { ChatBoxMobliePage } from "./mobile/chatbox/ChatBoxMobliePage";
 import { SingleBoxChatPage } from "./mobile/SingleBox/SingleBoxChatPage";
-import { Libarary } from "@/page/component/libarary";
+
 import NotificationF from "../component/pop/Notification";
 import Left from "../component/Left/Left";
 
 export default function Index() {
   const BoxList = useSelector((state: RootHome) => state.rootHome.BoxList);
-  const typeDevice = useSelector(
-    (state: RootHome) => state.rootHome.devicetype
-  );
   const Right2 = useSelector((state: RootHome) => state.rootHome.Right);
   const { pathname } = useLocation();
   const screem = async () => {
     window.addEventListener("resize", () => {
-            
       if (window.innerWidth > 900) {
         dispatch(SetDeviceType("pc"));
       } else {
         dispatch(SetDeviceType("mobile"));
       }
     });
+    if (window.innerWidth > 900) {
+      dispatch(SetDeviceType("pc"));
+    } else {
+      dispatch(SetDeviceType("mobile"));
+    }
     try {
       let wakelock = await navigator.wakeLock.request("screen");
       wakelock.addEventListener("release", () => {});

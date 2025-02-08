@@ -19,7 +19,7 @@ class ProcessImage {
         })
     }
     async ConvertImgToWebp(inputpath: string, outputpath: string) {
-        let check = await this.Command(inputpath, outputpath, "webp", ["-q", "1"])
+        let check = await this.Command(inputpath, outputpath, "webp", ["-q", "9"])
         return check ? outputpath : null
     }
 }

@@ -166,10 +166,10 @@ export class PlayListController {
 
         let count = req.body.count || 10
         let start = req.body.start * count || 0
+        let id = req.cookies.id
 
-
-        let ls = await Promise.all([PlayListController.playlist.GetPlayListArtistLimit(start, count),
-        PlayListController.playlist.CountPlayListArtist()])
+        let ls = await Promise.all([PlayListController.playlist.GetPlayListArtistLimit(start, count, id),
+        PlayListController.playlist.CountPlayListArtist(id)])
 
         res.json({
             err: false,

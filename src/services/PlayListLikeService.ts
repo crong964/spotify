@@ -5,7 +5,7 @@ import { PlayListLikeModel } from "../model/PlaylistLikeModel";
 class PlayListLikeService {
     async Add(user_id: string, playlist_id: string) {
         let sql = "INSERT INTO playlistlikes(User_ID, PlayList_id) VALUES (?,?)"
-        let check = await Mysql2.query(sql, [user_id, playlist_id])
+        let check: ResultSetHeader = await Mysql2.query(sql, [user_id, playlist_id])
         return check
     }
     async Delete(user_id: string, playlist_id: string) {
@@ -25,7 +25,7 @@ class PlayListLikeService {
     }
     async UpdateDate(user_id: string, PlayList_id: string) {
         let sql = "UPDATE playlistlikes SET `data`=CURRENT_TIMESTAMP() WHERE PlayList_id =? AND User_ID=? "
-        let check = await Mysql2.query(sql, [PlayList_id,user_id])
+        let check = await Mysql2.query(sql, [PlayList_id, user_id])
         return this.Setls(check)
     }
     Setls(ls: any) {

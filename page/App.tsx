@@ -24,6 +24,8 @@ import {
   SignIn,
   Signup,
 } from "@/page/Route/auth/Index";
+import PlaylistLike from "./Route/home/NaviHome/PlaylistLike";
+import ArtistsListPageMobile from "./Route/mobile/ArtistsListPage/ArtistsListPageMobile";
 
 const SingleArtistPage = React.lazy(
   () => import("./Route/home/SingleArtistPage/SingleArtistPage")
@@ -78,17 +80,13 @@ root.render(
             <Route path="search/:s" element={<SearchPage />} />
             <Route path="section" element={<ArtistsListPage />} />
             <Route path="mobile">
+              <Route path="playlist" element={<></>} />
+              <Route path="chatbox" element={<></>} />
+              <Route path="singlebox/:idbox" element={<></>} />
+              <Route path="library" element={<PlaylistLike></PlaylistLike>} />
               <Route
-                path="playlist"
-                element={<></>}
-              />
-               <Route
-                path="chatbox"
-                element={<></>}
-              />
-              <Route
-                path="singlebox/:idbox"
-                element={<></>}
+                path="ArtistsListPage"
+                element={<ArtistsListPageMobile></ArtistsListPageMobile>}
               />
             </Route>
           </Route>

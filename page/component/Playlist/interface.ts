@@ -5,6 +5,7 @@ export interface iPlayList {
     PlayListName: string;
     Type: string;
     className?: string;
+    click?(id: string): void
 }
 
 export interface iPlayLists {

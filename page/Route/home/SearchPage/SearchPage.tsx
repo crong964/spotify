@@ -8,7 +8,9 @@ import { SongList } from "@/page/component/Song/Index";
 import { useParams } from "react-router-dom";
 import { NaviPage } from "../RootRedux";
 import { SongInPlayList } from "@/page/component/Song/interface";
-import PlayLists, { iPlayList } from "@/page/component/Playlist/Playlist";
+
+import { Playlists } from "@/page/component/Playlist";
+import { iPlayList } from "@/page/component/Playlist/interface";
 
 interface artist {
   pathImage: string;
@@ -91,7 +93,7 @@ export default function SearchPage() {
           <SongList data={songname} type="" />
           <Artists d={artist} />
           <SongList data={songs} type="" />
-          <PlayLists d={playlists} title="Danh sách phát nhạc" />
+          <Playlists d={playlists} title="Danh sách phát nhạc" />
         </>
       )}
     </div>

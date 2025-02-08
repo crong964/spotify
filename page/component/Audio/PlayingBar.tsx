@@ -87,7 +87,7 @@ export default function PlayingBar() {
   useEffect(() => {
     VolumeAudio(volume);
   }, [volume]);
-  return (
+  return lsSong[mark]?.filePath ? (
     <div className="w-full bg-black py-0 sm:py-1 h-[10%] sm:h-[12%] grid items-center grid-cols-1 sm:grid-cols-4 mt-0 ">
       <div
         onClick={() => {
@@ -209,5 +209,7 @@ export default function PlayingBar() {
         </button>
       </div>
     </div>
+  ) : (
+    <></>
   );
 }

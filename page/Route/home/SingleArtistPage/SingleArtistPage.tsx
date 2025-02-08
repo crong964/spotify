@@ -12,7 +12,8 @@ import TypeFriend from "@/page/component/friend/TypeFriend";
 import { SongInPlayList } from "@/page/component/Song/interface";
 import { Avatar } from "@/page/component/avatar";
 import { iPlayList } from "@/page/component/Playlist/interface";
-import PlayLists from "@/page/component/Playlist/Playlist";
+import { Playlists } from "@/page/component/Playlist";
+
 
 export default function ArtistPage() {
   const Right = useSelector((state: RootHome) => state.rootHome.Right);
@@ -63,7 +64,7 @@ export default function ArtistPage() {
     <div className="relative " ref={refPage}>
       {artist?.Banner !== "" ? (
         <div
-          className="hidden sm:block bg-no-repeat bg-cover bg-blend-color rounded-t-lg absolute top-0 left-0 w-full h-[340px] "
+          className="hidden sm:block opacity-60 bg-no-repeat bg-cover bg-blend-color rounded-t-lg absolute top-0 left-0 w-full h-[340px] "
           style={{
             backgroundImage: `url(${artist?.Banner || ""})`,
           }}
@@ -83,7 +84,7 @@ export default function ArtistPage() {
         className="block sm:hidden bg-no-repeat bg-cover rounded-t-lg absolute top-0 left-0 w-full h-[320px]"
         style={{ backgroundImage: `url(${artist?.pathImage || ""})` }}
       ></div>
-      <div className="opacity-25 bg-black absolute top-0 left-0 w-full h-[340px]"></div>
+      {/* <div className="opacity-25 bg-black absolute top-0 left-0 w-full h-[340px]"></div> */}
       <div className="flex items-end p-2">
         {artist?.Banner !== "" ? (
           <></>
@@ -183,7 +184,7 @@ export default function ArtistPage() {
           Các bài hát
         </div>
         <SongList data={songs} type="artist" />
-        <PlayLists d={lsartist} title="Nghệ sĩ xuất hiện"></PlayLists>
+        <Playlists d={lsartist} title="Nghệ sĩ xuất hiện"></Playlists>
         <footer className="h-5"></footer>
       </div>
     </div>

@@ -1,8 +1,9 @@
 import { post } from "@/page/config/req";
 import { useEffect, useState } from "react";
-import { iPlayList } from "./Playlist";
+
 import PlayLists from "./Playlists";
 import React from "react";
+import { iPlayList } from "./interface";
 
 export default function SuggestPlaylist() {
   const [playlists, SetPlayLists] = useState<iPlayList[]>([]);

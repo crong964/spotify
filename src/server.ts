@@ -48,9 +48,9 @@ const secret = process.env.SECRET || "1"
 const production = process.env.MODE == "production"
 
 
-const app = express()
+export const app = express()
 const httpServer = createServer(app);
-const io = new Server(httpServer, {
+export const io = new Server(httpServer, {
     cookie: false
 })
 app.use(cookieParser())
@@ -184,5 +184,7 @@ io.on("connection", (socket) => {
     })
 
 });
-export default io
+export default app
+
+
 

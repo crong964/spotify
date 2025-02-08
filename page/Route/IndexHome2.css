@@ -17,8 +17,7 @@
         width: 100%;
         gap: 8px;
         grid-template:
-            "a b b" auto 
-            "a m r" 1fr
+            "a b b" auto "a m r" 1fr
             "f f f" auto
             / 80px 1fr 400px
     }

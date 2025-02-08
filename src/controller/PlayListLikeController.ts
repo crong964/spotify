@@ -6,8 +6,14 @@ class PlayListLikeController {
         let id = req.cookies.id
         let idPlaylist = req.body.idPlaylist
         let check = await PlayListLikeController.playListLikeService.Add(id, idPlaylist)
+        if (check == undefined) {
+            res.json({
+                err: true
+            })
+            return
+        }
         res.json({
-            err: check == undefined
+            err: check.affectedRows == 0
         })
     }
     async Delete(req: Request, res: Response) {

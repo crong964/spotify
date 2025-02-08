@@ -100,7 +100,7 @@ export function NotificationList() {
   }
   return (
     <>
-      <div className="w-[450px] text-white h-[400px] rounded-lg p-1 bg-[#3E3E3E] absolute pb-3 px-1 overflow-y-scroll top-full right-0 z-20">
+      <div className="w-[450px] text-white h-[400px] rounded-lg p-1 bg-[#3E3E3E] absolute pb-3 px-1 overflow-y-scroll">
         <div className="pb-2 border-b-bg-[#3E3E3E] sticky top-0 left-0">
           thông báo
         </div>
@@ -174,7 +174,7 @@ function NotificationDiscuss(d: NotificationDiscuss) {
     });
   }, [d.Songid]);
   return (
-    <div className="w-[450px] text-white h-[400px] rounded-lg p-1 bg-[#3E3E3E] absolute pb-3 px-1 overflow-y-scroll top-full right-0">
+    <div className="w-[450px] text-white h-[400px] rounded-lg p-1 bg-[#3E3E3E]  pb-3 px-1 overflow-y-scroll">
       <div className="w-full grid z-[2000] grid-cols-12 bg-black p-5 border-b-bg-[#3E3E3E] sticky top-0 left-0 ">
         <div className="col-span-9">{song.SongName}</div>
         <div className="col-span-2">

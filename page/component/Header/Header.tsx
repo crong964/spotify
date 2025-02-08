@@ -112,7 +112,8 @@ export default function Header() {
               <>
                 {pathname == "/" ||
                 pathname == "/artist" ||
-                pathname == "/section" ? (
+                pathname == "/section" ||
+                pathname.indexOf("mobile/library") >= 0 ? (
                   <div className="flex sm:hidden items-center">
                     <Avatar Name="" Vertify="" pathImage={infor.pathImage} />
                     <GenreInHome />

@@ -1,7 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { PlayList } from "./Playlist";
+
 import { iPlayLists } from "./interface";
+import { Playlist } from ".";
 
 export default function PlayLists(p: iPlayLists) {
   var children = p.d
@@ -10,7 +11,7 @@ export default function PlayLists(p: iPlayLists) {
     })
     .map((v) => {
       return (
-        <PlayList
+        <Playlist
           Type={v.Type}
           Genre_ID={v.Genre_ID}
           ImagePath={v.ImagePath}

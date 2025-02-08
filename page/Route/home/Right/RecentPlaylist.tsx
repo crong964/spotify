@@ -5,6 +5,7 @@ import { post } from "@/page/config/req";
 import { useDispatch, useSelector } from "react-redux";
 import { NaviPage, RootHome } from "@/page/Route/home/RootRedux";
 import { Link } from "react-router-dom";
+import { Avatar } from "@/page/component/avatar";
 
 interface RecentPlaylist {
   User_ID: string;
@@ -33,16 +34,11 @@ export function RecentPlaylist(params: RecentPlaylist) {
       }}
     >
       <Link
-        to={`${params.Type}/${params.ID}`}
+        to={`${params.Type == "artist" ? "artist" : "playlist"}/${params.ID}`}
         className="flex items-center space-x-1 sm:space-x-2 cursor-pointer bg-[#1A1A1A] rounded-xl "
         onClick={() => {}}
       >
-        <img
-          className="size-[60px] rounded-xl"
-          src={params.ImagePath}
-          alt=""
-          srcSet=""
-        />
+        <Avatar className="size-[60px] rounded-xl" src={params.ImagePath} />
         <div className="text-white text-sm sm:text-base font-bold line-clamp-2">
           {params.PlayListName}
         </div>
