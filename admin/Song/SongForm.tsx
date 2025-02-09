@@ -53,22 +53,17 @@ export default function SongForm() {
   );
 
   function upload(params: Uint8Array, i: number, pa?: string) {
-    let n = 10000;
-    let checksum = 0;
+    let n = 80000;
+
     if (i < params.length) {
       let element = "";
       for (let j = i; j < i + n && j < params.length; j++) {
         element += params[j] + " ";
-        checksum += params[j];
-        if (checksum > 10000) {
-          checksum %= 10000;
-        }
       }
       let data = {
         d: element,
         name: pa,
         idArtist: idArtist,
-        checksum: checksum,
       };
 
       post("/admin/song/uploadfile", data, (v: any) => {

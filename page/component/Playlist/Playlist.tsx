@@ -45,7 +45,7 @@ export default function PlayList(d: iPlayList) {
           )}
         />
       </Link>
-      <div className="text-[10px] sm:text-[16px] mt-2 line-clamp-1 w-[150px] ">
+      <div className="text-[10px] sm:text-[16px] mt-2 line-clamp-1 w-full ">
         {d.PlayListName}
       </div>
       {show || (playing.id == d.id && playing.page == d.Type && !stopAudio) ? (

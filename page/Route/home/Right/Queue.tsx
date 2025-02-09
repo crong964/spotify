@@ -34,7 +34,7 @@ export default function Queue() {
     SetNaVi(params);
   }
   return (
-    <div className="w-full h-full relative text-[16px] overflow-y-scroll bg-[#121212] rounded-lg  ">
+    <div className="w-full p-0 sm:p-1 h-full relative text-[16px] overflow-y-scroll bg-[#121212] rounded-lg  ">
       <div className="bg-[#121212] sticky z-40 top-0 left-0 flex space-x-3 h-min w-full justify-between px-3 rounded-lg py-4 ">
         <div className="flex space-x-4">
           <div
@@ -132,7 +132,7 @@ export function SongQueueInplayList(p: MenberQueue) {
     <>
       {p.cur == p.type ? (
         <>
-          <div className="px-2">
+          <div className="">
             Đang phát
             <span className="text-xs text-[#818181] mx-1">
               {mark + 1}/{lsSong.length}
@@ -153,7 +153,7 @@ export function SongQueueInplayList(p: MenberQueue) {
               key={lsSong[mark].Id}
             />
           )}
-          <div className="px-2 py-1">Tiếp theo</div>
+          <div className="">Tiếp theo</div>
           {lsSong
             .filter((v, i) => {
               return mark < i;

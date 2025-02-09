@@ -66,7 +66,7 @@ export default function Index() {
   }, []);
 
   return (
-    <div className="h-full w-full relative p-0 m-0 bg-black overflow-hidden font-normal">
+    <div className="h-full w-full relative p-0 m-0 bg-[#272A39] overflow-hidden font-normal">
       <div
         className={`${Right2 == "" ? "gridSpotify" : "gridSpotify2"} h-full`}
       >
@@ -75,7 +75,7 @@ export default function Index() {
         <Right />
         <CenterShare />
 
-        <div className=" f absolute sm:relative z-40 left-0 bottom-0 w-full px-0 py-0 sm:py-2 sm:px-2">
+        <div className="bg-black rounded-2xl f absolute sm:relative z-40 left-0 bottom-0 w-full px-0 py-0 sm:py-2 sm:px-2">
           <PlayingBar />
           <NaviHomeMobile2 />
         </div>
@@ -141,7 +141,7 @@ function CenterShare() {
           dispatch(ShowTopbarContent(true));
         }
       }}
-      className=" h-full m overflow-y-scroll relative"
+      className=" h-full m overflow-y-scroll relative bg-black rounded-2xl"
     >
       {pathname == "/" ? (
         <div className="hidden sm:inline-block sticky top-0 left-0 z-10 w-full bg-black">
@@ -150,7 +150,7 @@ function CenterShare() {
       ) : (
         <></>
       )}
-      <div className=" h-max relative">
+      <div className=" h-max relative ">
         <Outlet></Outlet>
       </div>
       <Foot />

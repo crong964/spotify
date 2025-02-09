@@ -22,7 +22,7 @@
 
     <link href="/public/css/Share.css" rel="stylesheet">
 
-   
+
 </head>
 <style>
     body {
@@ -47,23 +47,28 @@
         border-radius: 100%;
     }
 
-    /* width */
+    /* width
     ::-webkit-scrollbar {
         width: 1px;
         background: rgb(0, 0, 0);
-    }
-
-    @media (min-width: 640px) {
-        ::-webkit-scrollbar {
-            width: 10px;
-            background: rgb(0, 0, 0);
-        }
-    }
+    } */
 
     /* Handle */
+    /* ::-webkit-scrollbar-thumb {
+
+        border-radius: 0 1rem 1rem 0
+    } */
+
+   
+
+    ::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* Handle
     ::-webkit-scrollbar-thumb {
         background: rgb(54, 54, 54);
-    }
+    } */
 
     .loader {
         border-radius: 100%;
@@ -92,9 +97,15 @@
             transform: rotate(-360deg);
         }
     }
+
+    button:focus-visible input:focus-visible {
+        outline: 2px solid transparent;
+        outline-offset: 2px;
+    }
 </style>
 
-<body oncontextmenu="javascript:return false;" style="height: 100%;position: relative;" class=" text-white bg-[#121212]">
+<body oncontextmenu="javascript:return false;" style="height: 100%;position: relative;"
+    class=" text-white bg-[#121212]">
 
     <div id="root" class="focus:outline-none" style="height: 100%;">
 

@@ -22,14 +22,14 @@ export default function Left() {
         extend ? " w-[280px] " : " w-[80px] "
       }`}
     >
-      <div className="h-[20%] bg-[#121212] rounded-lg p-0 sm:py-2">
+      <div className="h-[20%] bg-black rounded-t-xl p-0 sm:py-2">
         <div className="h-full  ">
           <Home />
           <MobileSearchButtom />
         </div>
       </div>
       {isLogin ? (
-        <div className="relative h-[80%] overflow-y-auto bg-[#121212] rounded-lg pb-2 ">
+        <div className="relative h-[80%] overflow-y-auto bg-black rounded-b-xl pb-2 ">
           <div
             onClick={() => {
               post("/playlist/addplaylist", {}, (v: any) => {

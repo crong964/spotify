@@ -45,7 +45,7 @@ export default function PlayLists(p: iPlayLists) {
                 <></>
               )}
             </div>
-            <div className="w-full flex overflow-x-scroll sm:overflow-hidden">
+            <div className="w-full  flex justify-around overflow-x-scroll sm:overflow-hidden">
               {children}
             </div>
           </div>

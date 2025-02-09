@@ -54,6 +54,7 @@ export const io = new Server(httpServer, {
     cookie: false
 })
 app.use(cookieParser())
+
 app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader('Access-Control-Allow-Headers', "*");
@@ -92,7 +93,7 @@ app.get("/ads.txt", (req, res) => {
 })
 
 app.use(bodyParser.urlencoded({ extended: false, limit: "50mb" }))
-app.use(bodyParser.json())
+app.use(bodyParser.json({limit:"500kb"}))
 
 
 app.use("/mess", USER, MessRoute)

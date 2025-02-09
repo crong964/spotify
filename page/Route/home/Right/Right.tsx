@@ -1,7 +1,6 @@
 import { useSelector } from "react-redux";
 import { RootHome } from "@/page/Route/home/RootRedux";
 
-
 import React from "react";
 
 const Discuss = React.lazy(() => import("./Discuss"));
@@ -24,7 +23,9 @@ export default function Right() {
     child = <BoxChat></BoxChat>;
   }
   return (
-    <div className="r h-full overflow-y-scroll w-full sm:w-[400px] self-stretch pb-4">{child}</div>
+    <div className="r h-full  overflow-y-scroll rounded-xl w-full sm:w-[400px] self-stretch">
+      {child}
+    </div>
   );
 }
 
