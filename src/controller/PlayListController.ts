@@ -144,7 +144,6 @@ export class PlayListController {
         let ls = await Promise.all([PlayListController.playlist.Get(id_playlist),
         PlayListController.likedSong.GetAllByIdPlayList(id, id_playlist),
         PlayListController.Playlistlike.Get(id, id_playlist)])
-
         res.json({
             playlist: ls[0],
             songs: ls[1],

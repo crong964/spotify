@@ -99,7 +99,7 @@ export class PlayListService {
     async CountPlayListArtist(User_ID: string) {
         var sql = `SELECT count(*) as count FROM playlist where Type='artist' AND status=1 AND playlist.id NOT IN (SELECT playlistlikes.PlayList_id FROM playlistlikes WHERE playlistlikes.User_ID =?)`
         var ls = await Mysql2.query(sql, [User_ID]) as RowDataPacket[]
-        return ls[0]
+        return ls ? ls[0] : { count: 0 }
     }
     async GetPlayListArtist(User_id: string) {
         var sql = `SELECT * FROM playlist where User_id=? AND Type='artist'`

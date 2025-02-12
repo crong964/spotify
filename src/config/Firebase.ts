@@ -21,7 +21,13 @@ const defaultApp = admin.initializeApp(
         })
     }
 )
+const metadata = {
+    cacheControl: cacheControl,
+    customMetadata: {
+        "access-control-allow-origin": "*"
+    }
 
+}
 class Firebase {
     private static bucket = defaultApp.storage().bucket(STORAGEBUCKET)
     constructor() {
@@ -51,9 +57,7 @@ class Firebase {
                     var g = `${name}.jpeg`
                     let w = Firebase.bucket.file(g)
                         .createWriteStream({
-                            metadata: {
-                                cacheControl: cacheControl,
-                            }
+                            metadata
                         }).on("finish", async () => {
                             var nameURL = await getDownloadURL(Firebase.bucket.file(g))
                             res(nameURL)
@@ -63,7 +67,7 @@ class Firebase {
                         if (err) {
                             rea(err)
                             return
-                        }
+                        } 
                     })
                     w.end()
                 })
@@ -85,9 +89,7 @@ class Firebase {
                     let w = Firebase.bucket.file(g)
                         .createWriteStream(
                             {
-                                metadata: {
-                                    cacheControl: cacheControl,
-                                }
+                                metadata
                             }
                         ).on("finish", async () => {
                             var nameURL = await getDownloadURL(Firebase.bucket.file(g))
@@ -109,12 +111,10 @@ class Firebase {
         return new Promise((res, rej) => {
             var r = createReadStream(path)
             var w = Firebase.bucket.file(name).createWriteStream({
-                metadata: {
-                    cacheControl: cacheControl,
-                }
+                metadata
             })
 
-            w.on("finish", async() => {
+            w.on("finish", async () => {
                 var nameURL = await getDownloadURL(Firebase.bucket.file(name))
                 res(nameURL)
             })

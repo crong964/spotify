@@ -20,7 +20,7 @@ export function post(url: string, body: any, cb: any) {
 
 export function get(url: string, cb: any) {
   axios
-    .get(url)
+    .get(url, { headers: { api: true } })
     .then((v) => {
       cb(v.data);
     })
@@ -32,7 +32,7 @@ export function get(url: string, cb: any) {
 }
 interface Duration {
   Duration: string;
-} 
+}
 export function Duration(d: Duration) {
   var da = parseInt(d.Duration + "");
   var minutes = Math.floor(da / 60);

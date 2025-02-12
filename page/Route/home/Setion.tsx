@@ -25,6 +25,7 @@ export function SetionList(params: SetionList) {
   return (
     <div>
       <Playlists
+        className="cursor-pointer size-[160px] sm:size-[180px]"
         link={params.link ? params.link : "#"}
         d={artist}
         title="Danh sách nghệ sĩ"

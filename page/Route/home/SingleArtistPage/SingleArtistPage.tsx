@@ -184,7 +184,7 @@ export default function ArtistPage() {
           Các bài hát
         </div>
         <SongList data={songs} type="artist" />
-        <Playlists d={lsartist} title="Nghệ sĩ xuất hiện"></Playlists>
+        <Playlists className="cursor-pointer size-[160px] sm:size-[180px]" d={lsartist} title="Nghệ sĩ xuất hiện"></Playlists>
         <footer className="h-5"></footer>
       </div>
     </div>

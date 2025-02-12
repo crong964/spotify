@@ -21,7 +21,7 @@ export default function ArtistsListPage() {
   let children = playlists.map((v) => {
     return (
       <PlayList
-        className="cursor-pointer size-[100px] sm:size-[180px]"
+        className="cursor-pointer size-[120px] sm:size-[180px]"
         Type={"#"}
         Genre_ID={v.Genre_ID}
         ImagePath={v.ImagePath}
@@ -52,7 +52,7 @@ export default function ArtistsListPage() {
       <div className="text-3xl px-4 py-2 z-10 sticky top-0 left-0 bg-black">
         Danh sách nghệ sĩ
       </div>
-      <div className=" grid grid-cols-[repeat(auto-fill,minmax(100px,1fr))] sm:grid-cols-[repeat(auto-fill,minmax(180px,1fr))]">
+      <div className=" grid gap-4 grid-cols-[repeat(auto-fill,minmax(100px,1fr))] sm:grid-cols-[repeat(auto-fill,minmax(180px,1fr))]">
         {children}
         {playlists.length < count ? (
           <div
@@ -69,7 +69,7 @@ export default function ArtistsListPage() {
                 }
               );
             }}
-            className="bg-[#B3B3B3] flex size-[100px] sm:size-[180px] rounded-full justify-center items-center"
+            className="bg-[#B3B3B3] flex size-[120px] sm:size-[180px] rounded-full justify-center items-center"
           >
             <div>Thêm ca sĩ</div>
           </div>

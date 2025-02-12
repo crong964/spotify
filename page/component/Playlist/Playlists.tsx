@@ -12,6 +12,7 @@ export default function PlayLists(p: iPlayLists) {
     .map((v) => {
       return (
         <Playlist
+          className={p.className || ""}
           Type={v.Type}
           Genre_ID={v.Genre_ID}
           ImagePath={v.ImagePath}
@@ -45,7 +46,7 @@ export default function PlayLists(p: iPlayLists) {
                 <></>
               )}
             </div>
-            <div className="w-full  flex justify-around overflow-x-scroll sm:overflow-hidden">
+            <div className="w-full space-x-1 sm:space-x-0 flex overflow-x-scroll sm:overflow-hidden">
               {children}
             </div>
           </div>

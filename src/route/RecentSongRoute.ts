@@ -5,8 +5,8 @@ const RecentSongRoute = Router()
 
 
 RecentSongRoute.get("/", recentSongController.GetAllByidUser)//0k
-
-
+RecentSongRoute.get("/listenAgain", recentSongController.ListenAgainByUserId)
+RecentSongRoute.get("/getlistenAgain/:id", recentSongController.GetListenAgainById)
 
 
 

@@ -218,7 +218,7 @@ export default function PlaylistPage() {
           Các bài hát
         </div>
         <SongList data={songs} type="playlist" />
-        {isLogin && idU == playlist.User_id ? (
+        {isLogin && idU == playlist.User_id && playlist.User_id != "" ? (
           <RecommendedSong
             tabs={tabs}
             idPlaylist={playlist.id}
@@ -241,7 +241,6 @@ export default function PlaylistPage() {
           id={playlist.id}
           PlayListName={playlist.PlayListName}
           onChange={(v) => {
-            
             dispatch(SetPlaylist({ ...playlist, ...v }));
           }}
           onShow={(v) => {

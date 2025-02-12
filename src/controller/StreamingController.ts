@@ -22,55 +22,55 @@ class StreamingController {
     constructor() {
 
     }
-    async StreamingMusic(req: Request, res: Response) {
-        res.setHeader("Cache-Control", "max-age=315360000, no-transform, must-revalidate")
-        var start = parseInt(req.headers.range?.replace("bytes=", "").split("-")[0] || "0")
-        var music = req.cookies.music
-        var idSong = req.query.idSong as string
-        var id = req.cookies.id
-        if (idSong == undefined || idSong == "undefined") {
-            res.end()
-            return
-        }
+    // async StreamingMusic(req: Request, res: Response) {
+    //     res.setHeader("Cache-Control", "max-age=315360000, no-transform, must-revalidate")
+    //     var start = parseInt(req.headers.range?.replace("bytes=", "").split("-")[0] || "0")
+    //     var music = req.cookies.music
+    //     var idSong = req.query.idSong as string
+    //     var id = req.cookies.id
+    //     if (idSong == undefined || idSong == "undefined") {
+    //         res.end()
+    //         return
+    //     }
 
 
-        var patsong = `song/${idSong}`
-        try {
-            var videoSize = parseInt(req.cookies.videoSize || "0")
+    //     var patsong = `song/${idSong}`
+    //     try {
+    //         var videoSize = parseInt(req.cookies.videoSize || "0")
 
-            if (music != idSong && id != undefined) {
-                recentSongService.Add(id, idSong)
+    //         if (music != idSong && id != undefined) {
+    //             recentSongService.Add(id, idSong)
 
-                videoSize = parseInt(((await firebase.GetMeta(patsong))?.size + "") || "0")
+    //             videoSize = parseInt(((await firebase.GetMeta(patsong))?.size + "") || "0")
 
 
-                res.cookie("music", idSong, { httpOnly: true, maxAge: 1000 * 60 * 60 * 24 * 365 })
-                res.cookie("videoSize", videoSize, { httpOnly: true, maxAge: 1000 * 60 * 60 * 24 * 365 })
-            }
-            var chuck = 100000
+    //             res.cookie("music", idSong, { httpOnly: true, maxAge: 1000 * 60 * 60 * 24 * 365 })
+    //             res.cookie("videoSize", videoSize, { httpOnly: true, maxAge: 1000 * 60 * 60 * 24 * 365 })
+    //         }
+    //         var chuck = 100000
 
-            var end = Math.min(start + chuck, videoSize - 1)
-            var read = firebase.DownloadStreamFile(patsong, start, end)
-                .on("error", (err) => {
-                    console.log(err);
-                })
-            res.writeHead(206, {
-                "accept-ranges": "bytes",
-                "content-range": `bytes ${start}-${end}/${videoSize}`,
-                "content-type": "audio/mp3",
-                "content-length": end - start + 1
+    //         var end = Math.min(start + chuck, videoSize - 1)
+    //         var read = firebase.DownloadStreamFile(patsong, start, end)
+    //             .on("error", (err) => {
+    //                 console.log(err);
+    //             })
+    //         res.writeHead(206, {
+    //             "accept-ranges": "bytes",
+    //             "content-range": `bytes ${start}-${end}/${videoSize}`,
+    //             "content-type": "audio/mp3",
+    //             "content-length": end - start + 1
 
-            })
-            read.pipe(res)
+    //         })
+    //         read.pipe(res)
 
-        } catch (error) {
-            console.log(error);
+    //     } catch (error) {
+    //         console.log(error);
 
-            res.json({
-                err: true
-            })
-        }
-    }
+    //         res.json({
+    //             err: true
+    //         })
+    //     }
+    // }
     async StreamingMusicUpload(req: Request, res: Response) {
         var namestrong = req.query.id as string
         if (namestrong.length <= 0) {
@@ -205,47 +205,44 @@ class StreamingController {
 
         }
     }
-    async Streaming(req: Request, res: Response) {
-        res.setHeader("Cache-Control", "max-age=315360000, no-transform, must-revalidate")
-        const { segment, path, sign } = req.body
-        let id = req.cookies.id
-        let read: internal.Readable
-        if (segment == "1") {
-            let sign = jwt.sign({ path: path, time: 0, level: 0 }, StreamingController.KEYTREAMING, { expiresIn: 60 * 9 })
-            res.cookie("sign", sign)
-        }
-        if (segment == "0") {
-            read = firebase.DownloadFile(`streaming/${path}/${path}.init`)
-            let lastSong = await recentSongService.GetLastRecentSong(id)
+    // async Streaming(req: Request, res: Response) {
+    //     res.setHeader("Cache-Control", "max-age=315360000, no-transform, must-revalidate")
+    //     const { segment, path, sign } = req.body
+    //     let id = req.cookies.id
+    //     let read: internal.Readable
+    //     if (segment == "1") {
+    //         let sign = jwt.sign({ path: path, time: 0, level: 0 }, StreamingController.KEYTREAMING, { expiresIn: 60 * 9 })
+    //         res.cookie("sign", sign)
+    //     }
 
-            if (req.cookies.id && (lastSong == undefined || lastSong.Id != path)) {
-                recentSongService.Add(id, path)
-            }
-        } else {
-            read = firebase.DownloadFile(`streaming/${path}/${path}-${segment}`)
-            if (StreamingController.segment[segment + ""]) {
-                try {
-                    let sign = req.cookies.sign || ""
-                    let oldign = jwt.verify(sign, StreamingController.KEYTREAMING) as jwt.JwtPayload
-                    if (oldign.level < segment) {
-                        let newtime = parseInt(oldign.time + "") + 1
-                        if (newtime == 4) {
-                            songService.IncreaseView(path)
-                        } else {
-                            let newsign = jwt.sign({ path: path, time: newtime, level: segment }, StreamingController.KEYTREAMING, { expiresIn: 60 * 9 })
-                            res.cookie("sign", newsign)
-                        }
-                    }
-                } catch (error) {
+    //     if (segment == "0") {
+    //         read = firebase.DownloadFile(`streaming/${path}/${path}.init`)
+    //         let lastSong = await recentSongService.GetLastRecentSong(id)
+    //     } else {
+    //         read = firebase.DownloadFile(`streaming/${path}/${path}-${segment}`)
+    //         if (StreamingController.segment[segment + ""]) {
+    //             try {
+    //                 let sign = req.cookies.sign || ""
+    //                 let oldign = jwt.verify(sign, StreamingController.KEYTREAMING) as jwt.JwtPayload
+    //                 if (oldign.level < segment) {
+    //                     let newtime = parseInt(oldign.time + "") + 1
+    //                     if (newtime == 4) {
+    //                         songService.IncreaseView(path)
+    //                     } else {
+    //                         let newsign = jwt.sign({ path: path, time: newtime, level: segment }, StreamingController.KEYTREAMING, { expiresIn: 60 * 9 })
+    //                         res.cookie("sign", newsign)
+    //                     }
+    //                 }
+    //             } catch (error) {
 
-                }
-            }
-        }
-        read.on("error", (err) => {
-            console.log(err);
-        })
-        read.pipe(res)
-    }
+    //             }
+    //         }
+    //     }
+    //     read.on("error", (err) => {
+    //         console.log(err);
+    //     })
+    //     read.pipe(res)
+    // }
     async GetInitSong(req: Request, res: Response) {
         const { idsong } = req.body
         let ls = await StreamingController.ggdrive.SearchNameFile(`${idsong}_init.txt`)
@@ -274,29 +271,30 @@ class StreamingController {
             res.cookie("sign", sign)
         }
         read = StreamingController.ggdrive.DownloadStreamFile(path)
-        if (segment == "0") {
-            let lastSong = await recentSongService.GetLastRecentSong(id)
-            if (req.cookies.id && (lastSong == undefined || lastSong.Id != idSong)) {
-                recentSongService.Add(id, idSong)
-            }
-        } else {
-            if (StreamingController.segment[segment + ""]) {
-                try {
-                    let sign = req.cookies.sign || ""
-                    let oldign = jwt.verify(sign, StreamingController.KEYTREAMING) as jwt.JwtPayload
-                    if (oldign.level < segment) {
-                        let newtime = parseInt(oldign.time + "") + 1
-                        if (newtime == 4) {
-                            songService.IncreaseView(idSong)
-                        } else {
-                            let newsign = jwt.sign({ idSong: idSong, time: newtime, level: segment }, StreamingController.KEYTREAMING, { expiresIn: 60 * 9 })
-                            res.cookie("sign", newsign)
+
+        if (StreamingController.segment[segment + ""]) {
+            try {
+                let sign = req.cookies.sign || ""
+                let oldign = jwt.verify(sign, StreamingController.KEYTREAMING) as jwt.JwtPayload
+                if (oldign.level < segment) {
+                    let newtime = parseInt(oldign.time + "") + 1
+                    if (newtime == 2) {
+                        let lastSong = await recentSongService.GetLastRecentSong(id)
+                        if (req.cookies.id && (lastSong == undefined || lastSong.Id != path)) {
+                            recentSongService.Add(id, path)
                         }
                     }
-                } catch (error) {
+                    if (newtime == 4) {
+                        songService.IncreaseView(idSong)
+                    } else {
+                        let newsign = jwt.sign({ idSong: idSong, time: newtime, level: segment }, StreamingController.KEYTREAMING, { expiresIn: 60 * 9 })
+                        res.cookie("sign", newsign)
+                    }
                 }
+            } catch (error) {
             }
         }
+
         try {
             let r = await read
             r.data.pipe(res)

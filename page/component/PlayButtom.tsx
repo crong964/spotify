@@ -8,7 +8,7 @@ import { PausePlaylistIcon, PlayPlaylistIcon } from "@/icon/Icon";
 export default function PlayButtom(p: Playing) {
   const playing = useSelector((state: RootHome) => state.rootHome.playing);
   const stopAudio = useSelector((state: RootHome) => state.audioroot.stop);
-
+  p.page;
   const [load, SetLoad] = useState(false);
   const dispatch = useDispatch();
 
@@ -24,9 +24,20 @@ export default function PlayButtom(p: Playing) {
       }
       return;
     }
-    if (p.page != "likesong") {
-      post("/recentPlaylist/play", { id: p.id, type: p.page }, (v: any) => {
-        if (!v.err) {
+    if (p.page == "likesong") {
+      get("/lsong/likedsongs", (v: any) => {
+        if (v && !v.err) {
+          dispatch(SetPlaying({ id: p.id, page: p.page }));
+          dispatch(SetSongs(v.ls));
+          dispatch(SetStop(false));
+        }
+      });
+
+      return;
+    }
+    if (p.page == "mix") {
+      get(`/rs/getlistenAgain/${p.id}`, (v: any) => {
+        if (v && !v.err) {
           dispatch(SetPlaying({ id: p.id, page: p.page }));
           dispatch(SetSongs(v.ls));
           dispatch(SetStop(false));
@@ -34,8 +45,8 @@ export default function PlayButtom(p: Playing) {
       });
       return;
     }
-    get("/lsong/likedsongs", (v: any) => {
-      if (v && !v.err) {
+    post("/recentPlaylist/play", { id: p.id, type: p.page }, (v: any) => {
+      if (!v.err) {
         dispatch(SetPlaying({ id: p.id, page: p.page }));
         dispatch(SetSongs(v.ls));
         dispatch(SetStop(false));

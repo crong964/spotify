@@ -35,6 +35,14 @@ export class RecentSongService {
         var check = await this.recentSongDatabase.UpdateTime(user_id, Id_song)
         return check
     }
+    async ListenAgainByUserId(user_id: string, start: number) {
+        var check = await this.recentSongDatabase.ListenAgainByUserId(user_id, start)
+        return this.SetLs(check);
+    }
+    async Count(user_id: string) {
+        var check = await this.recentSongDatabase.Count(user_id)
+        return this.SetLs(check).length;
+    }
     SetLs(ls: any): RecentSongModel[] {
         if (ls == undefined) {
             return []

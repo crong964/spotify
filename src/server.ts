@@ -48,9 +48,9 @@ const secret = process.env.SECRET || "1"
 const production = process.env.MODE == "production"
 
 
-export const app = express()
+const app = express()
 const httpServer = createServer(app);
-export const io = new Server(httpServer, {
+const io = new Server(httpServer, {
     cookie: false
 })
 app.use(cookieParser())
@@ -93,7 +93,7 @@ app.get("/ads.txt", (req, res) => {
 })
 
 app.use(bodyParser.urlencoded({ extended: false, limit: "50mb" }))
-app.use(bodyParser.json({limit:"500kb"}))
+app.use(bodyParser.json({ limit: "500kb" }))
 
 
 app.use("/mess", USER, MessRoute)
@@ -129,7 +129,7 @@ app.use("/admin/song", ADMIN, SongAdminRoute)
 app.use("/admin/cmd", ADMIN, CmdRoute)
 app.use("/admin/tab", ADMIN, TabRoute)
 app.use(StreamingRoute)
-
+ 
 
 app.get(/admin/, ADMIN, (req, res) => {
 
@@ -185,7 +185,7 @@ io.on("connection", (socket) => {
     })
 
 });
-export default app
+export default io
 
 
 

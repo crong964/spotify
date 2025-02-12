@@ -1,4 +1,6 @@
-export interface iPlayList {
+import React from "react";
+
+export interface iPlayList extends React.AllHTMLAttributes<HTMLDivElement> {
     id: string;
     Genre_ID: string;
     ImagePath: string;
@@ -11,7 +13,7 @@ export interface iPlayList {
 export interface iPlayLists {
     d: iPlayList[];
     title: string;
-    link?: string;
+    link?: string; className?: string;
 }
 
 export interface iPopEditPlaylis extends PlaylistForm {

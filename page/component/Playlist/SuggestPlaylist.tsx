@@ -15,6 +15,7 @@ export default function SuggestPlaylist() {
 
   return (
     <PlayLists
+      className="cursor-pointer size-[160px] sm:size-[180px]"
       d={playlists}
       title="Danh sách đề cử"
       link="PlayListSectionPage"

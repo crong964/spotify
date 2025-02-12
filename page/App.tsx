@@ -14,7 +14,7 @@ import {
 const Index = React.lazy(() => import("./Route/IndexHome2"));
 
 import { SetionList } from "./Route/home/Setion";
-import { SuggestPlaylist } from "@/page/component/Playlist";
+import { Listenplaylist, SuggestPlaylist } from "@/page/component/Playlist";
 
 import {
   CenterShare,
@@ -27,6 +27,7 @@ import {
 import PlaylistLike from "./Route/home/NaviHome/PlaylistLike";
 import ArtistsListPageMobile from "./Route/mobile/ArtistsListPage/ArtistsListPageMobile";
 import PlayListSectionPage from "./Route/home/PlayListPage/PlayListSectionPage";
+import MixPage from "./Route/home/Mix/MixPage";
 
 const SingleArtistPage = React.lazy(
   () => import("./Route/home/SingleArtistPage/SingleArtistPage")
@@ -62,6 +63,7 @@ root.render(
               element={
                 <div className="h-full">
                   <RecentList />
+                  <Listenplaylist />
                   <SetionList
                     link="section"
                     name="Danh sách các nghệ sĩ"
@@ -76,11 +78,15 @@ root.render(
               <Route index element={<Genre></Genre>} />
             </Route>
             <Route path="playlist/:id" element={<PlaylistPage />} />
+            <Route path="mix/:id" element={<MixPage />} />
             <Route path="likedsongs" element={<LikedSongListPage />} />
             <Route path="artist/:id" element={<SingleArtistPage />} />
             <Route path="search/:s" element={<SearchPage />} />
             <Route path="section" element={<ArtistsListPage />} />
-            <Route path="PlayListSectionPage" element={<PlayListSectionPage />} />
+            <Route
+              path="PlayListSectionPage"
+              element={<PlayListSectionPage />}
+            />
             <Route path="mobile">
               <Route path="playlist" element={<></>} />
               <Route path="chatbox" element={<></>} />
