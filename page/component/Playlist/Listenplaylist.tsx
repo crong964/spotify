@@ -29,13 +29,12 @@ export default function Listenplaylist() {
   for (let i = 0; i < count && i < 7; i++) {
     children.push(
       <Playlist
-        
         ImagePath="https://res.cloudinary.com/dkd1k6e2r/image/upload/v1739376087/aXZpdml2aXZpdml2aXZpdg_g89ohh.jpg"
         className={`cursor-pointer size-[100px] sm:size-[180px] `}
         Genre_ID=""
         PlayListName={`Mix Ngày ${i + 1}`}
-        Type=""
-        id=""
+        Type="mix"
+        id={`${i}`}
         click={() => {
           navigate(`/mix/${i}`);
         }}

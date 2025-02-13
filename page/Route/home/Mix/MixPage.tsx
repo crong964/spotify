@@ -56,20 +56,20 @@ interface PlaylistForm {
   ImagePath: string;
   Discripition: string;
 }
-export default function PlaylistPage() {
-  const dispatch = useDispatch();
+export default function MixPage() {
   const { id } = useParams();
   const [songs, SetSongS] = useState<SongInPlayList[]>([]);
-
-  const isLogin = useSelector(
-    (state: RootHome) => state.rootauth.login.IsLogin
-  );
   const playlist = useSelector((state: RootHome) => state.rootHome.playlist);
-  const [like, SetLike] = useState(false);
-
+  const [time, SetTime] = useState(0);
   useEffect(() => {
     get(`/rs/getlistenAgain/${id}`, (v: any) => {
       SetSongS(v.ls);
+      let time = 0;
+      for (let i = 0; i < v.ls.length; i++) {
+        const element = v.ls[i] as SongInPlayList;
+        time += parseInt(element.Duration);
+      }
+      SetTime(time);
     });
   }, [id]);
 
@@ -98,11 +98,11 @@ export default function PlaylistPage() {
               </h1>
               <div className="flex space-x-4">
                 <span className="text-[16px] font-bold text-white">
-                  {playlist.Songs} bài hát
+                  {songs.length} bài hát
                 </span>
                 <span className="text-[16px] font-bold text-white flex items-center space-x-3">
                   <div>Khoảng thời gian:</div>
-                  <TimeString d={parseInt(playlist.Duration + "")} />
+                  <TimeString d={time} />
                 </span>
               </div>
             </div>
