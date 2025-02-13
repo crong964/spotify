@@ -280,8 +280,8 @@ class StreamingController {
                     let newtime = parseInt(oldign.time + "") + 1
                     if (newtime == 2) {
                         let lastSong = await recentSongService.GetLastRecentSong(id)
-                        if (req.cookies.id && (lastSong == undefined || lastSong.Id != path)) {
-                            recentSongService.Add(id, path)
+                        if (req.cookies.id && (lastSong == undefined || lastSong.Id != idSong)) {
+                            recentSongService.Add(id, idSong)
                         }
                     }
                     if (newtime == 4) {

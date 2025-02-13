@@ -55,7 +55,8 @@ export default function PlayButtom(p: Playing) {
   };
   return (
     <div
-      onClick={() => {
+      onClick={(e) => {
+        e.stopPropagation()
         PlayingPlaylist();
       }}
       className="cursor-pointer rounded-full p-2 hover:bg-[#1ED760] bg-[#1FDC62] flex justify-center items-center"
