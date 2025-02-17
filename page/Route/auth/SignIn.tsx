@@ -119,7 +119,7 @@ export default function SignIn() {
         </form>
         <div className="border border-white opacity-30 my-5 "></div>
         <SignInGoogleButtom />
-        <SignInGitHubButtom />
+        
         <div className="border border-white opacity-30 my-5 "></div>
         <div className="text-[16px] text-white font-normal text-center space-x-2">
           <span className="text-[#A7A7A7]">Bạn chưa có tài khoản?</span>

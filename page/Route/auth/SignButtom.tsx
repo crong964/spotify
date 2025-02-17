@@ -33,7 +33,7 @@ export function SignInGoogleButtom() {
           data-client_id="814286348049-ehu28te266lohvbgsgu6mcgroe3qihcr.apps.googleusercontent.com"
           data-context="signup"
           data-login_uri="/auth/ggin"
-        ></div>
+        ></div> 
         <div
           className="g_id_signin hidden"
           data-type="icon"

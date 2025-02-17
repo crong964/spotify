@@ -32,7 +32,6 @@ export default function ArtistsListPage() {
       />
     );
   });
-  const Right = useSelector((s: RootHome) => s.rootHome.Right);
   return (
     <div
       className="w-full relative"

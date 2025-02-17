@@ -86,4 +86,4 @@ export default function SetionData(params: SetionData) {
   );
 }
 
-export function SetionDataMobile() {}
+

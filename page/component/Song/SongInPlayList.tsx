@@ -8,7 +8,7 @@ import Time from "@/page/component/Time";
 const ArtistLink = React.lazy(() => import("@/page/component/ArtistLink"));
 import { SetAutoPlay, SetSongs } from "@/page/component/Audio/AudioRedux";
 import { post } from "@/page/config/req";
-import { Pop } from "@/page/component/pop";
+import { Modal, Pop } from "@/page/component/pop";
 import { useParams } from "react-router-dom";
 import { Avatar } from "../avatar";
 
@@ -151,7 +151,13 @@ export default function SongInPlayList(v: SongInPlayList) {
         <Time d={parseInt(v.Duration + "")} />
       </div>
       {xy.s ? (
-        <Pop left={xy.x} top={xy.y}>
+        <Modal
+          left={xy.x}
+          top={xy.y}
+          show={(v) => {
+            XY({ ...xy, s: v });
+          }}
+        >
           <div className="text-[20px] sm:text-[15px] relative">
             <div className="block absolute top-0 left-0 sm:hidden h-screen w-screen bg-black opacity-30"></div>
             <div
@@ -162,9 +168,6 @@ export default function SongInPlayList(v: SongInPlayList) {
             >
               <div
                 className=" bg-[#282828] h-[350px] w-full sm:min-w-[250px] text-[14px] p-1 "
-                onMouseLeave={() => {
-                  XY({ ...xy, s: false });
-                }}
                 onClick={(e) => {
                   e.stopPropagation();
                   XY({ ...xy, s: true });
@@ -230,7 +233,7 @@ export default function SongInPlayList(v: SongInPlayList) {
               </div>
             </div>
           </div>
-        </Pop>
+        </Modal>
       ) : (
         <></>
       )}
