@@ -14,7 +14,6 @@ import { Avatar } from "@/page/component/avatar";
 import { iPlayList } from "@/page/component/Playlist/interface";
 import { Playlists } from "@/page/component/Playlist";
 
-
 export default function ArtistPage() {
   const Right = useSelector((state: RootHome) => state.rootHome.Right);
   const [lsartist, SetLsAtist] = useState<iPlayList[]>([]);
@@ -71,12 +70,7 @@ export default function ArtistPage() {
         ></div>
       ) : (
         <>
-          <div
-            className="hidden sm:block bg-no-repeat bg-cover rounded-t-lg absolute top-0 left-0 w-full h-[340px] "
-            style={{
-              backgroundImage: `url(${artist?.pathImage || ""})`,
-            }}
-          ></div>
+          <div className="hidden sm:block bg-[#2a2d45] rounded-t-lg absolute top-0 left-0 w-full h-[340px] "></div>
         </>
       )}
 
@@ -184,7 +178,11 @@ export default function ArtistPage() {
           Các bài hát
         </div>
         <SongList data={songs} type="artist" />
-        <Playlists className="cursor-pointer size-[160px] sm:size-[180px]" d={lsartist} title="Nghệ sĩ xuất hiện"></Playlists>
+        <Playlists
+          className="cursor-pointer size-[160px] sm:size-[180px]"
+          d={lsartist}
+          title="Nghệ sĩ xuất hiện"
+        ></Playlists>
         <footer className="h-5"></footer>
       </div>
     </div>
