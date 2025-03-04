@@ -32,6 +32,7 @@ export function SignInGoogleButtom() {
           id="g_id_onload"
           data-client_id="814286348049-ehu28te266lohvbgsgu6mcgroe3qihcr.apps.googleusercontent.com"
           data-context="signup"
+          data-ux_mode="redirect"
           data-login_uri="/auth/ggin"
         ></div> 
         <div

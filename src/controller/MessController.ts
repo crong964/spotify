@@ -6,7 +6,7 @@ import MessModel from "../model/MessModel";
 import boxService, { BoxService } from "../services/BoxService";
 import { v4 } from 'uuid';
 import hiddenMessService from "../services/HiddenMessService";
-import { io } from "../server";
+import io from "../server";
 import sharp from "sharp";
 import { join } from "path";
 import { unlink } from "fs";

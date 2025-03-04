@@ -32,7 +32,7 @@ export default function PlayList(d: iPlayList) {
         to={`${
           d.Type == "#"
             ? ""
-            : `/${d.Type == "artist" ? d.Type : "playlist"}/${d.id}`
+            : `${d.Type}/${d.id}`
         }`}
       >
         <Avatar

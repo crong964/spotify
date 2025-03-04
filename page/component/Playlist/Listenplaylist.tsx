@@ -35,9 +35,9 @@ export default function Listenplaylist() {
         PlayListName={`Mix Ngày ${i + 1}`}
         Type="mix"
         id={`${i}`}
-        click={() => {
-          navigate(`/mix/${i}`);
-        }}
+        // click={() => {
+        //   navigate(`/mix/${i}`);
+        // }}
         key={i}
       />
     );

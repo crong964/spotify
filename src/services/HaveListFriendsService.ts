@@ -15,7 +15,7 @@ export class HaveListFriendsService {
             "Friend": "2"
         }
         let sql = `INSERT INTO havelistfriends(idUser, idFriends,IsFriend) VALUES (?,?,?)`
-        var check = await Mysql2.query(sql, [idUser, idFriend, IsFriend])
+        var check = await Mysql2.query(sql, [idUser, idFriend, d[IsFriend]])
         return check
     }
 
