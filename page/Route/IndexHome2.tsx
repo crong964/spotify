@@ -49,6 +49,7 @@ export default function Index() {
     try {
       let wakelock = await navigator.wakeLock.request("screen");
       wakelock.addEventListener("release", () => {});
+      
     } catch (error) {}
   };
 
