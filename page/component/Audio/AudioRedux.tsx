@@ -10,6 +10,7 @@ interface AudioRedux {
   autoplay: boolean;
   playlistmobile: boolean;
   pip: boolean;
+  idSelectedSong: string
 }
 interface Song {
   oldindex: number;
@@ -31,6 +32,7 @@ const initialState: AudioRedux = {
   modplay: parseInt(localStorage.getItem("moplay") || "0"),
   mark: parseInt(localStorage.getItem("mark") || "0"),
   autoplay: false,
+  idSelectedSong: ""
 };
 
 const audioSlice = createSlice({
@@ -138,6 +140,9 @@ const audioSlice = createSlice({
     SetPip: (state, action: PayloadAction<boolean>) => {
       state.pip = action.payload;
     },
+    SetIdSelectedSong: (state, action: PayloadAction<string>) => {
+      state.idSelectedSong = action.payload;
+    },
   },
 });
 
@@ -151,6 +156,6 @@ export const {
   RandomSong,
   SetAutoPlay,
   SetPlaylistmobile,
-  SetPip,
+  SetPip, SetIdSelectedSong
 } = audioSlice.actions;
 export default audioSlice;

@@ -12,14 +12,12 @@ export default function Left2() {
   const isLogin = useSelector(
     (state: RootHome) => state.rootauth.login.IsLogin
   );
-  const extend = useSelector((state: RootHome) => state.leftRedux.extend);
+
   const dispatch = useDispatch();
   return (
     <div
       title="left"
-      className={`hidden sm:block px-1 space-y-1 ${
-        extend ? " w-[280px] " : " w-[80px] "
-      }`}
+      className={`hidden sm:block px-1 space-y-1 w-[80px] `}
     >
       <div className="h-[20%] bg-[#121212] rounded-lg p-0 sm:py-2">
         <div className="h-full  ">
@@ -34,18 +32,15 @@ export function Left3() {
   const isLogin = useSelector(
     (state: RootHome) => state.rootauth.login.IsLogin
   );
-  const extend = useSelector((state: RootHome) => state.leftRedux.extend);
   const dispatch = useDispatch();
   return (
     <div
       title="left"
-      className={`hidden sm:block px-1 space-y-1 ${
-        extend ? " w-[280px] " : " w-[80px] "
-      }`}
+      className={`hidden sm:block px-1 space-y-1 w-[80px] `}
     >
       {isLogin ? (
         <div className="relative h-[80%] overflow-y-auto bg-[#121212] rounded-lg pb-2 ">
-          <div onClick={() => {}} className="sticky z-20 top-0 bg-black">
+          <div onClick={() => { }} className="sticky z-20 top-0 bg-black">
             <Libarary />
           </div>
           <NaviLoveSong />

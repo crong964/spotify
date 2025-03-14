@@ -38,3 +38,13 @@
         grid-area: f;
     }
 }
+
+.bgsong {
+    background: #000;
+}
+.bgsongclick {
+    background: #2D2D2D;
+}
+.bgsong:hover {
+    background: #2D2D2D;
+}

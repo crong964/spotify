@@ -6,7 +6,7 @@ import React from "react";
 import { CheckCircleIcon, PlusCircleIcon, TrashIcon } from "@/icon/Icon";
 import Time from "@/page/component/Time";
 const ArtistLink = React.lazy(() => import("@/page/component/ArtistLink"));
-import { SetAutoPlay, SetSongs } from "@/page/component/Audio/AudioRedux";
+import { SetAutoPlay, SetIdSelectedSong, SetSongs } from "@/page/component/Audio/AudioRedux";
 import { post } from "@/page/config/req";
 import { Modal, Pop } from "@/page/component/pop";
 import { useParams } from "react-router-dom";
@@ -20,7 +20,10 @@ export default function SongInPlayList(v: SongInPlayList) {
   const idUser = useSelector((state: RootHome) => state.rootauth.login.idUser);
   const playlists = useSelector((state: RootHome) => state.rootHome.playlists);
   const playlist = useSelector((state: RootHome) => state.rootHome.playlist);
-
+  const lsSong = useSelector((state: RootHome) => state.audioroot.lsSong);
+  const mark = useSelector((state: RootHome) => state.audioroot.mark);
+  const stop = useSelector((state: RootHome) => state.audioroot.stop);
+  const idSelectedSong = useSelector((state: RootHome) => state.audioroot.idSelectedSong);
   const typeDevice = useSelector(
     (state: RootHome) => state.rootHome.devicetype
   );
@@ -44,6 +47,21 @@ export default function SongInPlayList(v: SongInPlayList) {
       alert(v.err == false);
     });
   };
+  const GetSongPlay = () => {
+    post(
+      "/song/get",
+      {
+        idsong: v.Id,
+      },
+      (v: any) => {
+        if (v && !v.err) {
+          dispatch(SetSongs([v.song]));
+          localStorage.setItem("song", JSON.stringify(v.song));
+        }
+      }
+    );
+    dispatch(SetAutoPlay(true));
+  }
   return (
     <div
       onContextMenu={(v) => {
@@ -53,49 +71,28 @@ export default function SongInPlayList(v: SongInPlayList) {
         }
         XY({ x: v.pageX, y: v.pageY, s: true });
       }}
-      className="grid grid-cols-7 text-[13px] sm:text-[14px] sm:p-2 py-2 cursor-pointer sm:space-x-2 hover:bg-[#2D2D2D] text-white font-bold rounded-lg items-center"
+      className={`${idSelectedSong == v.Id ? "bgsongclick" : "bgsong"} grid grid-cols-7 text-[13px] sm:text-[14px] sm:p-2 py-2 cursor-pointer sm:space-x-2  text-white font-bold rounded-lg items-center`}
     >
       <div
         className="col-span-5 grid grid-cols-5"
         onClick={() => {
+          if (idSelectedSong == v.Id) {
+            GetSongPlay()
+            return
+          }
           if (typeDevice == "pc") {
+            dispatch(SetIdSelectedSong(v.Id))
             return;
           }
-          post(
-            "/song/get",
-            {
-              idsong: v.Id,
-            },
-            (v: any) => {
-              if (v && !v.err) {
-                dispatch(SetSongs([v.song]));
-                localStorage.setItem("song", JSON.stringify(v.song));
-              }
-            }
-          );
-          dispatch(SetAutoPlay(true));
-        }}
-        onDoubleClick={() => {
-          if (typeDevice == "mobile") {
-            return;
-          }
-          post(
-            "/song/get",
-            {
-              idsong: v.Id,
-            },
-            (v: any) => {
-              if (v && !v.err) {
-                dispatch(SetSongs([v.song]));
-                localStorage.setItem("song", JSON.stringify(v.song));
-              }
-            }
-          );
-          dispatch(SetAutoPlay(true));
+          GetSongPlay()
         }}
       >
         <div className="col-span-5 sm:col-span-3 flex items-center space-x-2">
-          <div className="sm:inline-block hidden mx-2">{v.stt}</div>
+          <div className="mx-2 size-3 sm:inline-block hidden ">
+            {lsSong[mark].Id == v.Id && !stop ?
+              <img className="size-full" src='https://open.spotifycdn.com/cdn/images/equaliser-green.f8937a92.svg'></img>
+              : <div className="">{v.stt}</div>}
+          </div>
           <Avatar className="size-12 sm:size-9" src={v.SongImage}></Avatar>
           <div className="flex-col">
             <div className="block">{v.SongName}</div>

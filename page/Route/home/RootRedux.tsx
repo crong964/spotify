@@ -4,7 +4,7 @@ import mobileRedux from "./NaviHome/NaviRedux";
 import { ParseJson } from "@/page/socket/Socket";
 import audioSlice from "@/page/component/Audio/AudioRedux";
 import { authRedux } from "../auth/RootAuth";
-import leftRedux from "@/page/component/Left/LeftRedux";
+
 
 interface mess {
   idMess: string;
@@ -226,7 +226,7 @@ const rootHome = configureStore({
     audioroot: audioSlice.reducer,
     mobile: mobileRedux.reducer,
     rootauth: authRedux.reducer,
-    leftRedux: leftRedux.reducer,
+    
   },
 });
 export type RootTy = typeof rootHome;
