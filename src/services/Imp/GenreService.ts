@@ -1,6 +1,6 @@
-import Mysql2 from "../config/Config";
-import GenreDatase from "../database/GenreDatase";
-import GenreModel from "../model/GenreModel";
+import Mysql2 from "../../config/Config";
+import GenreDatase from "../../database/GenreDatase";
+import GenreModel from "../../model/GenreModel";
 import { v4 as uuidv4 } from 'uuid';
 export class GenreService {
     constructor() {
@@ -165,9 +165,9 @@ export class GenreService {
 }
 
 
-var genreService = new GenreService()
+var genreServiceImp = new GenreService()
 
 
-export default genreService
+export default genreServiceImp
 
 

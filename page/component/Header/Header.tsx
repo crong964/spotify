@@ -13,7 +13,7 @@ const PlayButtom = React.lazy(() => import("@/page/component/PlayButtom"));
 
 import { BackIcon, ForwardIcon, MessIcon } from "@/icon/Icon";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
-import { GenreInHome } from "@/page/Route/IndexHome";
+import { GenreInHome } from "@/page/Route/IndexHome2";
 import { Infor } from "./interface";
 import { Avatar, Ring } from "@/page/component/Header";
 import { IsLogin } from "@/page/Route/auth/RootAuth";

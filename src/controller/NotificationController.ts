@@ -1,7 +1,7 @@
-import notificationService, { NotificationService } from "../services/NotificationService";
+import { notificationService } from "../services";
 import { Request, Response } from "express";
 export class NotificationController {
-    static notification: NotificationService = notificationService
+    static notification = notificationService
     async GetAll(req: Request, res: Response) {
         var id = req.cookies.id
         var ls = await NotificationController.notification.GetAllByUserid(id)

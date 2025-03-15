@@ -1,16 +1,17 @@
 import { Request, Response } from "express";
-import discussService, { DiscussService } from "../services/DiscussService";
+
 import DiscussModel from "../model/DiscussModel";
 import { v4 as uuidv4 } from 'uuid';
-import userService, { UserService } from "../services/UserService";
+
 import { NotificationModel } from "../model/NotificationModel";
-import notificationService, { NotificationService } from "../services/NotificationService";
-import songService, { SongService } from "../services/SongService";
+import { discussService, notificationService, songService, userService } from "../services";
+
+
 class DiscussController {
-    static disscuss: DiscussService = discussService
-    static User: UserService = userService
-    static notification: NotificationService = notificationService
-    static song: SongService = songService
+    static disscuss = discussService
+    static User = userService
+    static notification = notificationService
+    static song = songService
     async PostDisscus(req: Request, res: Response) {
         var d = new DiscussModel()
         d.setAll(req.body)

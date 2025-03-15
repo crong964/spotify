@@ -1,7 +1,7 @@
 import { ResultSetHeader } from "mysql2";
-import ContainDatabse from "../database/ContainDatabse";
-import ContainModel from "../model/ContainModel";
-import Mysql2 from "../config/Config";
+import ContainDatabse from "../../database/ContainDatabse";
+import ContainModel from "../../model/ContainModel";
+import Mysql2 from "../../config/Config";
 
 export class ContainService {
     constructor() {
@@ -59,6 +59,6 @@ export class ContainService {
     }
 }
 
-var containService = new ContainService()
+var containServiceImp = new ContainService()
 
-export default containService
+export default containServiceImp

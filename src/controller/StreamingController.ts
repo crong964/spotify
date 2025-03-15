@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import firebase from "../config/Firebase";
-import recentSongService from "../services/RecentSongService";
+
 import path, { join } from "path";
 import { unlink } from "fs/promises";
 import "dotenv/config"
@@ -9,11 +9,12 @@ import fs, { unlinkSync } from "fs"
 import internal from "stream";
 
 import jwt from "jsonwebtoken"
-import songService from "../services/SongService"; import cryptojs from "crypto-js";
+import cryptojs from "crypto-js";
 import googleDrive from "../config/GoogleDrive";
 
 import { GaxiosPromise } from "googleapis-common";
 import processvideo from "../config/ProcessVideo";
+import { recentSongService, songService } from "../services";
 class StreamingController {
     static KEYTREAMING = uuidv4()
     static segment: any = { "6": true, "12": true, "20": true, "24": true }

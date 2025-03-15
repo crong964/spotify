@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
-import recentSongService, { RecentSongService } from "../services/RecentSongService";
+import { recentSongService } from "../services";
+
 
 class RecentSongController {
-    static recentSong: RecentSongService = recentSongService
+    static recentSong = recentSongService
     constructor() {
 
     }

@@ -1,4 +1,4 @@
-import { NextFunction, Router, Request, Response } from "express";
+import { Router, Request, Response } from "express";
 import streamingController from "../controller/StreamingController";
 
 const StreamingRoute = Router()

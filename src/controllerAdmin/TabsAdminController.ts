@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
-
-import tabService from "../services/TabService";
+import { tabService } from "../services";
 
 
 class TabsAdminController {

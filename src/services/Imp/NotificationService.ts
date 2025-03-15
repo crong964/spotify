@@ -1,5 +1,5 @@
-import NotificationDatase from "../database/NotificationDatase"
-import { NotificationModel } from "../model/NotificationModel"
+import NotificationDatase from "../../database/NotificationDatase"
+import { NotificationModel } from "../../model/NotificationModel"
 
 export class NotificationService {
     data: NotificationDatase
@@ -34,6 +34,6 @@ export class NotificationService {
 }
 
 
-var notificationService = new NotificationService(new NotificationDatase)
+const notificationServiceImp = new NotificationService(new NotificationDatase)
 
-export default notificationService
+export default notificationServiceImp

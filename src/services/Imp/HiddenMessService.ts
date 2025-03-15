@@ -1,5 +1,5 @@
-import HiddenMessDatabase from "../database/HiddenMessDatabase"
-import HiddenMessModel from "../model/HiddenMessModel"
+import HiddenMessDatabase from "../../database/HiddenMessDatabase"
+import HiddenMessModel from "../../model/HiddenMessModel"
 
 export class HiddenMessService {
     data: HiddenMessDatabase
@@ -27,6 +27,6 @@ export class HiddenMessService {
 }
 
 
-var hiddenMessService = new HiddenMessService(new HiddenMessDatabase())
+const hiddenMessServiceImp = new HiddenMessService(new HiddenMessDatabase())
 
-export default hiddenMessService
+export default hiddenMessServiceImp

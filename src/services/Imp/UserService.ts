@@ -1,6 +1,6 @@
-import Mysql2 from "../config/Config";
-import UserDatabase from "../database/UserDatabase";
-import UserModel from "../model/UserModel";
+import Mysql2 from "../../config/Config";
+import UserDatabase from "../../database/UserDatabase";
+import UserModel from "../../model/UserModel";
 
 export class UserService {
     userDatabae: UserDatabase
@@ -112,6 +112,6 @@ export class UserService {
 }
 
 
-let userService = new UserService(new UserDatabase())
+const userServiceImp = new UserService(new UserDatabase())
 
-export default userService
+export default userServiceImp

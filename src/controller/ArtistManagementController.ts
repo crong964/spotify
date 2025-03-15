@@ -1,16 +1,14 @@
 import { Request, Response } from "express";
-import artistManagementService from "../services/ArtistManagementService";
-import userService, { UserService } from "../services/UserService";
 import { Multer } from "multer";
 import firebase from "../config/Firebase";
 import { randomUUID } from "crypto";
 import UserModel from "../model/UserModel";
-import playListService, { PlayListService } from "../services/PlayListService";
 import { PlayListModel } from "../model/PlayListModel";
 import { v4 } from "uuid";
 import processImage from "../config/ProcessImage";
 import { unlink } from "fs/promises";
-import songService from "../services/SongService";
+import { artistManagementService, playListService, songService, userService } from "../services";
+
 
 class ArtistManagementController {
     static user = userService

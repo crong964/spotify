@@ -1,17 +1,16 @@
-import boxService, { BoxService } from "../services/BoxService";
+
 import { Request, Response } from "express";
-import userService, { UserService } from "../services/UserService";
+
 import BoxModel from "../model/BoxModel";
 import { v4 as uuidv4 } from 'uuid';
-import haveListBoxChatService, { HaveListBoxChatService } from "../services/HaveListBoxChatService";
-import messService, { MessService } from "../services/MessService";
-import haveListFriendsService, { HaveListFriendsService } from "../services/HaveListFriendsService";
+import { boxService, haveListBoxChatService, haveListFriendsService, messService, userService } from "../services";
+
 export class BoxController {
-    static box: BoxService = boxService
-    static user: UserService = userService
-    static haveListBoxChat: HaveListBoxChatService = haveListBoxChatService
-    static mess: MessService = messService
-    static haveListFriend: HaveListFriendsService = haveListFriendsService
+    static box = boxService
+    static user = userService
+    static haveListBoxChat = haveListBoxChatService
+    static mess = messService
+    static haveListFriend = haveListFriendsService
     constructor() {
     }
 

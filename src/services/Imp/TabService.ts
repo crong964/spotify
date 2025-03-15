@@ -1,6 +1,6 @@
 import { normalize } from "path"
-import Mysql2 from "../config/Config"
-import TabModel from "../model/TabModel"
+import Mysql2 from "../../config/Config"
+import TabModel from "../../model/TabModel"
 
 class TabService {
     private static s: any = {
@@ -55,6 +55,6 @@ class TabService {
 }
 
 
-var tabService = new TabService()
+var tabServiceImp = new TabService()
 
-export default tabService
+export default tabServiceImp

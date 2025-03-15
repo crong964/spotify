@@ -3,8 +3,8 @@ import { SetSearchName } from "@/page/Route/home/RootRedux";
 import React from "react";
 
 export interface search {
-    set(a: boolean): void;
-  }
+  set(a: boolean): void;
+}
 export function Search(d: search) {
   return (
     <div className="flex items-center border-white border-2 px-3 bg-[#2A2A2A] rounded-full">
@@ -56,9 +56,6 @@ export function Searching(d: search) {
       <input
         onChange={(e) => {
           var t = e.currentTarget.value;
-          if (t.length <= 0) {
-            return;
-          }
 
           dch(SetSearchName(t));
         }}

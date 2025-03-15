@@ -1,9 +1,15 @@
 import { ResultSetHeader, RowDataPacket } from "mysql2"
-import Mysql2 from "../config/Config"
-import PlayListDatabase from "../database/PlayListDatabase"
-import { PlayListModel } from "../model/PlayListModel"
+import Mysql2 from "../../config/Config"
+import PlayListDatabase from "../../database/PlayListDatabase"
+import { PlayListModel } from "../../model/PlayListModel"
 
 export class PlayListService {
+    Get8FirstRecentPlaylist(User_ID: string, ID: string) {
+        throw new Error("Method not implemented.")
+    }
+    GetByUser(id: any, arg1: number, arg2: number) {
+        throw new Error("Method not implemented.")
+    }
     playlist: PlayListDatabase
     constructor(playlist: PlayListDatabase) {
         this.playlist = playlist
@@ -131,6 +137,6 @@ export class PlayListService {
     }
 }
 
-var playListService: PlayListService = new PlayListService(new PlayListDatabase())
+var playListServiceImp: PlayListService = new PlayListService(new PlayListDatabase())
 
-export default playListService
+export default playListServiceImp

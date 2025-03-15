@@ -1,6 +1,6 @@
 import { ResultSetHeader, RowDataPacket } from "mysql2/promise";
-import Mysql2 from "../config/Config";
-import { PlayListLikeModel } from "../model/PlaylistLikeModel";
+import Mysql2 from "../../config/Config";
+import { PlayListLikeModel } from "../../model/PlaylistLikeModel";
 
 class PlayListLikeService {
     async Add(user_id: string, playlist_id: string) {
@@ -43,5 +43,5 @@ class PlayListLikeService {
     }
 }
 
-const playListLikeService = new PlayListLikeService()
-export default playListLikeService
+const playListLikeServiceImp = new PlayListLikeService()
+export default playListLikeServiceImp

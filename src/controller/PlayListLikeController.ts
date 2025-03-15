@@ -1,5 +1,6 @@
-import PlayListLikeService from "../services/PlayListLikeService";
+
 import { Request, Response } from "express";
+import PlayListLikeService from "../services/Imp/PlayListLikeService";
 class PlayListLikeController {
     static playListLikeService = PlayListLikeService
     async Add(req: Request, res: Response) {

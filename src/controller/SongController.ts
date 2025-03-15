@@ -1,22 +1,22 @@
 import { unlink } from "fs/promises";
 import SongModel from "../model/SongModel";
-import songService, { SongService } from "../services/SongService";
+
 import { Request, Response } from "express";
 import path, { join } from "path";
 import { v4 as uuidv4 } from 'uuid';
-import userService, { UserService } from "../services/UserService";
+
 import { createWriteStream } from "fs";
 import { limit } from "../config/Helper";
-import playListService, { PlayListService } from "../services/PlayListService";
-import containService, { ContainService } from "../services/ContainService";
+
 import ContainModel from "../model/ContainModel";
+import { songService, userService, playListService, containService } from "../services";
 
 
 class SongController {
-    static song: SongService = songService
-    static user: UserService = userService
-    static playlist: PlayListService = playListService
-    static contain: ContainService = containService
+    static song = songService
+    static user = userService
+    static playlist = playListService
+    static contain = containService
     async Update(req: Request, res: Response) {
         var id = req.cookies.id
         var u = await SongController.user.Get(id)

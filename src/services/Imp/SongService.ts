@@ -1,9 +1,9 @@
 import { RowDataPacket } from "mysql2";
-import Mysql2 from "../config/Config";
-import { limit } from "../config/Helper";
-import SongDatabase from "../database/SongDatabase";
+import Mysql2 from "../../config/Config";
+import { limit } from "../../config/Helper";
+import SongDatabase from "../../database/SongDatabase";
 
-import SongModel from "../model/SongModel";
+import SongModel from "../../model/SongModel";
 
 export class SongService {
     songDatabase: SongDatabase
@@ -115,7 +115,7 @@ export class SongService {
 }
 
 var songDatabase = new SongDatabase()
-var songService = new SongService(songDatabase)
+var songServiceImp = new SongService(songDatabase)
 
 
-export default songService
+export default songServiceImp

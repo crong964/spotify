@@ -1,5 +1,5 @@
-import Mysql2 from "../config/Config"
-import AccountModel from "../model/AccountModel"
+import Mysql2 from "../../config/Config"
+import AccountModel from "../../model/AccountModel"
 
 export class AccountService {
     constructor() {
@@ -37,6 +37,6 @@ export class AccountService {
     }
 }
 
-var accountService = new AccountService()
+var accountServiceImpl = new AccountService()
 
-export default accountService
+export default accountServiceImpl

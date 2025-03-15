@@ -1,30 +1,22 @@
 import { join } from "path";
 import ContainModel from "../model/ContainModel";
 import { PlayListModel } from "../model/PlayListModel";
-import containService, { ContainService } from "../services/ContainService";
-
-import playListService, { PlayListService } from "../services/PlayListService";
 import { Request, Response } from "express";
 import { v4 as uuidv4 } from 'uuid';
-import genreService, { GenreService } from "../services/GenreService";
 import { unlink } from "fs/promises";
-import likedSongService, { LikedSongService } from "../services/LikedSongService";
-import userService, { UserService } from "../services/UserService";
-import haveListFriendsService, { HaveListFriendsService } from "../services/HaveListFriendsService";
-import LikedSongModel from "../model/LikedSongModel";
 import firebase from "../config/Firebase";
-import playListLikeService from "../services/PlayListLikeService";
 import { ResultSetHeader } from "mysql2";
 import processImage from "../config/ProcessImage";
+import { containService, genreService, haveListFriendsService, likedSongService, playListLikeService, playListService, userService } from "../services";
 
 export class PlayListController {
 
-    static playlist: PlayListService = playListService
-    static contain: ContainService = containService
-    static genre: GenreService = genreService
-    static likedSong: LikedSongService = likedSongService
-    static user: UserService = userService
-    static HaveListFriends: HaveListFriendsService = haveListFriendsService
+    static playlist = playListService
+    static contain = containService
+    static genre = genreService
+    static likedSong = likedSongService
+    static user = userService
+    static HaveListFriends = haveListFriendsService
     static Playlistlike = playListLikeService
     static processImage = processImage
     static firebase = firebase

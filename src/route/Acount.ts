@@ -2,19 +2,20 @@ import axios from "axios";
 import { Router, Response, Request } from "express";
 import path from "path";
 import { Hash } from "../config/Hash";
-import userService from "../services/UserService";
+
 import UserModel from "../model/UserModel";
 import { v4 as uuidv4 } from 'uuid';
 import nodemailer from "nodemailer"
 import jwt from "jsonwebtoken"
 import "dotenv/config"
 import { SignJWT, VerifyGoogleIDtoken, VertifyJWT } from "../config/Helper";
-import playListService from "../services/PlayListService";
+
 import { PlayListModel } from "../model/PlayListModel";
-import accountService from "../services/AccountService";
+
 import AccountModel from "../model/AccountModel";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
 import { OAuth2Client } from "google-auth-library";
+import { accountService, playListService, userService } from "../services";
 interface google {
   email: string;
   name: string;

@@ -1,6 +1,6 @@
-import Mysql2 from "../config/Config";
-import HaveListFriendsDatabase from "../database/HaveListFriendsDatabase";
-import HaveListFriendsModel from "../model/HaveListFriendsModel";
+import Mysql2 from "../../config/Config";
+import HaveListFriendsDatabase from "../../database/HaveListFriendsDatabase";
+import HaveListFriendsModel from "../../model/HaveListFriendsModel";
 
 export class HaveListFriendsService {
     data: HaveListFriendsDatabase
@@ -77,5 +77,5 @@ export class HaveListFriendsService {
     }
 }
 
-var haveListFriendsService = new HaveListFriendsService(new HaveListFriendsDatabase())
-export default haveListFriendsService
+var haveListFriendsServiceImp = new HaveListFriendsService(new HaveListFriendsDatabase())
+export default haveListFriendsServiceImp

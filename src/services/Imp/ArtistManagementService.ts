@@ -1,5 +1,5 @@
-import Mysql2 from "../config/Config"
-import ArtistManagementModel from "../model/ArtistManagementModel"
+import Mysql2 from "../../config/Config"
+import ArtistManagementModel from "../../model/ArtistManagementModel"
 
 class ArtistManagementService {
     async Add(idArtist: string) {
@@ -47,6 +47,6 @@ class ArtistManagementService {
     }
 }
 
-var artistManagementService = new ArtistManagementService()
+var artistManagementServiceImpl = new ArtistManagementService()
 
-export default artistManagementService
+export default artistManagementServiceImpl

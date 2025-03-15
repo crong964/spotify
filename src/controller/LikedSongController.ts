@@ -1,9 +1,10 @@
 import { Request, Response } from "express";
-import likedSongService, { LikedSongService } from "../services/LikedSongService";
+
 import LikedSongModel from "../model/LikedSongModel";
+import { likedSongService } from "../services";
 
 class LikedSongController {
-    static likedSongService: LikedSongService = likedSongService
+    static likedSongService = likedSongService
     constructor() {
     }
 

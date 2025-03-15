@@ -1,13 +1,14 @@
 import { Request, Response } from "express";
-import genreService, { GenreService } from "../services/GenreService";
+
 import GenreModel from "../model/GenreModel";
-import { v4 as uuidv4 } from 'uuid';
-import playListService, { PlayListService } from "../services/PlayListService";
+import { genreService, playListService } from "../services";
+
+
 
 
 class GenreController {
-    static service: GenreService = genreService
-    static playlist: PlayListService = playListService
+    static service = genreService
+    static playlist = playListService
     constructor() {
     }
 

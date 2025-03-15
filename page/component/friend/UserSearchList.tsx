@@ -3,6 +3,7 @@ import { post } from "@/page/config/req";
 import { useDispatch, useSelector } from "react-redux";
 import { RootHome, SetBoxList } from "@/page/Route/home/RootRedux";
 import TypeFriend from "./TypeFriend";
+import Avatar from "../avatar/Avatar";
 interface user {
   Name: string;
   pathImage: string;
@@ -15,14 +16,7 @@ function User(d: user) {
   return (
     <>
       <div className="px-2 h-18 py-2 flex hover:bg-[#2A2A2A] cursor-pointer content-center">
-        <div className="w-14 h-14 overflow-hidden">
-          <img
-            className="rounded-full w-full h-auto"
-            src={d.pathImage}
-            alt=""
-            srcSet=""
-          />
-        </div>
+        <Avatar src={d.pathImage} key={d.id} className="w-14 h-14 rounded-full"></Avatar>
         <div className="ml-4">
           <div className="w-full px-3 font-sans">
             <div className="">{d.Name}</div>
@@ -35,7 +29,7 @@ function User(d: user) {
                     dcp(SetBoxList(data.idbox));
                   });
                 }}
-              > 
+              >
                 Nhắn tin
               </div>
             </div>
@@ -51,19 +45,7 @@ function UserRespond(d: user) {
   return (
     <>
       <div className="px-2 h-18 py-2 flex hover:bg-[#2A2A2A] cursor-pointer content-center">
-        <div className="w-14 h-14 overflow-hidden">
-          <img
-            onClick={() => {
-              post("box/chat", { idFriend: d.id }, (data: any) => {
-                dcp(SetBoxList(data.idbox));
-              });
-            }}
-            className="rounded-full w-full h-auto"
-            src={d.pathImage}
-            alt=""
-            srcSet=""
-          />
-        </div>
+        <Avatar src={d.pathImage} key={d.id} className="w-14 h-14 rounded-full"></Avatar>
         <div className="ml-4">
           <div className="w-full px-3 font-sans">
             <div className="">{d.Name}</div>
@@ -114,11 +96,16 @@ export default function UserSearchList() {
     (state: RootHome) => state.rootHome.SearchName
   );
   useEffect(() => {
+    if (SearchName.length <= 0) {
+      SetFriend([]);
+        SetOrther([]);
+      return
+    }
     post("/search/user", { name: SearchName }, (v: any) => {
-     if (!v.err) {
-      SetFriend(v.friend);
-      SetOrther(v.orther);
-     }
+      if (!v.err) {
+        SetFriend(v.friend);
+        SetOrther(v.orther);
+      }
     });
   }, [SearchName]);
 

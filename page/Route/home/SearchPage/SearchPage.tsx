@@ -49,7 +49,7 @@ export default function SearchPage() {
     }
     let f = setTimeout(() => {
       FetchSearch();
-    }, 1000);
+    }, 300);
     return () => {
       clearTimeout(f);
     };

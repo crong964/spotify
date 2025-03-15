@@ -1,5 +1,5 @@
-import MessDatabase from "../database/MessDatabase";
-import MessModel from "../model/MessModel";
+import MessDatabase from "../../database/MessDatabase";
+import MessModel from "../../model/MessModel";
 
 export class MessService {
     data: MessDatabase
@@ -50,6 +50,6 @@ export class MessService {
     }
 }
 
-var messService = new MessService(new MessDatabase())
+var messServiceImp = new MessService(new MessDatabase())
 
-export default messService
+export default messServiceImp

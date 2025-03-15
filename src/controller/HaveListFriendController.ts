@@ -1,9 +1,10 @@
 import { Request, Response } from "express";
-import haveListFriendsService, { HaveListFriendsService } from "../services/HaveListFriendsService";
-import { io } from "../server";
+import { haveListFriendsService } from "../services";
+import io from "../server";
+
 
 class HaveListFriendController {
-    static haveListFriend: HaveListFriendsService = haveListFriendsService
+    static haveListFriend = haveListFriendsService
     constructor() {
 
     }

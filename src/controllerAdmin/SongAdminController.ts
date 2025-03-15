@@ -1,17 +1,17 @@
 import { unlink } from "fs/promises";
 import SongModel from "../model/SongModel";
-import songService, { SongService } from "../services/SongService";
+
 import { Request, Response } from "express";
 import path, { join } from "path";
 import { v4 as uuidv4 } from 'uuid';
-import userService, { UserService } from "../services/UserService";
+
 import { createWriteStream, unlinkSync } from "fs";
 import { limit } from "../config/Helper";
-import playListService, { PlayListService } from "../services/PlayListService";
-import containService, { ContainService } from "../services/ContainService";
+
 import ContainModel from "../model/ContainModel";
 import firebase from "../config/Firebase";
 import googleDrive from "../config/GoogleDrive";
+import { songService, userService, playListService, containService } from "../services";
 type singer = {
     id: string;
     ChanalName: string;
@@ -19,10 +19,10 @@ type singer = {
 };
 
 class SongAdminController {
-    static song: SongService = songService
-    static user: UserService = userService
-    static playlist: PlayListService = playListService
-    static contain: ContainService = containService
+    static song = songService
+    static user = userService
+    static playlist = playListService
+    static contain = containService
     async Add(req: Request, res: Response) {
         var id = req.body.id
         let singer: singer[] = JSON.parse(req.body.user_id)

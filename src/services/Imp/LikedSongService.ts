@@ -1,6 +1,6 @@
-import LikedSongDatabase from "../database/LikedSongDatabase";
-import LikedSongModel from "../model/LikedSongModel";
-import Mysql2 from "../config/Config";
+import LikedSongDatabase from "../../database/LikedSongDatabase";
+import LikedSongModel from "../../model/LikedSongModel";
+import Mysql2 from "../../config/Config";
 export class LikedSongService {
     likedSongDatabase: LikedSongDatabase
     constructor(likedSongDatabase: LikedSongDatabase) {
@@ -63,6 +63,6 @@ export class LikedSongService {
 }
 
 
-var likedSongService = new LikedSongService(new LikedSongDatabase())
+var likedSongServiceImp = new LikedSongService(new LikedSongDatabase())
 
-export default likedSongService
+export default likedSongServiceImp

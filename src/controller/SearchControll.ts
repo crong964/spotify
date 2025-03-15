@@ -1,16 +1,13 @@
 import { Request, Response } from "express"
-import likedSongService, { LikedSongService } from "../services/LikedSongService"
-import userService, { UserService } from "../services/UserService"
 import LikedSongModel from "../model/LikedSongModel"
-import haveListFriendsService from "../services/HaveListFriendsService"
-import playListService, { PlayListService } from "../services/PlayListService"
-import songService from "../services/SongService"
+import { userService, likedSongService, haveListFriendsService, playListService, songService } from "../services"
+
 
 class SearchControll {
-    static user: UserService = userService
-    static likedSong: LikedSongService = likedSongService
+    static user = userService
+    static likedSong = likedSongService
     static haveListFriends = haveListFriendsService
-    static playlist: PlayListService = playListService
+    static playlist = playListService
     static song = songService
     constructor() {
 
@@ -48,6 +45,14 @@ class SearchControll {
     }
     async SearchName(req: Request, res: Response) {
         var name = req.body.name
+        if (name.length <= 0) {
+            res.json({
+                err: false,
+                friend: [],
+                orther: []
+            })
+            return
+        }
         var id = req.cookies.id
         var ls = await
             Promise.all([SearchControll.haveListFriends.SearchName(name, id, "2"),

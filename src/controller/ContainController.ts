@@ -1,9 +1,10 @@
 import ContainModel from "../model/ContainModel";
-import containService, { ContainService } from "../services/ContainService";
+
 import { Request, Response } from "express";
-import playListService from "../services/PlayListService";
+import { containService, playListService } from "../services";
+
 class ContainController {
-    static contain: ContainService = containService
+    static contain = containService
     static playlist = playListService
     async Add(req: Request, res: Response) {
         var d = new ContainModel()

@@ -1,15 +1,15 @@
 import { Request, Response } from "express";
-import haveListBoxChatService, { HaveListBoxChatService } from "../services/HaveListBoxChatService";
-import messService, { MessService } from "../services/MessService";
+
 import BoxModel from "../model/BoxModel";
 import MessModel from "../model/MessModel";
-import boxService, { BoxService } from "../services/BoxService";
+
 import { v4 } from 'uuid';
-import hiddenMessService from "../services/HiddenMessService";
+
 import io from "../server";
 import sharp from "sharp";
 import { join } from "path";
 import { unlink } from "fs";
+import { boxService, haveListBoxChatService, hiddenMessService, messService } from "../services";
 export class MessController {
 
     static haveListBoxChat = haveListBoxChatService

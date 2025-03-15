@@ -1,24 +1,21 @@
 import { join } from "path";
 import UserModel from "../model/UserModel";
-import userService, { UserService } from "../services/UserService";
+
 import { Request, Response } from "express";
 import { unlink } from "fs/promises";
 import { v4 as uuidv4 } from 'uuid';
-import haveListFriendsService, { HaveListFriendsService } from "../services/HaveListFriendsService";
-import playListService, { PlayListService } from "../services/PlayListService";
-import likedSongService, { LikedSongService } from "../services/LikedSongService";
-import LikedSongModel from "../model/LikedSongModel";
-import accountService from "../services/AccountService";
 import AccountModel from "../model/AccountModel";
+import LikedSongModel from "../model/LikedSongModel";
 import { PlayListModel } from "../model/PlayListModel";
-import playListLikeService from "../services/PlayListLikeService";
+import { userService, accountService, haveListFriendsService, likedSongService, playListService, playListLikeService } from "../services";
+
 
 class UserController {
-    static user: UserService = userService
+    static user = userService
     static account = accountService
-    static HaveListFriends: HaveListFriendsService = haveListFriendsService
-    static likedSong: LikedSongService = likedSongService
-    static playlist: PlayListService = playListService
+    static HaveListFriends = haveListFriendsService
+    static likedSong = likedSongService
+    static playlist = playListService
     static playlistlike = playListLikeService
     constructor() {
 

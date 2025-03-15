@@ -1,22 +1,19 @@
 import LikedSongModel from "../model/LikedSongModel";
 import RecentPlaylistModel from "../model/RecentPlaylistModel";
 import SongModel from "../model/SongModel";
-import likedSongService, { LikedSongService } from "../services/LikedSongService";
-import PlayListLikeService from "../services/PlayListLikeService";
-import playListService, { PlayListService } from "../services/PlayListService";
 
-import recentPlaylistService, { RecentPlaylistService } from "../services/RecentPlaylistService";
-import songService, { SongService } from "../services/SongService";
-import userService, { UserService } from "../services/UserService";
 import { Request, Response } from "express";
+import { userService, playListService, songService, likedSongService, recentPlaylistService } from "../services";
+import PlayListLikeService from "../services/Imp/PlayListLikeService";
+
 
 class RecentPlaylistController {
-    static user: UserService = userService
-    static playlist: PlayListService = playListService
-    static song: SongService = songService
-    static likesong: LikedSongService = likedSongService
+    static user = userService
+    static playlist = playListService
+    static song = songService
+    static likesong = likedSongService
     static likePlaylist = PlayListLikeService
-    static r: RecentPlaylistService = recentPlaylistService
+    static r = recentPlaylistService
     constructor() {
 
     }

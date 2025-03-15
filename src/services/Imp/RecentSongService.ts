@@ -1,6 +1,6 @@
-import Mysql2 from "../config/Config";
-import RecentSongDatabase from "../database/RecentSongDatabase";
-import RecentSongModel from "../model/RecentSongModel";
+import Mysql2 from "../../config/Config";
+import RecentSongDatabase from "../../database/RecentSongDatabase";
+import RecentSongModel from "../../model/RecentSongModel";
 
 export class RecentSongService {
     recentSongDatabase: RecentSongDatabase
@@ -59,6 +59,6 @@ export class RecentSongService {
 }
 
 
-var recentSongService = new RecentSongService(new RecentSongDatabase())
+var recentSongServiceImp = new RecentSongService(new RecentSongDatabase())
 
-export default recentSongService
+export default recentSongServiceImp

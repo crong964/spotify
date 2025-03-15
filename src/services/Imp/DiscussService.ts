@@ -1,7 +1,7 @@
 import { ResultSetHeader } from "mysql2";
-import DiscussDatabase from "../database/DiscussDatabase";
-import DiscussModel from "../model/DiscussModel";
-import Mysql2 from "../config/Config";
+import DiscussDatabase from "../../database/DiscussDatabase";
+import DiscussModel from "../../model/DiscussModel";
+import Mysql2 from "../../config/Config";
 
 export class DiscussService {
 
@@ -76,6 +76,6 @@ export class DiscussService {
     }
 }
 
-var discussService = new DiscussService()
+var discussServiceImp = new DiscussService()
 
-export default discussService
+export default discussServiceImp

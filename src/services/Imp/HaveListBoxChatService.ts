@@ -1,5 +1,5 @@
-import HaveListBoxChatDatabase from "../database/HaveListBoxChatDatabase"
-import BoxModel from "../model/BoxModel";
+import HaveListBoxChatDatabase from "../../database/HaveListBoxChatDatabase"
+import BoxModel from "../../model/BoxModel";
 
 
 export enum statusBox {
@@ -71,6 +71,6 @@ export class HaveListBoxChatService {
     }
 }
 
-var haveListBoxChatService = new HaveListBoxChatService(new HaveListBoxChatDatabase())
+var haveListBoxChatServiceImp = new HaveListBoxChatService(new HaveListBoxChatDatabase())
 
-export default haveListBoxChatService
+export default haveListBoxChatServiceImp

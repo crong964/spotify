@@ -1,6 +1,6 @@
-import Mysql2 from "../config/Config"
-import BoxDatabase from "../database/BoxDatabase"
-import BoxModel from "../model/BoxModel"
+import Mysql2 from "../../config/Config"
+import BoxDatabase from "../../database/BoxDatabase"
+import BoxModel from "../../model/BoxModel"
 
 export class BoxService {
 
@@ -68,5 +68,5 @@ export class BoxService {
 }
 
 
-var boxService: BoxService = new BoxService()
-export default boxService
+var boxServiceImp: BoxService = new BoxService()
+export default boxServiceImp

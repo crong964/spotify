@@ -1,5 +1,5 @@
-import Mysql2 from "../config/Config";
-import RecentPlaylistModel from "../model/RecentPlaylistModel";
+import Mysql2 from "../../config/Config";
+import RecentPlaylistModel from "../../model/RecentPlaylistModel";
 
 export class RecentPlaylistService {
     constructor() {
@@ -41,6 +41,6 @@ export class RecentPlaylistService {
     }
 }
 
-const recentPlaylistService = new RecentPlaylistService()
+const recentPlaylistServiceImp = new RecentPlaylistService()
 
-export default recentPlaylistService
+export default recentPlaylistServiceImp
