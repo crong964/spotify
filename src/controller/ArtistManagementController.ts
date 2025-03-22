@@ -100,7 +100,7 @@ class ArtistManagementController {
         d.ImagePath = user.pathImage
         d.id = user.id
 
-        d.Status = "0"
+        d.Status = "1"
         d.PlayListName = user.ChanalName
         let pathImageFile = files["pathImage"][0] as Express.Multer.File
         if (files["Banner"]) {

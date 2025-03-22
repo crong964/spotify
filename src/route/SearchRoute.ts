@@ -1,11 +1,6 @@
 import { NextFunction, Router, Request, Response } from "express";
 import searchControll from "../controller/SearchControll";
-
-
-
-
 const SearchRoute = Router()
-
 const check = (key: string) => {
     return (req: Request, res: Response, next: NextFunction) => {
         const name = req.body?.[key]

@@ -89,7 +89,7 @@ export default function SongInPlayList(v: SongInPlayList) {
       >
         <div className="col-span-5 sm:col-span-3 flex items-center space-x-2">
           <div className="mx-2 size-3 sm:inline-block hidden ">
-            {lsSong[mark].Id == v.Id && !stop ?
+            {lsSong[mark] && lsSong[mark].Id == v.Id && !stop ?
               <img className="size-full" src='https://open.spotifycdn.com/cdn/images/equaliser-green.f8937a92.svg'></img>
               : <div className="">{v.stt}</div>}
           </div>
