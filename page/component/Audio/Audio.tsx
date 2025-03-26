@@ -14,7 +14,7 @@ import {
   SkipNextIcon,
   SkipPreviousIcon,
 } from "@/icon/Icon";
-import { ButtonRandomPlay, ModPlay } from "./Index";
+import { ButtonRandomPlay, ModPlay } from ".";
 import { RootHome } from "@/page/Route/home/RootRedux";
 
 

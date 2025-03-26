@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-const Genre = React.lazy(() => import("./home/GenrePage/GenrePage"));
+import React, { useEffect } from "react";
+
 const Foot = React.lazy(() => import("@/page/component/Foot"));
 import { useDispatch, useSelector } from "react-redux";
 
@@ -13,19 +13,14 @@ import {
 } from "./home/RootRedux";
 
 import { socket } from "@/page/socket/Socket";
-import { MobileSearchButtom } from "./home/NaviHome/SearchButtom";
-
 import { Outlet, useLocation } from "react-router-dom";
-import Home from "./home/NaviHome/Home";
 import Right from "./home/Right/Right";
-import { PlayingBar } from "@/page/component/Audio/Index";
+import { PlayingBar } from "@/page/component/Audio";
 import PlayingPlaylistMobile from "./mobile/playslist/PlayingPlaylistMobile";
 import ChatBox from "@/page/component/boxchat/SingleBox";
-
 import { NaviHomeMobile2 } from "@/page/component/NaviHome/NaviHome";
 import { ChatBoxMobliePage } from "./mobile/chatbox/ChatBoxMobliePage";
 import { SingleBoxChatPage } from "./mobile/SingleBox/SingleBoxChatPage";
-
 import NotificationF from "../component/pop/Notification";
 import Left from "../component/Left/Left";
 

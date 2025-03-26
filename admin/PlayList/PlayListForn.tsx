@@ -5,7 +5,7 @@ import { Song } from "@/admin/SongAndGenre/Song";
 import IndexGenres from "@/admin/GenreLs";
 import { get, post } from "@/page/config/req";
 import { iSong } from "../SongAndGenre/interface";
-import { Tabs } from "@/page/component/tabs/Index";
+import { Tabs } from "@/page/component/tabs";
 
 interface PlayListFormData {
   id: string;

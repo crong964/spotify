@@ -1,13 +1,12 @@
-import React, { useEffect, useRef, useState } from "react";
-import { get, post } from "@/page/config/req";
+import React, { useEffect, useState } from "react";
+import { post } from "@/page/config/req";
 
-import { useDispatch, useSelector } from "react-redux";
-import { RootState, SongListAndInforArtistPage } from "@/admin/Redux";
-import IndexGenres from "@/admin/GenreLs";
+import { useSelector } from "react-redux";
+import { RootState } from "@/admin/Redux";
 import { useParams } from "react-router-dom";
-import useSelectedArtist from "./Handlle";
+
 import DateReact from "../componnt/Date";
-import { Tabs } from "@/page/component/tabs/Index";
+import { Tabs } from "@/page/component/tabs";
 import InputArtist from "../componnt/artist/InputArtist";
 import { singer } from "../componnt/artist/interface";
 
@@ -35,9 +34,8 @@ type SongEidt = {
 };
 function convertYYYMMDD(params: string) {
   let d = new Date(parseInt(params) * 1000);
-  return `${d.getFullYear()}-${
-    d.getMonth() + 1 > 10 ? d.getMonth() + 1 : "0" + (d.getMonth() + 1)
-  }-${d.getDate() > 10 ? d.getDate() : "0" + d.getDate()}`;
+  return `${d.getFullYear()}-${d.getMonth() + 1 > 10 ? d.getMonth() + 1 : "0" + (d.getMonth() + 1)
+    }-${d.getDate() > 10 ? d.getDate() : "0" + d.getDate()}`;
 }
 export default function SongEdit() {
   const [SelectedSingers, SetSelectedSingers] = useState<singer[]>([]);

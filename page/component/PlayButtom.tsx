@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React from "react";
 import { Playing, RootHome, SetPlaying } from "@/page/Route/home/RootRedux";
 import { useDispatch, useSelector } from "react-redux";
 import { get, post } from "@/page/config/req";
@@ -9,7 +9,6 @@ export default function PlayButtom(p: Playing) {
   const playing = useSelector((state: RootHome) => state.rootHome.playing);
   const stopAudio = useSelector((state: RootHome) => state.audioroot.stop);
   p.page;
-  const [load, SetLoad] = useState(false);
   const dispatch = useDispatch();
 
   const PlayingPlaylist = () => {

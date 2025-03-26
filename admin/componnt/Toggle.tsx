@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { post } from "@/page/config/req";
 import React from "react";
 
 interface Toggle {

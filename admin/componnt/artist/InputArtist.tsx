@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { post } from "@/page/config/req";
 import React from "react";
 import { iInputArtist } from "./interface";
@@ -15,7 +15,7 @@ function useSelectedArtist() {
   useEffect(() => {
     if (p == "") {
       Setsingers([]);
-      return 
+      return
     }
     let s = setTimeout(() => {
       post("/search/NameArtist", { name: p }, (v: any) => {

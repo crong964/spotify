@@ -1,4 +1,4 @@
-import { useDispatch } from "react-redux";
+
 import { io } from "socket.io-client";
 
 export const socket = io();

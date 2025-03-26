@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  ReSetSelectSong,
+
   RemoveSelectSong,
   RootState,
   SetFloor,
   addGenre,
 } from "@/admin/Redux";
-import { redirect, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Song } from "@/admin/SongList";
 import IndexGenres from "@/admin/GenreLs";
 import { get, post } from "@/page/config/req";
-import SongAndGenrePage from "../SongAndGenre/SongAndGenrePage";
+
 import { iSong } from "../SongAndGenre/interface";
-import { Tabs } from "@/page/component/tabs/Index";
+import { Tabs } from "@/page/component/tabs";
 interface SongForm {
   Id: string;
   user_id: string;
@@ -296,7 +296,7 @@ function OldSong(d: OldSong) {
   // PlayList_id: string
   return (
     <div
-      onClick={() => {}}
+      onClick={() => { }}
       className="grid hover:bg-slate-300 grid-cols-6 cursor-pointer space-x-2 font-bold p-4 rounded-lg items-center"
     >
       <div className="col-span-3 flex items-center space-x-2">

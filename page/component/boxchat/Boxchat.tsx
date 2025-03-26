@@ -6,8 +6,8 @@ import UserSearchList, {
 } from "@/page/component/friend/UserSearchList";
 import { Search, Searching } from "@/page/component/boxchat/Search";
 import { Title } from "@/page/component/boxchat/Title";
-import Home from "@/page/Route/home/NaviHome/Home";
-import { Link, Navigate } from "react-router-dom";
+
+import { Link } from "react-router-dom";
 import { HomeIcon } from "@/icon/Icon";
 
 export default function BoxChat(p: { children: React.JSX.Element }) {

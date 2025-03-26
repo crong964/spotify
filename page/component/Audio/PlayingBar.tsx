@@ -31,7 +31,7 @@ import {
   PlaySoundIcon,
   QueueIcon,
 } from "@/icon/Icon";
-import { Audio2, Volume } from "./Index";
+import { Audio2, Volume } from ".";
 import { Pip } from "@/page/component/Pip/Index";
 import { Song } from "@/page/component/Song/Index";
 import { useNavigate } from "react-router-dom";

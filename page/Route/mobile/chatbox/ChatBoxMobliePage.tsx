@@ -1,5 +1,5 @@
 import Boxchat from "@/page/component/boxchat/Boxchat";
-import { NaviHomeMobile2 } from "@/page/component/NaviHome/NaviHome";
+
 import React from "react";
 const BoxListDataMobile = React.lazy(
   () => import("@/page/component/boxchat/BoxListDataMobile")

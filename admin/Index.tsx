@@ -11,7 +11,6 @@ import PlayListEdit from "./PlayList/PlayListEdit";
 import UserList from "./user/UserList";
 import Employls from "./user/Employls";
 import { Outlet, Route, Routes } from "react-router-dom";
-import Artist from "./artist/Artist";
 import ArtistList from "./artist/Artist";
 import SongListAndInforArtist from "./artist/SongListAndInforArtist";
 import CmdPage from "./Cmd/CmdPage";
@@ -20,10 +19,8 @@ import { ArtistDetail } from "./artist/ArtistDetail";
 import SongAndGenrePage from "./SongAndGenre/SongAndGenrePage";
 
 export default function App() {
-  var children: React.JSX.Element;
-  const page = useSelector((state: RootState) => state.navi.page);
   return (
-    <Suspense fallback={<>loading</>}> 
+    <Suspense fallback={<>loading</>}>
       <Routes>
         <Route path="/" element={<ShareCenter />}>
           <Route

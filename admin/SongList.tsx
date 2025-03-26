@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Duration, post } from "@/page/config/req";
+import { post } from "@/page/config/req";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, SelectSong } from "./Redux";
 interface Song {

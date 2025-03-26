@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import IndexGenres from "@/admin/GenreLs";
 import { post } from "@/page/config/req";
 import { useDispatch, useSelector } from "react-redux";
-import { EditPlayList, Page, RootState } from "@/admin/Redux";
-import { NavLink, Navigate } from "react-router-dom";
+import { RootState } from "@/admin/Redux";
+import { NavLink } from "react-router-dom";
 
 export default function PlaylistAndGenre() {
   return (

@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { iTab, iTabs } from "./interface";
-import { Tab } from "./Index";
+import { Tab } from "./";
 import { post } from "@/page/config/req";
 
 export default function Tabs(p: iTabs) {

@@ -5,7 +5,6 @@ import Time from "@/page/component/Time";
 import {
   NextSong,
   RandomSong,
-  SetPlaylistmobile,
   SetSongs,
   SetStop,
 } from "@/page/component/Audio/AudioRedux";
@@ -19,19 +18,14 @@ import {
 } from "@/icon/Icon";
 import { post } from "@/page/config/req";
 import "@/public/css/index.css";
-import { ButtonRandomPlay, ModPlay } from "@/page/component/Audio/Index";
+import { ButtonRandomPlay, ModPlay } from "@/page/component/Audio";
 import { SongQueueInplayList } from "@/page/Route/home/Right/Queue";
 import { useNavigate } from "react-router-dom";
 export default function PlayingPlaylistMobile() {
   const lsSong = useSelector((state: RootHome) => state.audioroot.lsSong);
   const mark = useSelector((state: RootHome) => state.audioroot.mark);
-  const playlistmobile = useSelector(
-    (state: RootHome) => state.audioroot.playlistmobile
-  );
-
   const [duration, SetDuration] = useState(0);
   const [curTime, SetCurTime] = useState(0);
-  const [timeUpdate, SetTimeUpdate] = useState(true);
   const [show, SetShow] = useState(true);
   const dispatch = useDispatch();
   const stop = useSelector((state: RootHome) => state.audioroot.stop);

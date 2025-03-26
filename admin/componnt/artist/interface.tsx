@@ -1,4 +1,3 @@
-import React, { InputHTMLAttributes } from "react";
 
 export interface iInputArtist {
   value?: string;

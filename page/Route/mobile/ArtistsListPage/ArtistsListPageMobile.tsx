@@ -1,4 +1,3 @@
-import { HumanIcon } from "@/icon/Icon";
 import { iPlayList } from "@/page/component/Playlist/interface";
 import PlayList from "@/page/component/Playlist/Playlist";
 import { post } from "@/page/config/req";

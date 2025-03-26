@@ -1,13 +1,9 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Page, RootState } from "./Redux";
 import Dropdown from "./componnt/Dropdow";
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { ArtistIcon, GenresIcon, HumanIcon, SongIcon } from "@/icon/Icon";
 
 export default function Navi() {
-  const dispatch = useDispatch();
-  const page = useSelector((state: RootState) => state.navi.page);
   return (
     <aside className="relative bg-sidebar  w-64 hidden sm:block shadow-xl">
       <div className="p-6">
@@ -131,17 +127,17 @@ export default function Navi() {
           </NavLink>
         </Dropdown>
         <NavLink
-            to="/cmd"
-            end
-            className={({ isActive, isPending }) =>
-              [isActive ? "active-nav-link" : "", ""].join(
-                " flex items-center hover:opacity-100 text-white py-3 pl-6 nav-item cursor-pointer"
-              )
-            }
-          >
-            <div className="mr-4"></div>
-            Lệnh
-          </NavLink>
+          to="/cmd"
+          end
+          className={({ isActive, isPending }) =>
+            [isActive ? "active-nav-link" : "", ""].join(
+              " flex items-center hover:opacity-100 text-white py-3 pl-6 nav-item cursor-pointer"
+            )
+          }
+        >
+          <div className="mr-4"></div>
+          Lệnh
+        </NavLink>
         <a
           href="/auth/logout"
           className="flex items-center text-white opacity-75 hover:opacity-100 py-3 pl-6 nav-item cursor-pointer"

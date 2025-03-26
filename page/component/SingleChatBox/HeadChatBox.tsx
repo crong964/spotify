@@ -1,4 +1,4 @@
-import { NaviPage, RemoveBoxList } from "@/page/Route/home/RootRedux";
+import { NaviPage } from "@/page/Route/home/RootRedux";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";

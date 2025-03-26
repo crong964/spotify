@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Pop } from ".";
-import { iNotification } from "./interface";
+
 import { useDispatch, useSelector } from "react-redux";
 import { RootHome, SetNotification } from "@/page/Route/home/RootRedux";
 

@@ -1,16 +1,15 @@
-import React, { useEffect, useRef, useState } from "react";
-import { get, post } from "@/page/config/req";
+import React, { useState } from "react";
+import { post } from "@/page/config/req";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "@/admin/Redux";
-import IndexGenres from "@/admin/GenreLs";
+
 import { useParams } from "react-router-dom";
 import { ImageIcon, MusicIcon } from "@/icon/Icon";
-import useSelectedArtist from "./Handlle";
+
 import DateReact from "../componnt/Date";
-import { Audio2 } from "@/page/component/Audio/Index";
-import Audio3 from "@/page/component/Audio/Audio3";
-import { Tabs } from "@/page/component/tabs/Index";
+import { Audio3 } from "@/page/component/Audio";
+import { Tabs } from "@/page/component/tabs";
 import InputArtist from "../componnt/artist/InputArtist";
 import { singer } from "../componnt/artist/interface";
 

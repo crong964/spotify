@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Tabs } from "@/page/component/tabs/Index";
+import { Tabs } from "@/page/component/tabs";
 import { post } from "@/page/config/req";
 import { iSong } from "./interface";
 import { Song } from "./Song";

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import IndexGenres from "./GenreLs";
-import SongList, { Song } from "./SongList";
+import { Song } from "./SongList";
 
 import { RootState } from "./Redux";
 import { useSelector } from "react-redux";
