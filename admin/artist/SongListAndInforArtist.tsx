@@ -4,7 +4,7 @@ import { post } from "@/page/config/req";
 import { SongList } from "@/admin/componnt/Song/Index";
 import { useDispatch } from "react-redux";
 import { SongListAndInforArtistPage } from "@/admin/Redux";
-import { SongEdit, SongForm } from "@/admin/Song/Index";
+import { SongEdit, SongForm } from "@/admin/Song";
 type Artist = {
   ChanalName: string;
   pathImage: string;
