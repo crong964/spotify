@@ -15,4 +15,5 @@ SongAdminRoute.post("/update",upload, songAdminController.Update)
 SongAdminRoute.post("/updateStatus", songAdminController.UpStatus)
 SongAdminRoute.post("/delete", songAdminController.DeleteSong)
 SongAdminRoute.post("/get", songAdminController.Get)
+
 export default SongAdminRoute

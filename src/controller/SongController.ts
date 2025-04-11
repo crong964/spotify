@@ -255,27 +255,7 @@ class SongController {
             songs: ls
         })
     }
-
     async GetSongByTabs(req: Request, res: Response) {
-        var tabs = req.body.tabs
-        let idPlaylist = req.body.idPlaylist || ""
-        var start = req.body.start | 0
-
-
-        var l: limit = {
-            start: start,
-            end: 10
-        }
-        var ls = await Promise.all([SongController.song.GetSongByTabs(tabs, idPlaylist, l),
-        SongController.song.GetCountSongByTabs(tabs, idPlaylist)
-        ])
-        res.json({
-            err: false,
-            ls: ls[0],
-            count: ls[1].count
-        })
-    }
-    async GetSongByTabsAdmin(req: Request, res: Response) {
         var tabs = req.body.tabs
         let idPlaylist = req.body.idPlaylist || ""
         var start = req.body.start | 0
@@ -288,7 +268,31 @@ class SongController {
         var ls = await Promise.all([SongController.song.GetSongByTabs(tabs, idPlaylist, l),
         SongController.song.GetCountSongByTabs(tabs, idPlaylist)
         ])
-        console.log(ls[0].length);
+
+        res.json({
+            err: false,
+            ls: ls[0],
+            count: ls[1].count
+        })
+    }
+    async GetSongByTabsAdmin(req: Request, res: Response) {
+        var tabs = req.body.tabs + ""
+        var nop = req.body.nop || 0
+        let idPlaylist = req.body.idPlaylist || ""
+        var start = req.body.start | 0
+
+        var l: limit = {
+            start: start,
+            end: 10
+        }
+        var ls
+        if (nop == 0) {
+            ls = await Promise.all([SongController.song.GetSongByTabs(tabs, idPlaylist, l),
+            SongController.song.GetCountSongByTabs(tabs, idPlaylist)])
+        } else {
+            ls = await Promise.all([SongController.song.GetSongWithoutAtPublicPlayList(tabs, l.start, l.end),
+            SongController.song.GetCountSongWithoutAtPublicPlayList(tabs)])
+        }
 
         res.json({
             err: false,
