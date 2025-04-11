@@ -71,6 +71,17 @@ export class SongService {
         check = await this.songDatabase.GetCountSongByTabs(idGenre, idPlaylist) as RowDataPacket
         return check[0]
     }
+    async GetSongWithoutAtPublicPlayList(genre: string, start: number, count: number, status = 1) {
+        var check
+        check = await this.songDatabase.GetSongWithoutAtPublicPlayList(genre, start, count, status) as RowDataPacket
+        return this.SetLs(check)
+    }
+    async GetCountSongWithoutAtPublicPlayList(genre: string, status = 1) {
+        var check
+        check = await this.songDatabase.GetCountSongWithoutAtPublicPlayList(genre, status) as RowDataPacket
+        
+        return check[0]
+    }
     async IncreaseNumberDiscuss(SongId: string, n?: number) {
         n = n || 1
         var check

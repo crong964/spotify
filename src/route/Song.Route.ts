@@ -4,7 +4,8 @@ const SongRoute = Router()
 import multer from 'multer'
 import { join } from "path";
 import { v4 as uuidv4 } from 'uuid';
-import userService, { UserService } from "../services/UserService";
+import { userService } from "../services";
+
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, join(process.cwd(), "/public/image"))
@@ -53,6 +54,6 @@ SongRoute.get("/valisong/:idpage", songController.GetValidateAll)
 SongRoute.post("/NextSong", songController.NextSong)
 
 //admin
-SongRoute.post("/GetSongByTabs", songController.GetSongByTabs)
+SongRoute.post("/GetSongByTabs", songController.GetSongByTabsAdmin)
 
 export default SongRoute

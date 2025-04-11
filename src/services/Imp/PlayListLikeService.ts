@@ -5,7 +5,7 @@ import { PlayListLikeModel } from "../../model/PlaylistLikeModel";
 class PlayListLikeService {
     async Add(user_id: string, playlist_id: string) {
         let sql = "INSERT INTO playlistlikes(User_ID, PlayList_id) VALUES (?,?)"
-        let check: ResultSetHeader = await Mysql2.query(sql, [user_id, playlist_id])
+        let check = await Mysql2.query(sql, [user_id, playlist_id])as ResultSetHeader
         return check
     }
     async Delete(user_id: string, playlist_id: string) {
