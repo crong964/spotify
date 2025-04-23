@@ -115,7 +115,7 @@ export function GenreInHome() {
 }
 function CenterShare() {
   const dispatch = useDispatch();
-  const page = useSelector((state: RootHome) => state.rootHome.command.page);
+  
   const topbarcontent = useSelector(
     (state: RootHome) => state.rootHome.topbarcontent
   );

@@ -1,4 +1,5 @@
 import React, {
+  memo,
   Suspense,
   useCallback,
   useEffect,
@@ -34,7 +35,6 @@ import {
 import { Audio2, Volume } from ".";
 import { Pip } from "@/page/component/Pip/Index";
 import { Song } from "@/page/component/Song/Index";
-import { useNavigate } from "react-router-dom";
 
 interface SongI {
   Id: string;
@@ -44,7 +44,7 @@ interface SongI {
   SongImage: string;
   filePath: string;
 }
-export default function PlayingBar() {
+function PlayingBar() {
   const stopMobie = useSelector((state: RootHome) => state.audioroot.stop);
   const isLogin = useSelector(
     (state: RootHome) => state.rootauth.login.IsLogin
@@ -53,22 +53,16 @@ export default function PlayingBar() {
   const mark = useSelector((state: RootHome) => state.audioroot.mark);
   const pip = useSelector((state: RootHome) => state.audioroot.pip);
   const right = useSelector((state: RootHome) => state.rootHome.Right);
-  const navigate = useNavigate();
-  const devicetype = useSelector(
-    (state: RootHome) => state.rootHome.devicetype
-  );
+
   const [volume, SetVolume] = useState(
     parseInt(localStorage.getItem("volume") || "100")
   );
 
-  localStorage.setItem("volume", volume + "");
-  const dispatch = useDispatch();
-  var temp: SongI | undefined = undefined;
-  if (localStorage.getItem("song") != null) {
-    temp = ParseJson(localStorage.getItem("song") || "{}");
-  }
 
-  const RandomNext = (n: number) => {
+  const dispatch = useDispatch();
+
+
+  const RandomNext = useCallback((n: number) => {
     if (mark + n >= 0 && mark + n < lsSong.length) {
       dispatch(NextSong(n));
       dispatch(PlaySong(lsSong[mark].Id));
@@ -82,21 +76,22 @@ export default function PlayingBar() {
       localStorage.setItem("song", JSON.stringify(v.song));
       dispatch(SetSongs([v.song]));
     });
-  };
+  }, [])
 
   useEffect(() => {
+    localStorage.setItem("volume", volume + "");
     VolumeAudio(volume);
   }, [volume]);
   return lsSong[mark]?.filePath ? (
     <div className="w-full bg-black py-0 sm:py-1 h-[10%] sm:h-[12%] grid items-center grid-cols-1 sm:grid-cols-4 mt-0 ">
       <div
         onClick={() => {
-          navigate("mobile/playlist");
+          location.assign("/mobile/playlist")
         }}
         className="flex sm:inline-block justify-between items-center px-2 sm:px-0"
       >
         <Song
-          onClick={() => {}}
+          onClick={() => { }}
           Id={lsSong[mark]?.Id || "0"}
           image={lsSong[mark]?.SongImage}
           name={lsSong[mark]?.SongName || ","}
@@ -213,3 +208,4 @@ export default function PlayingBar() {
     <></>
   );
 }
+export default memo(PlayingBar)
