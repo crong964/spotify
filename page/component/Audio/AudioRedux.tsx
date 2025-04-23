@@ -96,6 +96,13 @@ const audioSlice = createSlice({
         iHelp.Title(`${s.SongName} • ${s.Singer}`);
       }
       localStorage.setItem("mark", JSON.stringify(state.mark));
+      if (state.lsSong.length == 1) {
+        var mu = document.querySelector(".g") as HTMLAudioElement;
+        if (!mu) {
+          return
+        }
+        mu.currentTime = 0
+      }
     },
     RandomSong: (state) => {
       state.random = !state.random;

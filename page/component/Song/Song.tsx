@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 
 import { useSelector } from "react-redux";
 import { RootHome } from "@/page/Route/home/RootRedux";
@@ -7,10 +7,12 @@ import { Song } from "./interface";
 
 const ArtistLink = React.lazy(() => import("@/page/component/ArtistLink"));
 
-export default function Song(d: Song) {
+function SongF(d: Song) {
   const devicetype = useSelector(
     (state: RootHome) => state.rootHome.devicetype
   );
+  
+  
   return (
     <div
       onDoubleClick={(e) => {
@@ -51,3 +53,5 @@ export default function Song(d: Song) {
     </div>
   );
 }
+
+export default memo(SongF)

@@ -24,10 +24,17 @@ import {
   SignIn,
   Signup,
 } from "@/page/Route/auth/Index";
-import PlaylistLike from "./Route/home/NaviHome/PlaylistLike";
-import ArtistsListPageMobile from "./Route/mobile/ArtistsListPage/ArtistsListPageMobile";
-import PlayListSectionPage from "./Route/home/PlayListPage/PlayListSectionPage";
-import MixPage from "./Route/home/Mix/MixPage";
+
+import SearchPage from "./Route/home/SearchPage/SearchPage";
+
+const PlaylistLike = React.lazy(() => import("./Route/home/NaviHome/PlaylistLike"));
+
+const ArtistsListPageMobile = React.lazy(() => import("./Route/mobile/ArtistsListPage/ArtistsListPageMobile"))
+const PlayListSectionPage = React.lazy(() => import("./Route/home/PlayListPage/PlayListSectionPage"))
+const MixPage = React.lazy(
+  () => import("./Route/home/Mix/MixPage")
+);
+
 
 const SingleArtistPage = React.lazy(
   () => import("./Route/home/SingleArtistPage/SingleArtistPage")
@@ -38,9 +45,7 @@ const PlaylistPage = React.lazy(
 const LikedSongListPage = React.lazy(
   () => import("./Route/home/LikedSongListPage/LikedSongListPage")
 );
-const SearchPage = React.lazy(
-  () => import("./Route/home/SearchPage/SearchPage")
-);
+
 const ArtistsListPage = React.lazy(
   () => import("./Route/home/ArtistsListPage/ArtistsListPage")
 );
