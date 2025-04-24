@@ -62,7 +62,7 @@ function PlayingBar() {
   const dispatch = useDispatch();
 
 
-  const RandomNext = useCallback((n: number) => {
+  const RandomNext = (n: number) => {
     if (mark + n >= 0 && mark + n < lsSong.length) {
       dispatch(NextSong(n));
       dispatch(PlaySong(lsSong[mark].Id));
@@ -76,7 +76,7 @@ function PlayingBar() {
       localStorage.setItem("song", JSON.stringify(v.song));
       dispatch(SetSongs([v.song]));
     });
-  }, [])
+  }
 
   useEffect(() => {
     localStorage.setItem("volume", volume + "");
