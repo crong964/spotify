@@ -24,13 +24,14 @@ export default class RecentSongDatabase {
     }
     async ListenAgainByUserId(user_id: string, start: number) {
         var sql = `SELECT song.*,likedsong.liked
-            FROM song LEFT JOIN likedsong ON song.Id =likedsong.Id
-            INNER JOIN recentsong ON song.Id = recentsong.Id
-            WHERE recentsong.user_id =?
-            GROUP BY song.id,likedsong.liked
-            ORDER BY COUNT(*) ASC
-            LIMIT ?,50`;
-        var check = await Mysql2.query(sql, [user_id, start]);
+                FROM song LEFT JOIN likedsong ON song.Id =likedsong.Id 
+                AND likedsong.id_user_liked=?
+                RIGHT JOIN recentsong ON song.Id = recentsong.Id
+                WHERE recentsong.user_id =?
+                GROUP BY song.id,likedsong.liked
+                ORDER BY COUNT(*) ASC
+                LIMIT ?,50`;
+        var check = await Mysql2.query(sql, [user_id, user_id, start]);
         return check;
     }
     async Count(user_id: string) {
