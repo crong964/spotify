@@ -103,7 +103,7 @@ function PlayListFormData() {
 
   var stt = 0;
   var ls = song.map((element) => {
-    dispatch(RemoveSelectSong(element.Id));
+
     stt += 1;
     return (
       <OldSong
@@ -292,6 +292,7 @@ function AdditionalPlayList(d: AdditionalPlayList) {
 
 function OldSong(d: OldSong) {
   const [remove, SetRemove] = useState(false);
+  const dispatch = useDispatch();
   // Song_id: string
   // PlayList_id: string
   return (
@@ -309,11 +310,12 @@ function OldSong(d: OldSong) {
           <svg
             onClick={() => {
               post(
-                "/contain/delete",
+                "/admin/contain/delete",
                 { Song_id: d.Id, PlayList_id: d.idPlaylist },
                 (v: any) => {
                   if (!v.err) {
-                    SetRemove(true);
+                    SetRemove(true)
+                    alert("ok")
                   }
                 }
               );
@@ -330,7 +332,7 @@ function OldSong(d: OldSong) {
           <svg
             onClick={() => {
               post(
-                "/contain/add",
+                "/admin/contain/add",
                 { Song_id: d.Id, PlayList_id: d.idPlaylist },
                 (v: any) => {
                   if (!v.err) {
@@ -342,7 +344,7 @@ function OldSong(d: OldSong) {
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             fill="red"
-            className="size-6 w-full "
+            className="size-6 w-full fill-red-400"
           >
             <path
               fillRule="evenodd"

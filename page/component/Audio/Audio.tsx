@@ -1,3 +1,4 @@
+
 import React from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -33,7 +34,7 @@ export default function Audio(params: Audio) {
   const [timeUpdate, SetTimeUpdate] = useState(true);
 
   return (
-    <div className="col-span-full sm:col-span-2 flex flex-col space-y-0 sm:space-y-2">
+    <div className="col-span-full  sm:col-span-2 flex flex-col space-y-0 sm:space-y-2">
       <div
         title="ngẫu nhiên"
         className="hidden sm:flex space-x-9 justify-center items-center"
@@ -88,7 +89,7 @@ export default function Audio(params: Audio) {
         <Time d={curTime} key={0} />
         <input
           type="range"
-          className="rounded-lg  cursor-pointer overflow-hidden appearance-none bg-gray-400 h-[6px] w-full sm:w-[70%]"
+          className="rounded-lg cursor-pointer overflow-hidden appearance-none bg-gray-400 h-[6px] w-full sm:w-[70%]"
           max={duration + ""}
           value={curTime}
           onChange={(e) => {
