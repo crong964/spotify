@@ -76,7 +76,7 @@ function PlayingBar() {
       localStorage.setItem("song", JSON.stringify(v.song));
       dispatch(SetSongs([v.song]));
     });
-  }, [])
+  }, [lsSong, mark])
 
   useEffect(() => {
     localStorage.setItem("volume", volume + "");
