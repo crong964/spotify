@@ -2,7 +2,7 @@ import { get } from "@/page/config/req";
 import React from "react";
 import { useEffect, useState } from "react";
 import { Playlist } from ".";
-import { useNavigate } from "react-router-dom";
+
 var color = [
   "#E8115B",
   "#DC148C",
@@ -19,10 +19,19 @@ var color = [
 ];
 export default function Listenplaylist() {
   const [count, SetCount] = useState(0);
-  const navigate = useNavigate();
+
   useEffect(() => {
     get("/rs/listenAgain", (v: any) => {
-      SetCount(Math.floor(v.count / 50));
+      if (v && v.count != undefined) {
+        let n = Math.floor(v.count / 50)
+        let d = v.count - n * 50
+        if (d == 0) {
+          SetCount(n);
+        } else {
+          SetCount(n + 1);
+        }
+
+      }
     });
   }, []);
   let children = [];
