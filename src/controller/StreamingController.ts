@@ -17,7 +17,7 @@ import processvideo from "../config/ProcessVideo";
 import { recentSongService, songService } from "../services";
 class StreamingController {
     static KEYTREAMING = uuidv4()
-    static segment: any = { "6": true, "12": true, "20": true, "24": true }
+    static segment: any = { "3": true, "4": true, "20": true, "24": true }
     static song = songService
     static ggdrive = googleDrive
     constructor() {
@@ -283,6 +283,50 @@ class StreamingController {
                         let lastSong = await recentSongService.GetLastRecentSong(id)
                         if (req.cookies.id && (lastSong == undefined || lastSong.Id != idSong)) {
                             recentSongService.Add(id, idSong)
+                        }
+                    }
+                    if (newtime == 4) {
+                        songService.IncreaseView(idSong)
+                    } else {
+                        let newsign = jwt.sign({ idSong: idSong, time: newtime, level: segment }, StreamingController.KEYTREAMING, { expiresIn: 60 * 9 })
+                        res.cookie("sign", newsign)
+                    }
+                }
+            } catch (error) {
+            }
+        }
+
+        try {
+            let r = await read
+            r.data.pipe(res)
+        } catch (error) {
+            console.log(`Streaming2 ${__filename}`);
+            res.end()
+        }
+    }
+    async Streaming3(req: Request, res: Response) {
+        res.setHeader("Cache-Control", "max-age=315360000, no-transform, must-revalidate")
+        const { segment, path, idSong } = req.body
+        let id = req.cookies.id
+        let read: GaxiosPromise<internal.Readable>
+        if (segment == "1") {
+            let sign = jwt.sign({ idSong: idSong, time: 0, level: 0 }, StreamingController.KEYTREAMING, { expiresIn: 60 * 9 })
+            res.cookie("sign", sign)
+        }
+        read = StreamingController.ggdrive.DownloadStreamFile(path)
+
+        if (StreamingController.segment[segment + ""]) {
+            try {
+                let sign = req.cookies.sign || ""
+                let oldign = jwt.verify(sign, StreamingController.KEYTREAMING) as jwt.JwtPayload
+                if (oldign.level < segment) {
+                    let newtime = parseInt(oldign.time + "") + 1
+                    if (newtime == 2) {
+                        let lastSong = await recentSongService.Get(id, idSong)
+                        if (id && (lastSong == undefined || lastSong.Id != idSong)) {
+                            recentSongService.Add(id, idSong)
+                        } else {
+                            recentSongService.UpdateTime(id, idSong)
                         }
                     }
                     if (newtime == 4) {
