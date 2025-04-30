@@ -1,4 +1,6 @@
-
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 @keyframes appear1 {
     from {
         top: 0px;
