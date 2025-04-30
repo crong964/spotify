@@ -15,3 +15,4 @@ dist
 src/tool/*
 public/streaming/*
 bkcsdl
+d.bat

@@ -24,6 +24,7 @@ export class RecentSongService {
     }
     async Get(user_id: string, Id_song: string) {
         var check = await this.recentSongDatabase.Get(user_id, Id_song) as RecentSongModel[]
+       
         if (check && check.length) {
             var temp = new RecentSongModel()
             temp.setAll(check[0])
