@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { get, post } from "@/page/config/req";
 import { Eye } from "@/icon/Icon";
 import { Artist, Toggle } from "./interface";
+import ImagePath from "@/page/config/img";
 
 export function ArtistDetail() {
   const [load, SetLoad] = useState(false);
@@ -143,7 +144,7 @@ export function ArtistDetail() {
               </>
             ) : (
               <img
-                src={inforArtist.pathImage}
+                src={ImagePath(inforArtist.pathImage)}
                 alt=""
                 className="w-[250px] h-auto"
                 srcSet=""

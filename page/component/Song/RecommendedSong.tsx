@@ -4,6 +4,7 @@ import { Avatar } from "@/page/component/avatar";
 import ArtistLink from "@/page/component/ArtistLink";
 import { post } from "@/page/config/req";
 import { SearchCircleIcon, XIcon } from "@/icon/Icon";
+import ImagePath from "@/page/config/img";
 
 export default function RecommendedSong(p: iRecommendedSong) {
   const [songs, SetSongs] = useState<SongInPlayList[]>([]);
@@ -97,7 +98,7 @@ export default function RecommendedSong(p: iRecommendedSong) {
                 <div className="grid grid-cols-7 text-[13px] sm:text-[14px] sm:p-2 py-2 cursor-pointer sm:space-x-2 hover:bg-[#2D2D2D] text-white font-bold rounded-lg items-center">
                   <div className="col-span-6 grid grid-cols-5 ">
                     <div className="flex items-center col-span-3">
-                      <Avatar className="size-12 sm:size-9" src={v.SongImage} />
+                      <Avatar className="size-12 sm:size-9" src={ImagePath(v.SongImage)} />
                       <div className="flex flex-col px-2">
                         <div>{v.SongName}</div>
                         <ArtistLink idArtist={v.user_id} nameArtist={v.Singer} />
@@ -148,7 +149,7 @@ export default function RecommendedSong(p: iRecommendedSong) {
           <div className="grid grid-cols-7 text-[13px] sm:text-[14px] sm:p-2 py-2 cursor-pointer sm:space-x-2 hover:bg-[#2D2D2D] text-white font-bold rounded-lg items-center">
             <div className="col-span-6 grid grid-cols-5 ">
               <div className="flex items-center col-span-3">
-                <Avatar className="size-12 sm:size-9" src={v.SongImage} />
+                <Avatar className="size-12 sm:size-9" src={ImagePath(v.SongImage)} />
                 <div className="flex flex-col px-2">
                   <div>{v.SongName}</div>
                   <ArtistLink idArtist={v.user_id} nameArtist={v.Singer} />

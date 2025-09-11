@@ -1,17 +1,18 @@
+import ImagePath from "@/page/config/img";
 import { NaviPage } from "@/page/Route/home/RootRedux";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 interface boxChat {
-    pathImage: string;
-    Name: string;
-    idBox: string;
-    id: string; // id người gửi cuối
-    type: string;
-    permission: number;
-    idUser: string; //id bạn của bạn
-  }
+  pathImage: string;
+  Name: string;
+  idBox: string;
+  id: string; // id người gửi cuối
+  type: string;
+  permission: number;
+  idUser: string; //id bạn của bạn
+}
 export function HeadChatBox(data: boxChat) {
   const dispatch = useDispatch();
   let navigate = useNavigate();
@@ -24,7 +25,7 @@ export function HeadChatBox(data: boxChat) {
         className="flex items-center"
       >
         <div className="overflow-hidden size-16 sm:size-[32px] rounded-full mr-3">
-          <img className="" src={data.pathImage} alt="" srcSet="" />
+          <img className="" src={ImagePath(data.pathImage)} alt="" srcSet="" />
         </div>
         <div className="w-max px-3 font-sans">
           <div className="text-[20px]">{data.Name}</div>

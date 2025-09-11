@@ -14,6 +14,7 @@ import { get, post } from "@/page/config/req";
 
 import { iSong } from "../SongAndGenre/interface";
 import { Tabs } from "@/page/component/tabs";
+import ImagePath from "@/page/config/img";
 interface SongForm {
   Id: string;
   user_id: string;
@@ -149,7 +150,7 @@ function PlayListFormData() {
           >
             <div className="w-full">
               {newSongImage == "" ? (
-                <img className="size-[200px]" src={playlist.ImagePath} />
+                <img className="size-[200px]" src={ImagePath(playlist.ImagePath)} />
               ) : (
                 <div>
                   <div
@@ -160,7 +161,7 @@ function PlayListFormData() {
                   >
                     xóa
                   </div>
-                  <img className="size-[200px]" src={newSongImage} />
+                  <img className="size-[200px]" src={ImagePath(newSongImage)} />
                 </div>
               )}
             </div>
@@ -302,7 +303,7 @@ function OldSong(d: OldSong) {
     >
       <div className="col-span-3 flex items-center space-x-2">
         <div className="">{d.stt}</div>
-        <img className="size-9" src={d.SongImage} alt="" srcSet="" />
+        <img className="size-9" src={ImagePath(d.SongImage)} alt="" srcSet="" />
       </div>
       <div className="col-span-2">{d.SongName}</div>
       <div className="col-span-1 flex items-center space-x-4">

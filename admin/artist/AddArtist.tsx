@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { get, post } from "@/page/config/req";
 import { Eye } from "@/icon/Icon";
 import { Artist, Toggle } from "./interface";
+import ImagePath from "@/page/config/img";
 
 export function AddArtist() {
   const navigate = useNavigate();
@@ -145,7 +146,7 @@ export function AddArtist() {
               </>
             ) : (
               <img
-                src={inforArtist.pathImage}
+                src={ImagePath(inforArtist.pathImage)}
                 alt=""
                 className="w-[250px] h-auto"
                 srcSet=""
@@ -260,9 +261,8 @@ export function AddArtist() {
           </div>
         </div>
         <button
-          className={`px-3 py-2 rounded-xl bg-blue-500 text-white ${
-            load == true ? "cursor-wait" : "cursor-pointer"
-          }`}
+          className={`px-3 py-2 rounded-xl bg-blue-500 text-white ${load == true ? "cursor-wait" : "cursor-pointer"
+            }`}
         >
           Thêm
         </button>

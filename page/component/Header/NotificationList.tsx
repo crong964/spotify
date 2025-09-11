@@ -9,6 +9,7 @@ import {
   SetNotificationPageIdSong,
 } from "@/page/Route/home/RootRedux";
 import { MainDiscussList } from "../../Route/home/Right/Discuss";
+import ImagePath from "@/page/config/img";
 
 
 interface Notification {
@@ -48,7 +49,7 @@ function Notification(d: Notification) {
         ) : (
           <>
             <img
-              src={d.pathImage}
+              src={ImagePath(d.pathImage)}
               alt=""
               className=" col-span-2 rounded-full row-span-full"
             />
@@ -63,7 +64,7 @@ function Notification(d: Notification) {
                 <Time time={d.createtime}></Time>
               </div>
             </div>
-            <img src={d.SongImage} alt="" className=" col-span-2" />
+            <img src={ImagePath(d.SongImage)} alt="" className=" col-span-2" />
             <div className="col-span-1 " onClick={Delete}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -178,7 +179,7 @@ function NotificationDiscuss(d: NotificationDiscuss) {
       <div className="w-full grid z-[2000] grid-cols-12 bg-black p-5 border-b-bg-[#3E3E3E] sticky top-0 left-0 ">
         <div className="col-span-9">{song.SongName}</div>
         <div className="col-span-2">
-          <img className="" src={song.SongImage} alt="" srcSet="" />
+          <img className="" src={ImagePath(song.SongImage)} alt="" srcSet="" />
         </div>
       </div>
       <MainDiscussList list={mainDiscussList} />

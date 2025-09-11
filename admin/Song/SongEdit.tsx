@@ -9,6 +9,7 @@ import DateReact from "../componnt/Date";
 import { Tabs } from "@/page/component/tabs";
 import InputArtist from "../componnt/artist/InputArtist";
 import { singer } from "../componnt/artist/interface";
+import ImagePath from "@/page/config/img";
 
 type Genre = {
   Id: string;
