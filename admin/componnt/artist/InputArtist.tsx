@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { post } from "@/page/config/req";
 import React from "react";
 import { iInputArtist } from "./interface";
+import ImagePath from "@/page/config/img";
 type singer = {
   id: string;
   ChanalName: string;
@@ -59,11 +60,11 @@ export default function InputArtist(p: iInputArtist) {
                 }}
               >
                 <img
-                  src={v.pathImage}
+                  src={ImagePath(v.pathImage)}
                   alt=""
                   className="size-[3.6rem] rounded-full"
                 />
-                <div>{v.ChanalName}</div>
+                <p>{v.ChanalName}</p>
               </div>
             );
           })}
@@ -108,11 +109,11 @@ export default function InputArtist(p: iInputArtist) {
                   }}
                 >
                   <img
-                    src={v.pathImage}
-                    alt=""
+                    src={ImagePath(v.pathImage)}
+                    alt={v.ChanalName}
                     className="size-[3.6rem] rounded-full"
                   />
-                  <div>{v.ChanalName}</div>
+                  <p>{v.ChanalName}</p>
                 </div>
               );
             })}

@@ -5,6 +5,7 @@ import { SongList } from "@/admin/componnt/Song/Index";
 import { useDispatch } from "react-redux";
 import { SongListAndInforArtistPage } from "@/admin/Redux";
 import { SongEdit, SongForm } from "@/admin/Song";
+import ImagePath from "@/page/config/img";
 type Artist = {
   ChanalName: string;
   pathImage: string;
@@ -67,8 +68,8 @@ export default function SongListAndInforArtist() {
         </button>
       </div>
       <div className="flex items-center space-x-4 px-7">
-        <img src={infor.pathImage} className="size-[240px]" alt="" srcSet="" />
-        <div className="text-[100px] font-bold">{infor.ChanalName}</div>
+        <img src={ImagePath(infor.pathImage)} className="size-[240px]" alt="" srcSet="" />
+        <p className="text-[100px] font-bold">{infor.ChanalName}</p>
       </div>
 
       <SongForm></SongForm>

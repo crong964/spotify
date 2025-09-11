@@ -7,6 +7,7 @@ import { get } from "@/page/config/req";
 import { AvatarIcon } from "@/icon/Icon";
 import CalcXY from "../pop/CalcXY";
 import Modal from "../pop/Modal";
+import ImagePath from "@/page/config/img";
 
 export default function Avatar(p: Infor) {
   const [show, SetShow] = useState(false);
@@ -35,7 +36,7 @@ export default function Avatar(p: Infor) {
         ) : (
           <img
             className="size-[40px] rounded-full cursor-pointer"
-            src={p.pathImage}
+            src={ImagePath(p.pathImage)}
             alt=""
             srcSet=""
           />

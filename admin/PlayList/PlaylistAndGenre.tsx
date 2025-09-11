@@ -4,6 +4,7 @@ import { post } from "@/page/config/req";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/admin/Redux";
 import { NavLink } from "react-router-dom";
+import ImagePath from "@/page/config/img";
 
 export default function PlaylistAndGenre() {
   return (
@@ -67,7 +68,7 @@ function PlayList(d: PlayList) {
         ) : (
           <></>
         )}
-        <img src={d.ImagePath} className="rounded-2xl" alt="" srcSet="" />
+        <img src={ImagePath(d.ImagePath)} className="rounded-2xl" alt="" srcSet="" />
       </div>
       <div className="text-[16px] ">{d.PlayListName}</div>
     </div>

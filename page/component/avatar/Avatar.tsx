@@ -1,6 +1,7 @@
 import React from "react";
 import { iAvatar } from "./interface";
 import { MusicNoteBeamedIcon } from "@/icon/Icon";
+import ImagePath from "@/page/config/img";
 
 export default function Avatar(p: iAvatar) {
   return (
@@ -10,7 +11,7 @@ export default function Avatar(p: iAvatar) {
       ) : (
         <img
           loading="lazy"
-          src={p.src}
+          src={ImagePath(p.src)}
           className="absolute top-0 left-0 z-0"
           alt=""
           srcSet=""

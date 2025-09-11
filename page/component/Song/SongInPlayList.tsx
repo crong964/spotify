@@ -11,6 +11,7 @@ import { post } from "@/page/config/req";
 import { Modal, Pop } from "@/page/component/pop";
 import { useParams } from "react-router-dom";
 import { Avatar } from "../avatar";
+import ImagePath from "@/page/config/img";
 
 export default function SongInPlayList(v: SongInPlayList) {
   const [liked, SetLike] = useState<string>(v.liked);
@@ -93,7 +94,7 @@ export default function SongInPlayList(v: SongInPlayList) {
               <img className="size-full" src='https://open.spotifycdn.com/cdn/images/equaliser-green.f8937a92.svg'></img>
               : <div className="">{v.stt}</div>}
           </div>
-          <Avatar className="size-12 sm:size-9" src={v.SongImage}></Avatar>
+          <Avatar className="size-12 sm:size-9" src={ImagePath(v.SongImage)}></Avatar>
           <div className="flex-col">
             <div className="block">{v.SongName}</div>
             {v.type != "artist" ? (
@@ -171,7 +172,7 @@ export default function SongInPlayList(v: SongInPlayList) {
                 }}
               >
                 <div className="flex sm:hidden py-6 px-2">
-                  <Avatar className="size-12" src={v.SongImage} />
+                  <Avatar className="size-12" src={ImagePath(v.SongImage)} />
                   <div className="flex flex-col pl-3">
                     <div className="w-full text-[20px] font-bold">
                       {v.SongName}

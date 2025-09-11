@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { get, post } from "@/page/config/req";
 import { Eye, MusicNoteBeamedIcon } from "@/icon/Icon";
 import { Artist, Toggle } from "./interface";
+import ImagePath from "@/page/config/img";
 
 export default function Artist() {
   const navigate = useNavigate();
@@ -121,7 +122,7 @@ export default function Artist() {
                   {i + 1}
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  <img className="size-[100px]" src={v.pathImage} alt="" />
+                  <img className="size-[100px]" src={ImagePath(v.pathImage)} alt="" />
                 </th>
                 <th scope="col" className="px-6 py-3">
                   {v.Name}

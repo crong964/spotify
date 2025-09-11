@@ -18,6 +18,7 @@ import {
 } from "@/icon/Icon";
 import { PiP } from "./Type";
 import { PiPWindow } from "@/page/component/Pip/Index";
+import ImagePath from "@/page/config/img";
 
 export default function Pip({ imagePath }: PiP) {
   let [pipWindow, SetPipWindow] = useState<any>(null);
@@ -103,7 +104,7 @@ export default function Pip({ imagePath }: PiP) {
         <div
           className="bg-no-repeat relative opacity-5 "
           style={{
-            backgroundImage: `url(${imagePath})`,
+            backgroundImage: `url(${ImagePath(imagePath)})`,
             backgroundRepeat: "no-repeat",
             backgroundSize: "cover",
             backgroundPosition: "center",

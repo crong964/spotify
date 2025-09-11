@@ -14,13 +14,13 @@ export default function Time(params: Time) {
   let second = data % 60;
 
   return (
-    <div
+    <p
       className={
         params.className || "text-[12px] font-normal text-[#a7a7a7] sm:inline-block "
       }
     >
       {minute}:{second < 10 ? `0${second}` : `${second}`}
-    </div>
+    </p>
   );
 }
 export function TimeString(params: Time) {
