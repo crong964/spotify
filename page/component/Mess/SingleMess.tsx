@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import { post } from "@/page/config/req";
+import ImagePath from "@/page/config/img";
 export interface singleMess {
   idUser2: string;
   idFuture: string | undefined;
@@ -182,7 +183,7 @@ export default function SingleMess(data: singleMess) {
                   <>
                     <img
                       className="size-[35px] rounded-full"
-                      src={data.avatar}
+                      src={ImagePath(data.avatar)}
                       alt=""
                     />
                   </>
@@ -289,7 +290,7 @@ function ImageContent(data: Content) {
       var s = `${text}`;
       return (
         <span className="w-fit " key={Math.random()}>
-          <img src={s} className="w-30 h-auto" alt="" />
+          <img src={ImagePath(s)} className="w-30 h-auto" alt="" />
         </span>
       );
     });

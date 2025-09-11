@@ -6,6 +6,7 @@ import IndexGenres from "@/admin/GenreLs";
 import { get, post } from "@/page/config/req";
 import { iSong } from "../SongAndGenre/interface";
 import { Tabs } from "@/page/component/tabs";
+import ImagePath from "@/page/config/img";
 
 interface PlayListFormData {
   id: string;

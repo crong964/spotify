@@ -1,6 +1,7 @@
 import React from "react";
 import { SongList } from "./interface";
 import SongInPlayList from "./SongInPlayList";
+import ImagePath from "@/page/config/img";
 
 export default function SongList(d: SongList) {
   var stt = 0;
@@ -30,7 +31,7 @@ export default function SongList(d: SongList) {
                   Singer={v.Singer}
                   SongName={v.SongName}
                   Viewer={v.Viewer}
-                  filePath={v.filePath}
+                  filePath={ImagePath(v.filePath)}
                   SongImage={v.SongImage}
                   liked={v.liked}
                   stt={stt}

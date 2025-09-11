@@ -8,6 +8,7 @@ import { EditSong } from "@/admin/Redux";
 import Toggle from "@/admin/componnt/Toggle";
 import Time from "@/page/component/Time";
 import { TrashIcon } from "@/icon/Icon";
+import ImagePath from "@/page/config/img";
 
 export default function Song(v: iSong) {
   let { idArtist } = useParams();
@@ -37,15 +38,15 @@ export default function Song(v: iSong) {
   return (
     <div className="grid grid-cols-7 text-[13px] sm:text-[14px] sm:space-x-2  text-black font-bold sm:p-4 rounded-lg items-center">
       <div className="col-span-1 flex items-center space-x-2">
-        <div className="sm:inline-block hidden">{v.stt}</div>
-        <img className="size-28" src={v.SongImage} alt="" srcSet="" />
+        <p className="sm:inline-block hidden">{v.stt}</p>
+        <img className="size-28" src={ImagePath(v.SongImage)} alt="" srcSet="" />
       </div>
       <div className="col-span-3 sm:col-span-2 p-2 ">
-        <div className="block">{v.SongName}</div>
+        <p className="block">{v.SongName}</p>
       </div>
-      <div className="sm:block hidden col-span-1 text-[14px] text-stone-500">
+      <p className="sm:block hidden col-span-1 text-[14px] text-stone-500">
         {v.Viewer}
-      </div>
+      </p>
       <div className="sm:block hidden col-span-1 text-[14px] text-stone-500">
         <Toggle
           han={() => {

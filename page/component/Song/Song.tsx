@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { RootHome } from "@/page/Route/home/RootRedux";
 
 import { Song } from "./interface";
+import ImagePath from "@/page/config/img";
 
 const ArtistLink = React.lazy(() => import("@/page/component/ArtistLink"));
 
@@ -11,8 +12,8 @@ function SongF(d: Song) {
   const devicetype = useSelector(
     (state: RootHome) => state.rootHome.devicetype
   );
-  
-  
+
+
   return (
     <div
       onDoubleClick={(e) => {
@@ -33,8 +34,8 @@ function SongF(d: Song) {
         <div className="relative size-[50px] rounded-lg overflow-hidden">
           <img
             loading="lazy"
-            src={d.image}
-            alt=""
+            src={ImagePath(d.image)}
+            alt={d.name}
             srcSet=""
             className="absolute -z-0 top-0 left-0"
           />
