@@ -65,7 +65,7 @@ export default function ArtistPage() {
         <div
           className="hidden sm:block opacity-60 bg-no-repeat bg-cover bg-blend-color rounded-t-lg absolute top-0 left-0 w-full h-[340px] "
           style={{
-            backgroundImage: `url(${artist?.Banner || ""})`,
+            backgroundImage: `url(https://res.cloudinary.com/dkd1k6e2r/image/upload/v1757582979/${artist?.Banner || ""})`,
           }}
         ></div>
       ) : (

@@ -1,8 +1,7 @@
-import { get, post } from "@/page/config/req";
+import { post } from "@/page/config/req";
 import React, { useEffect, useState } from "react";
 
-import { useSelector } from "react-redux";
-import { RootHome } from "../RootRedux";
+
 import { iPlayList } from "@/page/component/Playlist/interface";
 import PlayList from "@/page/component/Playlist/Playlist";
 
