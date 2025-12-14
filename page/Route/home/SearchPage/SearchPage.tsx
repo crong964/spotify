@@ -27,13 +27,13 @@ export default function SearchPage() {
   const [songname, SetSongName] = useState<SongInPlayList[]>([]);
   const [songs, SetSongS] = useState<SongInPlayList[]>([]);
   const dispatch = useDispatch();
-  const { s } = useParams();
+  const { query } = useParams();
   const [artist, SetArtis] = useState<artist[]>([]);
   const [playlists, SetPlayLists] = useState<iPlayList[]>([]);
   const [name, SetName] = useState("");
 
   const FetchSearch = () => {
-    post("/search", { name: s }, (v: any) => {
+    post("/search", { name: query }, (v: any) => {
       if (!v || v.err) {
         return;
       }
@@ -44,7 +44,7 @@ export default function SearchPage() {
     });
   };
   useEffect(() => {
-    if (s == undefined || s.length <= 0) {
+    if (query == undefined || query.length <= 0) {
       return;
     }
     let f = setTimeout(() => {
@@ -53,7 +53,7 @@ export default function SearchPage() {
     return () => {
       clearTimeout(f);
     };
-  }, [s]);
+  }, [query]);
   return (
     <div className="w-full">
       <form
@@ -86,7 +86,7 @@ export default function SearchPage() {
           </svg>
         </button>
       </form>
-      {s == undefined || s.length <= 0 ? (
+      {query == undefined || query.length <= 0 ? (
         <div className="text-center font-bold h-full">Bài hát bạn tìm</div>
       ) : (
         <>

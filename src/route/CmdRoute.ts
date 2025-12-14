@@ -1,9 +1,7 @@
 import { Router } from "express";
 import cmdController from "../controller/CmdController";
-const CmdRoute = Router()
+const CmdRoute = Router();
 
+CmdRoute.post("/", cmdController.PostCommand);
 
-CmdRoute.post("/", cmdController.PostCommand)
-
-
-export default CmdRoute
+export default CmdRoute;

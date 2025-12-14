@@ -14,7 +14,7 @@ export default function LikedSongListPage() {
       if (!v || v.err) {
         return;
       }
-      SetSongS(v.ls); 
+      SetSongS(v.ls);
     });
   }, []);
   return (
@@ -63,7 +63,7 @@ export default function LikedSongListPage() {
         <div className="py-3 font-bold text-[24px]  text-white">
           Các bài hát
         </div>
-        <SongList data={songs} type="likeplaylist"/>
+        <SongList data={songs} type="likeplaylist" />
         <footer className="h-5"></footer>
       </div>
     </div>

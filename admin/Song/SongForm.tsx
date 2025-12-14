@@ -33,6 +33,7 @@ type Song = {
 export default function SongForm() {
   const [conut, SetConut] = useState(0);
   const [SelectedSingers, SetSelectedSingers] = useState<singer[]>([]);
+  const [load, setLoad] = useState(false);
   const [file, SetFile] = useState<File>();
   const [total, SetTotal] = useState(0);
   const [finsih, SetFish] = useState(false);
@@ -286,6 +287,7 @@ export default function SongForm() {
                   return;
                 }
                 form.set("user_id", user_id);
+                setLoad(true);
                 post("/admin/song/addSong", form, (v: any) => {
                   if (!v.err) {
                     alert("tc");
@@ -293,11 +295,12 @@ export default function SongForm() {
                   } else {
                     alert("loou");
                   }
+                  setLoad(false);
                 });
               }}
               className="bg-blue-700 cursor-pointer text-white font-bold rounded-full px-3 py-1"
             >
-              Đăng
+              Đăng {load ? "loading..." : ""}
             </div>
           </div>
         </div>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { PlaySong, RemoveRight, RootHome } from "@/page/Route/home/RootRedux";
+import { RemoveRight, RootHome } from "@/page/Route/home/RootRedux";
 import { get } from "@/page/config/req";
 import {
   JumpingSong,
@@ -111,7 +111,6 @@ function RecentPlaySongs(p: MenberQueue) {
               />
             );
           })}
-          
         </>
       ) : (
         <></>

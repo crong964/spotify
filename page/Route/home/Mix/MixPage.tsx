@@ -1,26 +1,16 @@
 import React, { useEffect, useState } from "react";
 import PlayButtom from "@/page/component/PlayButtom";
 import { useDispatch, useSelector } from "react-redux";
-import { RootHome, SetCurName, SetPlaylist } from "@/page/Route/home/RootRedux";
+import { RootHome } from "@/page/Route/home/RootRedux";
 import { get, post } from "@/page/config/req";
-import { RecommendedSong, SongList } from "@/page/component/Song/Index";
+import { SongList } from "@/page/component/Song/Index";
 
 import { TimeString } from "@/page/component/Time";
 import { useParams } from "react-router-dom";
 
-import {
-  CheckCircleIcon,
-  MusicNoteBeamedIcon,
-  PencilIcon,
-  PlusCircleIcon,
-  ThreeDotsIcon,
-  XIcon,
-} from "@/icon/Icon";
-import { SetAutoPlay } from "@/page/component/Audio/AudioRedux";
+import { ThreeDotsIcon } from "@/icon/Icon";
 import { SongInPlayList } from "@/page/component/Song/interface";
 import { Avatar } from "@/page/component/avatar";
-import { Pop } from "@/page/component/pop";
-import { PopEditPlaylis } from "@/page/component/Playlist";
 
 var g = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 6, 7];
 export interface artist {

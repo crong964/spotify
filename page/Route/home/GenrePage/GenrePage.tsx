@@ -35,7 +35,7 @@ export default function Genre() {
     });
   }, []);
   return (
-    <div>
+    <section>
       <div className="text-[24px] font-bold text-white">Duyệt tìm tất cả</div>
       <form className="flex sm:hidden w-full sticky top-0 left-0 items-center z-[10] bg-white text-black rounded-2xl my-1 p-2">
         <input
@@ -83,7 +83,7 @@ export default function Genre() {
           );
         })}
       </div>
-    </div>
+    </section>
   );
 }
 interface GenreData {

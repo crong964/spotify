@@ -8,23 +8,11 @@ import React, {
 } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import {
-  NaviRight,
-  PlaySong,
-  RootHome,
-  SetPlaying,
-} from "@/page/Route/home/RootRedux";
+import { NaviRight, PlaySong, RootHome } from "@/page/Route/home/RootRedux";
 
 import { post } from "@/page/config/req";
-import {
-  NextSong,
-  SetAutoPlay,
-  SetPip,
-  SetPlaylistmobile,
-  SetSongs,
-  SetStop,
-} from "./AudioRedux";
-import { ParseJson, VolumeAudio } from "@/page/socket/Socket";
+import { NextSong, SetPip, SetSongs, SetStop } from "./AudioRedux";
+import { VolumeAudio } from "@/page/socket/Socket";
 import {
   DiscussIcon,
   PauseSoundIcon,
@@ -58,25 +46,26 @@ function PlayingBar() {
     parseInt(localStorage.getItem("volume") || "100")
   );
 
-
   const dispatch = useDispatch();
 
-
-  const RandomNext = useCallback((n: number) => {
-    if (mark + n >= 0 && mark + n < lsSong.length) {
-      dispatch(NextSong(n));
-      dispatch(PlaySong(lsSong[mark].Id));
-      return;
-    }
-
-    post("/song/NextSong", { idSong: lsSong[mark].Id }, (v: any) => {
-      if (!v || v.err) {
+  const RandomNext = useCallback(
+    (n: number) => {
+      if (mark + n >= 0 && mark + n < lsSong.length) {
+        dispatch(NextSong(n));
+        dispatch(PlaySong(lsSong[mark].Id));
         return;
       }
-      localStorage.setItem("song", JSON.stringify(v.song));
-      dispatch(SetSongs([v.song]));
-    });
-  }, [lsSong, mark])
+
+      post("/song/NextSong", { idSong: lsSong[mark].Id }, (v: any) => {
+        if (!v || v.err) {
+          return;
+        }
+        localStorage.setItem("song", JSON.stringify(v.song));
+        dispatch(SetSongs([v.song]));
+      });
+    },
+    [lsSong, mark]
+  );
 
   useEffect(() => {
     localStorage.setItem("volume", volume + "");
@@ -86,12 +75,12 @@ function PlayingBar() {
     <div className="w-full bg-black py-0 sm:py-1 h-[10%] sm:h-[12%] grid items-center grid-cols-1 sm:grid-cols-4 mt-0 ">
       <div
         onClick={() => {
-          location.assign("/mobile/playlist")
+          location.assign("/mobile/playlist");
         }}
         className="flex sm:inline-block justify-between items-center px-2 sm:px-0"
       >
         <Song
-          onClick={() => { }}
+          onClick={() => {}}
           Id={lsSong[mark]?.Id || "0"}
           image={lsSong[mark]?.SongImage}
           name={lsSong[mark]?.SongName || ","}
@@ -194,12 +183,10 @@ function PlayingBar() {
           title="Mở trình duyệt thu nhỏ"
         >
           <PiPIcon className="fill-white size-5 hover:fill-green-600" />
-          {pip ? (
+          {pip && (
             <Suspense fallback={<></>}>
               <Pip imagePath={lsSong[mark]?.SongImage} />
             </Suspense>
-          ) : (
-            <></>
           )}
         </button>
       </div>
@@ -208,4 +195,4 @@ function PlayingBar() {
     <></>
   );
 }
-export default memo(PlayingBar)
+export default memo(PlayingBar);

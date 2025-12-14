@@ -1,0 +1,8 @@
+export const CACHE_5_DAY = 1000 * 60 * 60 * 24 * 5;
+
+export const SONGS_LIST_QUERY = "songs_list";
+export const SINGLE_ARTISTS_QUERY = "single_artists_query";
+export const SINGLE_PLAYLIST_QUERY = "single_playlist_query";
+export const NEXT_PLAYLIST_ARTIST_QUERY = "next_playlist_artist_query";
+export const NEXT_PLAYLIST_QUERY = "next_playlist_query";
+export const LIKE_PLAYLIST_QUERY = "like_playlist_query";

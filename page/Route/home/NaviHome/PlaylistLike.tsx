@@ -14,37 +14,86 @@ import { iPlayList } from "@/page/component/Playlist/interface";
 
 import Modal from "@/page/component/pop/Modal";
 import { Avatar } from "@/page/component/avatar";
+import { useQuery } from "@tanstack/react-query";
+import { CACHE_5_DAY, LIKE_PLAYLIST_QUERY } from "@/page/contant/quey_key";
 
 export default function PlaylistLike() {
-  const [playList, SetPlayLists] = useState<iPlaylistLikeC[]>([]);
+  const [playLists, setPlayLists] = useState<iPlaylistLikeItem[]>([]);
   const iduser = useSelector((state: RootHome) => state.rootauth.login.idUser);
   const dispatch = useDispatch();
-  useEffect(() => {
-    post("/likePlaylist/getall", {}, (v: any) => {
-      if (v && v.ls) {
-        SetPlayLists(v.ls);
-        let ls = [];
-        for (let i = 0; i < v.ls.length; i++) {
-          const element: iPlaylistLikeC = v.ls[i];
-          if (element.User_id == v.idU) {
-            ls.push({
-              idplaylist: element.id,
-              PlayListName: element.PlayListName,
-            });
-          }
-        }
-        dispatch(SetPlaylistRedux(ls as any));
-      }
-    });
-  }, []);
 
+  const fetchLikePlaylist = (): Promise<{
+    playlists: iPlaylistLikeItem[];
+    idU: string;
+  }> => {
+    return new Promise((result, rej) => {
+      post("/likePlaylist/getall", {}, (v: any) => {
+        if (v && v.ls) {
+          result({
+            playlists: v.ls,
+            idU: v.idU,
+          });
+          return;
+        }
+        result(v || {});
+      });
+    });
+  };
+  const { data } = useQuery({
+    queryKey: [LIKE_PLAYLIST_QUERY],
+    queryFn: async () => {
+      const data = await fetchLikePlaylist();
+      return data;
+    },
+  });
+  useEffect(() => {
+    if (data && data.idU && data.playlists) {
+      const idU = data.idU;
+      const playlists = data.playlists;
+      setPlayLists(playlists);
+      let ls = [];
+      for (let i = 0; i < playlists.length; i++) {
+        const element: iPlaylistLikeItem = playlists[i];
+        if (element.User_id == idU) {
+          ls.push({
+            idplaylist: element.id,
+            PlayListName: element.PlayListName,
+          });
+        }
+      }
+      dispatch(SetPlaylistRedux(ls as any));
+    }
+  }, [data]);
+
+  //useEffect(() => {
+  //  if (data) {
+  //    SetPlayLists(data);
+  //    let ls = [];
+  //    for (let i = 0; i < data.length; i++) {
+  //      const element: iPlaylistLikeItem = data[i];
+  //      if (element.User_id == data.idU) {
+  //        ls.push({
+  //          idplaylist: element.id,
+  //          PlayListName: element.PlayListName,
+  //        });
+  //      }
+  //    }
+  //    dispatch(SetPlaylistRedux(ls as any));
+  //  }
+  //  return () => {};
+  //}, [data]);
   return (
     <div className="min-h-[300px]">
-      {playList.map((d) => {
-        return <PlaylistLikeC {...d} key={d.id} idU={iduser} />;
+      {playLists.map((playlist) => {
+        return (
+          <PlaylistLikeItem {...playlist} key={playlist.id} idU={iduser} />
+        );
       })}
 
-      <Link to={"/mobile/ArtistsListPage"} className="grid grid-cols-7 gap-16 my-4 sm:hidden">
+      <Link
+        to={"/mobile/ArtistsListPage"}
+        className="grid grid-cols-7 gap-16 my-4 sm:hidden"
+      >
         <div className="col-span-1 ">
           <PlusIcon className="bg-[#1A1A1A] rounded-full size-[60px]"></PlusIcon>
         </div>
@@ -53,11 +102,11 @@ export default function PlaylistLike() {
     </div>
   );
 }
-interface iPlaylistLikeC extends iPlayList {
+interface iPlaylistLikeItem extends iPlayList {
   idU: string;
   User_id: string;
 }
-function PlaylistLikeC(d: iPlaylistLikeC) {
+function PlaylistLikeItem(d: iPlaylistLikeItem) {
   const dispatch = useDispatch();
   const [pop, SetPop] = useState(false);
   const mobiletype = useSelector(

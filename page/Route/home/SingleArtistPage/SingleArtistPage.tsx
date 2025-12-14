@@ -1,4 +1,4 @@
-import { LegacyRef, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootHome, SetCurName } from "@/page/Route/home/RootRedux";
 import { artist } from "../PlayListPage/PlayListPage";
@@ -7,12 +7,14 @@ import { useParams } from "react-router-dom";
 import { get, post } from "@/page/config/req";
 import React from "react";
 import PlayButtom from "@/page/component/PlayButtom";
-import { CheckCircleIcon, PlusCircleIcon } from "@/icon/Icon";
 import TypeFriend from "@/page/component/friend/TypeFriend";
 import { SongInPlayList } from "@/page/component/Song/interface";
 import { Avatar } from "@/page/component/avatar";
 import { iPlayList } from "@/page/component/Playlist/interface";
 import { Playlists } from "@/page/component/Playlist";
+import ImagePath from "@/page/config/img";
+import { useQuery } from "@tanstack/react-query";
+import { CACHE_5_DAY, SINGLE_ARTISTS_QUERY } from "@/page/contant/quey_key";
 
 export default function ArtistPage() {
   const Right = useSelector((state: RootHome) => state.rootHome.Right);
@@ -29,22 +31,59 @@ export default function ArtistPage() {
     (state: RootHome) => state.rootauth.login.IsLogin
   );
   const [fontsize, SetFontSire] = useState(96);
-  useEffect(() => {
-    get(`/user/artistpage/${id}`, (v: any) => {
-      if (!v || v.err) {
+
+  const fetchArtist = () => {
+    return new Promise<
+      | {
+          isfriend: "-1" | "0" | "1" | "2";
+          songs: SongInPlayList[];
+          artist: artist;
+          lsplaylistartist: iPlayList[];
+          like: boolean;
+        }
+      | undefined
+    >((result, rej) => {
+      get(`/user/artistpage/${id}`, (v: any) => {
+        if (!v || v.err) {
+          let f: any = {};
+          result(f);
+          return;
+        }
+        result({
+          isfriend: v.isfriend,
+          songs: v.lsong,
+          artist: v.atist,
+          lsplaylistartist: v.lsplaylistartist,
+          like: v.like,
+        });
         return;
-      }
-      SetIsfriend(v.isfriend);
-      SetaAtist(v.atist);
-      SetSongS(v.lsong);
-      SetLsAtist(v.lsplaylistartist);
-      dispatch(SetCurName(v.atist.ChanalName));
-      SetLike(v.like);
-      if (refPage.current) {
-        refPage.current.scrollIntoView();
-      }
+      });
     });
-  }, [id]);
+  };
+
+  const { data: fetchArtistData } = useQuery({
+    queryKey: [SINGLE_ARTISTS_QUERY, id],
+    queryFn: async () => {
+      return await fetchArtist();
+    },
+    staleTime: CACHE_5_DAY,
+  });
+
+  useEffect(() => {
+    if (!fetchArtistData || !fetchArtistData.artist) {
+      return;
+    }
+    let v = fetchArtistData;
+    SetIsfriend(v.isfriend);
+    SetaAtist(v.artist);
+    SetSongS(v.songs);
+    SetLsAtist(v.lsplaylistartist);
+    dispatch(SetCurName(v.artist.ChanalName || ""));
+    SetLike(v.like);
+    if (refPage.current) {
+      refPage.current.scrollIntoView();
+    }
+  }, [fetchArtistData]);
 
   useEffect(() => {
     let leg = refText.current?.innerText;
@@ -59,13 +98,14 @@ export default function ArtistPage() {
       SetFontSire(96);
     }
   }, [Right]);
+
   return (
     <div className="relative " ref={refPage}>
       {artist?.Banner !== "" ? (
         <div
           className="hidden sm:block opacity-60 bg-no-repeat bg-cover bg-blend-color rounded-t-lg absolute top-0 left-0 w-full h-[340px] "
           style={{
-            backgroundImage: `url(https://res.cloudinary.com/dkd1k6e2r/image/upload/v1757582979/${artist?.Banner || ""})`,
+            backgroundImage: `url(${ImagePath(artist?.Banner || "")})`,
           }}
         ></div>
       ) : (
@@ -76,7 +116,9 @@ export default function ArtistPage() {
 
       <div
         className="block sm:hidden bg-no-repeat bg-cover rounded-t-lg absolute top-0 left-0 w-full h-[320px]"
-        style={{ backgroundImage: `url(${artist?.pathImage || ""})` }}
+        style={{
+          backgroundImage: `url(${ImagePath(artist?.pathImage || "")})`,
+        }}
       ></div>
       {/* <div className="opacity-25 bg-black absolute top-0 left-0 w-full h-[340px]"></div> */}
       <div className="flex items-end p-2">

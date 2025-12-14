@@ -7,6 +7,8 @@ import { NaviPage } from "./RootRedux";
 
 import { iPlayList } from "@/page/component/Playlist/interface";
 import { Playlists } from "@/page/component/Playlist";
+import { useQuery } from "@tanstack/react-query";
+import { NEXT_PLAYLIST_ARTIST_QUERY } from "@/page/contant/quey_key";
 
 const PlayButtom = React.lazy(() => import("@/page/component/PlayButtom"));
 
@@ -16,12 +18,30 @@ interface SetionList {
   link?: string;
 }
 export function SetionList(params: SetionList) {
-  const [artist, SetaAtist] = useState<iPlayList[]>([]);
-  useEffect(() => {
-    post("/playlist/NextPlaylistArtist", {}, (v: any) => {
-      SetaAtist(v.ls);
+  const [artist, setaAtist] = useState<iPlayList[]>([]);
+  const fetchPlaylistArtist = () => {
+    return new Promise<iPlayList[]>((result, rej) => {
+      post("/playlist/NextPlaylistArtist", {}, (v: any) => {
+        if (v && v.ls) {
+          result(v.ls);
+        }
+        result([]);
+      });
     });
-  }, []);
+  };
+  const { data } = useQuery({
+    queryKey: [NEXT_PLAYLIST_ARTIST_QUERY],
+    queryFn: async () => {
+      const data = await fetchPlaylistArtist();
+      return data;
+    },
+    staleTime: 1000 * 60 * 60 * 24,
+  });
+  useEffect(() => {
+    if (data) {
+      setaAtist(data);
+    }
+  }, [data]);
   return (
     <div>
       <Playlists
@@ -75,15 +95,7 @@ export default function SetionData(params: SetionData) {
         </div>
       </Link>
 
-      {hidden ? (
-        <></>
-      ) : (
-        <>
-          <PlayButtom id={params.id} page="artist" />
-        </>
-      )}
+      {!hidden && <PlayButtom id={params.id} page="artist" />}
     </div>
   );
 }
-
-

@@ -39,7 +39,7 @@ export default function Listenplaylist() {
     children.push(
       <Playlist
         ImagePath="https://res.cloudinary.com/dkd1k6e2r/image/upload/v1739376087/aXZpdml2aXZpdml2aXZpdg_g89ohh.jpg"
-        className={`cursor-pointer size-[100px] sm:size-[180px] `}
+        className={`cursor-pointer size-[160px] sm:size-[180px] `}
         Genre_ID=""
         PlayListName={`Mix Ngày ${i + 1}`}
         Type="mix"

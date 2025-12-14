@@ -6,31 +6,32 @@ type tArtistLink = {
   idArtist: string;
   nameArtist: string;
 };
-export default function ArtistLink(v: tArtistLink) {
+export default function ArtistLink({ idArtist, nameArtist }: tArtistLink) {
   const devicetype = useSelector(
     (state: RootHome) => state.rootHome.devicetype
   );
-  let id = v.idArtist.split(" ");
-  let name = v.nameArtist.split(",");
+  let id = idArtist.split(" ");
+  let name = nameArtist.split(",");
   const dispatch = useDispatch();
   return (
     <div className="flex text-white sm:text-stone-500 font-normal">
-      {id.map((va, ix) => {
-        if (ix == id.length - 1) {
+      {id.map((artist_id, indexArtist) => {
+        if (indexArtist == id.length - 1) {
           return (
             <Link
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
                 dispatch(
                   NaviPage({
                     page: "artist",
-                    param: va,
+                    param: artist_id,
                   })
                 );
               }}
               className="sm:hover:text-white"
-              to={devicetype == "pc" ? `/artist/${va}` : "#"}
+              to={devicetype == "pc" ? `/artist/${artist_id}` : "#"}
             >
-              {name[ix]}
+              {name[indexArtist]}
             </Link>
           );
         }
@@ -41,14 +42,14 @@ export default function ArtistLink(v: tArtistLink) {
                 dispatch(
                   NaviPage({
                     page: "artist",
-                    param: va,
+                    param: artist_id,
                   })
                 );
               }}
               className="sm:hover:text-white"
-              to={devicetype == "pc" ? `/artist/${va}` : "#"}
+              to={devicetype == "pc" ? `/artist/${artist_id}` : "#"}
             >
-              {name[ix]}
+              {name[indexArtist]}
             </Link>
             ,
           </>

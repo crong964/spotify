@@ -5,13 +5,13 @@ import { useDispatch, useSelector } from "react-redux";
 import React from "react";
 import { CheckCircleIcon, PlusCircleIcon, TrashIcon } from "@/icon/Icon";
 import Time from "@/page/component/Time";
-const ArtistLink = React.lazy(() => import("@/page/component/ArtistLink"));
 import { SetAutoPlay, SetIdSelectedSong, SetSongs } from "@/page/component/Audio/AudioRedux";
 import { post } from "@/page/config/req";
 import { Modal, Pop } from "@/page/component/pop";
-import { useParams } from "react-router-dom";
-import { Avatar } from "../avatar";
+import { Avatar } from "@/page/component/avatar";
 import ImagePath from "@/page/config/img";
+
+const ArtistLink = React.lazy(() => import("@/page/component/ArtistLink"));
 
 export default function SongInPlayList(v: SongInPlayList) {
   const [liked, SetLike] = useState<string>(v.liked);

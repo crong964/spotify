@@ -35,12 +35,13 @@ type SongEidt = {
 };
 function convertYYYMMDD(params: string) {
   let d = new Date(parseInt(params) * 1000);
-  return `${d.getFullYear()}-${d.getMonth() + 1 > 10 ? d.getMonth() + 1 : "0" + (d.getMonth() + 1)
-    }-${d.getDate() > 10 ? d.getDate() : "0" + d.getDate()}`;
+  return `${d.getFullYear()}-${
+    d.getMonth() + 1 > 10 ? d.getMonth() + 1 : "0" + (d.getMonth() + 1)
+  }-${d.getDate() > 10 ? d.getDate() : "0" + d.getDate()}`;
 }
 export default function SongEdit() {
   const [SelectedSingers, SetSelectedSingers] = useState<singer[]>([]);
-  const [conut, SetConut] = useState(0);
+  const [load, setLoad] = useState(false);
   const [file, SetFile] = useState<File>();
   const { idArtist } = useParams();
   const [song, SetSong] = useState<Song>({
@@ -252,6 +253,7 @@ export default function SongEdit() {
                   form.set("avatar", file);
                 }
                 form.set("user_id", user_id);
+                setLoad(true);
                 post("/admin/song/update", form, (v: any) => {
                   if (!v.err) {
                     alert("tc");
@@ -259,11 +261,12 @@ export default function SongEdit() {
                   } else {
                     alert("loou");
                   }
+                  setLoad(false);
                 });
               }}
               className="bg-blue-700 cursor-pointer text-white font-bold rounded-full px-3 py-2"
             >
-              Cập nhật
+              Cập nhật {load ? "loading..." : ""}
             </div>
           </div>
         </div>
