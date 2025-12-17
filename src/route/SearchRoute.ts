@@ -1,6 +1,8 @@
 import { NextFunction, Router, Request, Response } from "express";
 import searchControll from "../controller/SearchControll";
+import { CHECKAPI } from "../middleware/admin";
 const SearchRoute = Router();
+SearchRoute.use(CHECKAPI);
 const check = (key: string) => {
   return (req: Request, res: Response, next: NextFunction) => {
     const name = req.body?.[key];

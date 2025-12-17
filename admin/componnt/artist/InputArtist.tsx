@@ -16,7 +16,7 @@ function useSelectedArtist() {
   useEffect(() => {
     if (p == "") {
       Setsingers([]);
-      return
+      return;
     }
     let s = setTimeout(() => {
       post("/search/NameArtist", { name: p }, (v: any) => {
@@ -28,7 +28,6 @@ function useSelectedArtist() {
     return () => {
       clearTimeout(s);
     };
-
   }, [p]);
   return { singers, SelectedSingers, SetSelectedSingers, SetP, Setsingers };
 }

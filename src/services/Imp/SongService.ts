@@ -26,7 +26,9 @@ export class SongService {
   }
 
   async GetAll(user_id: string) {
-    var sql = ` SELECT song.* FROM song,playlist,contain WHERE playlist.user_id=? AND playlist.Type='artist' AND contain.Song_ID=song.Id AND contain.PlayList_id=playlist.id `;
+    var sql = ` SELECT song.* FROM song,playlist,contain 
+              WHERE playlist.user_id=? AND playlist.Type='artist'
+               AND contain.Song_ID=song.Id AND contain.PlayList_id=playlist.id `;
     var check = await Mysql2.query(sql, [user_id]);
     var ls: SongModel[] = this.SetLs(check);
     return ls;
@@ -75,11 +77,6 @@ export class SongService {
     var check;
     check = (await this.songDatabase.GetSongByGenre(idGenre, p)) as [];
     return this.SetLs(check);
-  }
-  async GetSongsByPagination(last_id: string) {
-    let songs = await this.songDatabase.GetSongsByPagination(last_id);
-
-    return this.SetLs(songs);
   }
 
   async GetSongByTabs(idGenre: string, idPlaylist: string, p: limit) {

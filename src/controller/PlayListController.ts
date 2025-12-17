@@ -279,7 +279,7 @@ export class PlayListController {
           playlistmodel.ImagePath =
             (await PlayListController.firebase.UploadStream(
               check,
-              `playlist/${playlistmodel.id}.webp`
+              `playlist/${playlistmodel.id}`
             )) as string;
           unlink(path);
           unlink(check);

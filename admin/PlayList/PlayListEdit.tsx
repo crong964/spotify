@@ -1,19 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-
-  RemoveSelectSong,
-  RootState,
-  SetFloor,
-  addGenre,
-} from "@/admin/Redux";
+import { RemoveSelectSong, RootState, SetFloor, addGenre } from "@/admin/Redux";
 import { useParams } from "react-router-dom";
 import { Song } from "@/admin/SongList";
 import IndexGenres from "@/admin/GenreLs";
 import { get, post } from "@/page/config/req";
 
 import { iSong } from "../SongAndGenre/interface";
-import { Tabs } from "@/page/component/tabs";
+import { TabsInput } from "@/page/component/tabs";
 import ImagePath from "@/page/config/img";
 interface SongForm {
   Id: string;
@@ -104,7 +98,6 @@ function PlayListFormData() {
 
   var stt = 0;
   var ls = song.map((element) => {
-
     stt += 1;
     return (
       <OldSong
@@ -150,7 +143,10 @@ function PlayListFormData() {
           >
             <div className="w-full">
               {newSongImage == "" ? (
-                <img className="size-[200px]" src={ImagePath(playlist.ImagePath)} />
+                <img
+                  className="size-[200px]"
+                  src={ImagePath(playlist.ImagePath)}
+                />
               ) : (
                 <div>
                   <div
@@ -212,7 +208,7 @@ function PlayListFormData() {
         Cập nhật
       </div>
       <div className="w-full ">
-        <Tabs
+        <TabsInput
           onchange={(v) => {
             setTabs(v);
           }}
@@ -298,7 +294,7 @@ function OldSong(d: OldSong) {
   // PlayList_id: string
   return (
     <div
-      onClick={() => { }}
+      onClick={() => {}}
       className="grid hover:bg-slate-300 grid-cols-6 cursor-pointer space-x-2 font-bold p-4 rounded-lg items-center"
     >
       <div className="col-span-3 flex items-center space-x-2">
@@ -315,8 +311,8 @@ function OldSong(d: OldSong) {
                 { Song_id: d.Id, PlayList_id: d.idPlaylist },
                 (v: any) => {
                   if (!v.err) {
-                    SetRemove(true)
-                    alert("ok")
+                    SetRemove(true);
+                    alert("ok");
                   }
                 }
               );

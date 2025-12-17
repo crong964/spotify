@@ -2,9 +2,12 @@ import React, { useEffect, useState } from "react";
 import { iRecommendedSong, SongInPlayList } from "./interface";
 import { Avatar } from "@/page/component/avatar";
 import ArtistLink from "@/page/component/ArtistLink";
-import { post } from "@/page/config/req";
+import { post, post2 } from "@/page/config/req";
 import { SearchCircleIcon, XIcon } from "@/icon/Icon";
 import ImagePath from "@/page/config/img";
+import { useMutation } from "@tanstack/react-query";
+import { SINGLE_PLAYLIST_QUERY } from "@/page/contant/quey_key";
+import { queryClient } from "@/page/App";
 
 export default function RecommendedSong(p: iRecommendedSong) {
   const [songs, SetSongs] = useState<SongInPlayList[]>([]);
@@ -52,107 +55,145 @@ export default function RecommendedSong(p: iRecommendedSong) {
       }
     );
   };
+  const { mutate, reset } = useMutation({
+    mutationKey: [SINGLE_PLAYLIST_QUERY, p.idPlaylist],
+    mutationFn: async (song: SongInPlayList) => {
+      let res = await post2("/contain/addsong", {
+        Song_id: song.Id,
+        PlayList_id: p.idPlaylist,
+      });
+      if (res) {
+        return song;
+      }
+      return undefined;
+    },
+    onSuccess: (res, song) => {
+      queryClient.invalidateQueries({
+        queryKey: [SINGLE_PLAYLIST_QUERY, p.idPlaylist],
+      });
+      p.onclick(song);
+      SetSongs(
+        songs.filter((vs) => {
+          return vs.Id != song.Id;
+        })
+      );
+    },
+  });
   return (
     <div className="w-full">
-      {
-        show ?
-          <div className="min-h-[300px]">
-            <div className="flex justify-between items-center ">
-              <div className="flex flex-col">
-                <div className="text-[24px] font-bold pb-[24px]">
-                  Hãy cùng tìm nội dung cho danh sách phát của bạn
-                </div>
-                <div className="flex px-2 bg-[#2A2A2A] items-center space-x-4 self-stretch">
-                  <SearchCircleIcon className="size-[24px] " />
-                  <input
-                    onChange={(v) => {
-                      let name = v.currentTarget.value;
-                      SetSongName(name);
-                    }}
-                    type="text"
-                    className="focus:outline-none p-3 bg-[#2A2A2A] flex-1"
-                    placeholder="Tìm bài hát"
-                  />
-                  {nameSong == "" ? (
-                    <></>
-                  ) : (
-                    <div
-                      onClick={() => {
-                        SetSongName("");
-                        SetSongSearch([]);
-                      }}
-                    >
-                      <XIcon className="size-[24px] " />
-                    </div>
-                  )}
-                </div>
+      {show ? (
+        <div className="min-h-[300px]">
+          <div className="flex justify-between items-center ">
+            <div className="flex flex-col">
+              <div className="text-[24px] font-bold pb-[24px]">
+                Hãy cùng tìm nội dung cho danh sách phát của bạn
               </div>
-              <div onClick={() => {
-                SetShow(false)
-              }}>
-                <XIcon className="size-[60px]" />
+              <div className="flex px-2 bg-[#2A2A2A] items-center space-x-4 self-stretch">
+                <SearchCircleIcon className="size-[24px] " />
+                <input
+                  onChange={(v) => {
+                    let name = v.currentTarget.value;
+                    SetSongName(name);
+                  }}
+                  type="text"
+                  className="focus:outline-none p-3 bg-[#2A2A2A] flex-1"
+                  placeholder="Tìm bài hát"
+                />
+                {nameSong == "" ? (
+                  <></>
+                ) : (
+                  <div
+                    onClick={() => {
+                      SetSongName("");
+                      SetSongSearch([]);
+                    }}
+                  >
+                    <XIcon className="size-[24px] " />
+                  </div>
+                )}
               </div>
             </div>
-            {songsearch.map((v) => {
-              return (
-                <div className="grid grid-cols-7 text-[13px] sm:text-[14px] sm:p-2 py-2 cursor-pointer sm:space-x-2 hover:bg-[#2D2D2D] text-white font-bold rounded-lg items-center">
-                  <div className="col-span-6 grid grid-cols-5 ">
-                    <div className="flex items-center col-span-3">
-                      <Avatar className="size-12 sm:size-9" src={ImagePath(v.SongImage)} />
-                      <div className="flex flex-col px-2">
-                        <div>{v.SongName}</div>
-                        <ArtistLink idArtist={v.user_id} nameArtist={v.Singer} />
-                      </div>
+            <div
+              onClick={() => {
+                SetShow(false);
+              }}
+            >
+              <XIcon className="size-[60px]" />
+            </div>
+          </div>
+          {songsearch.map((v) => {
+            return (
+              <div className="grid grid-cols-7 text-[13px] sm:text-[14px] sm:p-2 py-2 cursor-pointer sm:space-x-2 hover:bg-[#2D2D2D] text-white font-bold rounded-lg items-center">
+                <div className="col-span-6 grid grid-cols-5 ">
+                  <div className="flex items-center col-span-3">
+                    <Avatar
+                      className="size-12 sm:size-9"
+                      src={ImagePath(v.SongImage)}
+                    />
+                    <div className="flex flex-col px-2">
+                      <div>{v.SongName}</div>
+                      <ArtistLink idArtist={v.user_id} nameArtist={v.Singer} />
                     </div>
                   </div>
-                  <div className="col-span-1">
-                    <button
-                      className="border-2 border-white px-3 py-2 rounded-2xl hover:bg-white hover:text-black"
-                      onClick={() => {
-                        post(
-                          "/contain/addsong",
-                          {
-                            Song_id: v.Id,
-                            PlayList_id: p.idPlaylist,
-                          },
-                          (r: any) => {
-                            if (!r.err) {
-                              p.onclick(v);
-                              SetSongSearch(
-                                songsearch.filter((vs) => {
-                                  return vs.Id != v.Id;
-                                })
-                              );
-                            } else {
-                              p.onclick(undefined);
-                            }
-                          }
-                        );
-                      }}
-                    >
-                      Thêm
-                    </button>
-                  </div>
                 </div>
-              );
-            })}
-          </div> :
-          <div onClick={() => {
-            SetShow(true)
-          }} className="flex justify-end items-center my-9 cursor-pointer">
-            Tìm thêm
-          </div>
-      }
+                <div className="col-span-1">
+                  <button
+                    className="border-2 border-white px-3 py-2 rounded-2xl hover:bg-white hover:text-black"
+                    onClick={() => {
+                      post(
+                        "/contain/addsong",
+                        {
+                          Song_id: v.Id,
+                          PlayList_id: p.idPlaylist,
+                        },
+                        (r: any) => {
+                          if (!r.err) {
+                            p.onclick(v);
+                            SetSongSearch(
+                              songsearch.filter((vs) => {
+                                return vs.Id != v.Id;
+                              })
+                            );
+                          } else {
+                            p.onclick(undefined);
+                          }
+                        }
+                      );
+                    }}
+                  >
+                    Thêm
+                  </button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      ) : (
+        <div
+          onClick={() => {
+            SetShow(true);
+          }}
+          className="flex justify-end items-center my-9 cursor-pointer"
+        >
+          Tìm thêm
+        </div>
+      )}
       <div className="py-5 text-4xl font-bold">Danh sách đề xuất</div>
-      {songs.map((v) => {
+      {songs.map((song) => {
         return (
           <div className="grid grid-cols-7 text-[13px] sm:text-[14px] sm:p-2 py-2 cursor-pointer sm:space-x-2 hover:bg-[#2D2D2D] text-white font-bold rounded-lg items-center">
             <div className="col-span-6 grid grid-cols-5 ">
               <div className="flex items-center col-span-3">
-                <Avatar className="size-12 sm:size-9" src={ImagePath(v.SongImage)} />
+                <Avatar
+                  className="size-12 sm:size-9"
+                  src={ImagePath(song.SongImage)}
+                />
                 <div className="flex flex-col px-2">
-                  <div>{v.SongName}</div>
-                  <ArtistLink idArtist={v.user_id} nameArtist={v.Singer} />
+                  <div>{song.SongName}</div>
+                  <ArtistLink
+                    idArtist={song.user_id}
+                    nameArtist={song.Singer}
+                  />
                 </div>
               </div>
             </div>
@@ -160,25 +201,26 @@ export default function RecommendedSong(p: iRecommendedSong) {
               <button
                 className="border-2 border-white px-3 py-2 rounded-2xl hover:bg-white hover:text-black"
                 onClick={() => {
-                  post(
-                    "/contain/addsong",
-                    {
-                      Song_id: v.Id,
-                      PlayList_id: p.idPlaylist,
-                    },
-                    (r: any) => {
-                      if (!r.err) {
-                        p.onclick(v);
-                        SetSongs(
-                          songs.filter((vs) => {
-                            return vs.Id != v.Id;
-                          })
-                        );
-                      } else {
-                        p.onclick(undefined);
-                      }
-                    }
-                  );
+                  //post(
+                  //  "/contain/addsong",
+                  //  {
+                  //    Song_id: song.Id,
+                  //    PlayList_id: p.idPlaylist,
+                  //  },
+                  //  (r: any) => {
+                  //    if (!r.err) {
+                  //      p.onclick(song);
+                  //      SetSongs(
+                  //        songs.filter((vs) => {
+                  //          return vs.Id != song.Id;
+                  //        })
+                  //      );
+                  //    } else {
+                  //      p.onclick(undefined);
+                  //    }
+                  //  }
+                  //);
+                  mutate(song);
                 }}
               >
                 Thêm

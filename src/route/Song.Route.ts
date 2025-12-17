@@ -57,7 +57,6 @@ SongRoute.post("/upStatus", songController.UpStatus); //0k
 SongRoute.post("/NextSong", songController.NextSong);
 
 SongRoute.get("/valisong/:idpage", songController.GetValidateAll);
-SongRoute.get("/pagination", songController.GetSongsByPagination);
 //admin
 SongRoute.post("/GetSongByTabs", songController.GetSongByTabsAdmin);
 

@@ -13,7 +13,8 @@ export default class LikedSongDatabase {
     return check;
   }
   async GetAllByIduserAndIdArtis(d: LikedSongModel) {
-    var sql = `SELECT song.Id,song.user_id, song.SongName,song.SongImage, song.Singer,song.Viewer,song.Duration,likedsong.liked 
+    var sql = `SELECT song.Id,song.user_id, song.SongName,song.SongImage,
+     song.Singer,song.Viewer,song.Duration,likedsong.liked 
     FROM song LEFT JOIN likedsong ON song.Id = likedsong.Id and likedsong.id_user_liked=? 
     WHERE song.user_id=? And song.status = 1;`;
     var check = await Mysql2.query(sql, [d.id_user_liked, d.user_id]);
@@ -21,7 +22,7 @@ export default class LikedSongDatabase {
   }
   async Update(d: LikedSongModel) {
     var sql = `UPDATE likedsong SET liked=? WHERE Id = ? AND id_user_liked= ?`;
-    var check = await Mysql2.query(sql, [d.liked, d.Id, d.id_user_liked,]);
+    var check = await Mysql2.query(sql, [d.liked, d.Id, d.id_user_liked]);
     return check;
   }
   async Get(d: LikedSongModel) {
@@ -31,7 +32,8 @@ export default class LikedSongDatabase {
   }
   async GetAllLikedSong(d: LikedSongModel) {
     var sql = `SELECT song.*, likedsong.liked 
-    FROM song, likedsong where likedsong.id_user_liked =? AND song.Id=likedsong.Id AND likedsong.liked=1
+    FROM song, likedsong where likedsong.id_user_liked =? AND
+     song.Id=likedsong.Id AND likedsong.liked=1
     `;
     var check = await Mysql2.query(sql, [d.id_user_liked]);
     return check;
@@ -40,9 +42,9 @@ export default class LikedSongDatabase {
     var sql = `SELECT song.*, likedsong.liked 
     FROM song LEFT JOIN likedsong ON song.Id = likedsong.Id and likedsong.id_user_liked= ? 
     WHERE  song.status = 1 AND song.SongName like ?;`;
-    var check
-    check = await Mysql2.query(sql, [iduser, `%${name}%`])
-    return check
+    var check;
+    check = await Mysql2.query(sql, [iduser, `%${name}%`]);
+    return check;
   }
   async GetAllByIdPlayList(id_user_liked: string, id_playlist: string) {
     var sql = `
@@ -52,6 +54,29 @@ export default class LikedSongDatabase {
     LEFT JOIN contain on contain.Song_ID=song.Id
     WHERE contain.PlayList_id=? And song.status = 1;`;
     var check = await Mysql2.query(sql, [id_user_liked, id_playlist]);
+    return check;
+  }
+
+  async GetSongsByPagination(last_id: string, user_id: string, tabs = "") {
+    let tab = tabs.split(" ").reduce((preTab, curTab) => {
+      return `${preTab} +${curTab}`;
+    }, "");
+    tab = tab.trim();
+
+    if (tabs == "") {
+      let sql = `SELECT song.*,likedsong.liked 
+       FROM song LEFT JOIN likedsong ON song.Id = likedsong.Id and likedsong.id_user_liked=?
+       WHERE  song.status=1 AND song.id > ? ORDER BY id ASC LIMIT 0,30 `;
+      let check;
+      check = await Mysql2.query(sql, [user_id, last_id]);
+      return check;
+    }
+    let sql = `SELECT song.*,likedsong.liked 
+       FROM song LEFT JOIN likedsong ON song.Id = likedsong.Id and likedsong.id_user_liked=?
+       WHERE  song.status=1 AND song.id > ? AND MATCH(Genre_id) AGAINST(? IN BOOLEAN MODE )
+       ORDER BY id ASC LIMIT 0,30 `;
+    let check;
+    check = await Mysql2.query(sql, [user_id, last_id, tab]);
     return check;
   }
 }

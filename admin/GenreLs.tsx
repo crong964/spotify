@@ -104,5 +104,5 @@ export default function IndexGenres() {
   for (let i = 0; i < floor + 1; i++) {
     ls.push(<GenreLs floor={i} key={i} ls={genre}></GenreLs>);
   }
-  return <div className="relative h-[200px] ">{ls}</div>;
+  return <div className="relative h-[300px] overflow-y-auto">{ls}</div>;
 }

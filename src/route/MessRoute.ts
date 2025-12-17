@@ -3,6 +3,7 @@ import messController from "../controller/MessController";
 import multer from "multer";
 import { join } from "path";
 import sharp from "sharp";
+import { CHECKAPI } from "../middleware/admin";
 sharp.cache(false);
 
 const storage = multer.diskStorage({
@@ -27,6 +28,7 @@ const mutil = multer({
 
 const MessRoute = Router();
 
+MessRoute.use(CHECKAPI);
 MessRoute.post("/GetAllMessInbox", messController.GetAllMessInbox); //0k
 MessRoute.post("/send", messController.SendMess); //0k
 MessRoute.post("/hiddenMess", messController.HiddenMess); //0k

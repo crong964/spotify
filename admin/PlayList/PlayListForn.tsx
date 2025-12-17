@@ -5,8 +5,7 @@ import { Song } from "@/admin/SongAndGenre/Song";
 import IndexGenres from "@/admin/GenreLs";
 import { get, post } from "@/page/config/req";
 import { iSong } from "../SongAndGenre/interface";
-import { Tabs } from "@/page/component/tabs";
-import ImagePath from "@/page/config/img";
+import { TabsInput } from "@/page/component/tabs";
 
 interface PlayListFormData {
   id: string;
@@ -54,7 +53,7 @@ export default function PlayListForm() {
       {ls}
       <PlayListFormData />
       <div className="w-full ">
-        <Tabs
+        <TabsInput
           onchange={(v) => {
             setTabs(v);
           }}

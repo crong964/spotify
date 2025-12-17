@@ -20,7 +20,6 @@ export function SignJWT(payload: string, secret?: string) {
   return jwt.sign(payload, SECRET || "1");
 }
 
-export function IdUser(p: Request) {}
 export async function VerifyGoogleIDtoken(token: string) {
   const client = new OAuth2Client();
   let payload: TokenPayload | undefined;

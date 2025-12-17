@@ -1,6 +1,6 @@
 import { Router } from "express";
 import playListController from "../controller/PlayListController";
-import { USER } from "../config/admin";
+import { CHECKAPI, USER } from "../middleware/admin";
 import multer from "multer";
 import path from "path";
 
@@ -15,6 +15,7 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage }).single("avatar");
 const PlayListRoute = Router();
+PlayListRoute.use(CHECKAPI);
 
 PlayListRoute.post("/GetAllPlayList", playListController.GetByGenreAdmin); //0k
 PlayListRoute.get("/data/:idplaylist", playListController.GetPlayListById); //0k

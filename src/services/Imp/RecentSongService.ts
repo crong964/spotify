@@ -13,13 +13,11 @@ export class RecentSongService {
     return check;
   }
   async GetAllByidUser(id: string) {
-    var sql = `SELECT song.* FROM recentsong, song WHERE recentsong.user_id=? AND song.Id =recentsong.Id ORDER BY recentsong.Time DESC limit 0,10`;
-    var check = await Mysql2.query(sql, [id]);
+    var check = await this.recentSongDatabase.GetAllByidUser(id);
     return this.SetLs(check);
   }
-  async GetLastRecentSong(id: string) {
-    var sql = `SELECT song.* FROM recentsong, song WHERE recentsong.user_id=? AND song.Id =recentsong.Id ORDER BY recentsong.Time DESC limit 0,1`;
-    var check = (await Mysql2.query(sql, [id])) as [];
+  async GetRecentSong(song_id: string, user_id: string) {
+    var check = await this.recentSongDatabase.GetRecentSong(song_id, user_id);
     return check.length > 0 ? this.SetLs(check)[0] : undefined;
   }
   async Get(user_id: string, Id_song: string) {
@@ -35,8 +33,8 @@ export class RecentSongService {
     }
     return undefined;
   }
-  async UpdateTime(user_id: string, Id_song: string) {
-    var check = await this.recentSongDatabase.UpdateTime(user_id, Id_song);
+  async UpdateTime(user_id: string, song_id: string) {
+    var check = await this.recentSongDatabase.UpdateTime(user_id, song_id);
     return check;
   }
   async ListenAgainByUserId(user_id: string, start: number) {

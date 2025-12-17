@@ -7,7 +7,7 @@ import { NaviPage, RootHome } from "@/page/Route/home/RootRedux";
 import { Link } from "react-router-dom";
 import { Avatar } from "@/page/component/avatar";
 
-interface RecentPlaylist {
+export interface iRecentPlaylist {
   User_ID: string;
   ID: string;
   CreateTime: string;
@@ -18,7 +18,7 @@ interface RecentPlaylist {
 interface List {
   children: React.JSX.Element[];
 }
-export function RecentPlaylist(params: RecentPlaylist) {
+export function RecentPlaylist(params: iRecentPlaylist) {
   const dispatch = useDispatch();
   const playing = useSelector((state: RootHome) => state.rootHome.playing);
   const stopAudio = useSelector((state: RootHome) => state.audioroot.stop);
@@ -56,19 +56,16 @@ export function RecentPlaylist(params: RecentPlaylist) {
     </div>
   );
 }
-export default function RecentList() {
-  const [recentList, SetRecentList] = useState<RecentPlaylist[]>([]);
-  useEffect(() => {
-    post("recentPlaylist/getAll", {}, (v: any) => {
-      if (v && !v.err) {
-        SetRecentList(v.ls);
-      }
-    });
-  }, []);
+export default function RecentList({
+  recentlists,
+}: {
+  recentlists: iRecentPlaylist[];
+}) {
+  const recentlist = recentlists;
 
   return (
     <div className="grid grid-cols-2 sm:grid-cols-4 gap-1 sm:gap-4 sm:px-3">
-      {recentList.map((v, i) => {
+      {recentlist.map((v, i) => {
         return (
           <RecentPlaylist
             CreateTime=""

@@ -50,6 +50,14 @@ export class LikedSongService {
     );
     return this.SetLs(ls);
   }
+  async GetSongsByPagination(last_id: string, user_id: string, tab = "") {
+    let songs = await this.likedSongDatabase.GetSongsByPagination(
+      last_id,
+      user_id,
+      tab
+    );
+    return this.SetLs(songs);
+  }
   SetLs(ls: any) {
     if (ls == undefined) {
       return [];

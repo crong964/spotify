@@ -1,22 +1,31 @@
+import { queryClient } from "@/page/App";
+import { ButtonRandomPlay } from "@/page/component/Audio";
 import PlayButtom from "@/page/component/PlayButtom";
 import { SongList } from "@/page/component/Song/Index";
 
 import { SongInPlayList } from "@/page/component/Song/interface";
-import { get } from "@/page/config/req";
+import { get, get2 } from "@/page/config/req";
+import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 export default function LikedSongListPage() {
   const dispatch = useDispatch();
-  const [songs, SetSongS] = useState<SongInPlayList[]>([]);
-  useEffect(() => {
-    get(`/lsong/likedsongs`, (v: any) => {
-      if (!v || v.err) {
-        return;
+  
+  const { data: songs } = useQuery<SongInPlayList[]>({
+    queryKey: ["like_song_query"],
+    queryFn: async () => {
+      const data = await get2("/lsong/likedsongs");
+      if (!data || data.err) {
+        return [];
       }
-      SetSongS(v.ls);
-    });
-  }, []);
+      return data.ls;
+    },
+    staleTime: "static",
+  });
+  if (!songs) {
+    return;
+  }
   return (
     <div className="relative">
       <div className="bg-gradient-to-r from-green-400 to-blue-500  rounded-t-lg absolute top-0 left-0 w-full h-[320px] flex  flex-col justify-end "></div>
@@ -49,7 +58,7 @@ export default function LikedSongListPage() {
           <div>
             <PlayButtom id="" page="likesong" />
           </div>
-
+          <ButtonRandomPlay className="size-8" />
           <div className="cursor-pointer">
             <svg
               className="fill-[#C7C7C7] hover:fill-white size-[45px] "

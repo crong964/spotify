@@ -72,6 +72,22 @@ class LikedSongController {
       ls: ls,
     });
   }
+  async GetSongsByPagination(req: Request, res: Response) {
+    const last_id: any = req.query.lastId || "";
+    const tabs: any = req.query.tabs || "";
+    const id = req.cookies.id || "";
+
+    let songs = await LikedSongController.likedSongService.GetSongsByPagination(
+      last_id,
+      id,
+      tabs
+    );
+
+    res.json({
+      err: songs.length == 0,
+      song: songs,
+    });
+  }
 }
 
 var likedSongController = new LikedSongController();

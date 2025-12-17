@@ -5,7 +5,11 @@ import { useDispatch, useSelector } from "react-redux";
 import React from "react";
 import { CheckCircleIcon, PlusCircleIcon, TrashIcon } from "@/icon/Icon";
 import Time from "@/page/component/Time";
-import { SetAutoPlay, SetIdSelectedSong, SetSongs } from "@/page/component/Audio/AudioRedux";
+import {
+  SetAutoPlay,
+  SetIdSelectedSong,
+  SetSongs,
+} from "@/page/component/Audio/AudioRedux";
 import { post } from "@/page/config/req";
 import { Modal, Pop } from "@/page/component/pop";
 import { Avatar } from "@/page/component/avatar";
@@ -24,7 +28,9 @@ export default function SongInPlayList(v: SongInPlayList) {
   const lsSong = useSelector((state: RootHome) => state.audioroot.lsSong);
   const mark = useSelector((state: RootHome) => state.audioroot.mark);
   const stop = useSelector((state: RootHome) => state.audioroot.stop);
-  const idSelectedSong = useSelector((state: RootHome) => state.audioroot.idSelectedSong);
+  const idSelectedSong = useSelector(
+    (state: RootHome) => state.audioroot.idSelectedSong
+  );
   const typeDevice = useSelector(
     (state: RootHome) => state.rootHome.devicetype
   );
@@ -62,7 +68,7 @@ export default function SongInPlayList(v: SongInPlayList) {
       }
     );
     dispatch(SetAutoPlay(true));
-  }
+  };
   return (
     <div
       onContextMenu={(v) => {
@@ -72,29 +78,39 @@ export default function SongInPlayList(v: SongInPlayList) {
         }
         XY({ x: v.pageX, y: v.pageY, s: true });
       }}
-      className={`${idSelectedSong == v.Id ? "bgsongclick" : "bgsong"} grid grid-cols-7 text-[13px] sm:text-[14px] sm:p-2 py-2 cursor-pointer sm:space-x-2  text-white font-bold rounded-lg items-center`}
+      className={`${
+        idSelectedSong == v.Id ? "bgsongclick" : "bgsong"
+      } grid grid-cols-7 text-[13px] sm:text-[14px] sm:p-2 py-2 cursor-pointer sm:space-x-2  text-white font-bold rounded-lg items-center`}
     >
       <div
         className="col-span-5 grid grid-cols-5"
         onClick={() => {
           if (idSelectedSong == v.Id) {
-            GetSongPlay()
-            return
-          }
-          if (typeDevice == "pc") {
-            dispatch(SetIdSelectedSong(v.Id))
+            GetSongPlay();
             return;
           }
-          GetSongPlay()
+          if (typeDevice == "pc") {
+            dispatch(SetIdSelectedSong(v.Id));
+            return;
+          }
+          GetSongPlay();
         }}
       >
         <div className="col-span-5 sm:col-span-3 flex items-center space-x-2">
           <div className="mx-2 size-3 sm:inline-block hidden ">
-            {lsSong[mark] && lsSong[mark].Id == v.Id && !stop ?
-              <img className="size-full" src='https://open.spotifycdn.com/cdn/images/equaliser-green.f8937a92.svg'></img>
-              : <div className="">{v.stt}</div>}
+            {lsSong[mark] && lsSong[mark].Id == v.Id && !stop ? (
+              <img
+                className="size-full"
+                src="https://open.spotifycdn.com/cdn/images/equaliser-green.f8937a92.svg"
+              ></img>
+            ) : (
+              <div className="">{v.stt}</div>
+            )}
           </div>
-          <Avatar className="size-12 sm:size-9" src={ImagePath(v.SongImage)}></Avatar>
+          <Avatar
+            className="size-12 sm:size-9"
+            src={ImagePath(v.SongImage)}
+          ></Avatar>
           <div className="flex-col">
             <div className="block">{v.SongName}</div>
             {v.type != "artist" ? (
@@ -116,35 +132,30 @@ export default function SongInPlayList(v: SongInPlayList) {
         </div>
       </div>
       <div className="col-span-2 sm:col-span-1 flex items-center space-x-4">
-        {isLogin ? (
-          <>
-            <div
-              className=""
-              onClick={() => {
-                post(
-                  "/lsong/add",
-                  {
-                    Id: v.Id,
-                  },
-                  (v: any) => {
-                    if (v.err) {
-                      alert("có lỗi");
-                    } else {
-                      SetLike(v.liked);
-                    }
+        {isLogin && (
+          <div
+            className=""
+            onClick={() => {
+              post(
+                "/lsong/add",
+                {
+                  Id: v.Id,
+                },
+                (v: any) => {
+                  if (v.err) {
+                  } else {
+                    SetLike(v.liked);
                   }
-                );
-              }}
-            >
-              {liked ? (
-                <CheckCircleIcon className="fill-[#1DD25E] size-4 mx-2"></CheckCircleIcon>
-              ) : (
-                <PlusCircleIcon className="fill-white size-4 mx-2"></PlusCircleIcon>
-              )}
-            </div>
-          </>
-        ) : (
-          <></>
+                }
+              );
+            }}
+          >
+            {liked ? (
+              <CheckCircleIcon className="fill-[#1DD25E] size-4 mx-2"></CheckCircleIcon>
+            ) : (
+              <PlusCircleIcon className="fill-white size-4 mx-2"></PlusCircleIcon>
+            )}
+          </div>
         )}
         <Time d={parseInt(v.Duration + "")} />
       </div>

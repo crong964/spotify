@@ -1,4 +1,7 @@
-export default function ImagePath(pathfile: string) {
+export default function ImagePath(pathfile = "") {
+  if (pathfile == "") {
+    return "";
+  }
   if (pathfile.indexOf("http") >= 0) {
     return pathfile;
   }

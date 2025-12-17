@@ -24,7 +24,7 @@ var initialState: initialState = {
   pathImage: "",
   Name: "",
   Sign: "",
-  login: { idUser: "", IsLogin: false },
+  login: { idUser: "", IsLogin: true },
 };
 
 export const authRedux = createSlice({

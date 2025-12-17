@@ -1,7 +1,6 @@
 import { Response, Request, NextFunction } from "express";
 import "dotenv/config";
-import { VertifyJWT } from "./Helper";
-const SECRET = process.env.SECRET;
+import { VertifyJWT } from "../config/Helper";
 export default function ADMIN(req: Request, res: Response, next: NextFunction) {
   var apikey = (req.headers.apikey as string) || req.cookies.apikey;
   if (!apikey) {
@@ -31,6 +30,13 @@ export function USER(req: Request, res: Response, next: NextFunction) {
   if (!decode || !decode.id) {
     res.json({ err: true });
     return;
+  }
+  next();
+}
+
+export function CHECKAPI(req: Request, res: Response, next: NextFunction) {
+  if (req.headers["type"] != "web") {
+    return res.json({});
   }
   next();
 }

@@ -47,6 +47,7 @@ export default function Index() {
 
   const dispatch = useDispatch();
   useEffect(() => {
+    
     function res(v: any) {
       dispatch(SetMess(v));
     }
@@ -125,7 +126,7 @@ function CenterShare() {
           dispatch(ShowTopbarContent(true));
         }
       }}
-      className=" h-full m overflow-y-scroll relative bg-black rounded-2xl p-1"
+      className=" h-full m overflow-y-scroll relative bg-black rounded-2xl px-1"
     >
       {pathname == "/" && (
         <div className="hidden sm:inline-block sticky top-0 left-0 z-10 w-full bg-black">
@@ -133,9 +134,7 @@ function CenterShare() {
         </div>
       )}
       <div className=" h-max relative ">
-        <Suspense>
-          <Outlet />
-        </Suspense>
+        <Outlet />
       </div>
       <Foot />
     </div>

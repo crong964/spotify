@@ -6,10 +6,9 @@ import { RootState } from "@/admin/Redux";
 import { useParams } from "react-router-dom";
 
 import DateReact from "../componnt/Date";
-import { Tabs } from "@/page/component/tabs";
+import { TabsInput } from "@/page/component/tabs";
 import InputArtist from "../componnt/artist/InputArtist";
 import { singer } from "../componnt/artist/interface";
-import ImagePath from "@/page/config/img";
 
 type Genre = {
   Id: string;
@@ -40,11 +39,11 @@ function convertYYYMMDD(params: string) {
   }-${d.getDate() > 10 ? d.getDate() : "0" + d.getDate()}`;
 }
 export default function SongEdit() {
-  const [SelectedSingers, SetSelectedSingers] = useState<singer[]>([]);
+  const [selectedSingers, setSelectedSingers] = useState<singer[]>([]);
   const [load, setLoad] = useState(false);
-  const [file, SetFile] = useState<File>();
+  const [file, setFile] = useState<File>();
   const { idArtist } = useParams();
-  const [song, SetSong] = useState<Song>({
+  const [song, setSong] = useState<Song>({
     Id: "",
     SongImage: "",
     SongName: "",
@@ -64,7 +63,7 @@ export default function SongEdit() {
   useEffect(() => {
     post("/admin/song/get", { idsong: idSong }, (v: any) => {
       if (v.err != undefined && !v.err) {
-        SetSong(v.song);
+        setSong(v.song);
         SetTabs(v.song.Genre_id);
       }
     });
@@ -82,7 +81,7 @@ export default function SongEdit() {
               <div className="font-extralight"></div>
             </div>
             <div className="rounded-lg w-full border h-[200px]">
-              <Tabs
+              <TabsInput
                 onchange={(v) => {
                   SetTabs(v);
                 }}
@@ -92,7 +91,7 @@ export default function SongEdit() {
           </div>
           <InputArtist
             onChange={(v) => {
-              SetSelectedSingers(v);
+              setSelectedSingers(v);
             }}
             key={1}
           />
@@ -104,7 +103,7 @@ export default function SongEdit() {
             int={song.publicDate}
             className="p-2"
             onChange={(p) => {
-              SetSong({
+              setSong({
                 ...song,
                 publicDate: p,
               });
@@ -115,7 +114,7 @@ export default function SongEdit() {
             <textarea
               name="discription"
               onChange={(e) => {
-                SetSong({
+                setSong({
                   ...song,
                   description: e.currentTarget.value,
                 });
@@ -155,7 +154,7 @@ export default function SongEdit() {
                       <div
                         className="px-4 py-2 w-min bg-blue-600 rounded-full my-2"
                         onClick={() => {
-                          SetSong({
+                          setSong({
                             ...song,
                             SongImage: "",
                           });
@@ -176,8 +175,8 @@ export default function SongEdit() {
                     var files = e.currentTarget.files;
                     if (files != null && files.length > 0) {
                       var file = URL.createObjectURL(files[0]);
-                      SetFile(files[0]);
-                      SetSong({
+                      setFile(files[0]);
+                      setSong({
                         ...song,
                         SongImage: file,
                       });
@@ -211,7 +210,7 @@ export default function SongEdit() {
                   src={`/s?id=${song.filePath}`}
                   onCanPlay={(e) => {
                     console.log(e.currentTarget.duration);
-                    SetSong({
+                    setSong({
                       ...song,
                       Duration: e.currentTarget.duration,
                     });
@@ -225,11 +224,11 @@ export default function SongEdit() {
           <div className="flex justify-end">
             <div
               onClick={() => {
-                if (SelectedSingers.length <= 0) {
+                if (selectedSingers.length <= 0) {
                   alert("chưa chọn nghệ sĩ");
                   return;
                 }
-                let user_id = JSON.stringify(SelectedSingers);
+                let user_id = JSON.stringify(selectedSingers);
 
                 if (song.Singer.length <= 0 || song.SongName.length <= 0) {
                   alert("chưa nhập tên hoặc chưa nhập tên ca sĩ");
@@ -255,7 +254,7 @@ export default function SongEdit() {
                 form.set("user_id", user_id);
                 setLoad(true);
                 post("/admin/song/update", form, (v: any) => {
-                  if (!v.err) {
+                  if (v && !v.err) {
                     alert("tc");
                     window.location.reload();
                   } else {

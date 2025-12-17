@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { post } from "@/page/config/req";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, SelectSong } from "./Redux";
+import ImagePath from "@/page/config/img";
 interface Song {
   Id: string;
   user_id: string;
@@ -60,12 +61,7 @@ export function Song(d: Song) {
     >
       <div className="col-span-3 flex items-center space-x-2">
         <div className="">{d.stt}</div>
-        <img
-          className="size-9"
-          src={d.SongImage}
-          alt=""
-          srcSet=""
-        />
+        <img className="size-9" src={ImagePath(d.SongImage)} alt="" srcSet="" />
       </div>
       <div className="col-span-2">{d.SongName}</div>
       <div className="col-span-1 flex items-center space-x-4">

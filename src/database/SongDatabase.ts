@@ -26,14 +26,6 @@ class SongDatabase {
     return check;
   }
 
-  async GetSongsByPagination(last_id: string) {
-    let sql =
-      " SELECT * FROM song WHERE  status=1 AND id > ? ORDER BY id ASC LIMIT 0,30 ";
-    let check;
-    check = await Mysql2.query(sql, [last_id]);
-    return check;
-  }
-
   async GetAll(user_id: string) {
     let sql = " SELECT * FROM song WHERE user_id = ?";
     let check;

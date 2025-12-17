@@ -182,12 +182,14 @@ class StreamingController {
         if (oldign.level < segment) {
           let newtime = parseInt(oldign.time + "") + 1;
           if (newtime == 2) {
-            let lastSong = await recentSongService.GetLastRecentSong(id);
+            let lastSong = await recentSongService.GetRecentSong(idSong, id);
             if (
               req.cookies.id &&
               (lastSong == undefined || lastSong.Id != idSong)
             ) {
               recentSongService.Add(id, idSong);
+            } else {
+              recentSongService.UpdateTime(id, idSong);
             }
           }
           if (newtime == 4) {

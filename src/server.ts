@@ -24,7 +24,7 @@ import { createServer } from "http";
 import { parse } from "cookie";
 import FriendRoute from "./route/FriendRoute";
 import UserRouteAdmin from "./admin/UserRouteAdmin";
-import ADMIN, { USER } from "./config/admin";
+import ADMIN, { USER } from "./middleware/admin";
 import "dotenv/config";
 import { VertifyJWT } from "./config/Helper";
 import jwt, { JwtPayload } from "jsonwebtoken";
@@ -39,6 +39,7 @@ import PlayListLikeRoute from "./route/PlayListLikeRoute";
 import { exec } from "child_process";
 import TabRoute from "./admin/TabRoute";
 import ContainRoute from "./route/ContainRoute";
+import TabsRoute from "./route/TabsRoute";
 
 const secret = process.env.SECRET || "1";
 const production = process.env.MODE == "production";
@@ -114,6 +115,7 @@ app.use("/discuss", USER, DiscussRoute);
 app.use("/contain", USER, ContainRoute);
 app.use("/notification", USER, NotificationRoute);
 app.use("/friend", USER, FriendRoute);
+app.use("/tabs", TabsRoute);
 app.get("/dashboard", USER, (req, res) => {
   res.sendFile(path.join(process.cwd(), "web/dashboard.html"));
 });

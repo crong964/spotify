@@ -13,8 +13,6 @@ import {
 
 const Index = React.lazy(() => import("./Route/IndexHome2"));
 
-import { SetionList } from "./Route/home/Setion";
-import { Listenplaylist, SuggestPlaylist } from "@/page/component/Playlist";
 
 import {
   CenterShare,
@@ -28,7 +26,8 @@ import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client
 import { createAsyncStoragePersister } from "@tanstack/query-async-storage-persister";
 import SearchPage from "./Route/home/SearchPage/SearchPage";
 import SongListPage from "./Route/home/SongListPage/SongListPage";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClient } from "@tanstack/react-query";
+import HomePage from "./Route/home/HonePage/HomePage";
 
 const PlaylistLike = React.lazy(
   () => import("./Route/home/NaviHome/PlaylistLike")
@@ -55,9 +54,7 @@ const LikedSongListPage = React.lazy(
 const ArtistsListPage = React.lazy(
   () => import("./Route/home/ArtistsListPage/ArtistsListPage")
 );
-const RecentList = React.lazy(
-  () => import("./Route/home/Right/RecentPlaylist")
-);
+
 const IdGenre = React.lazy(() => import("./Route/home/GenrePage/IdGenre"));
 const Genre = React.lazy(() => import("./Route/home/GenrePage/GenrePage"));
 //@ts-ignore
@@ -66,7 +63,7 @@ const persister = createAsyncStoragePersister({
   storage: window.localStorage,
 });
 
-const queryClient = new QueryClient({
+export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       gcTime: 1000 * 60 * 60 * 24, // 24 hours
@@ -83,21 +80,7 @@ root.render(
         <Suspense fallback={<div>Loading...</div>}>
           <Routes>
             <Route path="/" element={<Index></Index>}>
-              <Route
-                index
-                element={
-                  <div className="h-full">
-                    <RecentList />
-                    <Listenplaylist />
-                    <SetionList
-                      link="section"
-                      name="Danh sách các nghệ sĩ"
-                      type="artist"
-                    />
-                    <SuggestPlaylist />
-                  </div>
-                }
-              />
+              <Route index element={<HomePage></HomePage>} />
               <Route path="genre" element={<Suspense children={<Outlet />} />}>
                 <Route path=":id" element={<IdGenre />} />
                 <Route index element={<Genre />} />

@@ -1,9 +1,13 @@
 ## Introduce project
 
 this is clone spotify
+
 ## test Account:
+
 ### account: testaccount@gmail.com
+
 ### password:test@123
+
 ## Using Techology:
 
 -express: ^4.18.3,
@@ -32,32 +36,34 @@ npm run start
 [website](https://sopify-deploying.onrender.com/)
 
 # PC UI
+
 <div align="center">
-  <img src="https://res.cloudinary.com/dkd1k6e2r/image/upload/v1738813955/Screenshot_2025-02-06_104422_tt4ilb.png", alt="Home page" width="600" />
+  <img src="https://res.cloudinary.com/dkd1k6e2r/image/upload/Screenshot_2025-02-06_104422_tt4ilb.png", alt="Home page" width="600" />
   <p><i>Sign up</i></p>
 </div>
 <div align="center">
-  <img src="https://res.cloudinary.com/dkd1k6e2r/image/upload/v1738813924/Screenshot_2025-02-06_104545_qgd4d8.png", alt="Home page" width="600" />
+  <img src="https://res.cloudinary.com/dkd1k6e2r/image/upload/Screenshot_2025-02-06_104545_qgd4d8.png", alt="Home page" width="600" />
   <p><i>Page Artist</i></p>
 </div>
 
 <div align="center">
-  <img src="https://res.cloudinary.com/dkd1k6e2r/image/upload/v1738813924/Screenshot_2025-02-06_104710_mnnloo.png", alt="Home page" width="600" />
+  <img src="https://res.cloudinary.com/dkd1k6e2r/image/upload/Screenshot_2025-02-06_104710_mnnloo.png", alt="Home page" width="600" />
   <p><i>Home page</i></p>
 </div>
 
 <div align="center">
-  <img src="https://res.cloudinary.com/dkd1k6e2r/image/upload/v1738813924/Screenshot_2025-02-06_104517_qtk34y.png", alt="Home page" width="600" />
+  <img src="https://res.cloudinary.com/dkd1k6e2r/image/upload/Screenshot_2025-02-06_104517_qtk34y.png", alt="Home page" width="600" />
   <p><i>Pip window</i></p>
 </div>
 
 ## Mobiel UI
+
 <div align="center">
-  <img src="https://res.cloudinary.com/dkd1k6e2r/image/upload/v1738813924/Screenshot_2025-02-06_105014_rztrvx.png", alt="Home page" width="600" />
+  <img src="https://res.cloudinary.com/dkd1k6e2r/image/upload/Screenshot_2025-02-06_105014_rztrvx.png", alt="Home page" width="600" />
   <p><i>Home page</i></p>
 </div>
 
 <div align="center">
-  <img src="https://res.cloudinary.com/dkd1k6e2r/image/upload/v1738814488/Screenshot_2025-02-06_110116_ovuux5.png", alt="Home page" width="600" />
+  <img src="https://res.cloudinary.com/dkd1k6e2r/image/upload/Screenshot_2025-02-06_110116_ovuux5.png", alt="Home page" width="600" />
   <p><i>Playlist</i></p>
 </div>

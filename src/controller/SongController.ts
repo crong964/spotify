@@ -322,14 +322,6 @@ class SongController {
       song: ls[index],
     });
   }
-  async GetSongsByPagination(req: Request, res: Response) {
-    const last_id: any = req.query.lastId || "";
-    let songs = await SongController.song.GetSongsByPagination(last_id);
-    res.json({
-      err: songs.length == 0,
-      song: songs,
-    });
-  }
 }
 
 var songController = new SongController();
