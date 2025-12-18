@@ -1,4 +1,5 @@
 export const CACHE_5_DAY = 1000 * 60 * 60 * 24 * 5;
+export const CACHE_1_DAY = 1000 * 60 * 60 * 24 * 1;
 
 export const SONGS_LIST_QUERY = "songs_list";
 export const SINGLE_ARTISTS_QUERY = "single_artists_query";

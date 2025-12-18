@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect } from "react";
+import React, { useEffect } from "react";
 const Foot = React.lazy(() => import("@/page/component/Foot"));
 import { useDispatch, useSelector } from "react-redux";
 const Header = React.lazy(() => import("@/page/component/Header/Header"));
@@ -20,7 +20,7 @@ import { NaviHomeMobile2 } from "@/page/component/NaviHome/NaviHome";
 import { ChatBoxMobliePage } from "./mobile/chatbox/ChatBoxMobliePage";
 import { SingleBoxChatPage } from "./mobile/SingleBox/SingleBoxChatPage";
 import NotificationF from "../component/pop/Notification";
-import Left from "../component/Left/Left";
+import Left from "@/page/component/Left/Left";
 
 export default function Index() {
   const BoxList = useSelector((state: RootHome) => state.rootHome.BoxList);
@@ -47,7 +47,6 @@ export default function Index() {
 
   const dispatch = useDispatch();
   useEffect(() => {
-    
     function res(v: any) {
       dispatch(SetMess(v));
     }

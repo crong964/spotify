@@ -8,7 +8,7 @@ import {
   SetNotificationPage,
   SetNotificationPageIdSong,
 } from "@/page/Route/home/RootRedux";
-import { MainDiscussList } from "../../Route/home/Right/Discuss";
+import { MainDiscussList } from "@/page/Route/home/Right/Discuss";
 import ImagePath from "@/page/config/img";
 
 

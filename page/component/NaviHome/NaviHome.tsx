@@ -22,13 +22,11 @@ export function NaviHomeMobile() {
       <Home />
       <SearchButtom />
 
-      {isLogin ? (
+      {isLogin && (
         <>
           <MobileMessButtom />
           <NaviLoveSong />
         </>
-      ) : (
-        <></>
       )}
     </div>
   );
@@ -47,7 +45,7 @@ export function NaviHomeMobile2() {
       <Home />
       <SearchButtom />
 
-      {isLogin ? (
+      {isLogin && (
         <>
           <NavLink to="/mobile/chatbox">
             {({ isActive }) => (
@@ -74,8 +72,6 @@ export function NaviHomeMobile2() {
             )}
           </NavLink>
         </>
-      ) : (
-        <></>
       )}
     </div>
   );

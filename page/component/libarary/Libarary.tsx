@@ -24,14 +24,12 @@ export default function Libarary() {
       }}
     >
       <LibraryIcon className="size-6  fill-white" />
-      {pop && mobiletype == "pc" ? (
+      {pop && mobiletype == "pc" && (
         <Pop left={80} top={top}>
           <div className="bg-[#434242] p-2 rounded-lg">
             <div className="text-base text-white">Thêm danh sách phát</div>
           </div>
         </Pop>
-      ) : (
-        <></>
       )}
     </div>
   );

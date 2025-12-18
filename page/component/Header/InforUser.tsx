@@ -23,7 +23,7 @@ export default function InforUser(d: onClick) {
           >
             K
           </div>
-          {show ? (
+          {show && (
             <div className="absolute top-full z-20 right-0 w-max bg-black">
               <div className="hover:bg-[#3E3E3E] cursor-pointer p-2 text-white">
                 Hồ sơ cá nhân
@@ -40,8 +40,6 @@ export default function InforUser(d: onClick) {
                 Phan mạnh Quỳnh
               </div>
             </div>
-          ) : (
-            <></>
           )}
         </div>
       </div>

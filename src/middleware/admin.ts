@@ -36,7 +36,7 @@ export function USER(req: Request, res: Response, next: NextFunction) {
 
 export function CHECKAPI(req: Request, res: Response, next: NextFunction) {
   if (req.headers["type"] != "web") {
-    return res.json({});
+    return res.redirect("/");
   }
   next();
 }

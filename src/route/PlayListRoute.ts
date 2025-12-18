@@ -15,7 +15,6 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage }).single("avatar");
 const PlayListRoute = Router();
-PlayListRoute.use(CHECKAPI);
 
 PlayListRoute.post("/GetAllPlayList", playListController.GetByGenreAdmin); //0k
 PlayListRoute.get("/data/:idplaylist", playListController.GetPlayListById); //0k

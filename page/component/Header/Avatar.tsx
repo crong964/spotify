@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import { Pop } from "@/page/component/pop";
 import { useDispatch } from "react-redux";
 import { NaviPage } from "@/page/Route/home/RootRedux";
 import { Infor } from "./interface";
 import { get } from "@/page/config/req";
 import { AvatarIcon } from "@/icon/Icon";
-import CalcXY from "../pop/CalcXY";
-import Modal from "../pop/Modal";
+import CalcXY from "@/page/component/pop/CalcXY";
+import Modal from "@/page/component/pop/Modal";
 import ImagePath from "@/page/config/img";
 
 export default function Avatar(p: Infor) {

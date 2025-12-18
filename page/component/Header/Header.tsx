@@ -107,7 +107,7 @@ export default function Header() {
             )}
           </>
         </div>
-        {!topbarcontent ? (
+        {!topbarcontent && (
           <>
             {isLogin ? (
               <>
@@ -172,8 +172,6 @@ export default function Header() {
               </>
             )}
           </>
-        ) : (
-          <></>
         )}
       </div>
     </div>

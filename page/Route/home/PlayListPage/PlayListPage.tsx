@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import PlayButtom from "@/page/component/PlayButtom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootHome, SetCurName, SetPlaylist } from "@/page/Route/home/RootRedux";
@@ -20,6 +20,8 @@ import { PopEditPlaylis } from "@/page/component/Playlist";
 import { useQuery } from "@tanstack/react-query";
 import { CACHE_5_DAY, SINGLE_PLAYLIST_QUERY } from "@/page/contant/quey_key";
 import { ButtonRandomPlay } from "@/page/component/Audio";
+import ColorImage from "@/page/config/corlorImage";
+import ImagePath from "@/page/config/img";
 
 var g = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 6, 7];
 export interface artist {
@@ -71,7 +73,7 @@ export default function PlaylistPage() {
   const [tabs, SetTabs] = useState("");
   const [sh, sH] = useState(false);
   const [edit, setEdit] = useState(false);
-
+  const [bg, setBg] = useState("black");
   const { data } = useQuery({
     queryKey: [SINGLE_PLAYLIST_QUERY, id],
     queryFn: async () => {
@@ -130,9 +132,24 @@ export default function PlaylistPage() {
     }
   }, [data]);
 
+  useMemo(async () => {
+    if (playlist.ImagePath == undefined) {
+      return "black";
+    }
+    const bg = await ColorImage(ImagePath(playlist.ImagePath));
+    setBg(bg);
+
+  }, [playlist.ImagePath]);
+  const style = useMemo(() => {
+    return { "--bg": bg } as React.CSSProperties;
+  }, [bg]);
+
   return (
     <div className="relative">
-      <div className="bg-gradient-to-r from-green-400 to-blue-500 rounded-t-lg absolute top-0 left-0 w-full h-[320px] flex flex-col justify-end ">
+      <div
+        style={style}
+        className="bgplaylist rounded-t-lg absolute top-0 left-0 w-full h-[320px] flex flex-col justify-end "
+      >
         <div className="flex flex-col sm:flex-row z-10 p-4   sm:space-x-4 justify-center sm:justify-start items-center sm:items-end">
           <div
             className="relative"
@@ -146,7 +163,7 @@ export default function PlaylistPage() {
               className="size-40 sm:size-[250px] rounded-2xl"
               src={playlist.ImagePath}
             />
-            {sh ? (
+            {sh && (
               <div
                 onMouseLeave={() => {
                   sH(false);
@@ -154,12 +171,10 @@ export default function PlaylistPage() {
                 onClick={() => {
                   setEdit(true);
                 }}
-                className="bg-black opacity-30 absolute top-0 left-0 size-[250px] flex items-center justify-center rounded-2xl"
+                className="bg-black opacity-30 absolute top-0 left-0 size-[160px] sm:size-[250px] flex items-center justify-center rounded-2xl"
               >
                 <PencilIcon className="size-20 fill-white"></PencilIcon>
               </div>
-            ) : (
-              <></>
             )}
           </div>
 

@@ -209,7 +209,7 @@ class Firebase {
               },
               (cloudinary_err, cloudinary_res) => {
                 if (cloudinary_res) {
-                  res(cloudinary_res.url);
+                  res(cloudinary_res.secure_url);
                   return;
                 }
                 rea(cloudinary_err);
@@ -243,7 +243,7 @@ class Firebase {
               },
               (cloudinary_err, cloudinary_res) => {
                 if (cloudinary_res) {
-                  res(cloudinary_res.url);
+                  res(cloudinary_res.secure_url);
                   return;
                 }
                 rej(cloudinary_err);
@@ -268,7 +268,7 @@ class Firebase {
           },
           (cloudinary_err, cloudinary_res) => {
             if (cloudinary_res) {
-              res(cloudinary_res.url);
+              res(cloudinary_res.secure_url);
               return;
             }
             rej(cloudinary_err);

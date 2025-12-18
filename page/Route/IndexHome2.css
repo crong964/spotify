@@ -50,3 +50,15 @@
 .bgsong:hover {
   background: #2d2d2d;
 }
+.bgartis {
+  background: none;
+}
+@media (max-width: 640px) {
+  .bgartis {
+    background: linear-gradient(var(--bg) 0%, transparent 100%);
+  }
+}
+
+.bgplaylist {
+  background: linear-gradient(180deg, var(--bg) 0%, rgb(7, 27, 1) 100%);
+}

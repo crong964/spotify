@@ -10,13 +10,13 @@ export default function ArtistLink({ idArtist, nameArtist }: tArtistLink) {
   const devicetype = useSelector(
     (state: RootHome) => state.rootHome.devicetype
   );
-  let id = idArtist.split(" ");
+  let ids = idArtist.split(" ");
   let name = nameArtist.split(",");
   const dispatch = useDispatch();
   return (
-    <div className="flex text-white sm:text-stone-500 font-normal">
-      {id.map((artist_id, indexArtist) => {
-        if (indexArtist == id.length - 1) {
+    <div className="flex text-white sm:text-stone-500 overflow-x-hidden w-max font-normal">
+      {ids.map((artist_id, indexArtist) => {
+        if (indexArtist == ids.length - 1) {
           return (
             <Link
               onClick={(e) => {
@@ -46,7 +46,7 @@ export default function ArtistLink({ idArtist, nameArtist }: tArtistLink) {
                   })
                 );
               }}
-              className="sm:hover:text-white"
+              className="sm:hover:text-white "
               to={devicetype == "pc" ? `/artist/${artist_id}` : "#"}
             >
               {name[indexArtist]}

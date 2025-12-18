@@ -6,7 +6,6 @@ import Navi from "./Navi";
 import { MessIcon } from "@/icon/Icon";
 
 export function MobileMessButtom() {
-  const curpage = useSelector((state: RootHome) => state.rootHome.Right);
   const dispatch = useDispatch();
   return (
     <Navi
