@@ -1,19 +1,15 @@
-import { queryClient } from "@/page/App";
 import { ButtonRandomPlay } from "@/page/component/Audio";
 import PlayButtom from "@/page/component/PlayButtom";
 import { SongList } from "@/page/component/Song/Index";
 
 import { SongInPlayList } from "@/page/component/Song/interface";
-import { get, get2 } from "@/page/config/req";
+import { get2 } from "@/page/config/req";
+import { CACHE_INFILITY, LOVE_SONG_QUERY } from "@/page/contant/quey_key";
 import { useQuery } from "@tanstack/react-query";
-import React, { useState } from "react";
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import React from "react";
 export default function LikedSongListPage() {
-  const dispatch = useDispatch();
-  
   const { data: songs } = useQuery<SongInPlayList[]>({
-    queryKey: ["like_song_query"],
+    queryKey: [LOVE_SONG_QUERY],
     queryFn: async () => {
       const data = await get2("/lsong/likedsongs");
       if (!data || data.err) {
@@ -21,7 +17,7 @@ export default function LikedSongListPage() {
       }
       return data.ls;
     },
-    staleTime: "static",
+    staleTime: CACHE_INFILITY,
   });
   if (!songs) {
     return;

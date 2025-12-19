@@ -4,7 +4,7 @@ import { RootHome, SetCurName } from "@/page/Route/home/RootRedux";
 import { artist } from "../PlayListPage/PlayListPage";
 import { SongList } from "@/page/component/Song/Index";
 import { useParams } from "react-router-dom";
-import { get, get2, post } from "@/page/config/req";
+import { get, get2, post, post2 } from "@/page/config/req";
 import React from "react";
 import PlayButtom from "@/page/component/PlayButtom";
 import TypeFriend from "@/page/component/friend/TypeFriend";
@@ -13,20 +13,23 @@ import { Avatar } from "@/page/component/avatar";
 import { iPlayList } from "@/page/component/Playlist/interface";
 import { Playlists } from "@/page/component/Playlist";
 import ImagePath from "@/page/config/img";
-import { useQuery } from "@tanstack/react-query";
-import { CACHE_5_DAY, SINGLE_ARTISTS_QUERY } from "@/page/contant/quey_key";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import {
+  CACHE_5_DAY,
+  LIKE_PLAYLIST_QUERY,
+  SINGLE_ARTISTS_QUERY,
+} from "@/page/contant/quey_key";
 import { ButtonRandomPlay } from "@/page/component/Audio";
 import ColorImage from "@/page/config/corlorImage";
+import { queryClient } from "@/page/App";
 
 export default function ArtistPage() {
-  const Right = useSelector((state: RootHome) => state.rootHome.Right);
   const [lsartist, SetLsAtist] = useState<iPlayList[]>([]);
   const [artist, SetaAtist] = useState<artist>();
   const [isfriend, SetIsfriend] = useState<"-1" | "0" | "1" | "2">();
   const [songs, SetSongS] = useState<SongInPlayList[]>([]);
   const [like, SetLike] = useState(false);
   const refPage = useRef<HTMLDivElement>(null);
-  const refText = useRef<HTMLDivElement>(null);
   const [bg, setBg] = useState("black");
   const dispatch = useDispatch();
   const { id } = useParams();
@@ -92,6 +95,36 @@ export default function ArtistPage() {
     return { "--bg": bg } as React.CSSProperties;
   }, [bg]);
 
+  const { mutate: addLikePlaylist } = useMutation({
+    mutationFn: async () => {
+      const data = await post2("/likePlaylist/add", { idPlaylist: id });
+      return data;
+    },
+    onSuccess: (result) => {
+      if (result) {
+        SetLike(!like);
+        queryClient.invalidateQueries({
+          queryKey: [LIKE_PLAYLIST_QUERY],
+        });
+      }
+    },
+  });
+
+  const { mutate: deleteLikePlaylist } = useMutation({
+    mutationFn: async () => {
+      const data = await post2("/likePlaylist/delete", { idPlaylist: id });
+      return data;
+    },
+    onSuccess: (result) => {
+      if (result) {
+        SetLike(!like);
+        queryClient.invalidateQueries({
+          queryKey: [LIKE_PLAYLIST_QUERY],
+        });
+      }
+    },
+  });
+
   return (
     <div style={style} className="relative " ref={refPage}>
       {artist?.Banner !== "" ? (
@@ -132,13 +165,7 @@ export default function ArtistPage() {
             </span>
           </div>
           <h1 className="self-start">
-            <span
-              ref={refText}
-              onClick={() => {
-                alert(refText.current?.innerText.length);
-              }}
-              className="text-white ChanalName hidden sm:block font-bol text-[40px] lg:text-[70px] xl:text-[80px] overflow-hidden line-clamp-1  font-black"
-            >
+            <span className="text-white ChanalName hidden sm:block font-bol text-[40px] lg:text-[70px] xl:text-[80px] overflow-hidden line-clamp-1  font-black">
               {artist?.ChanalName}
             </span>
             <span className="text-white ChanalName block sm:hidden font-bol text-[18px] line-clamp-1  font-black">
@@ -162,15 +189,7 @@ export default function ArtistPage() {
                 <button
                   className="font-bold cursor-pointer text-[14px] border-2 border-white text-white rounded-full px-2 py-1"
                   onClick={() => {
-                    post(
-                      "/likePlaylist/delete",
-                      { idPlaylist: id },
-                      (v: any) => {
-                        if (v) {
-                          SetLike(!like);
-                        }
-                      }
-                    );
+                    deleteLikePlaylist();
                   }}
                 >
                   Đang Theo dõi
@@ -179,11 +198,7 @@ export default function ArtistPage() {
                 <button
                   className="font-bold cursor-pointer text-[14px] border-2 border-white text-white rounded-full px-2 py-1"
                   onClick={() => {
-                    post("/likePlaylist/add", { idPlaylist: id }, (v: any) => {
-                      if (v) {
-                        SetLike(!like);
-                      }
-                    });
+                    addLikePlaylist();
                   }}
                 >
                   Theo dõi
@@ -211,7 +226,7 @@ export default function ArtistPage() {
           className="cursor-pointer size-[160px] sm:size-[180px]"
           d={lsartist}
           title="Nghệ sĩ xuất hiện"
-        ></Playlists>
+        />
         <footer className="h-5"></footer>
       </div>
     </div>

@@ -109,7 +109,7 @@ app.use("/user", UserRoute);
 app.use("/song", SongRoute);
 app.use("/lsong", USER, LikedSongRoute);
 app.use("/recentPlaylist", USER, RecentPlaylistRoute);
-app.use("/rs", USER, RecentSongRoute);
+app.use("/recentSong", USER, RecentSongRoute);
 app.use("/search", SearchRoute);
 app.use("/discuss", USER, DiscussRoute);
 app.use("/contain", USER, ContainRoute);

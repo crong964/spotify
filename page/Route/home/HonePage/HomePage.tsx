@@ -7,6 +7,7 @@ import { SetionList } from "@/page/Route/home/Setion";
 import { get2, post2 } from "@/page/config/req";
 import { useQuery } from "@tanstack/react-query";
 import {
+  CACHE_1_DAY,
   CACHE_5_DAY,
   FETCH_LISTENED_QUERY,
   NEXT_PLAYLIST_ARTIST_QUERY,
@@ -18,33 +19,33 @@ export default function HomePage() {
     useQuery<iRecentPlaylist[]>({
       queryKey: [RECENT_PLAYLIST_QUERY],
       queryFn: async () => {
-        const data = await post2("recentPlaylist/getAll", {});
+        const data = await post2("/recentPlaylist/getAll", {});
         if (data && data.ls) {
           return data.ls;
         }
         return [];
       },
+      staleTime: CACHE_1_DAY,
     });
 
-  const { data: fetchListenAgain, isLoading: isloadingListenAgain } = useQuery<
-    number | undefined
-  >({
-    queryKey: [FETCH_LISTENED_QUERY],
-    queryFn: async () => {
-      const data = await get2("recentPlaylist/getAll");
-      if (data && data.count != undefined) {
-        let n = Math.floor(data.count / 50);
-        let d = data.count - n * 50;
-        if (d == 0) {
-          return n;
-        } else {
-          return n + 1;
+  const { data: fetchListenAgain, isLoading: isloadingListenAgain } =
+    useQuery<number>({
+      queryKey: [FETCH_LISTENED_QUERY],
+      queryFn: async () => {
+        const data = await get2("/recentSong/listenAgain");
+        if (data && data.count != undefined) {
+          let n = Math.floor(data.count / 50);
+          let d = data.count - n * 50;
+          if (d == 0) {
+            return n;
+          } else {
+            return n + 1;
+          }
         }
-      }
-      return 0;
-    },
-    staleTime: 1000 * 60 * 60,
-  });
+        return 0;
+      },
+      staleTime: CACHE_1_DAY,
+    });
 
   const { data: fetchPlaylistArtist, isLoading: isloadingPlaylistArtist } =
     useQuery({

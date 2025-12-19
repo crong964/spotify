@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import PlayButtom from "@/page/component/PlayButtom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootHome } from "@/page/Route/home/RootRedux";
@@ -11,6 +11,8 @@ import { useParams } from "react-router-dom";
 import { ThreeDotsIcon } from "@/icon/Icon";
 import { SongInPlayList } from "@/page/component/Song/interface";
 import { Avatar } from "@/page/component/avatar";
+import ColorImage from "@/page/config/corlorImage";
+import ImagePath from "@/page/config/img";
 
 var g = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 6, 7];
 export interface artist {
@@ -51,27 +53,44 @@ export default function MixPage() {
   const [songs, SetSongS] = useState<SongInPlayList[]>([]);
   const playlist = useSelector((state: RootHome) => state.rootHome.playlist);
   const [time, SetTime] = useState(0);
+  const [bg, setBg] = useState("black");
   useEffect(() => {
-    get(`/rs/getlistenAgain/${id}`, (v: any) => {
-      SetSongS(v.ls);
-      let time = 0;
-      for (let i = 0; i < v.ls.length; i++) {
-        const element = v.ls[i] as SongInPlayList;
-        time += parseInt(element.Duration);
+    get(`/recentSong/getlistenAgain/${id}`, (v: any) => {
+      if (v && v.ls) {
+        SetSongS(v.ls);
+        let time = 0;
+        for (let i = 0; i < v.ls.length; i++) {
+          const element = v.ls[i] as SongInPlayList;
+          time += parseInt(element.Duration);
+        }
+        SetTime(time);
       }
-      SetTime(time);
     });
   }, [id]);
+  useMemo(async () => {
+    const bg = await ColorImage(
+      "https://res.cloudinary.com/dkd1k6e2r/image/upload/v1739376087/aXZpdml2aXZpdml2aXZpdg_g89ohh.jpg"
+    );
+    setBg(bg);
+  }, []);
 
+  const style = useMemo(() => {
+    return { "--bg": bg } as React.CSSProperties;
+  }, [bg]);
   return (
     <div className="relative">
-      <div className="bg-gradient-to-r from-green-400 to-blue-500 rounded-t-lg absolute top-0 left-0 w-full h-[320px] flex flex-col justify-end ">
+      <div
+        style={style}
+        className="bgplaylist rounded-t-lg absolute top-0 left-0 w-full h-[320px] flex flex-col justify-end "
+      >
         <div className="flex items-end justify-start">
           <div className="flex z-10 p-4 justify-center items-end sm:space-x-4">
             <div className="relative">
               <Avatar
                 className="size-[250px] rounded-2xl"
-                src={playlist.ImagePath}
+                src={
+                  "https://res.cloudinary.com/dkd1k6e2r/image/upload/v1739376087/aXZpdml2aXZpdml2aXZpdg_g89ohh.jpg"
+                }
               />
             </div>
 

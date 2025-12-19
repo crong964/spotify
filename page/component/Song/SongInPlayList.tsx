@@ -10,15 +10,22 @@ import {
   SetIdSelectedSong,
   SetSongs,
 } from "@/page/component/Audio/AudioRedux";
-import { post } from "@/page/config/req";
+import { post, post2 } from "@/page/config/req";
 import { Modal, Pop } from "@/page/component/pop";
 import { Avatar } from "@/page/component/avatar";
 import ImagePath from "@/page/config/img";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { queryClient } from "@/page/App";
+import {
+  LIKE_PLAYLIST_QUERY,
+  LOVE_SONG_QUERY,
+  SINGLE_PLAYLIST_QUERY,
+} from "@/page/contant/quey_key";
 
 const ArtistLink = React.lazy(() => import("@/page/component/ArtistLink"));
 
 export default function SongInPlayList(v: SongInPlayList) {
-  const [liked, SetLike] = useState<string>(v.liked);
+  const [liked, setLike] = useState<string>(v.liked);
   const isLogin = useSelector(
     (state: RootHome) => state.rootauth.login.IsLogin
   );
@@ -36,24 +43,7 @@ export default function SongInPlayList(v: SongInPlayList) {
   );
   const dispatch = useDispatch();
   const [xy, XY] = useState({ x: 0, y: 0, s: false });
-  const addplaylist = () => {
-    post(
-      "/contain/deletesong",
-      { Song_id: v.Id, PlayList_id: playlist.id },
-      (v: any) => {
-        if (v.err) {
-          alert("xóa thất bại");
-        } else {
-          alert("xóa thành công");
-        }
-      }
-    );
-  };
-  const createplaylist = () => {
-    post("/playlist/addplaylist", { idsong: v.Id }, (v: any) => {
-      alert(v.err == false);
-    });
-  };
+
   const GetSongPlay = () => {
     post(
       "/song/get",
@@ -69,6 +59,94 @@ export default function SongInPlayList(v: SongInPlayList) {
     );
     dispatch(SetAutoPlay(true));
   };
+
+  const { mutate: createplaylist } = useMutation({
+    mutationFn: async () => {
+      const data = await post2("/playlist/addplaylist", { idsong: v.Id });
+      if (data) {
+        return data;
+      } else {
+        return undefined;
+      }
+    },
+    onSuccess: (result) => {
+      if (!result) {
+        alert("Thất bại");
+        return;
+      }
+
+      if (!result.err) {
+        alert("thành công");
+        queryClient.invalidateQueries({
+          queryKey: [LIKE_PLAYLIST_QUERY],
+        });
+      }
+    },
+  });
+  const { mutate: deleteSong } = useMutation({
+    mutationFn: async (v: { song_id: string; playlist_id: string }) => {
+      const data = await post2("/contain/deletesong", {
+        Song_id: v.song_id,
+        PlayList_id: v.playlist_id,
+      });
+      return data;
+    },
+    onSuccess: (data, variables) => {
+      if (!data) {
+        alert("xóa thất bại");
+        return;
+      }
+      if (data.err) {
+        alert("xóa thất bại");
+      } else {
+        alert("xóa thành công");
+        queryClient.invalidateQueries({
+          queryKey: [SINGLE_PLAYLIST_QUERY, variables.playlist_id],
+        });
+      }
+    },
+  });
+  const { mutate: addLoveSong } = useMutation({
+    mutationFn: async (idSong: string) => {
+      const data = await post2("/lsong/add", {
+        Id: idSong,
+      });
+
+      return data;
+    },
+    onSuccess: (data) => {
+      if (data && !data.err) {
+        setLike(data.liked);
+        queryClient.invalidateQueries({
+          queryKey: [LOVE_SONG_QUERY],
+        });
+      }
+    },
+  });
+
+  const { mutate: addSongIntoPlaylist } = useMutation({
+    mutationFn: async (v: { song_id: string; playlist_id: string }) => {
+      const data = await post2("/contain/addsong", {
+        Song_id: v.song_id,
+        PlayList_id: v.playlist_id,
+      });
+      if (data) {
+        return data;
+      }
+
+      return {};
+    },
+    onSuccess: (result, input) => {
+      if (result && !result.err) {
+        alert("thêm thành công");
+        queryClient.invalidateQueries({
+          queryKey: [SINGLE_PLAYLIST_QUERY, input.playlist_id],
+        });
+      } else {
+        alert("thêm thất bại");
+      }
+    },
+  });
   return (
     <div
       onContextMenu={(v) => {
@@ -136,18 +214,7 @@ export default function SongInPlayList(v: SongInPlayList) {
           <div
             className=""
             onClick={() => {
-              post(
-                "/lsong/add",
-                {
-                  Id: v.Id,
-                },
-                (v: any) => {
-                  if (v.err) {
-                  } else {
-                    SetLike(v.liked);
-                  }
-                }
-              );
+              addLoveSong(v.Id);
             }}
           >
             {liked ? (
@@ -159,7 +226,7 @@ export default function SongInPlayList(v: SongInPlayList) {
         )}
         <Time d={parseInt(v.Duration + "")} />
       </div>
-      {xy.s ? (
+      {xy.s && (
         <Modal
           left={xy.x}
           top={xy.y}
@@ -195,18 +262,16 @@ export default function SongInPlayList(v: SongInPlayList) {
                     </div>
                   </div>
                 </div>
-                {idUser == playlist.User_id ? (
+                {idUser == playlist.User_id && (
                   <button
                     onClick={() => {
-                      addplaylist();
+                      deleteSong({ playlist_id: playlist.id, song_id: v.Id });
                     }}
                     className="flex p-3 justify-start items-center gap-2 hover:bg-black w-full"
                   >
                     <TrashIcon className="size-[12px] fill-white" />
                     <div>Xóa danh nhạc khỏi danh sách</div>
                   </button>
-                ) : (
-                  <></>
                 )}
                 <button
                   onClick={() => {
@@ -221,17 +286,10 @@ export default function SongInPlayList(v: SongInPlayList) {
                   return (
                     <button
                       onClick={() => {
-                        post(
-                          "/contain/addsong",
-                          { Song_id: v.Id, PlayList_id: vp.idplaylist },
-                          (v: any) => {
-                            if (v.err) {
-                              alert("thêm thất bại");
-                            } else {
-                              alert("thêm thành công");
-                            }
-                          }
-                        );
+                        addSongIntoPlaylist({
+                          playlist_id: vp.idplaylist,
+                          song_id: v.Id,
+                        });
                       }}
                       className="p-3 flex hover:bg-black w-full"
                     >
@@ -243,8 +301,6 @@ export default function SongInPlayList(v: SongInPlayList) {
             </div>
           </div>
         </Modal>
-      ) : (
-        <></>
       )}
     </div>
   );

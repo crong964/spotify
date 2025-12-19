@@ -125,7 +125,7 @@ function CenterShare() {
           dispatch(ShowTopbarContent(true));
         }
       }}
-      className=" h-full m overflow-y-scroll relative bg-black rounded-2xl px-1"
+      className=" h-full m overflow-y-scroll relative bg-black sm:rounded-2xl "
     >
       {pathname == "/" && (
         <div className="hidden sm:inline-block sticky top-0 left-0 z-10 w-full bg-black">

@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import PlayButtom from "@/page/component/PlayButtom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootHome, SetCurName, SetPlaylist } from "@/page/Route/home/RootRedux";
-import { get2, post } from "@/page/config/req";
+import { get2, post, post2 } from "@/page/config/req";
 import { RecommendedSong, SongList } from "@/page/component/Song/Index";
 
 import { TimeString } from "@/page/component/Time";
@@ -17,11 +17,16 @@ import {
 import { SongInPlayList } from "@/page/component/Song/interface";
 import { Avatar } from "@/page/component/avatar";
 import { PopEditPlaylis } from "@/page/component/Playlist";
-import { useQuery } from "@tanstack/react-query";
-import { CACHE_5_DAY, SINGLE_PLAYLIST_QUERY } from "@/page/contant/quey_key";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import {
+  CACHE_5_DAY,
+  LIKE_PLAYLIST_QUERY,
+  SINGLE_PLAYLIST_QUERY,
+} from "@/page/contant/quey_key";
 import { ButtonRandomPlay } from "@/page/component/Audio";
 import ColorImage from "@/page/config/corlorImage";
 import ImagePath from "@/page/config/img";
+import { queryClient } from "@/page/App";
 
 var g = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 6, 7];
 export interface artist {
@@ -121,6 +126,36 @@ export default function PlaylistPage() {
     staleTime: CACHE_5_DAY,
   });
 
+  const { mutate: addLikePlaylist } = useMutation({
+    mutationFn: async () => {
+      const data = await post2("/likePlaylist/add", { idPlaylist: id });
+      return data;
+    },
+    onSuccess: (result) => {
+      if (result) {
+        SetLike(!like);
+        queryClient.invalidateQueries({
+          queryKey: [LIKE_PLAYLIST_QUERY],
+        });
+      }
+    },
+  });
+
+  const { mutate: deleteLikePlaylist } = useMutation({
+    mutationFn: async () => {
+      const data = await post2("/likePlaylist/delete", { idPlaylist: id });
+      return data;
+    },
+    onSuccess: (result) => {
+      if (result) {
+        SetLike(!like);
+        queryClient.invalidateQueries({
+          queryKey: [LIKE_PLAYLIST_QUERY],
+        });
+      }
+    },
+  });
+  
   useEffect(() => {
     if (data && data.songs && data.playlist) {
       SetSongS(data.songs);
@@ -138,8 +173,8 @@ export default function PlaylistPage() {
     }
     const bg = await ColorImage(ImagePath(playlist.ImagePath));
     setBg(bg);
-
   }, [playlist.ImagePath]);
+
   const style = useMemo(() => {
     return { "--bg": bg } as React.CSSProperties;
   }, [bg]);
@@ -178,10 +213,8 @@ export default function PlaylistPage() {
             )}
           </div>
 
-          <div className="flex flex-col max-sm:self-start">
-            <span className="font-normal text-[16px] mb-1 sm:mb-4 text-white">
-              playlist
-            </span>
+          <div className="flex flex-col max-sm:self-start gap-y-3">
+            <span className="font-normal text-[16px] text-white">playlist</span>
             <h1>
               <span className="text-white font-bol text-lg sm:text-[50px] font-black">
                 {playlist.PlayListName}
@@ -189,10 +222,8 @@ export default function PlaylistPage() {
             </h1>
             <div className="flex space-x-1 sm:space-x-4 text-[13px] sm:text-[16px] text-white">
               <span className=" font-bold ">{playlist.Songs} bài hát</span>
-              <span className=" flex items-center space-x-1 sm:space-x-3">
-                <div>Khoảng thời gian:</div>
-                <TimeString d={parseInt(playlist.Duration + "")} />
-              </span>
+              <div>Khoảng thời gian:</div>
+              <TimeString d={parseInt(playlist.Duration + "")} />
             </div>
           </div>
         </div>
@@ -204,21 +235,13 @@ export default function PlaylistPage() {
           <div className="max-sm:flex-1 flex justify-end order-[99] sm:order-[-1]">
             <PlayButtom id={id + ""} page="playlist" />
           </div>
-
+          <ButtonRandomPlay className="size-8" />
           {isLogin && idU != playlist.User_id ? (
             <>
               {like ? (
                 <button
                   onClick={() => {
-                    post(
-                      "/likePlaylist/delete",
-                      { idPlaylist: id },
-                      (v: any) => {
-                        if (v) {
-                          SetLike(!like);
-                        }
-                      }
-                    );
+                    deleteLikePlaylist();
                   }}
                 >
                   <CheckCircleIcon className="size-[32px] fill-[#1ED760] "></CheckCircleIcon>
@@ -226,11 +249,7 @@ export default function PlaylistPage() {
               ) : (
                 <button
                   onClick={() => {
-                    post("/likePlaylist/add", { idPlaylist: id }, (v: any) => {
-                      if (v) {
-                        SetLike(!like);
-                      }
-                    });
+                    addLikePlaylist();
                   }}
                 >
                   <PlusCircleIcon className="size-[32px] fill-[#C7C7C7] "></PlusCircleIcon>
@@ -240,7 +259,7 @@ export default function PlaylistPage() {
           ) : (
             <></>
           )}
-          <ButtonRandomPlay className="size-8" />
+
           <button className="cursor-pointer">
             <ThreeDotsIcon className="fill-[#C7C7C7] hover:fill-white size-[45px] "></ThreeDotsIcon>
           </button>

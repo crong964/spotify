@@ -7,7 +7,7 @@ export default function SongList({ data, type }: SongList) {
   var stt = 0;
   return (
     <>
-      {data.length > 0 ? (
+      {data.length > 0 && (
         <>
           <div className="hidden sm:grid grid-cols-7 text-[13px] sm:text-[14px]  cursor-pointer sm:space-x-2  text-white font-bold rounded-lg items-center">
             <div className="col-span-3 flex items-center space-x-2">
@@ -42,8 +42,6 @@ export default function SongList({ data, type }: SongList) {
             })}
           </div>
         </>
-      ) : (
-        <></>
       )}
     </>
   );
