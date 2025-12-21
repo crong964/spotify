@@ -27,7 +27,7 @@ export default function Artist() {
       post("/search/NameArtist", { name: name }, (res: any) => {
         SetLs(res.ls);
       });
-    }, 1000);
+    }, 200);
     return () => {
       clearTimeout(s);
     };

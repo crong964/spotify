@@ -155,7 +155,7 @@ export default function PlaylistPage() {
       }
     },
   });
-  
+
   useEffect(() => {
     if (data && data.songs && data.playlist) {
       SetSongS(data.songs);
@@ -195,7 +195,7 @@ export default function PlaylistPage() {
             }}
           >
             <Avatar
-              className="size-40 sm:size-[250px] rounded-2xl"
+              className="size-40 shadowPlaylist sm:size-[250px] rounded-2xl"
               src={playlist.ImagePath}
             />
             {sh && (
@@ -213,7 +213,7 @@ export default function PlaylistPage() {
             )}
           </div>
 
-          <div className="flex flex-col max-sm:self-start gap-y-3">
+          <div className="flex flex-col max-sm:self-start gap-1 sm:gap-y-3">
             <span className="font-normal text-[16px] text-white">playlist</span>
             <h1>
               <span className="text-white font-bol text-lg sm:text-[50px] font-black">

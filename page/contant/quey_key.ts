@@ -9,6 +9,8 @@ export const NEXT_PLAYLIST_QUERY = "next_playlist_query";
 export const LIKE_PLAYLIST_QUERY = "like_playlist_query";
 
 export const FETCH_LISTENED_QUERY = "fetch_listen";
+export const FETCH_LISTENED_SONGS_QUERY = "fetch_listened_songs";
+
 export const RECENT_PLAYLIST_QUERY = "RecentPlaylist";
 
 export const TABS_QUERY = "tabs_query";

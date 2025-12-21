@@ -142,13 +142,13 @@ export default function ArtistPage() {
       <div className="sm:flex items-end max-sm:justify-center w-full p-2 bgartis">
         {artist?.Banner == "" && (
           <Avatar
-            className="size-[250px] hidden sm:block  rounded-full"
+            className="size-[250px] shadowPlaylist hidden sm:block  rounded-full"
             src={artist?.pathImage || ""}
           />
         )}
         <div className="flex flex-col max-sm:gap-y-1 max-sm:items-center justify-end h-[320px]  z-10 sm:p-4">
           <Avatar
-            className="size-[170px] block sm:hidden  rounded-full"
+            className="size-[170px] shadowPlaylist block sm:hidden  rounded-full"
             src={artist?.pathImage || ""}
           />
           <div className="flex items-center self-start">

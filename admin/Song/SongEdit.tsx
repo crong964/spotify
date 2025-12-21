@@ -80,6 +80,7 @@ export default function SongEdit() {
               <div>thể loại</div>
               <div className="font-extralight"></div>
             </div>
+
             <div className="rounded-lg w-full border h-[200px]">
               <TabsInput
                 onchange={(v) => {
@@ -88,6 +89,19 @@ export default function SongEdit() {
                 value={tab}
               />
             </div>
+          </div>
+          <div>Tên nhạc</div>
+          <div>
+            <input
+              onChange={(e) => {
+                setSong({
+                  ...song,
+                  SongName: e.currentTarget.value,
+                });
+              }}
+              type="text"
+              className="border-2 border-[#404040] font-medium rounded-lg p-2 w-full"
+            />
           </div>
           <InputArtist
             onChange={(v) => {

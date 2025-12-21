@@ -16,7 +16,8 @@ export default function Time(params: Time) {
   return (
     <p
       className={
-        params.className || "text-[12px] font-normal text-[#a7a7a7] sm:inline-block "
+        params.className ||
+        "text-[12px] font-normal text-[#a7a7a7] sm:inline-block "
       }
     >
       {minute}:{second < 10 ? `0${second}` : `${second}`}
@@ -34,14 +35,10 @@ export function TimeString(params: Time) {
   let second = data % 60;
 
   return (
-    <div
-      className={
-        params.className || "text-[14px] inline-block "
-      }
-    >
+    <span className={params.className || "text-[14px] "}>
       {hour > 0 ? `${hour} giờ ` : " "}
       {minute > 0 ? `${minute} phút ` : " "}
       {second > 0 ? `${second} giây ` : " "}
-    </div>
+    </span>
   );
 }

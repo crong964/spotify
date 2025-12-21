@@ -24,7 +24,7 @@ function useSelectedArtist() {
           Setsingers(v.ls);
         }
       });
-    }, 1000);
+    }, 200);
     return () => {
       clearTimeout(s);
     };
