@@ -20,16 +20,21 @@ export default function LikedSongListPage() {
     },
     staleTime: CACHE_INFILITY,
   });
-  if (!songs) {
-    return;
-  }
+
   const time = useMemo(() => {
+    if (!songs) {
+      return 0;
+    }
     let time = 0;
     songs.forEach((song) => {
       time += parseInt(song.Duration + "");
     });
     return time;
   }, [songs]);
+
+  if (!songs) {
+    return;
+  }
   return (
     <div className="relative">
       <div className="bg-gradient-to-r from-green-400 to-blue-500  sm:rounded-t-lg absolute top-0 left-0 w-full h-[320px] flex  flex-col justify-end "></div>

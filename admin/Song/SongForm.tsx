@@ -115,6 +115,7 @@ export default function SongForm() {
                 });
               }}
               type="text"
+              value={song.SongName}
               className="border-2 border-[#404040] font-medium rounded-lg p-2 w-full"
             />
           </div>
@@ -142,6 +143,7 @@ export default function SongForm() {
           <div>Mô tả</div>
           <div className="w-full">
             <textarea
+              value={song.description}
               name="discription"
               onChange={(e) => {
                 setSong({
@@ -159,7 +161,7 @@ export default function SongForm() {
             <div className="anh w-1/2">
               <div className="mb-2">Ảnh đại diên</div>
               <label
-                htmlFor={song.SongImage == "" ? "avatar" : "gdas"}
+                htmlFor={song.SongImage == "" ? "avatar" : ""}
                 className=" px-4 py-2 rounded-full w-full"
               >
                 <div className="w-full">

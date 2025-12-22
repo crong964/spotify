@@ -13,7 +13,6 @@ import {
 
 const Index = React.lazy(() => import("./Route/IndexHome2"));
 
-
 import {
   CenterShare,
   ChangePassword,
@@ -79,8 +78,8 @@ root.render(
       <Provider store={rootHome}>
         <Suspense fallback={<div>Loading...</div>}>
           <Routes>
-            <Route path="/" element={<Index></Index>}>
-              <Route index element={<HomePage></HomePage>} />
+            <Route path="/" element={<Index />}>
+              <Route index element={<HomePage />} />
               <Route path="genre" element={<Suspense children={<Outlet />} />}>
                 <Route path=":id" element={<IdGenre />} />
                 <Route index element={<Genre />} />
@@ -101,21 +100,20 @@ root.render(
                 <Route path="playlist" element={<></>} />
                 <Route path="chatbox" element={<></>} />
                 <Route path="singlebox/:idbox" element={<></>} />
-                <Route path="library" element={<PlaylistLike></PlaylistLike>} />
+                <Route path="library" element={<PlaylistLike />} />
                 <Route
                   path="ArtistsListPage"
-                  element={<ArtistsListPageMobile></ArtistsListPageMobile>}
+                  element={<ArtistsListPageMobile />}
                 />
               </Route>
             </Route>
-            <Route path="auth" element={<CenterShare></CenterShare>}>
-              <Route index element={<SignIn />}></Route>
-              <Route path="CreateAccount" element={<CreateAccount />}></Route>
-              <Route path="Signup" element={<Signup />}></Route>
-              <Route path="Forgot" element={<Forgot />}></Route>
-              <Route path="ChangePassword" element={<ChangePassword />}></Route>
+            <Route path="auth" element={<CenterShare />}>
+              <Route index element={<SignIn />} />
+              <Route path="CreateAccount" element={<CreateAccount />} />
+              <Route path="Signup" element={<Signup />} />
+              <Route path="Forgot" element={<Forgot />} />
+              <Route path="ChangePassword" element={<ChangePassword />} />
             </Route>
-
             <Route path="*" element={<Navigate replace to="" />} />
           </Routes>
         </Suspense>

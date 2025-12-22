@@ -310,6 +310,9 @@ class SongController {
       count: ls[1].count,
     });
   }
+  async GetSongByTabsWithoutAnyPlaylistAdmin(req: Request, res: Response) {
+    res.json();
+  }
   async NextSong(req: Request, res: Response) {
     var idSong = req.body.idSong;
     var ls = await SongController.song.NextSong(idSong);

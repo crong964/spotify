@@ -98,6 +98,32 @@ export class SongService {
     return check[0];
   }
 
+  async GetSongByTabsWithoutAnyPlaylist(
+    idGenre: string,
+    idPlaylist: string,
+    p: limit
+  ) {
+    var check;
+    check = (await this.songDatabase.GetSongByTabs(
+      idGenre,
+      idPlaylist,
+      p
+    )) as [];
+    return this.SetLs(check);
+  }
+
+  async GetCountSongByTabsWithoutAnyPlaylist(
+    idGenre: string,
+    idPlaylist: string
+  ) {
+    var check;
+    check = (await this.songDatabase.GetCountSongByTabs(
+      idGenre,
+      idPlaylist
+    )) as RowDataPacket;
+    return check[0];
+  }
+
   async GetSongWithoutAtPublicPlayList(
     genre: string,
     start: number,

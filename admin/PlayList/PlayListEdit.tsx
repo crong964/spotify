@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RemoveSelectSong, RootState, SetFloor, addGenre } from "@/admin/Redux";
+import { RootState, SetFloor, addGenre } from "@/admin/Redux";
 import { useParams } from "react-router-dom";
 import { Song } from "@/admin/SongList";
 import IndexGenres from "@/admin/GenreLs";
@@ -40,17 +40,18 @@ export default function PlayListEdit() {
 }
 
 function PlayListFormData() {
-  let { idPlaylistEdit } = useParams();
-  const [newsongs, SetNewSongs] = useState<iSong[]>([]);
+  const { idPlaylistEdit } = useParams();
+  const [newsongs, setNewSongs] = useState<iSong[]>([]);
   const [tabs, setTabs] = useState("");
-  const [start, SetStart] = useState(0);
+  const [nop, setNop] = useState(0);
+  const [start, setStart] = useState(0);
   const GetSongbyTas = (start: number) => {
     post(
       "/song/GetSongByTabs",
-      { tabs: tabs, idPlaylist: idPlaylistEdit, start: start },
+      { tabs: tabs, idPlaylist: idPlaylistEdit, start: start, nop: nop },
       (v: any) => {
-        SetNewSongs(v.ls);
-        SetStart(start + v.ls.length);
+        setNewSongs(v.ls);
+        setStart(start + v.ls.length);
       }
     );
   };
@@ -59,7 +60,7 @@ function PlayListFormData() {
       return;
     }
     GetSongbyTas(0);
-  }, [tabs]);
+  }, [tabs, nop]);
   const dispatch = useDispatch();
   const floor = useSelector((state: RootState) => state.navi.floor);
   const slectGenre = useSelector((state: RootState) => state.navi.slectGenre);
@@ -118,7 +119,7 @@ function PlayListFormData() {
   return (
     <div className="w-full space-y-3 h-max">
       <div className="text-[24px]">Danh sách cũ</div>
-      <div>{ls}</div>
+      <div className="h-[400px] overflow-y-auto">{ls}</div>
       <AdditionalPlayList number={ls.length}></AdditionalPlayList>
       <div>Tên Danh Sách Phát</div>
       <div>
@@ -199,7 +200,7 @@ function PlayListFormData() {
           post("/admin/playlist/UpdatePlayList", form, (v: any) => {
             if (!v.err) {
               alert("cập nhật thành công");
-              window.location.href = `/admin/playlist/edit/${idPlaylistEdit}`;
+              window.location.reload();
             }
           });
         }}
@@ -214,6 +215,17 @@ function PlayListFormData() {
           }}
           value=""
         />
+        <div>
+          <button
+            onClick={() => {
+              setNop(nop ? 0 : 1);
+            }}
+            data-nop={nop}
+            className="data-[nop=0]:bg-white  data-[nop=1]:bg-green-400 text-black"
+          >
+            tìm bài hát không thuộc danh sách nào
+          </button>
+        </div>
         {newsongs.map((v) => {
           stt += 1;
           return (
@@ -253,10 +265,10 @@ function PlayListFormData() {
 interface AdditionalPlayList {
   number: number;
 }
-function AdditionalPlayList(d: AdditionalPlayList) {
+function AdditionalPlayList({ number }: AdditionalPlayList) {
   const SelectListl = useSelector((state: RootState) => state.navi.SelectList);
   var ls: React.JSX.Element[] = [];
-  var stt = d.number;
+  var stt = number;
   for (const key in SelectListl) {
     const element = SelectListl[key];
     stt += 1;
@@ -276,39 +288,43 @@ function AdditionalPlayList(d: AdditionalPlayList) {
     );
   }
   return (
-    <div>
-      {ls.length > 0 ? (
-        <div className="text-[24px]">Danh sách thêm mới</div>
-      ) : (
-        <></>
+    <>
+      {ls.length > 0 && (
+        <div className="h-[400px] overflow-y-auto">
+          <div className="text-[24px] bg-white sticky top-0 left-0">
+            Danh sách thêm mới
+          </div>
+          <div>{ls}</div>
+        </div>
       )}
-      <div>{ls}</div>
-    </div>
+    </>
   );
 }
 
-function OldSong(d: OldSong) {
+function OldSong(song: OldSong) {
   const [remove, SetRemove] = useState(false);
-  const dispatch = useDispatch();
-  // Song_id: string
-  // PlayList_id: string
   return (
     <div
       onClick={() => {}}
       className="grid hover:bg-slate-300 grid-cols-6 cursor-pointer space-x-2 font-bold p-4 rounded-lg items-center"
     >
       <div className="col-span-3 flex items-center space-x-2">
-        <div className="">{d.stt}</div>
-        <img className="size-9" src={ImagePath(d.SongImage)} alt="" srcSet="" />
+        <div className="">{song.stt}</div>
+        <img
+          className="size-9"
+          src={ImagePath(song.SongImage)}
+          alt=""
+          srcSet=""
+        />
       </div>
-      <div className="col-span-2">{d.SongName}</div>
+      <div className="col-span-2">{song.SongName}</div>
       <div className="col-span-1 flex items-center space-x-4">
         {!remove ? (
           <svg
             onClick={() => {
               post(
                 "/admin/contain/delete",
-                { Song_id: d.Id, PlayList_id: d.idPlaylist },
+                { Song_id: song.Id, PlayList_id: song.idPlaylist },
                 (v: any) => {
                   if (!v.err) {
                     SetRemove(true);
@@ -330,7 +346,7 @@ function OldSong(d: OldSong) {
             onClick={() => {
               post(
                 "/admin/contain/add",
-                { Song_id: d.Id, PlayList_id: d.idPlaylist },
+                { Song_id: song.Id, PlayList_id: song.idPlaylist },
                 (v: any) => {
                   if (!v.err) {
                     SetRemove(false);

@@ -1,46 +1,67 @@
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { post } from "@/page/config/req";
 import React from "react";
-import { iInputArtist } from "./interface";
+import { iInputArtist, singer } from "./interface";
 import ImagePath from "@/page/config/img";
-type singer = {
-  id: string;
-  ChanalName: string;
-  pathImage: string;
-};
+
 function useSelectedArtist() {
-  const [singers, Setsingers] = useState<singer[]>([]);
-  const [SelectedSingers, SetSelectedSingers] = useState<singer[]>([]);
-  const [p, SetP] = useState("");
+  const [singers, setsingers] = useState<singer[]>([]);
+  const [SelectedSingers, setSelectedSingers] = useState<singer[]>([]);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
-    if (p == "") {
-      Setsingers([]);
+    if (search == "") {
+      setsingers([]);
       return;
     }
     let s = setTimeout(() => {
-      post("/search/NameArtist", { name: p }, (v: any) => {
+      post("/search/NameArtist", { name: search }, (v: any) => {
         if (v && v.err != undefined && !v.err) {
-          Setsingers(v.ls);
+          setsingers(v.ls);
         }
       });
     }, 200);
     return () => {
       clearTimeout(s);
     };
-  }, [p]);
-  return { singers, SelectedSingers, SetSelectedSingers, SetP, Setsingers };
+  }, [search]);
+  return {
+    singers,
+    SelectedSingers,
+    setSelectedSingers,
+    setSearch,
+    setsingers,
+  };
 }
 
-export default function InputArtist(p: iInputArtist) {
+export default function InputArtist({ onChange, singers }: iInputArtist) {
   const name = useRef<HTMLInputElement>(null);
   const data = useSelectedArtist();
-  p.onChange(data.SelectedSingers);
+  onChange(data.SelectedSingers);
 
   return (
-    <>
+    <Fragment>
+      {singers && singers.length > 0 && (
+        <div className="w-full">
+          {singers.map((singer) => {
+            return (
+              <div
+                key={singer.id}
+                className="flex items-center space-x-4 my-2 p-2 cursor-pointer"
+              >
+                <img
+                  src={ImagePath(singer.pathImage)}
+                  alt=""
+                  className="size-[3.6rem] rounded-full"
+                />
+                <p>{singer.ChanalName}</p>
+              </div>
+            );
+          })}
+        </div>
+      )}
       <div>Ca sĩ </div>
-      {data.SelectedSingers.length > 0 ? (
+      {data.SelectedSingers.length > 0 && (
         <div className="w-full">
           {data.SelectedSingers.map((v) => {
             return (
@@ -51,7 +72,7 @@ export default function InputArtist(p: iInputArtist) {
                   if (!confirm("bạn muốn xóa không")) {
                     return;
                   }
-                  data.SetSelectedSingers([
+                  data.setSelectedSingers([
                     ...data.SelectedSingers.filter((d) => {
                       return v.id != d.id;
                     }),
@@ -68,8 +89,6 @@ export default function InputArtist(p: iInputArtist) {
             );
           })}
         </div>
-      ) : (
-        <></>
       )}
       <div className="relative flex">
         <input
@@ -79,7 +98,7 @@ export default function InputArtist(p: iInputArtist) {
             if (v.length < 0) {
               return;
             }
-            data.SetP(e.currentTarget.value);
+            data.setSearch(e.currentTarget.value);
           }}
           type="text"
           className="rounded-lg p-2 flex-1 focus:outline-none"
@@ -93,7 +112,7 @@ export default function InputArtist(p: iInputArtist) {
                   key={v.id}
                   className="flex items-center space-x-4 my-2 p-2 hover:bg-[#222222] cursor-pointer"
                   onClick={() => {
-                    data.SetSelectedSingers([
+                    data.setSelectedSingers([
                       ...data.SelectedSingers,
                       {
                         ChanalName: v.ChanalName,
@@ -101,7 +120,7 @@ export default function InputArtist(p: iInputArtist) {
                         pathImage: v.pathImage,
                       },
                     ]);
-                    data.Setsingers([]);
+                    data.setsingers([]);
                     if (name.current != null) {
                       name.current.value = "";
                     }
@@ -130,10 +149,11 @@ export default function InputArtist(p: iInputArtist) {
                     },
                     (v: any) => {
                       if (v && v.data) {
-                        data.SetSelectedSingers([
+                        data.setSelectedSingers([
                           ...data.SelectedSingers,
                           v.data,
                         ]);
+                        data.setSearch("");
                       }
                     }
                   );
@@ -148,6 +168,6 @@ export default function InputArtist(p: iInputArtist) {
           </>
         )}
       </div>
-    </>
+    </Fragment>
   );
 }

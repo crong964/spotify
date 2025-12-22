@@ -1,8 +1,13 @@
 import { LogoIcon } from "@/icon/Icon";
-import React from "react";
+import { queryClient } from "@/page/App";
+import React, { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 
 export default function CenterShare() {
+  useEffect(() => {
+    queryClient.removeQueries();
+    return () => {};
+  }, []);
   return (
     <div className="h-full">
       <div className="w-full p-2 sm:p-9 bg-black">
@@ -10,7 +15,7 @@ export default function CenterShare() {
           <LogoIcon className="fill-white h-9 cursor-pointer"></LogoIcon>
         </div>
       </div>
-      <Outlet></Outlet>
+      <Outlet />
       <div className="w-full p-9 bg-[#121212]">
         <svg
           role="img"

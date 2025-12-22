@@ -9,6 +9,8 @@ import DateReact from "../componnt/Date";
 import { TabsInput } from "@/page/component/tabs";
 import InputArtist from "../componnt/artist/InputArtist";
 import { singer } from "../componnt/artist/interface";
+import { Audio3 } from "@/page/component/Audio";
+import ImagePath from "@/page/config/img";
 
 type Genre = {
   Id: string;
@@ -42,7 +44,8 @@ export default function SongEdit() {
   const [selectedSingers, setSelectedSingers] = useState<singer[]>([]);
   const [load, setLoad] = useState(false);
   const [file, setFile] = useState<File>();
-  const { idArtist } = useParams();
+  const [singers, setSingers] = useState<singer[]>([]);
+  const [oldImage, setOldImage] = useState("");
   const [song, setSong] = useState<Song>({
     Id: "",
     SongImage: "",
@@ -62,8 +65,10 @@ export default function SongEdit() {
   const idSong = useSelector((state: RootState) => state.navi.idSong);
   useEffect(() => {
     post("/admin/song/get", { idsong: idSong }, (v: any) => {
-      if (v.err != undefined && !v.err) {
+      if (v && !v.err) {
         setSong(v.song);
+        setOldImage(v.song.SongImage);
+        setSingers(v.singers);
         SetTabs(v.song.Genre_id);
       }
     });
@@ -99,6 +104,7 @@ export default function SongEdit() {
                   SongName: e.currentTarget.value,
                 });
               }}
+              value={song.SongName}
               type="text"
               className="border-2 border-[#404040] font-medium rounded-lg p-2 w-full"
             />
@@ -107,11 +113,9 @@ export default function SongEdit() {
             onChange={(v) => {
               setSelectedSingers(v);
             }}
-            key={1}
+            singers={singers}
           />
-
           <div>Ngày phát hành</div>
-
           <DateReact
             cellClassName="p-2"
             int={song.publicDate}
@@ -144,7 +148,7 @@ export default function SongEdit() {
             <div className="anh w-1/2">
               <div className="mb-2">Ảnh đại diên</div>
               <label
-                htmlFor={song.SongImage == "" ? "avatar" : "gdas"}
+                htmlFor={song.SongImage == "" ? "avatar" : ""}
                 className=" px-4 py-2 rounded-full w-full"
               >
                 <div className="w-full">
@@ -170,13 +174,13 @@ export default function SongEdit() {
                         onClick={() => {
                           setSong({
                             ...song,
-                            SongImage: "",
+                            SongImage: oldImage,
                           });
                         }}
                       >
                         xóa
                       </div>
-                      <img src={song.SongImage} />
+                      <img src={ImagePath(oldImage)} />
                     </div>
                   )}
                 </div>
@@ -218,20 +222,17 @@ export default function SongEdit() {
                     />
                   </svg>
                 </div>
-
-                <audio
-                  controls
-                  src={`/s?id=${song.filePath}`}
-                  onCanPlay={(e) => {
-                    console.log(e.currentTarget.duration);
+                <Audio3
+                  className="fill-black  rounded-full size-9"
+                  GetTIme={(v) => {
                     setSong({
                       ...song,
-                      Duration: e.currentTarget.duration,
+                      Duration: v,
                     });
                   }}
-                >
-                  <source src={`/s?id=${song.filePath}`} />
-                </audio>
+                  path={song.filePath}
+                  id={song.Id}
+                />
               </label>
             </div>
           </div>

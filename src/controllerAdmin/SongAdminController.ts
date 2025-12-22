@@ -172,7 +172,6 @@ class SongAdminController {
   async Update(req: Request, res: Response) {
     var song = new SongModel();
     song.setAll(req.body);
-    // song.user_id == Đen Vâu@123@Min@123
 
     let singer: singer[] = JSON.parse(req.body.user_id);
 
@@ -295,18 +294,34 @@ class SongAdminController {
     });
   }
   async Get(req: Request, res: Response) {
-    var idsong = req.body.idsong;
-    var song = await SongAdminController.song.Get(idsong);
-
+    const idsong = req.body.idsong;
+    const song = await SongAdminController.song.Get(idsong);
     if (song == undefined) {
       res.json({
         err: true,
       });
       return;
     }
+    const user_ids = song.user_id.split(" ");
+    const usersPromis = user_ids.map((id) => {
+      return userService.Get(id);
+    });
+    const users = await Promise.all(usersPromis);
+    const singers = users
+      .filter((user) => {
+        return user != undefined;
+      })
+      .map((user) => {
+        return {
+          id: user.id,
+          ChanalName: user.ChanalName,
+          pathImage: user.pathImage,
+        };
+      });
     res.json({
       err: false,
       song: song,
+      singers,
     });
   }
 }

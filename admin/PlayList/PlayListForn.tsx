@@ -16,14 +16,26 @@ interface PlayListFormData {
 }
 export default function PlayListForm() {
   const SelectListl = useSelector((state: RootState) => state.navi.SelectList);
-  const [newsongs, SetNewSongs] = useState<iSong[]>([]);
+  const [newsongs, setNewSongs] = useState<iSong[]>([]);
+  const [start, setStart] = useState(0);
   const [tabs, setTabs] = useState("");
+  const GetSongbyTas = (start: number) => {
+    post(
+      "/song/GetSongByTabs",
+      { tabs: tabs, nop: 1, start: start },
+      (v: any) => {
+        setNewSongs(v.ls);
+        setStart(start + v.ls.length);
+      }
+    );
+  };
   useEffect(() => {
     if (tabs == "") {
       return;
     }
-    post("/song/GetSongByTabs", { tabs: tabs, idPlaylist: "" }, (v: any) => {
-      SetNewSongs(v.ls);
+    post("/song/GetSongByTabs", { tabs: tabs, nop: 1 }, (v: any) => {
+      setNewSongs(v.ls);
+      setStart(0);
     });
   }, [tabs]);
   var ls: React.JSX.Element[] = [];
@@ -48,9 +60,9 @@ export default function PlayListForm() {
     );
   }
   return (
-    <div className="w-[90%] mx-auto h-full">
+    <div className="w-[90%] mx-auto ">
       <IndexGenres />
-      {ls}
+      <div className="h-[400px] overflow-y-auto">{ls}</div>
       <PlayListFormData />
       <div className="w-full ">
         <TabsInput
@@ -59,22 +71,36 @@ export default function PlayListForm() {
           }}
           value=""
         />
-        {newsongs.map((v, i) => {
-          return (
-            <Song
-              Duration={v.Duration}
-              Id={v.Id}
-              Singer={v.Singer}
-              SongName={v.SongName}
-              Viewer={v.Viewer}
-              filePath={v.filePath}
-              SongImage={v.SongImage}
-              stt={i + 1}
-              user_id={v.user_id}
-              key={v.Id}
-            />
-          );
-        })}
+        <div className="h-[400px] overflow-y-auto">
+          {newsongs.map((v, i) => {
+            return (
+              <Song
+                Duration={v.Duration}
+                Id={v.Id}
+                Singer={v.Singer}
+                SongName={v.SongName}
+                Viewer={v.Viewer}
+                filePath={v.filePath}
+                SongImage={v.SongImage}
+                stt={i + 1}
+                user_id={v.user_id}
+                key={v.Id}
+              />
+            );
+          })}
+        </div>
+        {newsongs.length > 0 && (
+          <div className="flex justify-end">
+            <button
+              onClick={() => {
+                GetSongbyTas(start);
+              }}
+              className="px-4 py-2 rounded-xl font-bold border-2 border-black text-black hover:bg-green-500 hover:text-white"
+            >
+              Làm mới
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
