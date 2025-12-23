@@ -19,7 +19,6 @@ interface List {
   children: React.JSX.Element[];
 }
 export function RecentPlaylist(params: iRecentPlaylist) {
-  const dispatch = useDispatch();
   const playing = useSelector((state: RootHome) => state.rootHome.playing);
   const stopAudio = useSelector((state: RootHome) => state.audioroot.stop);
   const [hidden, SetHidden] = useState(true);
@@ -36,10 +35,9 @@ export function RecentPlaylist(params: iRecentPlaylist) {
       <Link
         to={`${params.Type == "artist" ? "artist" : "playlist"}/${params.ID}`}
         className="flex items-center space-x-1 sm:space-x-2 cursor-pointer bg-[#1A1A1A] rounded-xl "
-        onClick={() => {}}
       >
         <Avatar className="size-[60px] rounded-xl" src={params.ImagePath} />
-        <div className="text-white text-sm sm:text-base font-bold line-clamp-2">
+        <div className="text-white text-[12px] sm:text-base font-bold line-clamp-2">
           {params.PlayListName}
         </div>
         <div className="hidden sm:block size-6"></div>

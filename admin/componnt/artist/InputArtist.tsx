@@ -38,28 +38,16 @@ export default function InputArtist({ onChange, singers }: iInputArtist) {
   const name = useRef<HTMLInputElement>(null);
   const data = useSelectedArtist();
   onChange(data.SelectedSingers);
-
+  useEffect(() => {
+    if (!singers) {
+      return;
+    }
+    data.setSelectedSingers(singers);
+    return () => {};
+  }, [singers]);
   return (
     <Fragment>
-      {singers && singers.length > 0 && (
-        <div className="w-full">
-          {singers.map((singer) => {
-            return (
-              <div
-                key={singer.id}
-                className="flex items-center space-x-4 my-2 p-2 cursor-pointer"
-              >
-                <img
-                  src={ImagePath(singer.pathImage)}
-                  alt=""
-                  className="size-[3.6rem] rounded-full"
-                />
-                <p>{singer.ChanalName}</p>
-              </div>
-            );
-          })}
-        </div>
-      )}
+      
       <div>Ca sĩ </div>
       {data.SelectedSingers.length > 0 && (
         <div className="w-full">

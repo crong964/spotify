@@ -151,7 +151,6 @@ export default function PlaylistPage() {
       let time = 0;
       (data.songs as SongInPlayList[]).forEach((song) => {
         time += Number(song.Duration + "");
-        console.log(song.Duration);
       });
       data.playlist.Duration = time;
       data.playlist.Songs = data.songs.length;
