@@ -8,7 +8,7 @@ import CalcXY from "@/page/component/pop/CalcXY";
 import Modal from "@/page/component/pop/Modal";
 import ImagePath from "@/page/config/img";
 
-export default function Avatar(p: Infor) {
+export default function Avatar({ Name, Vertify, pathImage }: Infor) {
   const [show, SetShow] = useState(false);
   const [xy, XY] = useState({ x: 0, y: 0 });
   const dispatch = useDispatch();
@@ -28,20 +28,20 @@ export default function Avatar(p: Infor) {
         }}
         className="text-[14px] "
       >
-        {p.pathImage == "" ? (
+        {pathImage == "" ? (
           <div className="bg-[#2A2A2A] p-2 rounded-2xl">
             <AvatarIcon className="size-[20px] fill-white" />
           </div>
         ) : (
           <img
             className="size-[40px] rounded-full cursor-pointer"
-            src={ImagePath(p.pathImage)}
+            src={ImagePath(pathImage)}
             alt=""
             srcSet=""
           />
         )}
       </div>
-      {show ? (
+      {show && (
         <Modal
           top={xy.y}
           left={xy.x}
@@ -75,8 +75,6 @@ export default function Avatar(p: Infor) {
             </div>
           </div>
         </Modal>
-      ) : (
-        <></>
       )}
     </button>
   );

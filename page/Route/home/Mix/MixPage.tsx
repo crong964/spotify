@@ -50,18 +50,18 @@ interface PlaylistForm {
 }
 export default function MixPage() {
   const { id } = useParams();
-  const [songs, SetSongS] = useState<SongInPlayList[]>([]);
+  const [songs, setSongS] = useState<SongInPlayList[]>([]);
   const playlist = useSelector((state: RootHome) => state.rootHome.playlist);
   const [time, SetTime] = useState(0);
   const [bg, setBg] = useState("black");
   useEffect(() => {
     get(`/recentSong/getlistenAgain/${id}`, (v: any) => {
       if (v && v.ls) {
-        SetSongS(v.ls);
+        setSongS(v.ls);
         let time = 0;
         for (let i = 0; i < v.ls.length; i++) {
           const element = v.ls[i] as SongInPlayList;
-          time += parseInt(element.Duration);
+          time += Number(element.Duration);
         }
         SetTime(time);
       }
@@ -69,7 +69,7 @@ export default function MixPage() {
   }, [id]);
   useMemo(async () => {
     const bg = await ColorImage(
-      "https://res.cloudinary.com/dkd1k6e2r/image/upload/v1739376087/aXZpdml2aXZpdml2aXZpdg_g89ohh.jpg"
+      "https://res.cloudinary.com/dkd1k6e2r/image/upload/aXZpdml2aXZpdml2aXZpdg_g89ohh.jpg"
     );
     setBg(bg);
   }, []);
@@ -83,37 +83,24 @@ export default function MixPage() {
         style={style}
         className="bgplaylist rounded-t-lg absolute top-0 left-0 w-full h-[320px] flex flex-col justify-end "
       >
-        <div className="flex items-end justify-start">
-          <div className="flex z-10 p-4 justify-center items-end sm:space-x-4">
-            <div className="relative">
-              <Avatar
-                className="size-[250px] rounded-2xl"
-                src={
-                  "https://res.cloudinary.com/dkd1k6e2r/image/upload/v1739376087/aXZpdml2aXZpdml2aXZpdg_g89ohh.jpg"
-                }
-              />
-            </div>
+        <div className="flex max-sm:flex-col items-center sm:items-end sm:justify-start sm:gap-4 sm:p-4">
+          <div className="relative">
+            <Avatar
+              className="size-[170px] sm:size-[250px] rounded-2xl"
+              src={
+                "https://res.cloudinary.com/dkd1k6e2r/image/upload/v1739376087/aXZpdml2aXZpdml2aXZpdg_g89ohh.jpg"
+              }
+            />
+          </div>
 
-            <div className="hidden sm:flex flex-col">
-              <div className="flex items-center">
-                <span className="font-normal text-[16px] text-white">
-                  playlist
-                </span>
-              </div>
-              <h1>
-                <span className="text-white font-bol text-[50px] font-black">
-                  {playlist.PlayListName}
-                </span>
-              </h1>
-              <div className="flex space-x-4">
-                <span className="text-[16px] font-bold text-white">
-                  {songs.length} bài hát
-                </span>
-                <span className="text-[16px] font-bold text-white flex items-center space-x-3">
-                  <div>Khoảng thời gian:</div>
-                  <TimeString d={time} />
-                </span>
-              </div>
+          <div className="flex flex-col gap-1 sm:gap-5">
+            <span className="font-normal text-lg sm:text-[50px] text-white">
+              Danh sách phát lại
+            </span>
+            <div className="flex gap-3 text-[14px]">
+              {songs.length} bài hát
+              <div>Khoảng thời gian:</div>
+              <TimeString d={time} />
             </div>
           </div>
         </div>

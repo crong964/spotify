@@ -20,7 +20,7 @@ import { IsLogin } from "@/page/Route/auth/RootAuth";
 
 export default function Header() {
   const curName = useSelector((state: RootHome) => state.rootHome.curName);
-  const [search, SetSearch] = useState("");
+  const [search, setSearch] = useState("");
   const topbarcontent = useSelector(
     (state: RootHome) => state.rootHome.topbarcontent
   );
@@ -59,7 +59,6 @@ export default function Header() {
     });
   }, [update]);
 
-  useEffect(() => {}, [search]);
   const { id } = useParams();
   return (
     <div className="b h-max w-full rounded-tl-lg sticky bg-gradient-to-r from-red-500 via-pink-400 to-black top-0 z-10 px-3 p-0 sm:py-2 space-y-2">

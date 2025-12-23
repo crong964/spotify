@@ -2,19 +2,19 @@ import { post } from "@/page/config/req";
 import React from "react";
 import { Button, BoxButton } from "./Interface";
 
-export function ButtonChat(d: Button) {
+export function ButtonChat({ children, onClick, text }: Button) {
   return (
     <div
       className="w-full flex bg-black hover:bg-[#2A2A2A] font-mono p-2 justify-around cursor-pointer"
-      onClick={d.onClick}
+      onClick={onClick}
     >
-      {d.children}
-      <div>{d.text}</div>
+      {children}
+      <div>{text}</div>
     </div>
   );
 }
-export function BoxButton(params: BoxButton) {
-  switch (params.show) {
+export function BoxButton({ SetShow, idBox, show }: BoxButton) {
+  switch (show) {
     case true:
       return (
         <div className="flex flex-col absolute top-1/3 min-w-[70%] right-8">
@@ -40,11 +40,11 @@ export function BoxButton(params: BoxButton) {
                 post(
                   "/box/remove",
                   {
-                    idBox: params.idBox,
+                    idBox: idBox,
                   },
                   (n: any) => {
                     window.location.reload();
-                    params.SetShow(false);
+                    SetShow(false);
                   }
                 );
               }}

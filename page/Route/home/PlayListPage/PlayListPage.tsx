@@ -84,16 +84,6 @@ export default function PlaylistPage() {
     queryFn: async () => {
       const v = await get2(`/playlist/data/${id}`);
       if (v && !v.err) {
-        var time = 0;
-        var song = 0;
-        for (let i = 0; i < v.songs.length; i++) {
-          const element: Song = v.songs[i];
-          time += parseInt(element.Duration + "");
-          song += 1;
-        }
-        v.playlist.Duration = time;
-        v.playlist.Songs = song;
-
         let ls = v.songs as SongInPlayList[];
         let tab: any = {};
         for (let i = 0; i < ls.length; i++) {
@@ -158,6 +148,13 @@ export default function PlaylistPage() {
 
   useEffect(() => {
     if (data && data.songs && data.playlist) {
+      let time = 0;
+      (data.songs as SongInPlayList[]).forEach((song) => {
+        time += Number(song.Duration + "");
+        console.log(song.Duration);
+      });
+      data.playlist.Duration = time;
+      data.playlist.Songs = data.songs.length;
       SetSongS(data.songs);
       SetLike(data.like);
       SetIdU(data.idU);
@@ -220,7 +217,7 @@ export default function PlaylistPage() {
                 {playlist.PlayListName}
               </span>
             </h1>
-            <div className="flex space-x-1 sm:space-x-4 text-[13px] sm:text-[16px] text-white">
+            <div className="flex space-x-1 sm:space-x-4 text-[14px]  text-white">
               <span className=" font-bold ">{playlist.Songs} bài hát</span>
               <div>Khoảng thời gian:</div>
               <TimeString d={parseInt(playlist.Duration + "")} />
@@ -268,7 +265,7 @@ export default function PlaylistPage() {
           Các bài hát
         </div>
         <SongList data={songs} type="playlist" />
-        {isLogin && idU == playlist.User_id && playlist.User_id != "" ? (
+        {isLogin && idU == playlist.User_id && playlist.User_id != "" && (
           <RecommendedSong
             tabs={tabs}
             idPlaylist={playlist.id}
@@ -278,12 +275,10 @@ export default function PlaylistPage() {
               }
             }}
           />
-        ) : (
-          <></>
         )}
         <footer className="h-5"></footer>
       </div>
-      {edit ? (
+      {edit && (
         <PopEditPlaylis
           Discripition=""
           ImagePath={playlist.ImagePath}
@@ -296,8 +291,6 @@ export default function PlaylistPage() {
             setEdit(v);
           }}
         />
-      ) : (
-        <></>
       )}
     </div>
   );
