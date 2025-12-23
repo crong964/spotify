@@ -6,11 +6,5 @@ const BoxListData = React.lazy(
   () => import("@/page/component/boxchat/BoxListData")
 );
 export default function BoxChatPage() {
-  
-  return (
-    <BoxChat children={<BoxListData/>}/>
-  );
+  return <BoxChat children={<BoxListData />} />;
 }
-
-
-

@@ -4,77 +4,91 @@ import LikedSongModel from "../model/LikedSongModel";
 import { likedSongService } from "../services";
 
 class LikedSongController {
-    static likedSongService = likedSongService
-    constructor() {
+  static likedSongService = likedSongService;
+  constructor() {}
+
+  async Add(req: Request, res: Response) {
+    var id_user_liked = req.cookies.id;
+    var Id = req.body.Id;
+    var temp = new LikedSongModel();
+    temp.Id = Id;
+    temp.id_user_liked = id_user_liked;
+    var check;
+    var get = await LikedSongController.likedSongService.Get(temp);
+
+    if (get == undefined) {
+      get = temp;
+      get.liked = 1;
+      check = await LikedSongController.likedSongService.Add(temp);
+    } else {
+      if (get.liked == 1) {
+        get.liked = 0;
+      } else {
+        get.liked = 1;
+      }
+
+      check = await LikedSongController.likedSongService.Update(get);
     }
 
-    async Add(req: Request, res: Response) {
-        var id_user_liked = req.cookies.id
-        var Id = req.body.Id
-        var temp = new LikedSongModel()
-        temp.Id = Id
-        temp.id_user_liked = id_user_liked
-        var check
-        var get = await LikedSongController.likedSongService.Get(temp)
+    res.json({
+      err: check == undefined,
+      liked: get.liked,
+    });
+  }
+  async Delete(req: Request, res: Response) {
+    var id_user_liked = req.cookies.id;
+    var Id = req.body.Id;
+    var temp = new LikedSongModel();
+    temp.Id = Id;
+    temp.id_user_liked = id_user_liked;
+    var check = await LikedSongController.likedSongService.Delete(temp);
+    res.json({
+      err: check == undefined,
+    });
+  }
+  async GetAllByIduserAndIdArtise(req: Request, res: Response) {
+    var id_user_liked = req.cookies.id;
+    var user_id = req.params.idartise;
+    var temp = new LikedSongModel();
+    temp.user_id = user_id;
+    temp.id_user_liked = id_user_liked;
+    var check =
+      await LikedSongController.likedSongService.GetAllByIduserAndIdArtise(
+        temp
+      );
 
+    res.json({
+      err: check.length == 0,
+      ls: check,
+    });
+  }
+  async GetAllLikedSong(req: Request, res: Response) {
+    var id_user_liked = req.cookies.id;
+    var d = new LikedSongModel();
+    d.id_user_liked = id_user_liked;
+    var ls = await LikedSongController.likedSongService.GetAllLikedSong(d);
+    res.json({
+      err: false,
+      ls: ls,
+    });
+  }
+  async GetSongsByPagination(req: Request, res: Response) {
+    const last_id: any = req.query.lastId || "";
+    const tabs: any = req.query.tabs || "";
+    const id = req.cookies.id || "";
 
-        if (get == undefined) {
-            get = temp
-            get.liked = 1
-            check = await LikedSongController.likedSongService.Add(temp)
-        }
-        else {
-            if (get.liked == 1) {
-                get.liked = 0
-            } else {
-                get.liked = 1
-            }
+    let songs = await LikedSongController.likedSongService.GetSongsByPagination(
+      last_id,
+      id,
+      tabs
+    );
 
-            check = await LikedSongController.likedSongService.Update(get)
-        }
-
-
-        res.json({
-            err: check == undefined,
-            liked: get.liked
-        })
-    }
-    async Delete(req: Request, res: Response) {
-        var id_user_liked = req.cookies.id
-        var Id = req.body.Id
-        var temp = new LikedSongModel()
-        temp.Id = Id
-        temp.id_user_liked = id_user_liked
-        var check = await LikedSongController.likedSongService.Delete(temp)
-        res.json({
-            err: check == undefined
-        })
-    }
-    async GetAllByIduserAndIdArtise(req: Request, res: Response) {
-        var id_user_liked = req.cookies.id
-        var user_id = req.params.idartise
-        var temp = new LikedSongModel()
-        temp.user_id = user_id
-        temp.id_user_liked = id_user_liked
-        var check = await LikedSongController.likedSongService.GetAllByIduserAndIdArtise(temp)
-
-        res.json({
-            err: check.length == 0,
-            ls: check
-        })
-    }
-    async GetAllLikedSong(req: Request, res: Response) {
-        var id_user_liked = req.cookies.id
-        var d = new LikedSongModel
-        d.id_user_liked = id_user_liked
-        var ls = await LikedSongController.likedSongService.GetAllLikedSong(d)
-        res.json({
-            err: false,
-            ls: ls
-        })
-    }
-
+    res.json({
+      err: songs.length == 0,
+      song: songs,
+    });
+  }
 }
 
-var likedSongController = new LikedSongController()
-export default likedSongController
+var likedSongController = new LikedSongController();
+export default likedSongController;

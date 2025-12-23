@@ -2,130 +2,130 @@
 @tailwind components;
 @tailwind utilities;
 @keyframes appear1 {
-    from {
-        top: 0px;
-        left: 100%;
+  from {
+    top: 0px;
+    left: 100%;
+  }
 
-    }
-
-    to {
-        top: 0px;
-        left: 0px;
-    }
+  to {
+    top: 0px;
+    left: 0px;
+  }
 }
 
 @keyframes appear2 {
-    from {
-        top: 0px;
-        left: -100%;
+  from {
+    top: 0px;
+    left: -100%;
+  }
 
-    }
-
-    to {
-        top: 0px;
-        left: 0px;
-    }
+  to {
+    top: 0px;
+    left: 0px;
+  }
 }
 
 @keyframes disappear1 {
-    from {
-        top: 0px;
-        right: 0px;
+  from {
+    top: 0px;
+    right: 0px;
+  }
 
-    }
-
-    to {
-        top: 0px;
-        right: 100%;
-    }
+  to {
+    top: 0px;
+    right: 100%;
+  }
 }
 
 @keyframes expendAnimation {
-    from {
-        width: 20px;
+  from {
+    width: 20px;
+  }
 
-    }
-
-    to {
-        width: 40px;
-    }
+  to {
+    width: 40px;
+  }
 }
 
 .apearRightToLeft {
-    animation: appear1 2s;
+  animation: appear1 2s;
 }
 
 .apearLefttoRight {
-    animation: appear2 2s;
+  animation: appear2 2s;
 }
 
 .disappearRighttoLeft {
-    animation: disappear1 2s;
+  animation: disappear1 2s;
 }
 
 .expend {
-    animation: expendAnimation 1.5s;
+  animation: expendAnimation 1.5s;
 }
 
 .loader {
-    border-radius: 100%;
-    -webkit-animation: spin 14s linear infinite;
-    /* Safari */
-    animation: spin 14s linear infinite;
+  border-radius: 100%;
+  -webkit-animation: spin 14s linear infinite;
+  /* Safari */
+  animation: spin 14s linear infinite;
 }
 
 /* Safari */
 @-webkit-keyframes spin {
-    0% {
-        -webkit-transform: rotate(0deg);
-    }
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
 
-    100% {
-        -webkit-transform: rotate(360deg);
-    }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
 }
 
 @keyframes spin {
-    0% {
-        transform: rotate(0deg);
-    }
+  0% {
+    transform: rotate(0deg);
+  }
 
-    100% {
-        transform: rotate(360deg);
-    }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes appearTop {
-    from {
-        top: 100%;
-        left: 0px;
+  from {
+    top: 100%;
+    left: 0px;
+  }
 
-    }
-
-    to {
-        top: 0px;
-        left: 0px;
-    }
+  to {
+    top: 0px;
+    left: 0px;
+  }
 }
 
 @keyframes disppearTop {
-    from {
-        top: 0px;
-        left: 0px;
+  from {
+    top: 0px;
+    left: 0px;
+  }
 
-    }
-
-    to {
-        top: 100%;
-        left: 0px;
-
-    }
+  to {
+    top: 100%;
+    left: 0px;
+  }
 }
 
 .appearBottomToTop {
-    animation: appearTop 2s;
+  animation: appearTop 2s;
 }
 
 .disppearTopToBottom {
-    animation: disppearTop 2s;
+  animation: disppearTop 2s;
+}
+
+.shadowPlayButton {
+  box-shadow: 0 8px 8px rgba(0, 0, 0, 0.3);
+}
+.shadowPlaylist {
+  box-shadow: 0 8px 8px rgba(0, 0, 0, 0.3);
 }

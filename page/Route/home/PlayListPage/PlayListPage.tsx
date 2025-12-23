@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import PlayButtom from "@/page/component/PlayButtom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootHome, SetCurName, SetPlaylist } from "@/page/Route/home/RootRedux";
-import { get, post } from "@/page/config/req";
+import { get2, post, post2 } from "@/page/config/req";
 import { RecommendedSong, SongList } from "@/page/component/Song/Index";
 
 import { TimeString } from "@/page/component/Time";
@@ -10,17 +10,23 @@ import { useParams } from "react-router-dom";
 
 import {
   CheckCircleIcon,
-  MusicNoteBeamedIcon,
   PencilIcon,
   PlusCircleIcon,
   ThreeDotsIcon,
-  XIcon,
 } from "@/icon/Icon";
-import { SetAutoPlay } from "@/page/component/Audio/AudioRedux";
 import { SongInPlayList } from "@/page/component/Song/interface";
 import { Avatar } from "@/page/component/avatar";
-import { Pop } from "@/page/component/pop";
 import { PopEditPlaylis } from "@/page/component/Playlist";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import {
+  CACHE_5_DAY,
+  LIKE_PLAYLIST_QUERY,
+  SINGLE_PLAYLIST_QUERY,
+} from "@/page/contant/quey_key";
+import { ButtonRandomPlay } from "@/page/component/Audio";
+import ColorImage from "@/page/config/corlorImage";
+import ImagePath from "@/page/config/img";
+import { queryClient } from "@/page/App";
 
 var g = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 6, 7];
 export interface artist {
@@ -50,11 +56,14 @@ export interface Song {
 interface SongList {
   data: Song[];
 }
-interface PlaylistForm {
-  PlayListName: string;
+interface PlayList {
   id: string;
   ImagePath: string;
-  Discripition: string;
+  PlayListName: string;
+  Likes: number;
+  Songs: number;
+  Duration: string;
+  User_id: string;
 }
 export default function PlaylistPage() {
   const dispatch = useDispatch();
@@ -67,23 +76,14 @@ export default function PlaylistPage() {
   const playlist = useSelector((state: RootHome) => state.rootHome.playlist);
   const [like, SetLike] = useState(false);
   const [tabs, SetTabs] = useState("");
-  useEffect(() => {
-    get(`/playlist/data/${id}`, (v: any) => {
+  const [sh, sH] = useState(false);
+  const [edit, setEdit] = useState(false);
+  const [bg, setBg] = useState("black");
+  const { data } = useQuery({
+    queryKey: [SINGLE_PLAYLIST_QUERY, id],
+    queryFn: async () => {
+      const v = await get2(`/playlist/data/${id}`);
       if (v && !v.err) {
-        SetSongS(v.songs);
-        var time = 0;
-        var song = 0;
-        for (let i = 0; i < v.songs.length; i++) {
-          const element: Song = v.songs[i];
-          time += parseInt(element.Duration + "");
-          song += 1;
-        }
-        v.playlist.Duration = time;
-        v.playlist.Songs = song;
-
-        SetLike(v.like);
-        SetIdU(v.idU);
-        dispatch(SetPlaylist(v.playlist));
         let ls = v.songs as SongInPlayList[];
         let tab: any = {};
         for (let i = 0; i < ls.length; i++) {
@@ -103,68 +103,123 @@ export default function PlaylistPage() {
             }
           }
         }
-
-        SetTabs(maxtab);
-        dispatch(SetCurName(v.playlist.PlayListName));
+        return {
+          songs: v.songs,
+          like: v.like,
+          idU: v.idU,
+          tabs: maxtab,
+          playlist: v.playlist,
+        };
       }
-    });
-  }, [id]);
-  const [sh, SH] = useState(false);
-  const [edit, SetEdit] = useState(false);
+      return v;
+    },
+    staleTime: CACHE_5_DAY,
+  });
+
+  const { mutate: addLikePlaylist } = useMutation({
+    mutationFn: async () => {
+      const data = await post2("/likePlaylist/add", { idPlaylist: id });
+      return data;
+    },
+    onSuccess: (result) => {
+      if (result) {
+        SetLike(!like);
+        queryClient.invalidateQueries({
+          queryKey: [LIKE_PLAYLIST_QUERY],
+        });
+      }
+    },
+  });
+
+  const { mutate: deleteLikePlaylist } = useMutation({
+    mutationFn: async () => {
+      const data = await post2("/likePlaylist/delete", { idPlaylist: id });
+      return data;
+    },
+    onSuccess: (result) => {
+      if (result) {
+        SetLike(!like);
+        queryClient.invalidateQueries({
+          queryKey: [LIKE_PLAYLIST_QUERY],
+        });
+      }
+    },
+  });
+
+  useEffect(() => {
+    if (data && data.songs && data.playlist) {
+      let time = 0;
+      (data.songs as SongInPlayList[]).forEach((song) => {
+        time += Number(song.Duration + "");
+      });
+      data.playlist.Duration = time;
+      data.playlist.Songs = data.songs.length;
+      SetSongS(data.songs);
+      SetLike(data.like);
+      SetIdU(data.idU);
+      SetTabs(data.tabs);
+      dispatch(SetCurName(data.playlist.PlayListName));
+      dispatch(SetPlaylist(data.playlist));
+    }
+  }, [data]);
+
+  useMemo(async () => {
+    if (playlist.ImagePath == undefined) {
+      return "black";
+    }
+    const bg = await ColorImage(ImagePath(playlist.ImagePath));
+    setBg(bg);
+  }, [playlist.ImagePath]);
+
+  const style = useMemo(() => {
+    return { "--bg": bg } as React.CSSProperties;
+  }, [bg]);
+
   return (
     <div className="relative">
-      <div className="bg-gradient-to-r from-green-400 to-blue-500 rounded-t-lg absolute top-0 left-0 w-full h-[320px] flex flex-col justify-end ">
-        <div className="flex items-end justify-start">
-          <div className="flex z-10 p-4 justify-center items-end sm:space-x-4">
-            <div
-              className="relative"
-              onMouseEnter={() => {
-                if (playlist.User_id == idU) {
-                  SH(true);
-                }
-              }}
-            >
-              <Avatar
-                className="size-[250px] rounded-2xl"
-                src={playlist.ImagePath}
-              />
-              {sh ? (
-                <div
-                  onMouseLeave={() => {
-                    SH(false);
-                  }}
-                  onClick={() => {
-                    SetEdit(true);
-                  }}
-                  className="bg-black opacity-30 absolute top-0 left-0 size-[250px] flex items-center justify-center rounded-2xl"
-                >
-                  <PencilIcon className="size-20 fill-white"></PencilIcon>
-                </div>
-              ) : (
-                <></>
-              )}
-            </div>
+      <div
+        style={style}
+        className="bgplaylist rounded-t-lg absolute top-0 left-0 w-full h-[320px] flex flex-col justify-end "
+      >
+        <div className="flex flex-col sm:flex-row z-10 p-4   sm:space-x-4 justify-center sm:justify-start items-center sm:items-end">
+          <div
+            className="relative"
+            onMouseEnter={() => {
+              if (playlist.User_id == idU) {
+                sH(true);
+              }
+            }}
+          >
+            <Avatar
+              className="size-40 shadowPlaylist sm:size-[250px] rounded-2xl"
+              src={playlist.ImagePath}
+            />
+            {sh && (
+              <div
+                onMouseLeave={() => {
+                  sH(false);
+                }}
+                onClick={() => {
+                  setEdit(true);
+                }}
+                className="bg-black opacity-30 absolute top-0 left-0 size-[160px] sm:size-[250px] flex items-center justify-center rounded-2xl"
+              >
+                <PencilIcon className="size-20 fill-white"></PencilIcon>
+              </div>
+            )}
+          </div>
 
-            <div className="hidden sm:flex flex-col">
-              <div className="flex items-center">
-                <span className="font-normal text-[16px] text-white">
-                  playlist
-                </span>
-              </div>
-              <h1>
-                <span className="text-white font-bol text-[50px] font-black">
-                  {playlist.PlayListName}
-                </span>
-              </h1>
-              <div className="flex space-x-4">
-                <span className="text-[16px] font-bold text-white">
-                  {playlist.Songs} bài hát
-                </span>
-                <span className="text-[16px] font-bold text-white flex items-center space-x-3">
-                  <div>Khoảng thời gian:</div>
-                  <TimeString d={parseInt(playlist.Duration + "")} />
-                </span>
-              </div>
+          <div className="flex flex-col max-sm:self-start gap-1 sm:gap-y-3">
+            <span className="font-normal text-[16px] text-white">playlist</span>
+            <h1>
+              <span className="text-white font-bol text-lg sm:text-[50px] font-black">
+                {playlist.PlayListName}
+              </span>
+            </h1>
+            <div className="flex space-x-1 sm:space-x-4 text-[14px]  text-white">
+              <span className=" font-bold ">{playlist.Songs} bài hát</span>
+              <div>Khoảng thời gian:</div>
+              <TimeString d={parseInt(playlist.Duration + "")} />
             </div>
           </div>
         </div>
@@ -172,22 +227,17 @@ export default function PlaylistPage() {
 
       <div className="h-[320px]"></div>
       <div className="sm:px-4 py-2">
-        <div className="flex items-center py-0 sm:py-4 space-x-5">
-          <PlayButtom id={id + ""} page="playlist" />
+        <div className="flex items-center py-0 sm:py-4 gap-5 max-sm:px-1">
+          <div className="max-sm:flex-1 flex justify-end order-[99] sm:order-[-1]">
+            <PlayButtom id={id + ""} page="playlist" />
+          </div>
+          <ButtonRandomPlay className="size-8" />
           {isLogin && idU != playlist.User_id ? (
             <>
               {like ? (
                 <button
                   onClick={() => {
-                    post(
-                      "/likePlaylist/delete",
-                      { idPlaylist: id },
-                      (v: any) => {
-                        if (v) {
-                          SetLike(!like);
-                        }
-                      }
-                    );
+                    deleteLikePlaylist();
                   }}
                 >
                   <CheckCircleIcon className="size-[32px] fill-[#1ED760] "></CheckCircleIcon>
@@ -195,11 +245,7 @@ export default function PlaylistPage() {
               ) : (
                 <button
                   onClick={() => {
-                    post("/likePlaylist/add", { idPlaylist: id }, (v: any) => {
-                      if (v) {
-                        SetLike(!like);
-                      }
-                    });
+                    addLikePlaylist();
                   }}
                 >
                   <PlusCircleIcon className="size-[32px] fill-[#C7C7C7] "></PlusCircleIcon>
@@ -218,23 +264,20 @@ export default function PlaylistPage() {
           Các bài hát
         </div>
         <SongList data={songs} type="playlist" />
-        {isLogin && idU == playlist.User_id && playlist.User_id != "" ? (
+        {isLogin && idU == playlist.User_id && playlist.User_id != "" && (
           <RecommendedSong
             tabs={tabs}
             idPlaylist={playlist.id}
             onclick={(v) => {
-              alert(v != undefined);
               if (v != undefined) {
                 SetSongS([...songs, v]);
               }
             }}
           />
-        ) : (
-          <></>
         )}
         <footer className="h-5"></footer>
       </div>
-      {edit ? (
+      {edit && (
         <PopEditPlaylis
           Discripition=""
           ImagePath={playlist.ImagePath}
@@ -244,133 +287,10 @@ export default function PlaylistPage() {
             dispatch(SetPlaylist({ ...playlist, ...v }));
           }}
           onShow={(v) => {
-            SetEdit(v);
+            setEdit(v);
           }}
         />
-      ) : (
-        <></>
       )}
     </div>
   );
-}
-
-{
-  /* <Pop left={0} top={0}>
-            <div className="  relative">
-              <div className="w-[100vw] h-[100vh] opacity-20 bg-black absolute top-0 left-0 z-0"></div>
-              <div
-                onClick={() => {
-                  SetEdit(false);
-                }}
-                className="w-[100vw] h-[100vh] absolute top-0 left-0 z-10 flex justify-center items-center"
-              >
-                <div
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    SetEdit(true);
-                  }}
-                  className="w-[524px] min-h-[384px] bg-[#282828] rounded-lg"
-                >
-                  <div className="p-6 flex items-center">
-                    <div className="flex-1 text-[24px] font-bold">
-                      Edit details
-                    </div>
-                    <div
-                      onClick={() => {
-                        SetEdit(false);
-                      }}
-                    >
-                      <XIcon className="fill-white size-8 hover:fill-green-400 cursor-pointer" />
-                    </div>
-                  </div>
-                  <div className="min-h-[170px] px-6 grid grid-cols-8 grid-rows-8 gap-4">
-                    <input
-                      onChange={(e) => {
-                        var files = e.currentTarget.files;
-                        if (files != null && files.length > 0) {
-                          var file = URL.createObjectURL(files[0]);
-                          SetFile(files[0]);
-                          SetPlaylistForm({
-                            ...playlistform,
-                            ImagePath: file,
-                          });
-                        }
-                      }}
-                      type="file"
-                      className="hidden"
-                      id="file"
-                      name="file"
-                    />
-                    <label
-                      htmlFor="file"
-                      className="col-span-3 row-span-8 bg-[#3E3E3E] flex justify-center items-center"
-                    >
-                      {playlistform.ImagePath ? (
-                        <Avatar
-                          className="size-full"
-                          src={playlistform.ImagePath}
-                        />
-                      ) : (
-                        <MusicNoteBeamedIcon className="size-16 fill-white" />
-                      )}
-                    </label>
-                    <div className=" col-span-5 row-span-8 grid grid-rows-8 grid-cols-1 gap-4">
-                      <input
-                        onChange={(v) => {
-                          let name = v.currentTarget.value;
-                          SetPlaylistForm({
-                            ...playlistform,
-                            PlayListName: name,
-                          });
-                        }}
-                        value={playlistform.PlayListName}
-                        placeholder="Tên danh sách"
-                        className="col-span-1 focus:outline-none row-span-2 bg-[#3E3E3E]"
-                      />
-
-                      <div
-                        onChange={(v) => {
-                          let name = v.currentTarget.innerText;
-                          SetPlaylistForm({
-                            ...playlistform,
-                            Discripition: name,
-                          });
-                        }}
-                        contentEditable={true}
-                        className="col-span-1 focus:outline-none row-span-6 bg-[#3E3E3E]"
-                      >
-                        {playlistform.Discripition}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex justify-end py-2 px-6">
-                    <button
-                      onClick={() => {
-                        let form = new FormData();
-                        form.set("PlayListName", playlistform.PlayListName);
-                        form.set("id", playlistform.id);
-                        form.set("Discripition", playlistform.Discripition);
-                        if (file) {
-                          form.set("avatar", file);
-                        }
-                        post("/playlist/update", form, (v: any) => {
-                          if (!v.err) {
-                            SetPlayList({ ...playlist, ...playlistform });
-                          }
-                        });
-                      }}
-                      className="bg-white text-[18px] px-3 py-2 text-black rounded-full"
-                    >
-                      Save
-                    </button>
-                  </div>
-                  <div className="line-clamp-2 text-[12px] font-bold px-6">
-                    By proceeding, you agree to give Spotify access to the image
-                    you choose to upload. Please make sure you have the right to
-                    upload the image.
-                  </div>
-                </div>
-              </div>
-            </div>
-          </Pop> */
 }

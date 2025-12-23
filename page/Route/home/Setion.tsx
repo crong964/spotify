@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import React from "react";
-import { post } from "@/page/config/req";
+import { post, post2 } from "@/page/config/req";
 import { useDispatch } from "react-redux";
 import { NaviPage } from "./RootRedux";
 
 import { iPlayList } from "@/page/component/Playlist/interface";
 import { Playlists } from "@/page/component/Playlist";
+import { useQuery } from "@tanstack/react-query";
+import { NEXT_PLAYLIST_ARTIST_QUERY } from "@/page/contant/quey_key";
 
 const PlayButtom = React.lazy(() => import("@/page/component/PlayButtom"));
 
@@ -14,26 +16,21 @@ interface SetionList {
   name: string;
   type: "artist" | "album" | "normal";
   link?: string;
+  artists: iPlayList[];
 }
 export function SetionList(params: SetionList) {
-  const [artist, SetaAtist] = useState<iPlayList[]>([]);
-  useEffect(() => {
-    post("/playlist/NextPlaylistArtist", {}, (v: any) => {
-      SetaAtist(v.ls);
-    });
-  }, []);
   return (
     <div>
       <Playlists
         className="cursor-pointer size-[160px] sm:size-[180px]"
         link={params.link ? params.link : "#"}
-        d={artist}
+        d={params.artists}
         title="Danh sách nghệ sĩ"
       />
     </div>
   );
 }
-interface SetionData {
+interface iSetionData {
   pathImage: string;
   ChanalName: string;
   artist: string;
@@ -41,7 +38,7 @@ interface SetionData {
   type: string;
   click(url: string): void;
 }
-export default function SetionData(params: SetionData) {
+export default function SetionData(params: iSetionData) {
   const [hidden, SetHidden] = useState(true);
 
   const dispatch = useDispatch();
@@ -75,15 +72,7 @@ export default function SetionData(params: SetionData) {
         </div>
       </Link>
 
-      {hidden ? (
-        <></>
-      ) : (
-        <>
-          <PlayButtom id={params.id} page="artist" />
-        </>
-      )}
+      {!hidden && <PlayButtom id={params.id} page="artist" />}
     </div>
   );
 }
-
-

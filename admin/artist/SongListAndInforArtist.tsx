@@ -45,6 +45,9 @@ export default function SongListAndInforArtist() {
     <>
       <div className="flex space-x-5 my-4">
         <Link
+          onClick={() => {
+            dispatch(SongListAndInforArtistPage("list"));
+          }}
           className="rounded-xl px-3 py-2 bg-blue-400 hover:bg-blue-500 text-white"
           to={"/artist"}
         >
@@ -68,7 +71,12 @@ export default function SongListAndInforArtist() {
         </button>
       </div>
       <div className="flex items-center space-x-4 px-7">
-        <img src={ImagePath(infor.pathImage)} className="size-[240px]" alt="" srcSet="" />
+        <img
+          src={ImagePath(infor.pathImage)}
+          className="size-[240px]"
+          alt=""
+          srcSet=""
+        />
         <p className="text-[100px] font-bold">{infor.ChanalName}</p>
       </div>
 

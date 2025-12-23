@@ -4,10 +4,10 @@ import path from "path";
 import { Hash } from "../config/Hash";
 
 import UserModel from "../model/UserModel";
-import { v4 as uuidv4 } from 'uuid';
-import nodemailer from "nodemailer"
-import jwt from "jsonwebtoken"
-import "dotenv/config"
+import { v4 as uuidv4 } from "uuid";
+import nodemailer from "nodemailer";
+import jwt from "jsonwebtoken";
+import "dotenv/config";
 import { SignJWT, VerifyGoogleIDtoken, VertifyJWT } from "../config/Helper";
 
 import { PlayListModel } from "../model/PlayListModel";
@@ -24,53 +24,52 @@ interface google {
 const client_secret_si = process.env.CLIENT_SECRET_SI;
 const client_id_si = process.env.CLIENT_ID_SI;
 
-
 const client_secret_su = process.env.CLIENT_SECRET_SU;
 const client_id_su = process.env.CLIENT_ID_SU;
 
-const email = process.env.EMAIL
-const emailpsapp = process.env.EMAILPSAPP
-const secret = process.env.SECRET
+const email = process.env.EMAIL;
+const emailpsapp = process.env.EMAILPSAPP;
+const secret = process.env.SECRET;
 
-const client_id_gg = process.env.Client_ID_GG
+const client_id_gg = process.env.Client_ID_GG;
 const Account = Router();
 
 // Account.get("/", (req, res) => {
 //   res.sendFile(path.join(process.cwd(), "/web/auth.html"));
 // });
+
 Account.post("/signin", async (req, res) => {
-  const account = req.body.account
-  const password = req.body.password
+  const account = req.body.account;
+  const password = req.body.password;
   if (password == "") {
-    res.redirect("/athu")
-    return
+    res.redirect("/athu");
+    return;
   }
-  let acc = await accountService.GetAccount(account)
+  let acc = await accountService.GetAccount(account);
   if (!acc || acc.Password != password) {
     res.json({
       err: true,
-      mess: "Tài khoản hoặc mật khẩu không đúng"
-    })
-    return
+      mess: "Tài khoản hoặc mật khẩu không đúng",
+    });
+    return;
   }
-  let user = await userService.Get(acc.id)
+  let user = await userService.Get(acc.id);
   if (!user) {
     res.json({
       err: true,
-      mess: "Không có người dùng này"
-    })
-    return
+      mess: "Không có người dùng này",
+    });
+    return;
   }
-  SetCookie(res, user)
+  SetCookie(res, user);
   if (user.role == "master") {
-    res.redirect("/admin")
-    return
+    res.redirect("/admin");
+    return;
   }
-  res.redirect("/")
-});//0k 
+  res.redirect("/");
+}); //0k
 Account.get("/github", async (req, res) => {
   let code = req.query.code;
-
 
   let url = `https://github.com/login/oauth/access_token?client_id=${client_id_si}&client_secret=${client_secret_si}&code=${code}`;
 
@@ -110,7 +109,7 @@ Account.get("/github", async (req, res) => {
     console.log(error);
 
     res.redirect("/auth");
-    return
+    return;
   }
   // [
   //   {
@@ -128,22 +127,21 @@ Account.get("/github", async (req, res) => {
   // ];
 
   //avatar_url: 'https://avatars.githubusercontent.com/u/71593544?v=4'
-  let acc = await accountService.GetAccount(c[0].data[0].email)
-
+  let acc = await accountService.GetAccount(c[0].data[0].email);
 
   if (!acc) {
-    res.redirect("/auth")
-    return
+    res.redirect("/auth");
+    return;
   }
 
-  let user = await userService.Get(acc.id)
+  let user = await userService.Get(acc.id);
   if (!user) {
-    res.redirect("/auth")
-    return
+    res.redirect("/auth");
+    return;
   }
 
-  SetCookie(res, user)
-  res.redirect("/")
+  SetCookie(res, user);
+  res.redirect("/");
 });
 Account.get("/githubsu", async (req, res) => {
   let code = req.query.code;
@@ -197,7 +195,7 @@ Account.get("/githubsu", async (req, res) => {
   //      created_at: '2020-09-20T12:19:07Z',
   //      updated_at: '2024-03-30T02:12:41Z'
   //    }
-  let c
+  let c;
   try {
     c = await Promise.all([
       axios.get("https://api.github.com/user/emails", {
@@ -216,13 +214,9 @@ Account.get("/githubsu", async (req, res) => {
       }),
     ]);
   } catch (error) {
-
-
-    res.end()
-    return
+    res.end();
+    return;
   }
-
-
 
   // [
   //   {
@@ -239,16 +233,13 @@ Account.get("/githubsu", async (req, res) => {
   //   },
   // ];
 
-
-
   //avatar_url: 'https://avatars.githubusercontent.com/u/71593544?v=4'
 
-  let acc = await accountService.GetAccount(c[0].data[0].email)
-
+  let acc = await accountService.GetAccount(c[0].data[0].email);
 
   if (acc) {
-    res.redirect("/auth")
-    return
+    res.redirect("/auth");
+    return;
   }
   let hash = Hash.CreateHas({
     outNumber: undefined,
@@ -262,8 +253,8 @@ Account.get("/githubsu", async (req, res) => {
   res.cookie("email", c[0].data[0].email);
   res.cookie("image", c[1].data.avatar_url);
   res.cookie("name", "");
-  res.cookie("idgithug", c[1].data.id)
-  res.cookie("type", "githug")
+  res.cookie("idgithug", c[1].data.id);
+  res.cookie("type", "githug");
 
   res.redirect("/auth");
 });
@@ -278,28 +269,26 @@ Account.post("/ggin", async (req, res) => {
 
   let s = req.body.credential as string;
 
-  let payload = await VerifyGoogleIDtoken(s)
+  let payload = await VerifyGoogleIDtoken(s);
   if (payload == undefined || payload.email == undefined) {
     res.redirect("/auth/Signup");
-    return
+    return;
   }
-  let acc = await accountService.GetAccount(payload.email)
-
+  let acc = await accountService.GetAccount(payload.email);
 
   if (!acc) {
-    res.redirect("/auth")
-    return
+    res.redirect("/auth");
+    return;
   }
 
-  let user = await userService.Get(acc.id)
+  let user = await userService.Get(acc.id);
   if (!user) {
-    res.redirect("/auth")
-    return
+    res.redirect("/auth");
+    return;
   }
 
-  SetCookie(res, user)
-  res.redirect("/")
-
+  SetCookie(res, user);
+  res.redirect("/");
 });
 //đăng ký gg
 Account.post("/ggup", async (req, res) => {
@@ -314,60 +303,59 @@ Account.post("/ggup", async (req, res) => {
 
   let s = req.body.credential as string;
 
-  let payload = await VerifyGoogleIDtoken(s)
+  let payload = await VerifyGoogleIDtoken(s);
 
   if (payload == undefined || payload.email == undefined) {
     res.redirect("/auth/Signup?dk=khongthanhcong");
-    return
+    return;
   }
-  let acc = await accountService.GetAccount(payload.email)
+  let acc = await accountService.GetAccount(payload.email);
 
   if (acc) {
     res.redirect("/auth/Signup?dk=taikhoantontai");
-    return
+    return;
   }
-  let id = `user-${uuidv4()}-${Date.now()}`
+  let id = `user-${uuidv4()}-${Date.now()}`;
 
-  let u = new UserModel()
-  u.id = id
-  u.pathImage = payload.picture || ""
-  u.ChanalName = payload.name || ""
-  u.Name = payload.name || ""
+  let u = new UserModel();
+  u.id = id;
+  u.pathImage = payload.picture || "";
+  u.ChanalName = payload.name || "";
+  u.Name = payload.name || "";
 
-  let ac = new AccountModel()
-  ac.Account = payload.email
-  ac.Password = ""
-  ac.id = u.id
-  let pl = new PlayListModel()
+  let ac = new AccountModel();
+  ac.Account = payload.email;
+  ac.Password = "";
+  ac.id = u.id;
+  let pl = new PlayListModel();
 
-  pl.User_id = u.id
-  pl.ImagePath = u.pathImage
-  pl.id = u.id
-  pl.Status = "0"
-  pl.Type = "user"
-  pl.PlayListName = u.ChanalName
+  pl.User_id = u.id;
+  pl.ImagePath = u.pathImage;
+  pl.id = u.id;
+  pl.Status = "0";
+  pl.Type = "user";
+  pl.PlayListName = u.ChanalName;
 
-  await playListService.AddArtists(pl)
+  await playListService.AddArtists(pl);
 
-  u.id = id
-  ac.id = id
-  let check = await userService.AddAccount(u)
+  u.id = id;
+  ac.id = id;
+  let check = await userService.AddAccount(u);
 
   if (check) {
-    check = await accountService.Add(ac.id, ac.Account, ac.Password)
+    check = await accountService.Add(ac.id, ac.Account, ac.Password);
   } else {
-    userService.Delete(u.id)
-    playListService.DeletePlaylist(pl.id)
+    userService.Delete(u.id);
+    playListService.DeletePlaylist(pl.id);
   }
 
   res.redirect("/auth");
 });
 Account.get("/logout", (req, res) => {
-  clearCookie(res)
+  clearCookie(res);
 
-
-  res.redirect("/auth")
-})
+  res.redirect("/auth");
+});
 Account.post("/getdata", (req, res) => {
   if (req.cookies.name == undefined) {
     res.json({
@@ -384,81 +372,79 @@ Account.post("/getdata", (req, res) => {
     return;
   }
 
-  res.clearCookie("name")
-  res.clearCookie("image")
-  res.clearCookie("email")
+  res.clearCookie("name");
+  res.clearCookie("image");
+  res.clearCookie("email");
 
-  let sign = SignJWT(JSON.stringify({
-    Name: req.cookies.name,
-    pathImage: req.cookies.image,
-    Account: req.cookies.email,
-  }))
+  let sign = SignJWT(
+    JSON.stringify({
+      Name: req.cookies.name,
+      pathImage: req.cookies.image,
+      Account: req.cookies.email,
+    })
+  );
   res.json({
     err: false,
     Name: req.cookies.name,
     pathImage: req.cookies.image,
     Account: req.cookies.email,
-    Sign: sign
+    Sign: sign,
   });
 });
 Account.post("/create", async (req, res) => {
-  let acc = new AccountModel()
-  let user = new UserModel()
-  acc.setAll(req.body)
-  user.setAll(req.body)
-  acc.Account = req.body.Account
-  acc.Password = req.body.Password
+  let acc = new AccountModel();
+  let user = new UserModel();
+  acc.setAll(req.body);
+  user.setAll(req.body);
+  acc.Account = req.body.Account;
+  acc.Password = req.body.Password;
 
-  let id = `user-${uuidv4()}-${Date.now()}`
-
+  let id = `user-${uuidv4()}-${Date.now()}`;
 
   if (VertifyJWT(req.body.sign) == undefined) {
     res.json({
-      err: true
-    })
-    return
+      err: true,
+    });
+    return;
   }
 
-  user.id = id
-  acc.id = id
+  user.id = id;
+  acc.id = id;
 
-
-
-  let check = await userService.AddAccount(user)
+  let check = await userService.AddAccount(user);
   if (!check) {
     res.json({
-      err: true
-    })
+      err: true,
+    });
   }
-  check = await accountService.Add(acc.id, acc.Account, acc.Password)
-  let pl = new PlayListModel()
+  check = await accountService.Add(acc.id, acc.Account, acc.Password);
+  let pl = new PlayListModel();
 
-  pl.User_id = user.id
-  pl.ImagePath = user.pathImage
-  pl.id = user.id
-  pl.Status = "0"
-  pl.PlayListName = user.Name
+  pl.User_id = user.id;
+  pl.ImagePath = user.pathImage;
+  pl.id = user.id;
+  pl.Status = "0";
+  pl.PlayListName = user.Name;
 
-  await playListService.AddArtists(pl)
+  await playListService.AddArtists(pl);
   res.json({
-    err: false
-  })
+    err: false,
+  });
 });
 Account.post("/sendcode", async (req, res) => {
-  let account = req.body.account
+  let account = req.body.account;
 
-
-  let acc = await accountService.GetAccount(account)
+  let acc = await accountService.GetAccount(account);
 
   if (acc == undefined) {
     res.json({
       err: true,
-      mess: "không tồn tại"
-    })
-    return
+      mess: "không tồn tại",
+    });
+    return;
   }
 
-  let code = new Date().getTime() % 100000
+  let code = new Date().getTime() % 100000;
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -467,116 +453,140 @@ Account.post("/sendcode", async (req, res) => {
     },
   });
   const info = await transporter.sendMail({
-    from: 'spotify@gmail.com.com',
+    from: "spotify@gmail.com.com",
     to: account,
     subject: "Mã Xác thực đổi mật khẩu",
     text: "Đây là mã xác thực của bạn đừng chia sẻ cho ai",
     html: `<h1>${code}</h1>`,
   });
 
-  let hash = Hash.CreateHas({ a1: `${code} ${account}`, outNumber: 20, salt: undefined })
-  hash.a1 = account
-  let token = Buffer.from(JSON.stringify({
-    f1: account,
-    f2: hash.a2,
-    timef: hash.time
-  })).toString("base64")
-  res.cookie("f1", account, { httpOnly: true, sameSite: "strict", secure: true })
-  res.cookie("f2", hash.a2, { httpOnly: true, sameSite: "strict", secure: true })
-  res.cookie("timef", hash.time, { httpOnly: true, sameSite: "strict", secure: true })
+  let hash = Hash.CreateHas({
+    a1: `${code} ${account}`,
+    outNumber: 20,
+    salt: undefined,
+  });
+  hash.a1 = account;
+  let token = Buffer.from(
+    JSON.stringify({
+      f1: account,
+      f2: hash.a2,
+      timef: hash.time,
+    })
+  ).toString("base64");
+  res.cookie("f1", account, {
+    httpOnly: true,
+    sameSite: "strict",
+    secure: true,
+  });
+  res.cookie("f2", hash.a2, {
+    httpOnly: true,
+    sameSite: "strict",
+    secure: true,
+  });
+  res.cookie("timef", hash.time, {
+    httpOnly: true,
+    sameSite: "strict",
+    secure: true,
+  });
   res.json({
     err: false,
-    token: token
-  })
-})//0k
+    token: token,
+  });
+}); //0k
 Account.post("/vertifycode", async (req, res) => {
-  let code = req.body.code
-  let token = req.body.token
+  let code = req.body.code;
+  let token = req.body.token;
   if (token != undefined) {
-    req.cookies = JSON.parse(Buffer.from(token, "base64").toString())
+    req.cookies = JSON.parse(Buffer.from(token, "base64").toString());
   }
 
+  let account = req.cookies.f1;
+  let f2 = req.cookies.f2;
+  let timef = req.cookies.timef;
 
-  let account = req.cookies.f1
-  let f2 = req.cookies.f2
-  let timef = req.cookies.timef
-
-  let verified = Hash.vertify({ a1: `${code} ${account}`, a2: f2, createTime: timef, outNumber: 20, salt: undefined })
-  if ((new Date().getTime()) - parseInt(timef) > 60000) {
+  let verified = Hash.vertify({
+    a1: `${code} ${account}`,
+    a2: f2,
+    createTime: timef,
+    outNumber: 20,
+    salt: undefined,
+  });
+  if (new Date().getTime() - parseInt(timef) > 60000) {
     res.json({
       err: true,
-      mess: "Quá hạn"
-    })
-    return
+      mess: "Quá hạn",
+    });
+    return;
   }
 
-
   if (verified) {
-    let acc = new AccountModel()
-    acc.Account = account
-    acc.Password = req.body.Password
+    let acc = new AccountModel();
+    acc.Account = account;
+    acc.Password = req.body.Password;
 
-    let check = await accountService.UpdatePassword(acc.Account, acc.Password)
+    let check = await accountService.UpdatePassword(acc.Account, acc.Password);
 
     res.json({
       err: check == undefined,
-      mess: "thành công"
-    })
-    return
+      mess: "thành công",
+    });
+    return;
   }
 
   res.json({
     err: true,
-    mess: "Mã không chính xác"
-  })
-});//0k
+    mess: "Mã không chính xác",
+  });
+}); //0k
 Account.post("/apikey", async (req, res) => {
-  const account = req.body.account
-  const password = req.body.password
-  let acc = await accountService.GetAccount(account)
+  const account = req.body.account;
+  const password = req.body.password;
+  let acc = await accountService.GetAccount(account);
 
   if (!acc || acc.Password != password) {
     res.json({
       err: true,
-      mess: "Tài khoản hoặc mật khẩu không đúng"
-    })
-    return
+      mess: "Tài khoản hoặc mật khẩu không đúng",
+    });
+    return;
   }
-  let user = await userService.Get(acc.id)
+  let user = await userService.Get(acc.id);
   if (!user) {
     res.json({
       err: true,
-      mess: "Tài khoản hoặc mật khẩu không đúng"
-    })
-    return
+      mess: "Tài khoản hoặc mật khẩu không đúng",
+    });
+    return;
   }
-  let apikey = jwt.sign({ role: user.role, id: acc.id }, secret || "1", { expiresIn: "2 days" })
+  let apikey = jwt.sign({ role: user.role, id: acc.id }, secret || "1", {
+    expiresIn: "2 days",
+  });
   res.json({
     err: false,
-    apikey: apikey
-  })
-});//0k
+    apikey: apikey,
+  });
+}); //0k
 
 Account.post("/sendCodeVertifyEmail", async (req, res) => {
-  let account = req.body.account
-  let acc = await accountService.GetAccount(account)
+  let account = req.body.account;
+  let acc = await accountService.GetAccount(account);
 
   if (account == undefined) {
     res.json({
       err: true,
-      mess: "chưa nhập tài khoản"
-    })
-    return
+      mess: "chưa nhập tài khoản",
+    });
+    return;
   }
   if (acc != undefined) {
     res.json({
       err: true,
-      mess: "tài khoản đã tồn tại"
-    })
-    return
+      mess: "tài khoản đã tồn tại",
+    });
+    return;
   }
 
-  let code = new Date().getTime() % 100000
+  let code = new Date().getTime() % 100000;
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -585,113 +595,117 @@ Account.post("/sendCodeVertifyEmail", async (req, res) => {
     },
   });
 
-  let info: SMTPTransport.SentMessageInfo | undefined = undefined
+  let info: SMTPTransport.SentMessageInfo | undefined = undefined;
   try {
     info = await transporter.sendMail({
-      from: 'spotify@gmail.com.com',
+      from: "spotify@gmail.com.com",
       to: account,
       subject: "Mã Xác thực email",
       text: "Đây là mã xác thực của bạn đừng chia sẻ cho ai",
       html: `<h1>${code}</h1>`,
-    })
-  } catch (error) {
-
-  }
-
+    });
+  } catch (error) {}
 
   let token = jwt.sign({ Account: account }, code + (secret || "888"), {
-    expiresIn: "3h"
-  })
+    expiresIn: "3h",
+  });
   res.json({
     err: info == undefined,
-    token: token
-  })
-})//0k
+    token: token,
+  });
+}); //0k
 Account.post("/createACC", async (req, res) => {
-  let Account = req.body.Account
-  let code = req.body.code
-  let token = req.body.token
+  let Account = req.body.Account;
+  let code = req.body.code;
+  let token = req.body.token;
 
-  let id = `user-${uuidv4()}-${Date.now()}`
+  let id = `user-${uuidv4()}-${Date.now()}`;
 
-  let decode = VertifyJWT(token, code + (secret || "888"))
+  let decode = VertifyJWT(token, code + (secret || "888"));
   if (decode == undefined) {
     res.json({
       err: true,
-      mess: "MÃ KO ĐÚNG"
-    })
-    return
+      mess: "MÃ KO ĐÚNG",
+    });
+    return;
   }
-
 
   if (decode.Account != Account) {
     res.json({
       err: true,
-      mess: "GMAIL KHÔNG ĐÚNG"
-    })
-    return
+      mess: "GMAIL KHÔNG ĐÚNG",
+    });
+    return;
   }
-  let acc_check = await accountService.GetAccount(Account)
+  let acc_check = await accountService.GetAccount(Account);
   if (acc_check != undefined) {
     res.json({
       err: true,
-      mess: "tài khoản đã tồn tại"
-    })
-    return
+      mess: "tài khoản đã tồn tại",
+    });
+    return;
   }
 
-  let u = new UserModel()
-  u.setAll(req.body)
-  let acc = new AccountModel()
-  acc.setAll(req.body)
-  let pl = new PlayListModel()
+  let u = new UserModel();
+  u.setAll(req.body);
+  let acc = new AccountModel();
+  acc.setAll(req.body);
+  let pl = new PlayListModel();
 
-  pl.User_id = u.id
-  pl.ImagePath = u.pathImage
-  pl.id = u.id
-  pl.Status = "0"
-  pl.PlayListName = u.Name
+  pl.User_id = u.id;
+  pl.ImagePath = u.pathImage;
+  pl.id = u.id;
+  pl.Status = "0";
+  pl.PlayListName = u.Name;
 
-  await playListService.AddArtists(pl)
+  await playListService.AddArtists(pl);
 
-  u.id = id
-  acc.id = id
-  let check = await userService.AddAccount(u)
+  u.id = id;
+  acc.id = id;
+  let check = await userService.AddAccount(u);
   if (!check) {
-    check = await accountService.Add(acc.id, acc.Account, acc.Password)
+    check = await accountService.Add(acc.id, acc.Account, acc.Password);
   }
   res.json({
     err: check == undefined,
-  })
-})//0k
+  });
+}); //0k
 
 function SetCookie(res: Response, acc: UserModel) {
-  let apikey = jwt.sign({ role: acc.role, id: acc.id }, secret || '1', { expiresIn: "10 days" })
-  res.cookie("apikey", apikey, { maxAge: 900000000, httpOnly: true })
+  let apikey = jwt.sign({ role: acc.role, id: acc.id }, secret || "1", {
+    expiresIn: "10 days",
+  });
+  res.cookie("apikey", apikey, { maxAge: 900000000, httpOnly: true });
 }
 function SetApiKey(res: Response, acc: UserModel) {
-  let hash = Hash.CreateHas({ a1: acc.id, outNumber: undefined, salt: undefined })
-  return hash
+  let hash = Hash.CreateHas({
+    a1: acc.id,
+    outNumber: undefined,
+    salt: undefined,
+  });
+  return hash;
 }
 function clearCookie(res: Response) {
-  res.clearCookie("id")
-  res.clearCookie("a2")
-  res.clearCookie("timeSIN")
-  res.clearCookie("apikey")
+  res.clearCookie("id");
+  res.clearCookie("a2");
+  res.clearCookie("timeSIN");
+  res.clearCookie("apikey");
 }
 export function VerifyCookie(req: Request) {
-  let id = req.cookies.id
-  let a2 = req.cookies.a2
-  let timeSIN = req.cookies.timeSIN
-
+  let id = req.cookies.id;
+  let a2 = req.cookies.a2;
+  let timeSIN = req.cookies.timeSIN;
 
   if (!id || !a2 || !timeSIN) {
-    return false
+    return false;
   }
 
-
-  return Hash.vertify({ a1: id, a2: a2, createTime: timeSIN, outNumber: undefined, salt: undefined })
+  return Hash.vertify({
+    a1: id,
+    a2: a2,
+    createTime: timeSIN,
+    outNumber: undefined,
+    salt: undefined,
+  });
 }
 export default Account;
-
-

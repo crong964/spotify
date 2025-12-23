@@ -20,7 +20,7 @@ import { IsLogin } from "@/page/Route/auth/RootAuth";
 
 export default function Header() {
   const curName = useSelector((state: RootHome) => state.rootHome.curName);
-  const [search, SetSearch] = useState("");
+  const [search, setSearch] = useState("");
   const topbarcontent = useSelector(
     (state: RootHome) => state.rootHome.topbarcontent
   );
@@ -53,11 +53,12 @@ export default function Header() {
         SetInfor(v.u);
         dispatch(IsLogin({ idUser: v.u.id, IsLogin: true }));
         localStorage.setItem("userinfor", JSON.stringify(v.u));
+      } else {
+        dispatch(IsLogin({ idUser: "", IsLogin: false }));
       }
     });
   }, [update]);
 
-  useEffect(() => { }, [search]);
   const { id } = useParams();
   return (
     <div className="b h-max w-full rounded-tl-lg sticky bg-gradient-to-r from-red-500 via-pink-400 to-black top-0 z-10 px-3 p-0 sm:py-2 space-y-2">
@@ -105,14 +106,14 @@ export default function Header() {
             )}
           </>
         </div>
-        {!topbarcontent ? (
+        {!topbarcontent && (
           <>
             {isLogin ? (
               <>
                 {pathname == "/" ||
-                  pathname == "/artist" ||
-                  pathname == "/section" ||
-                  pathname.indexOf("mobile/library") >= 0 ? (
+                pathname == "/artist" ||
+                pathname == "/section" ||
+                pathname.indexOf("mobile/library") >= 0 ? (
                   <div className="flex sm:hidden items-center">
                     <Avatar Name="" Vertify="" pathImage={infor.pathImage} />
                     <GenreInHome />
@@ -170,8 +171,6 @@ export default function Header() {
               </>
             )}
           </>
-        ) : (
-          <></>
         )}
       </div>
     </div>
@@ -185,10 +184,11 @@ function Forward() {
   return (
     <button
       title="forward"
-      className={`${position < stack.length - 1
+      className={`${
+        position < stack.length - 1
           ? "bg-[#2A2A2A]"
           : "bg-black cursor-not-allowed"
-        } rounded-full size-[28px] hidden sm:flex justify-center items-center`}
+      } rounded-full size-[28px] hidden sm:flex justify-center items-center`}
       onClick={() => {
         if (stack.length == 0) {
           return;
@@ -217,8 +217,9 @@ function Back() {
         dispatch(SetPosition(-1));
         history.back();
       }}
-      className={`${position > 0 ? "bg-[#2A2A2A]" : "bg-black cursor-not-allowed"
-        } rounded-full size-[28px] hidden sm:flex justify-center items-center `}
+      className={`${
+        position > 0 ? "bg-[#2A2A2A]" : "bg-black cursor-not-allowed"
+      } rounded-full size-[28px] hidden sm:flex justify-center items-center `}
     >
       <BackIcon className="fill-white size-4"></BackIcon>
     </button>

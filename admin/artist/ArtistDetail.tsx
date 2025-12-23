@@ -17,7 +17,7 @@ export function ArtistDetail() {
     Nationality: "Việt Nam",
     pathImage: "",
     id: "",
-    Vertify: "",
+    Vertify: "1",
   });
   let { idArtist } = useParams();
   useEffect(() => {
@@ -144,7 +144,7 @@ export function ArtistDetail() {
               </>
             ) : (
               <img
-                src={ImagePath(inforArtist.pathImage)}
+                src={inforArtist.pathImage}
                 alt=""
                 className="w-[250px] h-auto"
                 srcSet=""

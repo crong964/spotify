@@ -18,7 +18,7 @@ export function AddArtist() {
     Nationality: "Việt Nam",
     pathImage: "",
     id: "",
-    Vertify: "",
+    Vertify: "1",
   });
 
   const submit = (e: any) => {
@@ -146,9 +146,9 @@ export function AddArtist() {
               </>
             ) : (
               <img
-                src={ImagePath(inforArtist.pathImage)}
+                src={inforArtist.pathImage}
                 alt=""
-                className="w-[250px] h-auto"
+                className="w-[250px] h-[250px] aspect-auto object-cover"
                 srcSet=""
               />
             )}
@@ -261,8 +261,9 @@ export function AddArtist() {
           </div>
         </div>
         <button
-          className={`px-3 py-2 rounded-xl bg-blue-500 text-white ${load == true ? "cursor-wait" : "cursor-pointer"
-            }`}
+          className={`px-3 py-2 rounded-xl bg-blue-500 text-white ${
+            load == true ? "cursor-wait" : "cursor-pointer"
+          }`}
         >
           Thêm
         </button>

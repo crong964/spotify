@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { post } from "@/page/config/req";
+import ImagePath from "@/page/config/img";
 interface User {
   pathImage: string;
   Account: string;
@@ -11,7 +12,12 @@ function User(d: User) {
     <tr className="bg-white hover:bg-[#ECECEC] cursor-pointer">
       <th className="w-1/4">{d.id}</th>
       <th className="flex justify-start w-2/4">
-        <img className="size-[100px]" src={d.pathImage} alt="" srcSet="" />
+        <img
+          className="size-[100px]"
+          src={ImagePath(d.pathImage)}
+          alt=""
+          srcSet=""
+        />
       </th>
       <th className="w-1/3">{d.Name}</th>
     </tr>

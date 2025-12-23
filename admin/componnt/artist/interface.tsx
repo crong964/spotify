@@ -1,6 +1,6 @@
 
 export interface iInputArtist {
-  value?: string;
+  singers?: singer[];
   onChange(p: singer[]): void;
 
 }

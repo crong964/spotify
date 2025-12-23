@@ -1,55 +1,73 @@
+import { ButtonRandomPlay } from "@/page/component/Audio";
 import PlayButtom from "@/page/component/PlayButtom";
 import { SongList } from "@/page/component/Song/Index";
 
 import { SongInPlayList } from "@/page/component/Song/interface";
-import { get } from "@/page/config/req";
-import React, { useState } from "react";
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { TimeString } from "@/page/component/Time";
+import { get2 } from "@/page/config/req";
+import { CACHE_INFILITY, LOVE_SONG_QUERY } from "@/page/contant/quey_key";
+import { useQuery } from "@tanstack/react-query";
+import React, { useMemo } from "react";
 export default function LikedSongListPage() {
-  const dispatch = useDispatch();
-  const [songs, SetSongS] = useState<SongInPlayList[]>([]);
-  useEffect(() => {
-    get(`/lsong/likedsongs`, (v: any) => {
-      if (!v || v.err) {
-        return;
+  const { data: songs } = useQuery<SongInPlayList[]>({
+    queryKey: [LOVE_SONG_QUERY],
+    queryFn: async () => {
+      const data = await get2("/lsong/likedsongs");
+      if (!data || data.err) {
+        return [];
       }
-      SetSongS(v.ls); 
+      return data.ls;
+    },
+    staleTime: CACHE_INFILITY,
+  });
+
+  const time = useMemo(() => {
+    if (!songs) {
+      return 0;
+    }
+    let time = 0;
+    songs.forEach((song) => {
+      time += parseInt(song.Duration + "");
     });
-  }, []);
+    return time;
+  }, [songs]);
+
+  if (!songs) {
+    return;
+  }
   return (
     <div className="relative">
-      <div className="bg-gradient-to-r from-green-400 to-blue-500  rounded-t-lg absolute top-0 left-0 w-full h-[320px] flex  flex-col justify-end "></div>
+      <div className="bg-gradient-to-r from-green-400 to-blue-500  sm:rounded-t-lg absolute top-0 left-0 w-full h-[320px] flex  flex-col justify-end "></div>
       <div className="opacity-25 bg-black absolute top-0 left-0 w-full h-[320px]"></div>
-      <div className="flex  sm:justify-start justify-center w-full space-x-3 absolute top-0 left-0 h-[320px] z-10 p-4">
+      <div className="flex max-sm:flex-col justify-end sm:justify-start  items-center sm:items-end  w-full space-x-3 absolute top-0 left-0 h-[320px] z-10 sm:p-4">
         <img
           src="/public/liked-songs-640.png"
-          className="size-[270px] rounded-xl"
+          className="size-[170px] shadowPlaylist sm:size-[270px] rounded-xl"
           alt=""
           srcSet=""
         />
-        <div className="sm:flex flex-col justify-end hidden">
-          <div className="flex items-center">
-            <span className="font-normal text-[14px] text-white">playlist</span>
-          </div>
-          <div>
-            <span className="text-white font-bol text-[96px] font-black">
+        <div className="flex flex-col max-sm:self-start sm:gap-y-3">
+          <span className="font-normal text-[16px] text-white">playlist</span>
+          <h1>
+            <span className="text-white font-bol text-lg sm:text-[50px] font-black">
               Danh sách yêu thích
             </span>
+          </h1>
+          <div className="flex space-x-1 items-center sm:space-x-4 text-[14px] sm:text-[16px] text-white">
+            <span className=" font-bold ">{songs.length} bài hát</span>
+            <span>Khoảng thời gian:</span>
+            <TimeString d={time} />
           </div>
-          <span className="text-[16px] font-bold text-white">
-            {songs.length} bài hát
-          </span>
         </div>
       </div>
 
       <div className="h-[320px]"></div>
       <div className="sm:px-4">
-        <div className="flex items-center py-4 space-x-4">
-          <div>
+        <div className="flex items-center py-4 gap-x-4 px-1">
+          <div className="max-sm:flex-1 flex justify-end order-[99] sm:order-[-1]">
             <PlayButtom id="" page="likesong" />
           </div>
-
+          <ButtonRandomPlay className="size-8" />
           <div className="cursor-pointer">
             <svg
               className="fill-[#C7C7C7] hover:fill-white size-[45px] "
@@ -63,7 +81,7 @@ export default function LikedSongListPage() {
         <div className="py-3 font-bold text-[24px]  text-white">
           Các bài hát
         </div>
-        <SongList data={songs} type="likeplaylist"/>
+        <SongList data={songs} type="likeplaylist" />
         <footer className="h-5"></footer>
       </div>
     </div>

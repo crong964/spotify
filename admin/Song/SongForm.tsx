@@ -7,11 +7,11 @@ import { RootState } from "@/admin/Redux";
 import { useParams } from "react-router-dom";
 import { ImageIcon, MusicIcon } from "@/icon/Icon";
 
-import DateReact from "../componnt/Date";
+import DateReact from "@/admin/componnt/Date";
 import { Audio3 } from "@/page/component/Audio";
-import { Tabs } from "@/page/component/tabs";
-import InputArtist from "../componnt/artist/InputArtist";
-import { singer } from "../componnt/artist/interface";
+import { TabsInput } from "@/page/component/tabs";
+import InputArtist from "@/admin/componnt/artist/InputArtist";
+import { singer } from "@/admin/componnt/artist/interface";
 
 type Genre = {
   Id: string;
@@ -31,13 +31,14 @@ type Song = {
   filePath: string;
 };
 export default function SongForm() {
-  const [conut, SetConut] = useState(0);
-  const [SelectedSingers, SetSelectedSingers] = useState<singer[]>([]);
-  const [file, SetFile] = useState<File>();
-  const [total, SetTotal] = useState(0);
+  const [conut, setConut] = useState(0);
+  const [selectedSingers, setselectedSingers] = useState<singer[]>([]);
+  const [load, setLoad] = useState(false);
+  const [file, setFile] = useState<File>();
+  const [total, setTotal] = useState(0);
   const [finsih, SetFish] = useState(false);
   const { idArtist } = useParams();
-  const [song, SetSong] = useState<Song>({
+  const [song, setSong] = useState<Song>({
     Id: "",
     SongImage: "",
     SongName: "",
@@ -67,8 +68,8 @@ export default function SongForm() {
 
       post("/admin/song/uploadfile", data, (v: any) => {
         if (!v.err) {
-          SetConut(i + n);
-          SetSong({
+          setConut(i + n);
+          setSong({
             ...song,
             Id: v.name,
             filePath: v.name,
@@ -96,7 +97,7 @@ export default function SongForm() {
               <div className="font-extralight"></div>
             </div>
             <div className="rounded-lg w-full border h-[200px]">
-              <Tabs
+              <TabsInput
                 onchange={(v) => {
                   SetTabs(v);
                 }}
@@ -108,18 +109,19 @@ export default function SongForm() {
           <div>
             <input
               onChange={(e) => {
-                SetSong({
+                setSong({
                   ...song,
                   SongName: e.currentTarget.value,
                 });
               }}
               type="text"
+              value={song.SongName}
               className="border-2 border-[#404040] font-medium rounded-lg p-2 w-full"
             />
           </div>
           <InputArtist
             onChange={(v) => {
-              SetSelectedSingers(v);
+              setselectedSingers(v);
             }}
             key={1}
           />
@@ -131,7 +133,7 @@ export default function SongForm() {
             cellClassName="p-2"
             className="p-2"
             onChange={(p) => {
-              SetSong({
+              setSong({
                 ...song,
                 publicDate: p,
               });
@@ -141,9 +143,10 @@ export default function SongForm() {
           <div>Mô tả</div>
           <div className="w-full">
             <textarea
+              value={song.description}
               name="discription"
               onChange={(e) => {
-                SetSong({
+                setSong({
                   ...song,
                   description: e.currentTarget.value,
                 });
@@ -158,7 +161,7 @@ export default function SongForm() {
             <div className="anh w-1/2">
               <div className="mb-2">Ảnh đại diên</div>
               <label
-                htmlFor={song.SongImage == "" ? "avatar" : "gdas"}
+                htmlFor={song.SongImage == "" ? "avatar" : ""}
                 className=" px-4 py-2 rounded-full w-full"
               >
                 <div className="w-full">
@@ -169,7 +172,7 @@ export default function SongForm() {
                       <div
                         className="px-4 py-2 w-min bg-blue-600 rounded-full my-2"
                         onClick={() => {
-                          SetSong({
+                          setSong({
                             ...song,
                             SongImage: "",
                           });
@@ -190,8 +193,8 @@ export default function SongForm() {
                     var files = e.currentTarget.files;
                     if (files != null && files.length > 0) {
                       var file = URL.createObjectURL(files[0]);
-                      SetFile(files[0]);
-                      SetSong({
+                      setFile(files[0]);
+                      setSong({
                         ...song,
                         SongImage: file,
                       });
@@ -215,7 +218,7 @@ export default function SongForm() {
 
                         file?.arrayBuffer().then((v) => {
                           var ut = new Uint8Array(v);
-                          SetTotal(ut.length);
+                          setTotal(ut.length);
                           upload(ut, 0);
                         });
                       }}
@@ -241,7 +244,7 @@ export default function SongForm() {
                     <Audio3
                       className="fill-black  rounded-full size-9"
                       GetTIme={(v) => {
-                        SetSong({
+                        setSong({
                           ...song,
                           Duration: v,
                         });
@@ -257,11 +260,11 @@ export default function SongForm() {
           <div className="flex justify-end">
             <div
               onClick={() => {
-                if (SelectedSingers.length <= 0) {
+                if (selectedSingers.length <= 0) {
                   alert("chưa chọn nghệ sĩ");
                   return;
                 }
-                let user_id = JSON.stringify(SelectedSingers);
+                let user_id = JSON.stringify(selectedSingers);
 
                 var form = new FormData();
                 if (tab.length == 0) {
@@ -286,18 +289,20 @@ export default function SongForm() {
                   return;
                 }
                 form.set("user_id", user_id);
+                setLoad(true);
                 post("/admin/song/addSong", form, (v: any) => {
-                  if (!v.err) {
+                  if (v && !v.err) {
                     alert("tc");
                     window.location.reload();
                   } else {
                     alert("loou");
                   }
+                  setLoad(false);
                 });
               }}
               className="bg-blue-700 cursor-pointer text-white font-bold rounded-full px-3 py-1"
             >
-              Đăng
+              Đăng {load ? "loading..." : ""}
             </div>
           </div>
         </div>

@@ -1,4 +1,3 @@
-
 import { io } from "socket.io-client";
 
 export const socket = io();
@@ -10,8 +9,22 @@ export function VolumeAudio(params: number) {
       mu.volume = 0;
       return;
     }
+    if (params >= 100) {
+      mu.volume = 1;
+      return;
+    }
     mu.volume = params / 100;
   }
+}
+export function GetVolum() {
+  let volume = parseInt(localStorage.getItem("volume") || "100");
+  if (volume > 100) {
+    return 100;
+  }
+  if (volume < 0) {
+    return 0;
+  }
+  return volume;
 }
 export function ParseJson(params: string) {
   try {

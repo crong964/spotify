@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { PlaySong, RemoveRight, RootHome } from "@/page/Route/home/RootRedux";
-import { get } from "@/page/config/req";
+import { RemoveRight, RootHome } from "@/page/Route/home/RootRedux";
+import { get, get2 } from "@/page/config/req";
 import {
   JumpingSong,
   SetAutoPlay,
   SetSongs,
 } from "@/page/component/Audio/AudioRedux";
 import { Song } from "@/page/component/Song/Index";
+import { useQuery } from "@tanstack/react-query";
+import {
+  FETCH_LISTENED_QUERY,
+  FETCH_LISTENED_SONGS_QUERY,
+} from "@/page/contant/quey_key";
 interface RecentSong {
   Id: string;
   user_id: string;
@@ -83,13 +88,22 @@ export default function Queue() {
   );
 }
 function RecentPlaySongs(p: MenberQueue) {
-  const [recentSongs, SetRecentSongs] = useState<RecentSong[]>([]);
+  const [recentSongs, setRecentSongs] = useState<RecentSong[]>([]);
   const dispatch = useDispatch();
+  const { data: fetchListenedSongs } = useQuery({
+    queryKey: [FETCH_LISTENED_SONGS_QUERY],
+    queryFn: async () => {
+      const data = await get2("/recentSong/");
+      if (data && data.ls) {
+        return data.ls;
+      }
+      return [];
+    },
+  });
   useEffect(() => {
-    get("/rs/", (v: any) => {
-      SetRecentSongs(v.ls);
-    });
-  }, []);
+    setRecentSongs(fetchListenedSongs);
+    return () => {};
+  }, [fetchListenedSongs]);
   return (
     <>
       {p.cur == p.type ? (
@@ -111,7 +125,6 @@ function RecentPlaySongs(p: MenberQueue) {
               />
             );
           })}
-          
         </>
       ) : (
         <></>

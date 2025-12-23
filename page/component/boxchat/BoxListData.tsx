@@ -7,10 +7,10 @@ import { TypeMess } from "./TypeMess";
 import { boxdata, lastmess } from "./Interface";
 
 export function useBoxList() {
-  const [data, SetData] = useState<boxdata[]>([]);
+  const [data, setData] = useState<boxdata[]>([]);
   useEffect(() => {
     post("/box/", {}, (v: any) => {
-      SetData(v.ls);
+      setData(v.ls);
     });
   }, []);
 
@@ -19,9 +19,9 @@ export function useBoxList() {
   };
 }
 function useBoxData() {
-  const [show, SetShow] = useState(false);
+  const [show, setShow] = useState(false);
 
-  return { show, SetShow };
+  return { show, setShow };
 }
 
 function BoxData(data: boxdata) {
@@ -115,7 +115,7 @@ function BoxData(data: boxdata) {
           bubble ? "bg-black" : ""
         }`}
         onClick={() => {
-          va.SetShow(!va.show);
+          va.setShow(!va.show);
         }}
       >
         <svg
@@ -128,7 +128,7 @@ function BoxData(data: boxdata) {
           <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0" />
         </svg>
       </div>
-      <BoxButton idBox={data.idBox} show={va.show} SetShow={va.SetShow} />
+      <BoxButton idBox={data.idBox} show={va.show} SetShow={va.setShow} />
     </div>
   );
 }

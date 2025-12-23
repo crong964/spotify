@@ -5,7 +5,6 @@ import { ParseJson } from "@/page/socket/Socket";
 import audioSlice from "@/page/component/Audio/AudioRedux";
 import { authRedux } from "../auth/RootAuth";
 
-
 interface mess {
   idMess: string;
   content: string;
@@ -226,7 +225,6 @@ const rootHome = configureStore({
     audioroot: audioSlice.reducer,
     mobile: mobileRedux.reducer,
     rootauth: authRedux.reducer,
-    
   },
 });
 export type RootTy = typeof rootHome;

@@ -1,8 +1,6 @@
 import React, { useEffect } from "react";
-
 const Foot = React.lazy(() => import("@/page/component/Foot"));
 import { useDispatch, useSelector } from "react-redux";
-
 const Header = React.lazy(() => import("@/page/component/Header/Header"));
 import "./IndexHome2.css";
 import {
@@ -13,7 +11,7 @@ import {
 } from "./home/RootRedux";
 
 import { socket } from "@/page/socket/Socket";
-import { Outlet, useLocation } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 import Right from "./home/Right/Right";
 import { PlayingBar } from "@/page/component/Audio";
 import PlayingPlaylistMobile from "./mobile/playslist/PlayingPlaylistMobile";
@@ -22,7 +20,7 @@ import { NaviHomeMobile2 } from "@/page/component/NaviHome/NaviHome";
 import { ChatBoxMobliePage } from "./mobile/chatbox/ChatBoxMobliePage";
 import { SingleBoxChatPage } from "./mobile/SingleBox/SingleBoxChatPage";
 import NotificationF from "../component/pop/Notification";
-import Left from "../component/Left/Left";
+import Left from "@/page/component/Left/Left";
 
 export default function Index() {
   const BoxList = useSelector((state: RootHome) => state.rootHome.BoxList);
@@ -44,7 +42,6 @@ export default function Index() {
     try {
       let wakelock = await navigator.wakeLock.request("screen");
       wakelock.addEventListener("release", () => {});
-      
     } catch (error) {}
   };
 
@@ -77,26 +74,16 @@ export default function Index() {
         </div>
       </div>
 
-      {BoxList.length > 0 ? (
+      {BoxList.length > 0 && (
         <div className="absolute right-0 bottom-0 h-full w-full sm:right-[400px] sm:bottom-[100px] sm:h-max sm:w-max z-40 space-x-2 flex  ">
           {BoxList.map((v) => {
             return <ChatBox idbox={v} key={v} />;
           })}
         </div>
-      ) : (
-        <></>
       )}
-      {pathname.indexOf("mobile/playlist") >= 0 ? (
-        <PlayingPlaylistMobile />
-      ) : (
-        <></>
-      )}
-      {pathname.indexOf("mobile/chatbox") >= 0 ? <ChatBoxMobliePage /> : <></>}
-      {pathname.indexOf("mobile/singlebox") >= 0 ? (
-        <SingleBoxChatPage />
-      ) : (
-        <></>
-      )}
+      {pathname.indexOf("mobile/playlist") >= 0 && <PlayingPlaylistMobile />}
+      {pathname.indexOf("mobile/chatbox") >= 0 && <ChatBoxMobliePage />}
+      {pathname.indexOf("mobile/singlebox") >= 0 && <SingleBoxChatPage />}
       <NotificationF></NotificationF>
     </div>
   );
@@ -108,14 +95,15 @@ export function GenreInHome() {
       <button className="px-2 py-1 rounded-2xl bg-[#1FDC62] text-black">
         Tất cả
       </button>
-      <button className="px-2 py-1 rounded-2xl bg-[#2F2F2F] ">Nhạc</button>
-      <button className="px-2 py-1 rounded-2xl bg-[#2F2F2F] ">Podcast</button>
+      <Link to={"/songlist"}>
+        <button className="px-2 py-1 rounded-2xl bg-[#2F2F2F] ">Nhạc</button>
+      </Link>
     </div>
   );
 }
 function CenterShare() {
   const dispatch = useDispatch();
-  
+
   const topbarcontent = useSelector(
     (state: RootHome) => state.rootHome.topbarcontent
   );
@@ -137,17 +125,15 @@ function CenterShare() {
           dispatch(ShowTopbarContent(true));
         }
       }}
-      className=" h-full m overflow-y-scroll relative bg-black rounded-2xl"
+      className=" h-full m overflow-y-scroll relative bg-black sm:rounded-2xl "
     >
-      {pathname == "/" ? (
+      {pathname == "/" && (
         <div className="hidden sm:inline-block sticky top-0 left-0 z-10 w-full bg-black">
           <GenreInHome></GenreInHome>
         </div>
-      ) : (
-        <></>
       )}
       <div className=" h-max relative ">
-        <Outlet></Outlet>
+        <Outlet />
       </div>
       <Foot />
     </div>

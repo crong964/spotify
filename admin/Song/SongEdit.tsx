@@ -6,9 +6,10 @@ import { RootState } from "@/admin/Redux";
 import { useParams } from "react-router-dom";
 
 import DateReact from "../componnt/Date";
-import { Tabs } from "@/page/component/tabs";
+import { TabsInput } from "@/page/component/tabs";
 import InputArtist from "../componnt/artist/InputArtist";
 import { singer } from "../componnt/artist/interface";
+import { Audio3 } from "@/page/component/Audio";
 import ImagePath from "@/page/config/img";
 
 type Genre = {
@@ -35,15 +36,17 @@ type SongEidt = {
 };
 function convertYYYMMDD(params: string) {
   let d = new Date(parseInt(params) * 1000);
-  return `${d.getFullYear()}-${d.getMonth() + 1 > 10 ? d.getMonth() + 1 : "0" + (d.getMonth() + 1)
-    }-${d.getDate() > 10 ? d.getDate() : "0" + d.getDate()}`;
+  return `${d.getFullYear()}-${
+    d.getMonth() + 1 > 10 ? d.getMonth() + 1 : "0" + (d.getMonth() + 1)
+  }-${d.getDate() > 10 ? d.getDate() : "0" + d.getDate()}`;
 }
 export default function SongEdit() {
-  const [SelectedSingers, SetSelectedSingers] = useState<singer[]>([]);
-  const [conut, SetConut] = useState(0);
-  const [file, SetFile] = useState<File>();
-  const { idArtist } = useParams();
-  const [song, SetSong] = useState<Song>({
+  const [selectedSingers, setSelectedSingers] = useState<singer[]>([]);
+  const [load, setLoad] = useState(false);
+  const [file, setFile] = useState<File>();
+  const [singers, setSingers] = useState<singer[]>([]);
+  const [oldImage, setOldImage] = useState("");
+  const [song, setSong] = useState<Song>({
     Id: "",
     SongImage: "",
     SongName: "",
@@ -62,8 +65,10 @@ export default function SongEdit() {
   const idSong = useSelector((state: RootState) => state.navi.idSong);
   useEffect(() => {
     post("/admin/song/get", { idsong: idSong }, (v: any) => {
-      if (v.err != undefined && !v.err) {
-        SetSong(v.song);
+      if (v && !v.err) {
+        setSong(v.song);
+        setOldImage(v.song.SongImage);
+        setSingers(v.singers);
         SetTabs(v.song.Genre_id);
       }
     });
@@ -80,8 +85,9 @@ export default function SongEdit() {
               <div>thể loại</div>
               <div className="font-extralight"></div>
             </div>
+
             <div className="rounded-lg w-full border h-[200px]">
-              <Tabs
+              <TabsInput
                 onchange={(v) => {
                   SetTabs(v);
                 }}
@@ -89,21 +95,33 @@ export default function SongEdit() {
               />
             </div>
           </div>
+          <div>Tên nhạc</div>
+          <div>
+            <input
+              onChange={(e) => {
+                setSong({
+                  ...song,
+                  SongName: e.currentTarget.value,
+                });
+              }}
+              value={song.SongName}
+              type="text"
+              className="border-2 border-[#404040] font-medium rounded-lg p-2 w-full"
+            />
+          </div>
           <InputArtist
             onChange={(v) => {
-              SetSelectedSingers(v);
+              setSelectedSingers(v);
             }}
-            key={1}
+            singers={singers}
           />
-
           <div>Ngày phát hành</div>
-
           <DateReact
             cellClassName="p-2"
             int={song.publicDate}
             className="p-2"
             onChange={(p) => {
-              SetSong({
+              setSong({
                 ...song,
                 publicDate: p,
               });
@@ -114,7 +132,7 @@ export default function SongEdit() {
             <textarea
               name="discription"
               onChange={(e) => {
-                SetSong({
+                setSong({
                   ...song,
                   description: e.currentTarget.value,
                 });
@@ -130,7 +148,7 @@ export default function SongEdit() {
             <div className="anh w-1/2">
               <div className="mb-2">Ảnh đại diên</div>
               <label
-                htmlFor={song.SongImage == "" ? "avatar" : "gdas"}
+                htmlFor={song.SongImage == "" ? "avatar" : ""}
                 className=" px-4 py-2 rounded-full w-full"
               >
                 <div className="w-full">
@@ -154,15 +172,15 @@ export default function SongEdit() {
                       <div
                         className="px-4 py-2 w-min bg-blue-600 rounded-full my-2"
                         onClick={() => {
-                          SetSong({
+                          setSong({
                             ...song,
-                            SongImage: "",
+                            SongImage: oldImage,
                           });
                         }}
                       >
                         xóa
                       </div>
-                      <img src={song.SongImage} />
+                      <img src={ImagePath(oldImage)} />
                     </div>
                   )}
                 </div>
@@ -175,8 +193,8 @@ export default function SongEdit() {
                     var files = e.currentTarget.files;
                     if (files != null && files.length > 0) {
                       var file = URL.createObjectURL(files[0]);
-                      SetFile(files[0]);
-                      SetSong({
+                      setFile(files[0]);
+                      setSong({
                         ...song,
                         SongImage: file,
                       });
@@ -204,31 +222,28 @@ export default function SongEdit() {
                     />
                   </svg>
                 </div>
-
-                <audio
-                  controls
-                  src={`/s?id=${song.filePath}`}
-                  onCanPlay={(e) => {
-                    console.log(e.currentTarget.duration);
-                    SetSong({
+                <Audio3
+                  className="fill-black  rounded-full size-9"
+                  GetTIme={(v) => {
+                    setSong({
                       ...song,
-                      Duration: e.currentTarget.duration,
+                      Duration: v,
                     });
                   }}
-                >
-                  <source src={`/s?id=${song.filePath}`} />
-                </audio>
+                  path={song.filePath}
+                  id={song.Id}
+                />
               </label>
             </div>
           </div>
           <div className="flex justify-end">
             <div
               onClick={() => {
-                if (SelectedSingers.length <= 0) {
+                if (selectedSingers.length <= 0) {
                   alert("chưa chọn nghệ sĩ");
                   return;
                 }
-                let user_id = JSON.stringify(SelectedSingers);
+                let user_id = JSON.stringify(selectedSingers);
 
                 if (song.Singer.length <= 0 || song.SongName.length <= 0) {
                   alert("chưa nhập tên hoặc chưa nhập tên ca sĩ");
@@ -252,18 +267,20 @@ export default function SongEdit() {
                   form.set("avatar", file);
                 }
                 form.set("user_id", user_id);
+                setLoad(true);
                 post("/admin/song/update", form, (v: any) => {
-                  if (!v.err) {
+                  if (v && !v.err) {
                     alert("tc");
                     window.location.reload();
                   } else {
                     alert("loou");
                   }
+                  setLoad(false);
                 });
               }}
               className="bg-blue-700 cursor-pointer text-white font-bold rounded-full px-3 py-2"
             >
-              Cập nhật
+              Cập nhật {load ? "loading..." : ""}
             </div>
           </div>
         </div>

@@ -1,20 +1,19 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
-import { SignInGitHubButtom, SignInGoogleButtom } from "./SignButtom";
-import { useDispatch, useSelector } from "react-redux";
+import { SignInGoogleButtom } from "./SignButtom";
+import { useDispatch } from "react-redux";
 
 import { post } from "@/page/config/req";
 import { Page } from "./RootAuth";
-import { Eye, EyeSlashIcon, LogoIcon } from "@/icon/Icon";
+import { Eye, EyeSlashIcon } from "@/icon/Icon";
 import { Link } from "react-router-dom";
-import { RootHome } from "@/page/Route/home/RootRedux";
+import { queryClient } from "@/page/App";
 export default function SignIn() {
   const [account, SetAccount] = useState("");
   const [password, SetPassword] = useState("");
   const [on, SetOn] = useState(false);
   const [eye, SetEye] = useState(false);
   const dispatch = useDispatch();
-  const page = useSelector((state: RootHome) => state.rootauth.page);
   const submit = (e: any) => {
     e.preventDefault();
     if (account.length <= 0 || password.length <= 0) {
@@ -32,6 +31,7 @@ export default function SignIn() {
           alert(v.mess);
         } else {
           window.location.replace("/");
+          queryClient.invalidateQueries();
         }
       }
     );
@@ -119,7 +119,7 @@ export default function SignIn() {
         </form>
         <div className="border border-white opacity-30 my-5 "></div>
         <SignInGoogleButtom />
-        
+
         <div className="border border-white opacity-30 my-5 "></div>
         <div className="text-[16px] text-white font-normal text-center space-x-2">
           <span className="text-[#A7A7A7]">Bạn chưa có tài khoản?</span>

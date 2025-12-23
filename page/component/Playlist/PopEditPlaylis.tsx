@@ -4,6 +4,8 @@ import { iPopEditPlaylis, PlaylistForm } from "./interface";
 import { MusicNoteBeamedIcon, XIcon } from "@/icon/Icon";
 import { Avatar } from "@/page/component/avatar";
 import { post } from "@/page/config/req";
+import { queryClient } from "@/page/App";
+import { SINGLE_PLAYLIST_QUERY } from "@/page/contant/quey_key";
 
 export default function PopEditPlaylis(p: iPopEditPlaylis) {
   const [file, SetFile] = useState<File>();
@@ -108,8 +110,12 @@ export default function PopEditPlaylis(p: iPopEditPlaylis) {
                     form.set("avatar", file);
                   }
                   post("/playlist/update", form, (v: any) => {
-                    if (!v.err) {
+                    if (v && !v.err) {
                       p.onChange(playlistform);
+                      alert("thành công");
+                      queryClient.invalidateQueries({
+                        queryKey: [SINGLE_PLAYLIST_QUERY, p.id],
+                      });
                     }
                   });
                 }}

@@ -3,8 +3,6 @@ import GenreForm from "./GenreForm";
 import Navi from "./Navi";
 import Main from "./Main";
 import SongAndGenre from "./SongAndGenre";
-import { useSelector } from "react-redux";
-import { RootState } from "./Redux";
 import PlayListForm from "./PlayList/PlayListForn";
 import PlaylistAndGenre from "./PlayList/PlaylistAndGenre";
 import PlayListEdit from "./PlayList/PlayListEdit";

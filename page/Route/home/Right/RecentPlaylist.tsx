@@ -7,7 +7,7 @@ import { NaviPage, RootHome } from "@/page/Route/home/RootRedux";
 import { Link } from "react-router-dom";
 import { Avatar } from "@/page/component/avatar";
 
-interface RecentPlaylist {
+export interface iRecentPlaylist {
   User_ID: string;
   ID: string;
   CreateTime: string;
@@ -18,8 +18,7 @@ interface RecentPlaylist {
 interface List {
   children: React.JSX.Element[];
 }
-export function RecentPlaylist(params: RecentPlaylist) {
-  const dispatch = useDispatch();
+export function RecentPlaylist(params: iRecentPlaylist) {
   const playing = useSelector((state: RootHome) => state.rootHome.playing);
   const stopAudio = useSelector((state: RootHome) => state.audioroot.stop);
   const [hidden, SetHidden] = useState(true);
@@ -36,10 +35,9 @@ export function RecentPlaylist(params: RecentPlaylist) {
       <Link
         to={`${params.Type == "artist" ? "artist" : "playlist"}/${params.ID}`}
         className="flex items-center space-x-1 sm:space-x-2 cursor-pointer bg-[#1A1A1A] rounded-xl "
-        onClick={() => {}}
       >
         <Avatar className="size-[60px] rounded-xl" src={params.ImagePath} />
-        <div className="text-white text-sm sm:text-base font-bold line-clamp-2">
+        <div className="text-white text-[12px] sm:text-base font-bold line-clamp-2">
           {params.PlayListName}
         </div>
         <div className="hidden sm:block size-6"></div>
@@ -56,19 +54,16 @@ export function RecentPlaylist(params: RecentPlaylist) {
     </div>
   );
 }
-export default function RecentList() {
-  const [recentList, SetRecentList] = useState<RecentPlaylist[]>([]);
-  useEffect(() => {
-    post("recentPlaylist/getAll", {}, (v: any) => {
-      if (v && !v.err) {
-        SetRecentList(v.ls);
-      }
-    });
-  }, []);
+export default function RecentList({
+  recentlists,
+}: {
+  recentlists: iRecentPlaylist[];
+}) {
+  const recentlist = recentlists;
 
   return (
     <div className="grid grid-cols-2 sm:grid-cols-4 gap-1 sm:gap-4 sm:px-3">
-      {recentList.map((v, i) => {
+      {recentlist.map((v, i) => {
         return (
           <RecentPlaylist
             CreateTime=""

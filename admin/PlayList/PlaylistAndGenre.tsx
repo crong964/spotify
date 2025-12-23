@@ -8,7 +8,7 @@ import ImagePath from "@/page/config/img";
 
 export default function PlaylistAndGenre() {
   return (
-    <div className="w-full h-full">
+    <div className="w-full">
       <IndexGenres />
       <PlayLists />
     </div>
@@ -88,7 +88,7 @@ function PlayLists() {
     );
   }, [slectGenre[floor]]);
   return (
-    <div className="grid grid-cols-6 gap-2 h-full p-2">
+    <div className="grid grid-cols-6 gap-2 h-full  pt-10">
       {playlists.map((v) => {
         return (
           <PlayList
