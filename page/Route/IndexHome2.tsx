@@ -68,7 +68,7 @@ export default function Index() {
         <Right />
         <CenterShare />
 
-        <div className="bg-black rounded-2xl f absolute sm:relative z-40 left-0 bottom-0 w-full px-0 py-0 sm:py-2 sm:px-2">
+        <div className="liquid-glass  sm:bg-black rounded-2xl f absolute sm:relative z-40 left-0 bottom-0 w-full px-0 py-0 sm:py-2 sm:px-2">
           <PlayingBar />
           <NaviHomeMobile2 />
         </div>

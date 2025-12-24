@@ -41,13 +41,13 @@
   }
 }
 
-.bgsong {
+.bg-song {
   background: #000;
 }
-.bgsongclick {
+.bg-song-click {
   background: #2d2d2d;
 }
-.bgsong:hover {
+.bg-song:hover {
   background: #2d2d2d;
 }
 .bgartis {
@@ -56,6 +56,12 @@
 @media (max-width: 640px) {
   .bgartis {
     background: linear-gradient(var(--bg) 0%, rgb(4, 39, 67) 100%);
+  }
+  .liquid-glass {
+    backdrop-filter: blur(2px);
+    box-shadow: inset 0 0 8px 1px #ffffff99;
+    border: 3px solid #ffffff4d;
+    background: #ffffff33;
   }
 }
 

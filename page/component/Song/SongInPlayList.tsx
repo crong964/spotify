@@ -24,8 +24,8 @@ import {
 
 const ArtistLink = React.lazy(() => import("@/page/component/ArtistLink"));
 
-export default function SongInPlayList(v: SongInPlayList) {
-  const [liked, setLike] = useState<string>(v.liked);
+export default function SongInPlayList(song: SongInPlayList) {
+  const [liked, setLike] = useState<string>(song.liked);
   const isLogin = useSelector(
     (state: RootHome) => state.rootauth.login.IsLogin
   );
@@ -48,7 +48,7 @@ export default function SongInPlayList(v: SongInPlayList) {
     post(
       "/song/get",
       {
-        idsong: v.Id,
+        idsong: song.Id,
       },
       (v: any) => {
         if (v && !v.err) {
@@ -62,7 +62,7 @@ export default function SongInPlayList(v: SongInPlayList) {
 
   const { mutate: createplaylist } = useMutation({
     mutationFn: async () => {
-      const data = await post2("/playlist/addplaylist", { idsong: v.Id });
+      const data = await post2("/playlist/addplaylist", { idsong: song.Id });
       if (data) {
         return data;
       } else {
@@ -84,10 +84,16 @@ export default function SongInPlayList(v: SongInPlayList) {
     },
   });
   const { mutate: deleteSong } = useMutation({
-    mutationFn: async (v: { song_id: string; playlist_id: string }) => {
+    mutationFn: async ({
+      playlist_id,
+      song_id,
+    }: {
+      song_id: string;
+      playlist_id: string;
+    }) => {
       const data = await post2("/contain/deletesong", {
-        Song_id: v.song_id,
-        PlayList_id: v.playlist_id,
+        Song_id: song_id,
+        PlayList_id: playlist_id,
       });
       return data;
     },
@@ -125,10 +131,16 @@ export default function SongInPlayList(v: SongInPlayList) {
   });
 
   const { mutate: addSongIntoPlaylist } = useMutation({
-    mutationFn: async (v: { song_id: string; playlist_id: string }) => {
+    mutationFn: async ({
+      playlist_id,
+      song_id,
+    }: {
+      song_id: string;
+      playlist_id: string;
+    }) => {
       const data = await post2("/contain/addsong", {
-        Song_id: v.song_id,
-        PlayList_id: v.playlist_id,
+        Song_id: song_id,
+        PlayList_id: playlist_id,
       });
       if (data) {
         return data;
@@ -157,56 +169,56 @@ export default function SongInPlayList(v: SongInPlayList) {
         XY({ x: v.pageX, y: v.pageY, s: true });
       }}
       className={`${
-        idSelectedSong == v.Id ? "bgsongclick" : "bgsong"
-      } grid grid-cols-7 text-[13px] sm:text-[14px] sm:p-2 py-2 cursor-pointer sm:space-x-2  text-white font-bold rounded-lg items-center`}
+        idSelectedSong == song.Id ? "bg-song-click" : "bg-song"
+      } grid grid-cols-7 text-[13px] sm:text-[14px] sm:p-2 py-2 cursor-pointer sm:space-x-2  text-white font-bold rounded-sm items-center`}
     >
       <div
         className="col-span-5 grid grid-cols-5"
         onClick={() => {
-          if (idSelectedSong == v.Id) {
+          if (idSelectedSong == song.Id) {
             GetSongPlay();
             return;
           }
           if (typeDevice == "pc") {
-            dispatch(SetIdSelectedSong(v.Id));
+            dispatch(SetIdSelectedSong(song.Id));
             return;
           }
           GetSongPlay();
         }}
       >
         <div className="col-span-5 sm:col-span-3 flex items-center space-x-2">
-          <div className="mx-2 size-3 sm:inline-block hidden ">
-            {lsSong[mark] && lsSong[mark].Id == v.Id && !stop ? (
+          <div className="mx-2 sm:inline-block hidden ">
+            {lsSong[mark] && lsSong[mark].Id == song.Id && !stop ? (
               <img
-                className="size-full"
+                className="size-3"
                 src="https://open.spotifycdn.com/cdn/images/equaliser-green.f8937a92.svg"
               ></img>
             ) : (
-              <div className="">{v.stt}</div>
+              <span>{song.stt}</span>
             )}
           </div>
           <Avatar
             className="size-12 sm:size-9"
-            src={ImagePath(v.SongImage)}
-          ></Avatar>
+            src={ImagePath(song.SongImage)}
+          />
           <div className="flex-col">
-            <div className="block">{v.SongName}</div>
-            {v.type != "artist" ? (
+            <div className="block">{song.SongName}</div>
+            {song.type != "artist" ? (
               <ArtistLink
-                key={v.Id}
-                idArtist={v.user_id}
-                nameArtist={v.Singer}
+                key={song.Id}
+                idArtist={song.user_id}
+                nameArtist={song.Singer}
               />
             ) : (
-              <>
-                <div className="block sm:hidden text-stone-500">{v.Viewer}</div>
-              </>
+              <div className="block sm:hidden text-stone-500">
+                {song.Viewer}
+              </div>
             )}
           </div>
         </div>
 
         <div className="sm:block hidden col-span-2 p-2 text-[14px] text-stone-500">
-          {v.Viewer}
+          {song.Viewer}
         </div>
       </div>
       <div className="col-span-2 sm:col-span-1 flex items-center space-x-4">
@@ -214,7 +226,7 @@ export default function SongInPlayList(v: SongInPlayList) {
           <div
             className=""
             onClick={() => {
-              addLoveSong(v.Id);
+              addLoveSong(song.Id);
             }}
           >
             {liked ? (
@@ -224,7 +236,7 @@ export default function SongInPlayList(v: SongInPlayList) {
             )}
           </div>
         )}
-        <Time d={parseInt(v.Duration + "")} />
+        <Time d={parseInt(song.Duration + "")} />
       </div>
       {xy.s && (
         <Modal
@@ -250,22 +262,28 @@ export default function SongInPlayList(v: SongInPlayList) {
                 }}
               >
                 <div className="flex sm:hidden py-6 px-2">
-                  <Avatar className="size-12" src={ImagePath(v.SongImage)} />
+                  <Avatar className="size-12" src={ImagePath(song.SongImage)} />
                   <div className="flex flex-col pl-3">
                     <div className="w-full text-[20px] font-bold">
-                      {v.SongName}
+                      {song.SongName}
                     </div>
                     <div className="w-full text-[15px] flex space-x-2">
-                      <ArtistLink idArtist={v.user_id} nameArtist={v.Singer} />
+                      <ArtistLink
+                        idArtist={song.user_id}
+                        nameArtist={song.Singer}
+                      />
                       <div className="px-0.5">•</div>
-                      <div>{v.SongName}</div>
+                      <div>{song.SongName}</div>
                     </div>
                   </div>
                 </div>
                 {idUser == playlist.User_id && (
                   <button
                     onClick={() => {
-                      deleteSong({ playlist_id: playlist.id, song_id: v.Id });
+                      deleteSong({
+                        playlist_id: playlist.id,
+                        song_id: song.Id,
+                      });
                     }}
                     className="flex p-3 justify-start items-center gap-2 hover:bg-black w-full"
                   >
@@ -288,7 +306,7 @@ export default function SongInPlayList(v: SongInPlayList) {
                       onClick={() => {
                         addSongIntoPlaylist({
                           playlist_id: vp.idplaylist,
-                          song_id: v.Id,
+                          song_id: song.Id,
                         });
                       }}
                       className="p-3 flex hover:bg-black w-full"

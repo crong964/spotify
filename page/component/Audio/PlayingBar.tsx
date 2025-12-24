@@ -72,7 +72,7 @@ function PlayingBar() {
   }, [volume]);
   return (
     lsSong[mark]?.filePath && (
-      <div className="w-full bg-black py-0 sm:py-1 h-[10%] sm:h-[12%] grid items-center grid-cols-1 sm:grid-cols-4 mt-0 ">
+      <div className="w-full  py-0 sm:py-1 h-[10%] sm:h-[12%] grid items-center grid-cols-1 sm:grid-cols-4 mt-0 ">
         <div
           onClick={() => {
             navigate("/mobile/playlist");
@@ -116,7 +116,7 @@ function PlayingBar() {
           id={lsSong[mark]?.Id}
         />
         <div className="hidden sm:flex space-x-2 justify-center items-center">
-          {isLogin ? (
+          {isLogin && (
             <>
               <button
                 onClick={() => {
@@ -141,8 +141,6 @@ function PlayingBar() {
                 )}
               </button>
             </>
-          ) : (
-            <></>
           )}
           <div
             className="flex items-center cursor-pointer space-x-2 border-2 border-black hover:border-gray-400 p-2 rounded-xl"

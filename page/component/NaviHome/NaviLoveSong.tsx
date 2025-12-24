@@ -8,15 +8,10 @@ export default function NaviLoveSong() {
   const dispatch = useDispatch();
   const mobiletype = useSelector((state: RootHome) => state.mobile.type);
   return (
-    <Link onMouseMove={(ev) => {}} onMouseLeave={(ev) => {}} to={"likedsongs"}>
+    <Link to={"/likedsongs"}>
       <Navi
         namepage="Yêu thích"
-        onclick={() => {
-          dispatch(NaviPage({ page: "likedsongs", param: "" }));
-          if (mobiletype == "mobile") {
-            dispatch(NaviRight(""));
-          }
-        }}
+        onclick={() => {}}
         ortherpage={
           <div className="border border-white p-3 rounded-2xl">
             <svg

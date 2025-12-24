@@ -21,6 +21,7 @@ import "@/public/css/index.css";
 import { ButtonRandomPlay, ModPlay } from "@/page/component/Audio";
 import { SongQueueInplayList } from "@/page/Route/home/Right/Queue";
 import { useNavigate } from "react-router-dom";
+import ImagePath from "@/page/config/img";
 export default function PlayingPlaylistMobile() {
   const lsSong = useSelector((state: RootHome) => state.audioroot.lsSong);
   const mark = useSelector((state: RootHome) => state.audioroot.mark);
@@ -77,7 +78,7 @@ export default function PlayingPlaylistMobile() {
       </div>
       <div className="w-full flex justify-center">
         <img
-          src={lsSong[mark]?.SongImage}
+          src={ImagePath(lsSong[mark]?.SongImage)}
           className="size-[300px]  loader "
           alt=""
           srcSet=""
