@@ -35,7 +35,7 @@ export default function Left() {
       if (!result.err) {
         alert("thành công");
         queryClient.invalidateQueries({
-          queryKey: [LIKE_PLAYLIST_QUERY]
+          queryKey: [LIKE_PLAYLIST_QUERY],
         });
       }
     },
@@ -59,6 +59,7 @@ export default function Left() {
           >
             <Libarary />
           </div>
+
           <NaviLoveSong />
           <PlaylistLike key={key} />
         </div>

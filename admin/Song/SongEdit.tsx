@@ -188,6 +188,7 @@ export default function SongEdit() {
                 <input
                   id="avatar"
                   type="file"
+                  accept=".jpg, .jpeg, .png, .webp"
                   className=" invisible "
                   onChange={(e) => {
                     var files = e.currentTarget.files;

@@ -188,6 +188,7 @@ export default function SongForm() {
                 <input
                   id="avatar"
                   type="file"
+                  accept=".jpg, .jpeg, .png, .webp"
                   className=" invisible "
                   onChange={(e) => {
                     var files = e.currentTarget.files;
@@ -213,10 +214,13 @@ export default function SongForm() {
                   <>
                     <input
                       id="music"
+                      accept=".mp4, .mp3"
                       onChange={(e) => {
                         var file = e.currentTarget.files?.[0];
-
-                        file?.arrayBuffer().then((v) => {
+                        if (file == undefined || file.size <= 0) {
+                          return;
+                        }
+                        file.arrayBuffer().then((v) => {
                           var ut = new Uint8Array(v);
                           setTotal(ut.length);
                           upload(ut, 0);

@@ -7,13 +7,20 @@ import { post } from "@/page/config/req";
 import { queryClient } from "@/page/App";
 import { SINGLE_PLAYLIST_QUERY } from "@/page/contant/quey_key";
 
-export default function PopEditPlaylis(p: iPopEditPlaylis) {
+export default function PopEditPlaylis({
+  Discripition,
+  ImagePath,
+  PlayListName,
+  id,
+  onChange,
+  onShow,
+}: iPopEditPlaylis) {
   const [file, SetFile] = useState<File>();
   const [playlistform, SetPlaylistForm] = useState<PlaylistForm>({
-    Discripition: p.Discripition,
-    id: p.id,
-    ImagePath: p.ImagePath,
-    PlayListName: p.PlayListName,
+    Discripition: Discripition,
+    id: id,
+    ImagePath: ImagePath,
+    PlayListName: PlayListName,
   });
   return (
     <Pop left={0} top={0}>
@@ -21,14 +28,13 @@ export default function PopEditPlaylis(p: iPopEditPlaylis) {
         <div className="w-screen h-[100vh] opacity-20 bg-black absolute top-0 left-0 z-0"></div>
         <div
           onClick={() => {
-            p.onShow(false);
+            onShow(false);
           }}
           className="w-screen h-[100vh] absolute top-0 left-0 z-10 flex justify-center items-center"
         >
           <div
             onClick={(e) => {
               e.stopPropagation();
-              p.onShow(true);
             }}
             className="w-[524px] min-h-[384px] bg-[#282828] rounded-lg"
           >
@@ -36,7 +42,7 @@ export default function PopEditPlaylis(p: iPopEditPlaylis) {
               <div className="flex-1 text-[24px] font-bold">Edit details</div>
               <div
                 onClick={() => {
-                  p.onShow(false);
+                  onShow(false);
                 }}
               >
                 <XIcon className="fill-white size-8 hover:fill-green-400 cursor-pointer" />
@@ -56,6 +62,7 @@ export default function PopEditPlaylis(p: iPopEditPlaylis) {
                   }
                 }}
                 type="file"
+                accept=".png,.webp,.jpeg"
                 className="hidden"
                 id="file"
                 name="file"
@@ -111,10 +118,10 @@ export default function PopEditPlaylis(p: iPopEditPlaylis) {
                   }
                   post("/playlist/update", form, (v: any) => {
                     if (v && !v.err) {
-                      p.onChange(playlistform);
+                      onChange(playlistform);
                       alert("thành công");
                       queryClient.invalidateQueries({
-                        queryKey: [SINGLE_PLAYLIST_QUERY, p.id],
+                        queryKey: [SINGLE_PLAYLIST_QUERY, id],
                       });
                     }
                   });

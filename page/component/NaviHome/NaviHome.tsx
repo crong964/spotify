@@ -39,7 +39,7 @@ export function NaviHomeMobile2() {
     <div
       className={
         `${isLogin ? "grid grid-cols-4 " : "grid grid-cols-2"} ` +
-        "text-[10px] sm:hidden "
+        "text-[10px] sm:hidden rounded-lg "
       }
     >
       <Home />
@@ -51,9 +51,9 @@ export function NaviHomeMobile2() {
             {({ isActive }) => (
               <span className="w-full h-full grid place-items-center grid-cols-1 sm:h-[60px] sm:flex sm:justify-center sm:items-center">
                 {isActive ? (
-                  <MessIcon className="fill-green-600 size-[32px] sm:size-[20px]"></MessIcon>
+                  <MessIcon className="fill-green-600 size-[32px] sm:size-[20px]"/>
                 ) : (
-                  <MessIcon className="fill-white size-[32px] sm:size-[20px]"></MessIcon>
+                  <MessIcon className="fill-white size-[32px] sm:size-[20px]"/>
                 )}
                 Tin nhắn
               </span>
