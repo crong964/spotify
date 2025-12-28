@@ -52,9 +52,10 @@ const io = new Server(httpServer, {
 app.use(cookieParser());
 
 app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Headers", "*");
-  res.setHeader("Access-Control-Allow-Methods", "*");
+  //res.setHeader("Access-Control-Allow-Origin", "*");
+  //res.setHeader("Access-Control-Allow-Headers", "*");
+  //res.setHeader("Access-Control-Allow-Methods", "*");
+
   var apikey = (req.headers.apikey as any) || req.cookies.apikey;
   if (apikey) {
     var cookie = VertifyJWT(apikey);
@@ -141,6 +142,7 @@ app.get(/admin/, ADMIN, (req, res) => {
 app.get(/\//, (req, res) => {
   res.sendFile(path.join(process.cwd(), "web/home.html"));
 });
+
 httpServer.listen(8000, () => {
   console.log("http://localhost:8000/teststreaming");
   console.log("http://localhost:8000/");

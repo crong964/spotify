@@ -178,26 +178,18 @@ export default function Header() {
 }
 
 function Forward() {
-  const stack = useSelector((state: RootHome) => state.rootHome.stack);
-  const position = useSelector((state: RootHome) => state.rootHome.position);
-  const dispatch = useDispatch();
   return (
     <button
       title="forward"
       className={`${
-        position < stack.length - 1
-          ? "bg-[#2A2A2A]"
-          : "bg-black cursor-not-allowed"
+        history.state.idx < history.length - 2
+          ? "bg-black"
+          : "bg-[#454444] cursor-not-allowed"
       } rounded-full size-[28px] hidden sm:flex justify-center items-center`}
       onClick={() => {
-        if (stack.length == 0) {
-          return;
+        if (history.state.idx < history.length) {
+          history.forward();
         }
-        if (position >= stack.length - 1) {
-          return;
-        }
-        history.forward();
-        dispatch(SetPosition(1));
       }}
     >
       <ForwardIcon className="fill-white size-4"></ForwardIcon>
@@ -206,19 +198,17 @@ function Forward() {
 }
 
 function Back() {
-  const position = useSelector((state: RootHome) => state.rootHome.position);
-  const dispatch = useDispatch();
   return (
     <button
       onClick={() => {
-        if (position <= 0) {
-          return;
+        if (history.state.idx > 0) {
+          history.back();
         }
-        dispatch(SetPosition(-1));
-        history.back();
       }}
       className={`${
-        position > 0 ? "bg-[#2A2A2A]" : "bg-black cursor-not-allowed"
+        history.state.idx > 0
+          ? " bg-black "
+          : " bg-[#454444] cursor-not-allowed "
       } rounded-full size-[28px] hidden sm:flex justify-center items-center `}
     >
       <BackIcon className="fill-white size-4"></BackIcon>

@@ -152,14 +152,17 @@ export default function PlaylistPage() {
       (data.songs as SongInPlayList[]).forEach((song) => {
         time += Number(song.Duration + "");
       });
-      data.playlist.Duration = time;
-      data.playlist.Songs = data.songs.length;
+      let playlist = { ...data.playlist };
+
+      playlist.Duration = time;
+      playlist.Songs = data.songs.length;
+      
       SetSongS(data.songs);
       SetLike(data.like);
       SetIdU(data.idU);
       SetTabs(data.tabs);
-      dispatch(SetCurName(data.playlist.PlayListName));
-      dispatch(SetPlaylist(data.playlist));
+      dispatch(SetCurName(playlist.PlayListName));
+      dispatch(SetPlaylist(playlist));
     }
   }, [data]);
 

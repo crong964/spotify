@@ -12,7 +12,6 @@ import { Avatar } from "@/page/component/avatar";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { CACHE_INFILITY, LIKE_PLAYLIST_QUERY } from "@/page/contant/quey_key";
 import { queryClient } from "@/page/App";
-import NaviLoveSong from "@/page/component/NaviHome/NaviLoveSong";
 
 export default function PlaylistLike() {
   const [playLists, setPlayLists] = useState<iPlaylistLikeItem[]>([]);
