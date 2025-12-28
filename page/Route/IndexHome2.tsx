@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { Suspense, useEffect } from "react";
 const Foot = React.lazy(() => import("@/page/component/Foot"));
 import { useDispatch, useSelector } from "react-redux";
 const Header = React.lazy(() => import("@/page/component/Header/Header"));
@@ -64,14 +64,18 @@ export default function Index() {
         className={`${Right2 == "" ? "gridSpotify" : "gridSpotify2"} h-full`}
       >
         <Left />
-        <Header />
-        <Right />
+        <Suspense>
+          <Header />
+          <Right />
+        </Suspense>
         <CenterShare />
 
-        <div className="liquid-glass  sm:bg-black rounded-2xl f absolute sm:relative z-40 left-0 bottom-0 w-full px-0 py-0 sm:py-2 sm:px-2">
-          <PlayingBar />
-          <NaviHomeMobile2 />
-        </div>
+        <Suspense>
+          <div className="liquid-glass  sm:bg-black rounded-2xl f absolute sm:relative z-40 left-0 bottom-0 w-full px-0 py-0 sm:py-2 sm:px-2">
+            <PlayingBar />
+            <NaviHomeMobile2 />
+          </div>
+        </Suspense>
       </div>
 
       {BoxList.length > 0 && (
@@ -84,6 +88,7 @@ export default function Index() {
       {pathname.indexOf("mobile/playlist") >= 0 && <PlayingPlaylistMobile />}
       {pathname.indexOf("mobile/chatbox") >= 0 && <ChatBoxMobliePage />}
       {pathname.indexOf("mobile/singlebox") >= 0 && <SingleBoxChatPage />}
+
       <NotificationF></NotificationF>
     </div>
   );
@@ -133,7 +138,9 @@ function CenterShare() {
         </div>
       )}
       <div className=" h-max relative ">
-        <Outlet />
+        <Suspense>
+          <Outlet />
+        </Suspense>
       </div>
       <Foot />
     </div>

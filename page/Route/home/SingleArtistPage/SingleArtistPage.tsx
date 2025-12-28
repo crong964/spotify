@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootHome, SetCurName } from "@/page/Route/home/RootRedux";
 import { artist } from "../PlayListPage/PlayListPage";
@@ -33,6 +33,7 @@ export default function ArtistPage() {
   const [bg, setBg] = useState("black");
   const dispatch = useDispatch();
   const { id } = useParams();
+  const [isloaing, startTransition] = useTransition();
   const isLogin = useSelector(
     (state: RootHome) => state.rootauth.login.IsLogin
   );
@@ -70,16 +71,18 @@ export default function ArtistPage() {
     if (!fetchArtistData || !fetchArtistData.artist) {
       return;
     }
-    let v = fetchArtistData;
-    SetIsfriend(v.isfriend);
-    SetaAtist(v.artist);
-    SetSongS(v.songs);
-    SetLsAtist(v.lsplaylistartist);
-    dispatch(SetCurName(v.artist.ChanalName || ""));
-    SetLike(v.like);
-    if (refPage.current) {
-      refPage.current.scrollIntoView();
-    }
+    startTransition(() => {
+      let v = fetchArtistData;
+      SetIsfriend(v.isfriend);
+      SetaAtist(v.artist);
+      SetSongS(v.songs);
+      SetLsAtist(v.lsplaylistartist);
+      dispatch(SetCurName(v.artist.ChanalName || ""));
+      SetLike(v.like);
+      if (refPage.current) {
+        refPage.current.scrollIntoView();
+      }
+    });
   }, [fetchArtistData]);
 
   useMemo(async () => {
@@ -124,7 +127,9 @@ export default function ArtistPage() {
       }
     },
   });
-
+  if (isloaing) {
+    return <></>;
+  }
   return (
     <div style={style} className="relative " ref={refPage}>
       {artist?.Banner !== "" ? (

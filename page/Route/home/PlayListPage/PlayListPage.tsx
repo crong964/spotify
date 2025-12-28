@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState, useTransition } from "react";
 import PlayButtom from "@/page/component/PlayButtom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootHome, SetCurName, SetPlaylist } from "@/page/Route/home/RootRedux";
@@ -115,7 +115,7 @@ export default function PlaylistPage() {
     },
     staleTime: CACHE_5_DAY,
   });
-
+  const [isPending, startTransition] = useTransition();
   const { mutate: addLikePlaylist } = useMutation({
     mutationFn: async () => {
       const data = await post2("/likePlaylist/add", { idPlaylist: id });
@@ -156,13 +156,15 @@ export default function PlaylistPage() {
 
       playlist.Duration = time;
       playlist.Songs = data.songs.length;
-      
-      SetSongS(data.songs);
-      SetLike(data.like);
-      SetIdU(data.idU);
-      SetTabs(data.tabs);
-      dispatch(SetCurName(playlist.PlayListName));
-      dispatch(SetPlaylist(playlist));
+
+      startTransition(() => {
+        SetSongS(data.songs);
+        SetLike(data.like);
+        SetIdU(data.idU);
+        SetTabs(data.tabs);
+        dispatch(SetCurName(playlist.PlayListName));
+        dispatch(SetPlaylist(playlist));
+      });
     }
   }, [data]);
 
@@ -171,13 +173,16 @@ export default function PlaylistPage() {
       return "black";
     }
     const bg = await ColorImage(ImagePath(playlist.ImagePath));
-    setBg(bg);
+    return bg;
   }, [playlist.ImagePath]);
 
   const style = useMemo(() => {
     return { "--bg": bg } as React.CSSProperties;
   }, [bg]);
-
+  
+  if (isPending) {
+    return <></>;
+  }
   return (
     <div className="relative">
       <div

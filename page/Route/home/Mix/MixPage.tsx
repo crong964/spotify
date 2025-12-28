@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState, useTransition } from "react";
 import PlayButtom from "@/page/component/PlayButtom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootHome } from "@/page/Route/home/RootRedux";
@@ -13,6 +13,7 @@ import { SongInPlayList } from "@/page/component/Song/interface";
 import { Avatar } from "@/page/component/avatar";
 import ColorImage from "@/page/config/corlorImage";
 import ImagePath from "@/page/config/img";
+import { ButtonRandomPlay } from "@/page/component/Audio";
 
 var g = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 6, 7];
 export interface artist {
@@ -54,16 +55,19 @@ export default function MixPage() {
   const playlist = useSelector((state: RootHome) => state.rootHome.playlist);
   const [time, SetTime] = useState(0);
   const [bg, setBg] = useState("black");
+  const [isloaing, startTransition] = useTransition();
   useEffect(() => {
     get(`/recentSong/getlistenAgain/${id}`, (v: any) => {
       if (v && v.ls) {
-        setSongS(v.ls);
-        let time = 0;
-        for (let i = 0; i < v.ls.length; i++) {
-          const element = v.ls[i] as SongInPlayList;
-          time += Number(element.Duration);
-        }
-        SetTime(time);
+        startTransition(() => {
+          setSongS(v.ls);
+          let time = 0;
+          for (let i = 0; i < v.ls.length; i++) {
+            const element = v.ls[i] as SongInPlayList;
+            time += Number(element.Duration);
+          }
+          SetTime(time);
+        });
       }
     });
   }, [id]);
@@ -77,6 +81,10 @@ export default function MixPage() {
   const style = useMemo(() => {
     return { "--bg": bg } as React.CSSProperties;
   }, [bg]);
+
+  if (isloaing) {
+    return <></>;
+  }
   return (
     <div className="relative">
       <div
@@ -110,6 +118,7 @@ export default function MixPage() {
       <div className="sm:px-4 py-2">
         <div className="flex items-center py-0 sm:py-4 space-x-5">
           <PlayButtom id={id + ""} page="mix" />
+          <ButtonRandomPlay className="size-8" />
           <button className="cursor-pointer">
             <ThreeDotsIcon className="fill-[#C7C7C7] hover:fill-white size-[45px] "></ThreeDotsIcon>
           </button>
