@@ -1,4 +1,5 @@
 import { ButtonRandomPlay } from "@/page/component/Audio";
+import { Loading } from "@/page/component/loading";
 import PlayButtom from "@/page/component/PlayButtom";
 import { SongList } from "@/page/component/Song/Index";
 
@@ -7,8 +8,9 @@ import { TimeString } from "@/page/component/Time";
 import { get2 } from "@/page/config/req";
 import { CACHE_INFILITY, LOVE_SONG_QUERY } from "@/page/contant/quey_key";
 import { useQuery } from "@tanstack/react-query";
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 export default function LikedSongListPage() {
+  const [isLoading, setIsLoading] = useState(true);
   const { data: songs } = useQuery<SongInPlayList[]>({
     queryKey: [LOVE_SONG_QUERY],
     queryFn: async () => {
@@ -21,6 +23,10 @@ export default function LikedSongListPage() {
     staleTime: CACHE_INFILITY,
   });
 
+  useEffect(() => {
+    setIsLoading(false);
+    return () => {};
+  }, []);
   const time = useMemo(() => {
     if (!songs) {
       return 0;
@@ -32,8 +38,8 @@ export default function LikedSongListPage() {
     return time;
   }, [songs]);
 
-  if (!songs) {
-    return;
+  if (!songs || isLoading) {
+    return <Loading></Loading>;
   }
   return (
     <div className="relative">

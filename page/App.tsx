@@ -77,7 +77,14 @@ root.render(
     >
       <Provider store={rootHome}>
         <Routes>
-          <Route path="/" element={<Index />}>
+          <Route
+            path="/"
+            element={
+              <Suspense>
+                <Index />
+              </Suspense>
+            }
+          >
             <Route index element={<HomePage />} />
             <Route path="genre" element={<Suspense children={<Outlet />} />}>
               <Route path=":id" element={<IdGenre />} />
@@ -106,7 +113,14 @@ root.render(
               />
             </Route>
           </Route>
-          <Route path="auth" element={<CenterShare />}>
+          <Route
+            path="auth"
+            element={
+              <Suspense>
+                <CenterShare />
+              </Suspense>
+            }
+          >
             <Route index element={<SignIn />} />
             <Route path="CreateAccount" element={<CreateAccount />} />
             <Route path="Signup" element={<Signup />} />

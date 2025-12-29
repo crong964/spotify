@@ -54,27 +54,17 @@ export default function PlaylistLike() {
 
   return (
     <div className="min-h-[300px]">
-      <Link
-        to={"/likedsongs"}
-        className="grid grid-cols-7 pt-3 space-x-3 sm:space-x-0 sm:place-items-center  sm:hidden"
-      >
-        <div className="border border-white p-3 rounded-2xl">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth="1.5"
-            stroke="currentColor"
-            className="size-6"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
-            />
-          </svg>
+      <Link to={"/likedsongs"} className="my-3 space-x-3 flex items-center sm:hidden">
+        <div className=" basis-14">
+          <img
+            loading="lazy"
+            src="/public/liked-songs-640.png"
+            className="absolute size-14 top-0 left-0 z-0"
+            alt=""
+            srcSet=""
+          />
         </div>
-        <div className=" sm:hidden col-span-6  flex-col text-[14px]">
+        <div className=" sm:hidden flex-1  flex-col text-[14px]">
           <div className="text-left">Danh sách yêu thích</div>
           <div className="text-left">Danh sách phát</div>
         </div>
@@ -167,25 +157,25 @@ function PlaylistLikeItem(d: iPlaylistLikeItem) {
         onMouseLeave={(ev) => {
           SetPop(false);
         }}
-        className={`play${d.id}` + " w-full my-3 sm:my-0 "}
+        className={`play${d.id}` + " w-full  "}
       >
         <Link
-          className="grid grid-cols-7 space-x-3 sm:space-x-0 sm:place-items-center  sm:h-[60px] sm:flex sm:justify-center sm:items-center"
+          className="py-3 sm:py-2 space-x-3 sm:space-x-0  h-min-[60px] flex sm:justify-center items-center"
           to={`/${d.Type == "artist" ? d.Type : "playlist"}/${d.id}`}
         >
           {d.ImagePath != "" ? (
-            <div className="col-span-1">
+            <div className="basis-14 sm:basis-12">
               <Avatar
                 src={d.ImagePath}
                 className={`${
                   d.Type == "artist" ? " rounded-full" : " rounded-lg"
                 }`.concat(" size-14 sm:size-12 ")}
-              ></Avatar>
+              />
             </div>
           ) : (
             <MusicNoteBeamedIcon className="size-10" />
           )}
-          <div className=" sm:hidden col-span-6  flex-col text-[14px]">
+          <div className=" sm:hidden flex-1 flex-col text-[14px]">
             <div className="text-left">{d.PlayListName}</div>
             <div className="text-left">
               {d.Type == "artist" ? "Nghệ sĩ" : "Danh sách phát"}

@@ -8,6 +8,7 @@ import {
   CACHE_5_DAY,
   NEXT_PLAYLIST_ARTIST_QUERY,
 } from "@/page/contant/quey_key";
+import { Loading } from "@/page/component/loading";
 
 export default function ArtistsListPage() {
   const [playlists, setPlayLists] = useState<iPlayList[]>([]);
@@ -63,6 +64,10 @@ export default function ArtistsListPage() {
       />
     );
   });
+  
+  if (playlists.length <= 0) {
+    return <Loading />;
+  }
   return (
     <div className="w-full relative">
       <h1 className="text-3xl px-4 py-2 z-10 sticky top-0 left-0 bg-black">

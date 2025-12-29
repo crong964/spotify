@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useState, useTransition } from "react";
 import PlayButtom from "@/page/component/PlayButtom";
-import { useDispatch, useSelector } from "react-redux";
-import { RootHome } from "@/page/Route/home/RootRedux";
+
 import { get, post } from "@/page/config/req";
 import { SongList } from "@/page/component/Song/Index";
 
@@ -12,10 +11,9 @@ import { ThreeDotsIcon } from "@/icon/Icon";
 import { SongInPlayList } from "@/page/component/Song/interface";
 import { Avatar } from "@/page/component/avatar";
 import ColorImage from "@/page/config/corlorImage";
-import ImagePath from "@/page/config/img";
 import { ButtonRandomPlay } from "@/page/component/Audio";
+import { Loading } from "@/page/component/loading";
 
-var g = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 6, 7];
 export interface artist {
   id: string | undefined;
   Vertify: string | undefined;
@@ -52,22 +50,19 @@ interface PlaylistForm {
 export default function MixPage() {
   const { id } = useParams();
   const [songs, setSongS] = useState<SongInPlayList[]>([]);
-  const playlist = useSelector((state: RootHome) => state.rootHome.playlist);
-  const [time, SetTime] = useState(0);
+  const [time, setTime] = useState(0);
   const [bg, setBg] = useState("black");
-  const [isloaing, startTransition] = useTransition();
   useEffect(() => {
     get(`/recentSong/getlistenAgain/${id}`, (v: any) => {
       if (v && v.ls) {
-        startTransition(() => {
-          setSongS(v.ls);
-          let time = 0;
-          for (let i = 0; i < v.ls.length; i++) {
-            const element = v.ls[i] as SongInPlayList;
-            time += Number(element.Duration);
-          }
-          SetTime(time);
-        });
+        let time = 0;
+        for (let i = 0; i < v.ls.length; i++) {
+          const element = v.ls[i] as SongInPlayList;
+          time += Number(element.Duration);
+        }
+
+        setSongS(v.ls);
+        setTime(time);
       }
     });
   }, [id]);
@@ -81,9 +76,8 @@ export default function MixPage() {
   const style = useMemo(() => {
     return { "--bg": bg } as React.CSSProperties;
   }, [bg]);
-
-  if (isloaing) {
-    return <></>;
+  if (songs.length <= 0) {
+    return <Loading></Loading>;
   }
   return (
     <div className="relative">

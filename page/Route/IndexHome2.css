@@ -1,5 +1,5 @@
 @media (min-width: 640px) {
-  .gridSpotify {
+  .grid-spotify {
     display: grid;
     height: 100vh;
     width: 100%;
@@ -12,7 +12,7 @@
       / 80px 1fr;
   }
 
-  .gridSpotify2 {
+  .grid-spotify2 {
     display: grid;
     height: 100vh;
     width: 100%;

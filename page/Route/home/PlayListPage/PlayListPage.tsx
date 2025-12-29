@@ -27,6 +27,7 @@ import { ButtonRandomPlay } from "@/page/component/Audio";
 import ColorImage from "@/page/config/corlorImage";
 import ImagePath from "@/page/config/img";
 import { queryClient } from "@/page/App";
+import { Loading } from "@/page/component/loading";
 
 var g = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 6, 7];
 export interface artist {
@@ -66,6 +67,7 @@ interface PlayList {
   User_id: string;
 }
 export default function PlaylistPage() {
+  const [isPending, startTransition] = useTransition();
   const dispatch = useDispatch();
   const { id } = useParams();
   const [songs, SetSongS] = useState<SongInPlayList[]>([]);
@@ -115,7 +117,7 @@ export default function PlaylistPage() {
     },
     staleTime: CACHE_5_DAY,
   });
-  const [isPending, startTransition] = useTransition();
+
   const { mutate: addLikePlaylist } = useMutation({
     mutationFn: async () => {
       const data = await post2("/likePlaylist/add", { idPlaylist: id });
@@ -154,10 +156,9 @@ export default function PlaylistPage() {
       });
       let playlist = { ...data.playlist };
 
-      playlist.Duration = time;
-      playlist.Songs = data.songs.length;
-
       startTransition(() => {
+        playlist.Duration = time;
+        playlist.Songs = data.songs.length;
         SetSongS(data.songs);
         SetLike(data.like);
         SetIdU(data.idU);
@@ -179,10 +180,11 @@ export default function PlaylistPage() {
   const style = useMemo(() => {
     return { "--bg": bg } as React.CSSProperties;
   }, [bg]);
-  
-  if (isPending) {
-    return <></>;
+
+  if (songs.length <= 0 || isPending) {
+    return <Loading />;
   }
+
   return (
     <div className="relative">
       <div

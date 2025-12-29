@@ -1,3 +1,3 @@
-import React from "react";
+import Avatar from "./Avatar";
 
-export const Avatar = React.lazy(() => import("./Avatar"));
+export { Avatar };

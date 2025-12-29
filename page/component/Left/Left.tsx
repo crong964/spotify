@@ -1,12 +1,12 @@
 import Home from "@/page/Route/home/NaviHome/Home";
 import { MobileSearchButtom } from "@/page/Route/home/NaviHome/SearchButtom";
 import { RootHome } from "@/page/Route/home/RootRedux";
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
+import {  useSelector } from "react-redux";
 import { Libarary } from "@/page/component/libarary";
 import NaviLoveSong from "@/page/Route/home/NaviHome/NaviLoveSong";
 import PlaylistLike from "@/page/Route/home/NaviHome/PlaylistLike";
-import { post, post2 } from "@/page/config/req";
+import {  post2 } from "@/page/config/req";
 import { useMutation } from "@tanstack/react-query";
 import { queryClient } from "@/page/App";
 import { LIKE_PLAYLIST_QUERY } from "@/page/contant/quey_key";
@@ -15,7 +15,6 @@ export default function Left() {
   const isLogin = useSelector(
     (state: RootHome) => state.rootauth.login.IsLogin
   );
-  const [key, SetKey] = useState(0);
 
   const { mutate: createplaylist } = useMutation({
     mutationFn: async () => {
@@ -61,7 +60,7 @@ export default function Left() {
           </div>
 
           <NaviLoveSong />
-          <PlaylistLike key={key} />
+          <PlaylistLike />
         </div>
       )}
     </nav>

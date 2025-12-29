@@ -21,6 +21,7 @@ import { ChatBoxMobliePage } from "./mobile/chatbox/ChatBoxMobliePage";
 import { SingleBoxChatPage } from "./mobile/SingleBox/SingleBoxChatPage";
 import NotificationF from "../component/pop/Notification";
 import Left from "@/page/component/Left/Left";
+import { LoadingHeader, LoadingRight } from "../component/loading";
 
 export default function Index() {
   const BoxList = useSelector((state: RootHome) => state.rootHome.BoxList);
@@ -61,21 +62,27 @@ export default function Index() {
   return (
     <div className="h-full w-full relative p-0 m-0 bg-[#272A39] overflow-hidden font-normal">
       <div
-        className={`${Right2 == "" ? "gridSpotify" : "gridSpotify2"} h-full`}
+        className={`${Right2 == "" ? "grid-spotify" : "grid-spotify2"} h-full`}
       >
         <Left />
-        <Suspense>
+        <Suspense fallback={<LoadingHeader></LoadingHeader>}>
           <Header />
+        </Suspense>
+        <Suspense fallback={<LoadingRight />}>
           <Right />
         </Suspense>
-        <CenterShare />
-
         <Suspense>
-          <div className="liquid-glass  sm:bg-black rounded-2xl f absolute sm:relative z-40 left-0 bottom-0 w-full px-0 py-0 sm:py-2 sm:px-2">
-            <PlayingBar />
-            <NaviHomeMobile2 />
-          </div>
+          <CenterShare />
         </Suspense>
+
+        <div className="liquid-glass  sm:bg-black rounded-2xl f absolute sm:relative z-40 left-0 bottom-0 w-full px-0 py-0 sm:py-2 sm:px-2">
+          <Suspense>
+            <PlayingBar />
+          </Suspense>
+          <Suspense>
+            <NaviHomeMobile2 />
+          </Suspense>
+        </div>
       </div>
 
       {BoxList.length > 0 && (
@@ -138,9 +145,7 @@ function CenterShare() {
         </div>
       )}
       <div className=" h-max relative ">
-        <Suspense>
-          <Outlet />
-        </Suspense>
+        <Outlet />
       </div>
       <Foot />
     </div>
