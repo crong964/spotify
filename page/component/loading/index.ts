@@ -1,5 +1,5 @@
 import Loading from "./Loading";
-import LoadingHeader from "./LoadingHeader";
-import LoadingRight from "./LoadingRight";
+import HeaderLoading from "./HeaderLoading";
+import RightLoading from "./RightLoading";
 
-export { Loading, LoadingRight, LoadingHeader };
+export { Loading, RightLoading, HeaderLoading };

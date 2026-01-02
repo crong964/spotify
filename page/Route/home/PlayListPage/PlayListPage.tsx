@@ -28,6 +28,7 @@ import ColorImage from "@/page/config/corlorImage";
 import ImagePath from "@/page/config/img";
 import { queryClient } from "@/page/App";
 import { Loading } from "@/page/component/loading";
+import PlaylistLoading from "@/page/component/loading/PlaylistLoading";
 
 var g = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 6, 7];
 export interface artist {
@@ -81,6 +82,7 @@ export default function PlaylistPage() {
   const [sh, sH] = useState(false);
   const [edit, setEdit] = useState(false);
   const [bg, setBg] = useState("black");
+  const [reset, setReset] = useState(true);
   const { data } = useQuery({
     queryKey: [SINGLE_PLAYLIST_QUERY, id],
     queryFn: async () => {
@@ -149,6 +151,10 @@ export default function PlaylistPage() {
   });
 
   useEffect(() => {
+    if (!reset) {
+      return;
+    }
+    let g = null;
     if (data && data.songs && data.playlist) {
       let time = 0;
       (data.songs as SongInPlayList[]).forEach((song) => {
@@ -156,18 +162,26 @@ export default function PlaylistPage() {
       });
       let playlist = { ...data.playlist };
 
-      startTransition(() => {
-        playlist.Duration = time;
-        playlist.Songs = data.songs.length;
-        SetSongS(data.songs);
-        SetLike(data.like);
-        SetIdU(data.idU);
-        SetTabs(data.tabs);
-        dispatch(SetCurName(playlist.PlayListName));
-        dispatch(SetPlaylist(playlist));
-      });
+      g = setTimeout(() => {
+        startTransition(() => {
+          playlist.Duration = time;
+          playlist.Songs = data.songs.length;
+          setReset(false);
+          SetSongS(data.songs);
+          SetLike(data.like);
+          SetIdU(data.idU);
+          SetTabs(data.tabs);
+          dispatch(SetCurName(playlist.PlayListName));
+          dispatch(SetPlaylist(playlist));
+        });
+      }, 400);
     }
-  }, [data]);
+    return () => {
+      if (g) {
+        clearTimeout(g);
+      }
+    };
+  }, [data, reset]);
 
   useMemo(async () => {
     if (playlist.ImagePath == undefined) {
@@ -182,7 +196,7 @@ export default function PlaylistPage() {
   }, [bg]);
 
   if (songs.length <= 0 || isPending) {
-    return <Loading />;
+    return <PlaylistLoading />;
   }
 
   return (
@@ -281,6 +295,10 @@ export default function PlaylistPage() {
             onclick={(v) => {
               if (v != undefined) {
                 SetSongS([...songs, v]);
+                queryClient.setQueryData([SINGLE_PLAYLIST_QUERY, id], {
+                  ...data,
+                  songs: [...songs, v],
+                });
               }
             }}
           />

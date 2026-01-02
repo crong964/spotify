@@ -1,7 +1,7 @@
-import React, { useEffect, useMemo, useState, useTransition } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import PlayButtom from "@/page/component/PlayButtom";
 
-import { get, post } from "@/page/config/req";
+import { get } from "@/page/config/req";
 import { SongList } from "@/page/component/Song/Index";
 
 import { TimeString } from "@/page/component/Time";
@@ -12,7 +12,7 @@ import { SongInPlayList } from "@/page/component/Song/interface";
 import { Avatar } from "@/page/component/avatar";
 import ColorImage from "@/page/config/corlorImage";
 import { ButtonRandomPlay } from "@/page/component/Audio";
-import { Loading } from "@/page/component/loading";
+import PlaylistLoading from "@/page/component/loading/PlaylistLoading";
 
 export interface artist {
   id: string | undefined;
@@ -53,6 +53,7 @@ export default function MixPage() {
   const [time, setTime] = useState(0);
   const [bg, setBg] = useState("black");
   useEffect(() => {
+    let g: any;
     get(`/recentSong/getlistenAgain/${id}`, (v: any) => {
       if (v && v.ls) {
         let time = 0;
@@ -61,10 +62,15 @@ export default function MixPage() {
           time += Number(element.Duration);
         }
 
-        setSongS(v.ls);
-        setTime(time);
+        g = setTimeout(() => {
+          setSongS(v.ls);
+          setTime(time);
+        }, 300);
       }
     });
+    return () => {
+      clearTimeout(g);
+    };
   }, [id]);
   useMemo(async () => {
     const bg = await ColorImage(
@@ -77,7 +83,7 @@ export default function MixPage() {
     return { "--bg": bg } as React.CSSProperties;
   }, [bg]);
   if (songs.length <= 0) {
-    return <Loading></Loading>;
+    return <PlaylistLoading></PlaylistLoading>;
   }
   return (
     <div className="relative">

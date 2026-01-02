@@ -1,4 +1,11 @@
-import React, { Suspense, useEffect } from "react";
+import React, {
+  DetailedHTMLProps,
+  HTMLAttributes,
+  ReactHTMLElement,
+  Suspense,
+  useEffect,
+  useRef,
+} from "react";
 const Foot = React.lazy(() => import("@/page/component/Foot"));
 import { useDispatch, useSelector } from "react-redux";
 const Header = React.lazy(() => import("@/page/component/Header/Header"));
@@ -21,7 +28,7 @@ import { ChatBoxMobliePage } from "./mobile/chatbox/ChatBoxMobliePage";
 import { SingleBoxChatPage } from "./mobile/SingleBox/SingleBoxChatPage";
 import NotificationF from "../component/pop/Notification";
 import Left from "@/page/component/Left/Left";
-import { LoadingHeader, LoadingRight } from "../component/loading";
+import { HeaderLoading, RightLoading } from "../component/loading";
 
 export default function Index() {
   const BoxList = useSelector((state: RootHome) => state.rootHome.BoxList);
@@ -65,10 +72,10 @@ export default function Index() {
         className={`${Right2 == "" ? "grid-spotify" : "grid-spotify2"} h-full`}
       >
         <Left />
-        <Suspense fallback={<LoadingHeader></LoadingHeader>}>
+        <Suspense fallback={<HeaderLoading></HeaderLoading>}>
           <Header />
         </Suspense>
-        <Suspense fallback={<LoadingRight />}>
+        <Suspense fallback={<RightLoading />}>
           <Right />
         </Suspense>
         <Suspense>
@@ -115,13 +122,20 @@ export function GenreInHome() {
 }
 function CenterShare() {
   const dispatch = useDispatch();
-
+  const centerRef = useRef<HTMLDivElement>(null);
   const topbarcontent = useSelector(
     (state: RootHome) => state.rootHome.topbarcontent
   );
   const { pathname } = useLocation();
+  useEffect(() => {
+    if (!centerRef) {
+      return;
+    }
+    centerRef.current?.scrollTo(0, 0);
+  }, [pathname, centerRef]);
   return (
     <div
+      ref={centerRef}
       onScroll={(e) => {
         var h = e.currentTarget.scrollTop;
         if (h < 320) {
@@ -147,7 +161,9 @@ function CenterShare() {
       <div className=" h-max relative ">
         <Outlet />
       </div>
-      <Foot />
+      <Suspense>
+        <Foot />
+      </Suspense>
     </div>
   );
 }

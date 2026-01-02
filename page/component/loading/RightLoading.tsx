@@ -1,6 +1,6 @@
 import React from 'react';
 
-const LoadingRight = () => {
+const RightLoading = () => {
 	return (
 		<div className="r h-full  overflow-y-scroll rounded-xl w-full sm:w-[400px] self-stretch">
       
@@ -8,4 +8,4 @@ const LoadingRight = () => {
 	);
 }
 
-export default LoadingRight;
+export default RightLoading;

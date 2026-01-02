@@ -23,6 +23,7 @@ import { ButtonRandomPlay } from "@/page/component/Audio";
 import ColorImage from "@/page/config/corlorImage";
 import { queryClient } from "@/page/App";
 import { Loading } from "@/page/component/loading";
+import PlaylistLoading from "@/page/component/loading/PlaylistLoading";
 
 export default function ArtistPage() {
   const [lsartist, SetLsAtist] = useState<iPlayList[]>([]);
@@ -68,19 +69,24 @@ export default function ArtistPage() {
   });
 
   useEffect(() => {
+    let g;
     if (!fetchArtistData || !fetchArtistData.artist) {
       return;
     }
     let v = fetchArtistData;
-    SetIsfriend(v.isfriend);
-    SetaAtist(v.artist);
-    SetSongS(v.songs);
-    SetLsAtist(v.lsplaylistartist);
-    dispatch(SetCurName(v.artist.ChanalName || ""));
-    SetLike(v.like);
-    if (refPage.current) {
-      refPage.current.scrollIntoView();
-    }
+    g = setTimeout(() => {
+      SetIsfriend(v.isfriend);
+      SetaAtist(v.artist);
+      SetSongS(v.songs);
+      SetLsAtist(v.lsplaylistartist);
+      dispatch(SetCurName(v.artist.ChanalName || ""));
+      SetLike(v.like);
+      if (refPage.current) {
+        refPage.current.scrollIntoView();
+      }
+    }, 300);
+
+    return () => clearTimeout(g);
   }, [fetchArtistData]);
 
   useMemo(async () => {
@@ -126,7 +132,7 @@ export default function ArtistPage() {
     },
   });
   if (songs.length <= 0) {
-    return <Loading></Loading>;
+    return <PlaylistLoading></PlaylistLoading>;
   }
   return (
     <div style={style} className="relative " ref={refPage}>

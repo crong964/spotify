@@ -68,9 +68,10 @@ export default function RecommendedSong(p: iRecommendedSong) {
       return undefined;
     },
     onSuccess: (res, song) => {
-      queryClient.invalidateQueries({
-        queryKey: [SINGLE_PLAYLIST_QUERY, p.idPlaylist],
-      });
+      
+      //{
+      //  queryKey: [SINGLE_PLAYLIST_QUERY, p.idPlaylist],
+      //}
       p.onclick(song);
       SetSongs(
         songs.filter((vs) => {
