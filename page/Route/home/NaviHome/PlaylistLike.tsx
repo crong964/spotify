@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { post2 } from "@/page/config/req";
 import { Link } from "react-router-dom";
-import { RootHome, SetPlaylistRedux } from "@/page/Route/home/RootRedux";
 import { useDispatch, useSelector } from "react-redux";
 import { Pop } from "@/page/component/pop";
 import { MusicNoteBeamedIcon, PlusIcon, TrashIcon, XIcon } from "@/icon/Icon";
@@ -12,6 +11,8 @@ import { Avatar } from "@/page/component/avatar";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { CACHE_INFILITY, LIKE_PLAYLIST_QUERY } from "@/page/contant/quey_key";
 import { queryClient } from "@/page/App";
+import { SetPlaylistRedux } from "@/page/Redux/HomeRedux";
+import { RootHome } from "@/page/Redux/RootRedux";
 
 export default function PlaylistLike() {
   const [playLists, setPlayLists] = useState<iPlaylistLikeItem[]>([]);
@@ -54,7 +55,10 @@ export default function PlaylistLike() {
 
   return (
     <div className="min-h-[300px]">
-      <Link to={"/likedsongs"} className="my-3 space-x-3 flex items-center sm:hidden">
+      <Link
+        to={"/likedsongs"}
+        className="my-3 space-x-3 flex items-center sm:hidden"
+      >
         <div className=" basis-14">
           <img
             loading="lazy"
@@ -160,8 +164,8 @@ function PlaylistLikeItem(d: iPlaylistLikeItem) {
         className={`play${d.id}` + " w-full  "}
       >
         <Link
-          className="py-3 sm:py-2 space-x-3 sm:space-x-0  h-min-[60px] flex sm:justify-center items-center"
           to={`/${d.Type == "artist" ? d.Type : "playlist"}/${d.id}`}
+          className="py-3 sm:py-2 space-x-3 sm:space-x-0  h-min-[60px] flex sm:justify-center items-center"
         >
           {d.ImagePath != "" ? (
             <div className="basis-14 sm:basis-12">

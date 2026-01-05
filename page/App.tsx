@@ -1,7 +1,7 @@
 import React, { Suspense } from "react";
 import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
-import rootHome from "./Route/home/RootRedux";
+import rootHome from "./Redux/RootRedux";
 
 import {
   BrowserRouter,
@@ -27,7 +27,6 @@ import SearchPage from "./Route/home/SearchPage/SearchPage";
 import SongListPage from "./Route/home/SongListPage/SongListPage";
 import { QueryClient } from "@tanstack/react-query";
 import HomePage from "./Route/home/HonePage/HomePage";
-import ScrollToTop from "./component/loading/ScrollToTop";
 
 const PlaylistLike = React.lazy(
   () => import("./Route/home/NaviHome/PlaylistLike")
@@ -67,7 +66,7 @@ export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       gcTime: 1000 * 60 * 60 * 24, // 24 hours
-    }, 
+    },
   },
 });
 root.render(

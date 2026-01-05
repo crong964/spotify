@@ -3,7 +3,7 @@ import { post } from "@/page/config/req";
 import React, { useState } from "react";
 import { Pop } from "@/page/component/pop";
 import { useSelector } from "react-redux";
-import { RootHome } from "@/page/Route/home/RootRedux";
+import { RootHome } from "@/page/Redux/RootRedux";
 
 export default function Libarary() {
   const [pop, SetPop] = useState(false);

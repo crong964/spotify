@@ -12,7 +12,7 @@ export default function Avatar({ className, src }: iAvatar) {
         <img
           loading="lazy"
           src={ImagePath(src)}
-          className="absolute size-full top-0 left-0 z-0"
+          className="absolute size-full object-cover top-0 left-0 z-0"
           alt=""
           srcSet=""
         />

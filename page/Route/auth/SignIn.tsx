@@ -4,7 +4,7 @@ import { SignInGoogleButtom } from "./SignButtom";
 import { useDispatch } from "react-redux";
 
 import { post } from "@/page/config/req";
-import { Page } from "./RootAuth";
+import { Page } from "../../Redux/AuthRedux";
 import { Eye, EyeSlashIcon } from "@/icon/Icon";
 import { Link } from "react-router-dom";
 import { queryClient } from "@/page/App";

@@ -1,14 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import React from "react";
-import { post, post2 } from "@/page/config/req";
 import { useDispatch } from "react-redux";
-import { NaviPage } from "./RootRedux";
 
 import { iPlayList } from "@/page/component/Playlist/interface";
 import { Playlists } from "@/page/component/Playlist";
-import { useQuery } from "@tanstack/react-query";
-import { NEXT_PLAYLIST_ARTIST_QUERY } from "@/page/contant/quey_key";
+import { NaviPage } from "@/page/Redux/HomeRedux";
 
 const PlayButtom = React.lazy(() => import("@/page/component/PlayButtom"));
 

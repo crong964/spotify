@@ -1,4 +1,4 @@
-import { RootHome } from "@/page/Route/home/RootRedux";
+import { RootHome } from "@/page/Redux/RootRedux";
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";

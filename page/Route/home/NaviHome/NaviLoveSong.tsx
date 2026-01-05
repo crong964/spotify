@@ -1,14 +1,10 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  NaviPage,
-  NaviRight,
-  RootHome,
-  
-} from "@/page/Route/home/RootRedux";
+import { RootHome } from "@/page/Redux/RootRedux";
 import Navi from "./Navi";
 import { Link } from "react-router-dom";
 import { Pop } from "@/page/component/pop";
+import { NaviRight } from "@/page/Redux/HomeRedux";
 
 export default function NaviLoveSong() {
   const dispatch = useDispatch();
@@ -20,7 +16,7 @@ export default function NaviLoveSong() {
       onMouseMove={(ev) => {
         let top = ev.currentTarget.getBoundingClientRect().top;
         SetPop(true);
-        SetTop(top)
+        SetTop(top);
       }}
       onMouseLeave={(ev) => {
         SetPop(false);
@@ -30,7 +26,6 @@ export default function NaviLoveSong() {
       <Navi
         namepage="Yêu thích"
         onclick={() => {
-          dispatch(NaviPage({ page: "likedsongs", param: "" }));
           if (mobiletype == "mobile") {
             dispatch(NaviRight(""));
           }

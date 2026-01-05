@@ -50,11 +50,11 @@
 .bg-song:hover {
   background: #2d2d2d;
 }
-.bgartis {
+.bg-artis {
   background: none;
 }
 @media (max-width: 640px) {
-  .bgartis {
+  .bg-artis {
     background: linear-gradient(var(--bg) 0%, rgb(4, 39, 67) 100%);
   }
   .liquid-glass {
@@ -65,6 +65,6 @@
   }
 }
 
-.bgplaylist {
+.bg-playlist {
   background: linear-gradient(180deg, var(--bg) 0%, rgb(29, 112, 4) 100%);
 }

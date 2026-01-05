@@ -2,7 +2,8 @@ import React, { useEffect } from "react";
 import { Pop } from ".";
 
 import { useDispatch, useSelector } from "react-redux";
-import { RootHome, SetNotification } from "@/page/Route/home/RootRedux";
+import { RootHome } from "@/page/Redux/RootRedux";
+import { SetNotification } from "@/page/Redux/HomeRedux";
 
 export default function NotificationF() {
   const no = useSelector((state: RootHome) => state.rootHome.Notification);

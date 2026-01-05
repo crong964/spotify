@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { RootHome } from "@/page/Route/home/RootRedux";
+import { RootHome } from "@/page/Redux/RootRedux";
 
 import React from "react";
 

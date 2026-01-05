@@ -1,9 +1,8 @@
 import React from "react";
-import { NaviRight, RootHome } from "@/page/Route/home/RootRedux";
-import { useDispatch, useSelector } from "react-redux";
-import { NaviPageMobile } from "./NaviRedux";
+import { useDispatch } from "react-redux";
 import Navi from "./Navi";
 import { MessIcon } from "@/icon/Icon";
+import { NaviRight } from "@/page/Redux/HomeRedux";
 
 export function MobileMessButtom() {
   const dispatch = useDispatch();

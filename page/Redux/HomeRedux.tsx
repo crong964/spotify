@@ -1,9 +1,5 @@
-import { PayloadAction, configureStore, createSlice } from "@reduxjs/toolkit";
-
-import mobileRedux from "./NaviHome/NaviRedux";
-import { ParseJson } from "@/page/socket/Socket";
-import audioSlice from "@/page/component/Audio/AudioRedux";
-import { authRedux } from "../auth/RootAuth";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { ParseJson } from "../socket/Socket";
 
 interface mess {
   idMess: string;
@@ -104,7 +100,7 @@ const initialState: Root = {
     type: "",
   },
 };
-const rootslice = createSlice({
+const homeRedux = createSlice({
   name: "rootHome",
   initialState: initialState,
   reducers: {
@@ -219,17 +215,6 @@ const rootslice = createSlice({
   },
 });
 
-const rootHome = configureStore({
-  reducer: {
-    rootHome: rootslice.reducer,
-    audioroot: audioSlice.reducer,
-    mobile: mobileRedux.reducer,
-    rootauth: authRedux.reducer,
-  },
-});
-export type RootTy = typeof rootHome;
-export type RootHome = ReturnType<RootTy["getState"]>;
-export type RootDispatch = RootTy["dispatch"];
 export const {
   ShowTopbarContent,
   SetCurName,
@@ -250,6 +235,6 @@ export const {
   SetPlaylistRedux,
   SetNotification,
   SetPlaylist,
-} = rootslice.actions;
+} = homeRedux.actions;
 
-export default rootHome;
+export default homeRedux;

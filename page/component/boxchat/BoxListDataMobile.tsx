@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { RootHome } from "@/page/Route/home/RootRedux";
+import { RootHome } from "@/page/Redux/RootRedux";
 import { BoxButton } from "./BoxButton";
 import { TypeMess } from "./TypeMess";
 import { boxdata, lastmess } from "./Interface";

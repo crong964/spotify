@@ -4,12 +4,8 @@ import { singleMess } from "@/page/component/Mess/SingleMess";
 const SingleMess = React.lazy(() => import("@/page/component/Mess/SingleMess"));
 import { post } from "@/page/config/req";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  NaviPage,
-  RemoveBoxList,
-  RootHome,
-  SetMess,
-} from "@/page/Route/home/RootRedux";
+import { RootHome } from "@/page/Redux/RootRedux";
+import { RemoveBoxList, SetMess } from "@/page/Redux/HomeRedux";
 
 interface BoxInfor {
   idbox: string;
@@ -170,12 +166,7 @@ function HeadChatBox(data: boxChat) {
   const dispatch = useDispatch();
   return (
     <div className="pl-2 h-[44px] py-2 flex bg-black cursor-pointer items-center justify-between">
-      <div
-        onClick={() => {
-          dispatch(NaviPage({ page: "artist", param: data.id }));
-        }}
-        className="flex items-center"
-      >
+      <div className="flex items-center">
         <div className="overflow-hidden size-[32px] rounded-full mr-3">
           <img className="" src={data.pathImage} alt="" srcSet="" />
         </div>

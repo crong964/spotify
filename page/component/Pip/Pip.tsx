@@ -1,14 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useCallback } from "react";
-import { createPortal } from "react-dom";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  NextSong,
-  SetPip,
-  SetSongs,
-  SetStop,
-} from "@/page/component/Audio/AudioRedux";
-import { PlaySong, RootHome } from "@/page/Route/home/RootRedux";
+import { NextSong, SetPip, SetSongs, SetStop } from "@/page/Redux/AudioRedux";
+import { RootHome } from "@/page/Redux/RootRedux";
 import { post } from "@/page/config/req";
 import {
   PauseSoundIcon,
@@ -19,6 +13,7 @@ import {
 import { PiP } from "./Type";
 import { PiPWindow } from "@/page/component/Pip/Index";
 import ImagePath from "@/page/config/img";
+import { PlaySong } from "@/page/Redux/HomeRedux";
 
 export default function Pip({ imagePath }: PiP) {
   let [pipWindow, SetPipWindow] = useState<any>(null);
@@ -111,7 +106,7 @@ export default function Pip({ imagePath }: PiP) {
             backgroundAttachment: "fixed",
             alignItems: " flex-end",
             height: "100vh",
-            width:"100vw"
+            width: "100vw",
           }}
         >
           <div

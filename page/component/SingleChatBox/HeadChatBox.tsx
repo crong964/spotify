@@ -1,5 +1,5 @@
 import ImagePath from "@/page/config/img";
-import { NaviPage } from "@/page/Route/home/RootRedux";
+import { NaviPage } from "@/page/Redux/HomeRedux";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";

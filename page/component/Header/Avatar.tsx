@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { NaviPage } from "@/page/Route/home/RootRedux";
 import { Infor } from "./interface";
 import { get } from "@/page/config/req";
 import { AvatarIcon } from "@/icon/Icon";
 import CalcXY from "@/page/component/pop/CalcXY";
 import Modal from "@/page/component/pop/Modal";
 import ImagePath from "@/page/config/img";
+import { NaviPage } from "@/page/Redux/HomeRedux";
 
 export default function Avatar({ Name, Vertify, pathImage }: Infor) {
   const [show, SetShow] = useState(false);
@@ -53,7 +53,6 @@ export default function Avatar({ Name, Vertify, pathImage }: Infor) {
             <div className="text-white  cursor-pointer hover:bg-black">
               <div
                 onClick={() => {
-                  dispatch(NaviPage({ page: "profile", param: "" }));
                   SetShow(!show);
                 }}
                 className="p-2"

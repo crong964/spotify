@@ -1,9 +1,9 @@
 import { RandomPlayIcon } from "@/icon/Icon";
-import { RootHome } from "@/page/Route/home/RootRedux";
+import { RootHome } from "@/page/Redux/RootRedux";
 
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RandomSong } from "./AudioRedux";
+import { RandomSong } from "../../Redux/AudioRedux";
 interface iButtonRandomPlay {
   className?: string;
 }

@@ -1,21 +1,9 @@
-import React, {
-  DetailedHTMLProps,
-  HTMLAttributes,
-  ReactHTMLElement,
-  Suspense,
-  useEffect,
-  useRef,
-} from "react";
+import React, { Suspense, useEffect, useRef } from "react";
 const Foot = React.lazy(() => import("@/page/component/Foot"));
 import { useDispatch, useSelector } from "react-redux";
 const Header = React.lazy(() => import("@/page/component/Header/Header"));
 import "./IndexHome2.css";
-import {
-  RootHome,
-  SetDeviceType,
-  SetMess,
-  ShowTopbarContent,
-} from "./home/RootRedux";
+import { RootHome } from "@/page/Redux/RootRedux";
 
 import { socket } from "@/page/socket/Socket";
 import { Link, Outlet, useLocation } from "react-router-dom";
@@ -26,9 +14,15 @@ import ChatBox from "@/page/component/boxchat/SingleBox";
 import { NaviHomeMobile2 } from "@/page/component/NaviHome/NaviHome";
 import { ChatBoxMobliePage } from "./mobile/chatbox/ChatBoxMobliePage";
 import { SingleBoxChatPage } from "./mobile/SingleBox/SingleBoxChatPage";
-import NotificationF from "../component/pop/Notification";
+import NotificationF from "@/page/component/pop/Notification";
 import Left from "@/page/component/Left/Left";
-import { HeaderLoading, RightLoading } from "../component/loading";
+import { HeaderLoading, RightLoading } from "@/page/component/loading/";
+import {
+  SetDeviceType,
+  SetMess,
+  ShowTopbarContent,
+} from "@/page/Redux/HomeRedux";
+import { SetHeight } from "@/page/Redux/ScrollRedux";
 
 export default function Index() {
   const BoxList = useSelector((state: RootHome) => state.rootHome.BoxList);
@@ -133,11 +127,13 @@ function CenterShare() {
     }
     centerRef.current?.scrollTo(0, 0);
   }, [pathname, centerRef]);
+
   return (
     <div
       ref={centerRef}
       onScroll={(e) => {
         var h = e.currentTarget.scrollTop;
+        dispatch(SetHeight(h));
         if (h < 320) {
           dispatch(ShowTopbarContent(false));
           return;

@@ -9,6 +9,7 @@ export interface Song {
 export interface SongList {
   data: SongInPlayList[];
   type: string;
+  headerHeight?: number;
 }
 export interface SongInPlayList {
   Id: string;

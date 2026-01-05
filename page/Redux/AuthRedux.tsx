@@ -53,3 +53,5 @@ export const authRedux = createSlice({
 
 // Action creators are generated for each case reducer function
 export const { Page, Infor, IsLogin } = authRedux.actions;
+
+export default authRedux;

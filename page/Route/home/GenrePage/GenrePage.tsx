@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { NaviPage, RootHome } from "../RootRedux";
+import { RootHome } from "@/page/Redux/RootRedux";
 import { get } from "@/page/config/req";
 import { Link } from "react-router-dom";
+import { NaviPage } from "@/page/Redux/HomeRedux";
 interface Genre {
   Id: string;
   Name: string;

@@ -1,12 +1,11 @@
 import Home from "@/page/Route/home/NaviHome/Home";
 import { MobileSearchButtom } from "@/page/Route/home/NaviHome/SearchButtom";
-import { RootHome } from "@/page/Route/home/RootRedux";
+import { RootHome } from "@/page/Redux/RootRedux";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Libarary } from "@/page/component/libarary";
 import NaviLoveSong from "@/page/Route/home/NaviHome/NaviLoveSong";
 import PlaylistLike from "@/page/Route/home/NaviHome/PlaylistLike";
-import { SetExtend } from "./LeftRedux";
 
 export default function Left2() {
   const isLogin = useSelector(

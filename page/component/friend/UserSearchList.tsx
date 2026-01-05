@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { post } from "@/page/config/req";
 import { useDispatch, useSelector } from "react-redux";
-import { RootHome, SetBoxList } from "@/page/Route/home/RootRedux";
+import { RootHome } from "@/page/Redux/RootRedux";
 import TypeFriend from "./TypeFriend";
 import Avatar from "../avatar/Avatar";
+import { SetBoxList } from "@/page/Redux/HomeRedux";
 interface user {
   Name: string;
   pathImage: string;

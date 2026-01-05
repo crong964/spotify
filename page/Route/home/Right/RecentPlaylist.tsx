@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import PlayButtom from "@/page/component/PlayButtom";
 import React from "react";
-import { post } from "@/page/config/req";
-import { useDispatch, useSelector } from "react-redux";
-import { NaviPage, RootHome } from "@/page/Route/home/RootRedux";
+import { useSelector } from "react-redux";
+import { RootHome } from "@/page/Redux/RootRedux";
 import { Link } from "react-router-dom";
 import { Avatar } from "@/page/component/avatar";
 

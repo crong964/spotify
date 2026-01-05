@@ -1,13 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  NaviPage,
-  NaviRight,
-  RootHome,
-  SetPosition,
-} from "@/page/Route/home/RootRedux";
+import { RootHome } from "@/page/Redux/RootRedux";
 
-import { get, post } from "@/page/config/req";
+import { get } from "@/page/config/req";
 
 const PlayButtom = React.lazy(() => import("@/page/component/PlayButtom"));
 
@@ -16,11 +11,11 @@ import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { GenreInHome } from "@/page/Route/IndexHome2";
 import { Infor } from "./interface";
 import { Avatar, Ring } from "@/page/component/Header";
-import { IsLogin } from "@/page/Route/auth/RootAuth";
+import { IsLogin } from "@/page/Redux/AuthRedux";
+import { NaviPage, NaviRight } from "@/page/Redux/HomeRedux";
 
 export default function Header() {
   const curName = useSelector((state: RootHome) => state.rootHome.curName);
-  const [search, setSearch] = useState("");
   const topbarcontent = useSelector(
     (state: RootHome) => state.rootHome.topbarcontent
   );
@@ -183,7 +178,7 @@ function Forward() {
       title="forward"
       className={`${
         history.state.idx < history.length - 2
-          ? "bg-black"
+          ? "bg-black cursor-pointer"
           : "bg-[#454444] cursor-not-allowed"
       } rounded-full size-[28px] hidden sm:flex justify-center items-center`}
       onClick={() => {
@@ -207,7 +202,7 @@ function Back() {
       }}
       className={`${
         history.state.idx > 0
-          ? " bg-black "
+          ? " bg-black cursor-pointer "
           : " bg-[#454444] cursor-not-allowed "
       } rounded-full size-[28px] hidden sm:flex justify-center items-center `}
     >

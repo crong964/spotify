@@ -3,14 +3,10 @@ import { post } from "@/page/config/req";
 import React from "react";
 import Time from "@/page/config/hepler";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  RootHome,
-  SetNotificationPage,
-  SetNotificationPageIdSong,
-} from "@/page/Route/home/RootRedux";
+import { RootHome } from "@/page/Redux/RootRedux";
 import { MainDiscussList } from "@/page/Route/home/Right/Discuss";
 import ImagePath from "@/page/config/img";
-
+import { SetNotificationPage, SetNotificationPageIdSong } from "@/page/Redux/HomeRedux";
 
 interface Notification {
   Discuss_Id: string;

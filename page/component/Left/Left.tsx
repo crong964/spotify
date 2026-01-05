@@ -1,6 +1,6 @@
 import Home from "@/page/Route/home/NaviHome/Home";
 import { MobileSearchButtom } from "@/page/Route/home/NaviHome/SearchButtom";
-import { RootHome } from "@/page/Route/home/RootRedux";
+import { RootHome } from "@/page/Redux/RootRedux";
 import React from "react";
 import {  useSelector } from "react-redux";
 import { Libarary } from "@/page/component/libarary";

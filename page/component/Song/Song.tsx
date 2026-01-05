@@ -1,7 +1,7 @@
 import React, { memo } from "react";
 
 import { useSelector } from "react-redux";
-import { RootHome } from "@/page/Route/home/RootRedux";
+import { RootHome } from "@/page/Redux/RootRedux";
 
 import { Song } from "./interface";
 import ImagePath from "@/page/config/img";
@@ -12,7 +12,6 @@ function SongF(d: Song) {
   const devicetype = useSelector(
     (state: RootHome) => state.rootHome.devicetype
   );
-
 
   return (
     <div
@@ -28,7 +27,7 @@ function SongF(d: Song) {
           d.onClick();
         }
       }}
-      className="flex justify-center items-center py-2 sm:px-0.5 sm:py-1  cursor-pointer"
+      className="flex justify-center items-center sm:px-0.5 py-1  cursor-pointer"
     >
       {d.image != "" && d.image ? (
         <div className="relative size-[50px] rounded-lg overflow-hidden">
@@ -55,4 +54,4 @@ function SongF(d: Song) {
   );
 }
 
-export default memo(SongF)
+export default memo(SongF);
