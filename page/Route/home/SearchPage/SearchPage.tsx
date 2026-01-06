@@ -6,11 +6,11 @@ import { post } from "@/page/config/req";
 import { Artists } from "@/page/component/Artist";
 import { SongList } from "@/page/component/Song/Index";
 import { useParams } from "react-router-dom";
-import { NaviPage } from "../RootRedux";
 import { SongInPlayList } from "@/page/component/Song/interface";
 
 import { Playlists } from "@/page/component/Playlist";
 import { iPlayList } from "@/page/component/Playlist/interface";
+import { NaviPage } from "@/page/Redux/HomeRedux";
 
 interface artist {
   pathImage: string;

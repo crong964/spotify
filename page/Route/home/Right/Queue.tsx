@@ -1,19 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { RemoveRight, RootHome } from "@/page/Route/home/RootRedux";
+import { RootHome } from "@/page/Redux/RootRedux";
 import { get, get2 } from "@/page/config/req";
-import {
-  JumpingSong,
-  SetAutoPlay,
-  SetSongs,
-} from "@/page/component/Audio/AudioRedux";
+import { JumpingSong, SetAutoPlay, SetSongs } from "@/page/Redux/AudioRedux";
 import { Song } from "@/page/component/Song/Index";
 import { useQuery } from "@tanstack/react-query";
-import {
-  FETCH_LISTENED_QUERY,
-  FETCH_LISTENED_SONGS_QUERY,
-} from "@/page/contant/quey_key";
+import { FETCH_LISTENED_SONGS_QUERY } from "@/page/contant/quey_key";
+import { RemoveRight } from "@/page/Redux/HomeRedux";
 interface RecentSong {
   Id: string;
   user_id: string;
@@ -31,15 +25,26 @@ interface RecentSong {
 interface MenberQueue {
   type: string;
   cur: string;
+  scrollTop?: number;
+  headerHeight?: number;
 }
 export default function Queue() {
   const dispatch = useDispatch();
   const [navi, SetNaVi] = useState("1");
+  const [scrollTop, setScrollTop] = useState(0);
   function Han(params: string) {
     SetNaVi(params);
   }
+
   return (
-    <div className="w-full p-0 sm:p-1 h-full relative text-[16px] overflow-y-scroll bg-[#121212] rounded-lg  ">
+    <div
+      onScroll={(e) => {
+        setScrollTop(e.currentTarget.scrollTop);
+        const cur = e.currentTarget;
+        cur.scrollHeight - cur.scrollTop - cur.clientHeight;
+      }}
+      className="w-full p-0  h-full relative text-[16px] overflow-y-scroll bg-[#121212] rounded-lg  "
+    >
       <div className="bg-[#121212] sticky z-40 top-0 left-0 flex space-x-3 h-min w-full justify-between px-3 rounded-lg py-4 ">
         <div className="flex space-x-4">
           <div
@@ -83,7 +88,13 @@ export default function Queue() {
       </div>
 
       <RecentPlaySongs cur={navi} key={"RecentPlaySongs"} type="2" />
-      <SongQueueInplayList cur={navi} key={"SongQueueInplayList"} type="1" />
+      <SongQueueInplayList
+        headerHeight={170}
+        scrollTop={scrollTop}
+        cur={navi}
+        key={"SongQueueInplayList"}
+        type="1"
+      />
     </div>
   );
 }
@@ -106,9 +117,9 @@ function RecentPlaySongs(p: MenberQueue) {
   }, [fetchListenedSongs]);
   return (
     <>
-      {p.cur == p.type ? (
+      {p.cur == p.type && (
         <>
-          <div className="px-2">Đang phát</div>
+          <div className="px-2">Đã phát</div>
           {recentSongs.map((v) => {
             return (
               <Song
@@ -126,69 +137,92 @@ function RecentPlaySongs(p: MenberQueue) {
             );
           })}
         </>
-      ) : (
-        <></>
       )}
     </>
   );
 }
-export function SongQueueInplayList(p: MenberQueue) {
+export function SongQueueInplayList({
+  cur,
+  type,
+  scrollTop = 0,
+  headerHeight = 0,
+}: MenberQueue) {
   const lsSong = useSelector((state: RootHome) => state.audioroot.lsSong);
   const mark = useSelector((state: RootHome) => state.audioroot.mark);
   const dispatch = useDispatch();
-  useEffect(() => {
-    // get("/rs/", (v: any) => {
-    //   SetRecentSongs(v.ls);
-    // });
+
+  const itemHeight = useMemo(() => {
+    return 59;
   }, []);
+  const rm = useMemo(() => {
+    if (scrollTop < headerHeight) {
+      return 0;
+    }
+    return Math.round((scrollTop - headerHeight) / itemHeight) || 0;
+  }, [scrollTop, headerHeight]);
+
   return (
     <>
-      {p.cur == p.type ? (
+      {cur == type && (
         <>
-          <div className="">
-            Đang phát
-            <span className="text-xs text-[#818181] mx-1">
-              {mark + 1}/{lsSong.length}
-            </span>
+          <div>
+            <div>
+              Đang phát
+              <span className="text-xs text-[#818181] mx-1">
+                {mark + 1}/{lsSong.length}
+              </span>
+            </div>
+            {lsSong[mark] == undefined ? (
+              <></>
+            ) : (
+              <div>
+                <Song
+                  onClick={() => {
+                    dispatch(JumpingSong(lsSong[mark].Id));
+                  }}
+                  user_id={lsSong[mark].user_id}
+                  image={lsSong[mark].SongImage}
+                  name={lsSong[mark].SongName}
+                  singer={lsSong[mark].Singer}
+                  Id={lsSong[mark].Id}
+                  key={lsSong[mark].Id}
+                />
+              </div>
+            )}
+            <div>Tiếp theo</div>
           </div>
-          {lsSong[mark] == undefined ? (
-            <></>
-          ) : (
-            <Song
-              onClick={() => {
-                dispatch(JumpingSong(lsSong[mark].Id));
-              }}
-              user_id={lsSong[mark].user_id}
-              image={lsSong[mark].SongImage}
-              name={lsSong[mark].SongName}
-              singer={lsSong[mark].Singer}
-              Id={lsSong[mark].Id}
-              key={lsSong[mark].Id}
-            />
-          )}
-          <div className="">Tiếp theo</div>
+
+          <div
+            style={{ height: itemHeight * (lsSong.length - mark - 1) }}
+          ></div>
           {lsSong
             .filter((v, i) => {
               return mark < i;
             })
-            .map((v) => {
+            .filter((v, i) => {
+              return rm <= i && i <= rm + 11;
+            })
+            .map((v, i) => {
               return (
-                <Song
-                  onClick={() => {
-                    dispatch(JumpingSong(v.Id));
-                  }}
-                  user_id={v.user_id}
-                  image={v.SongImage}
-                  name={v.SongName}
-                  singer={v.Singer}
-                  Id={v.Id}
-                  key={v.Id}
-                />
+                <div
+                  style={{ top: headerHeight + (rm + i) * itemHeight, left: 4 }}
+                  className="absolute"
+                >
+                  <Song
+                    onClick={() => {
+                      dispatch(JumpingSong(v.Id));
+                    }}
+                    user_id={v.user_id}
+                    image={v.SongImage}
+                    name={v.SongName}
+                    singer={v.Singer}
+                    Id={v.Id}
+                    key={v.Id}
+                  />
+                </div>
               );
             })}
         </>
-      ) : (
-        <></>
       )}
     </>
   );

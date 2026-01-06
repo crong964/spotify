@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import rootHome, { NaviPage, RootHome } from "../RootRedux";
+import rootHome, { RootHome } from "../../../Redux/RootRedux";
 import { useEffect, useState } from "react";
 import React from "react";
 import { get, post } from "@/page/config/req";
@@ -7,7 +7,6 @@ import { get, post } from "@/page/config/req";
 import { useParams } from "react-router-dom";
 import { iPlayList } from "@/page/component/Playlist/interface";
 import PlayList from "@/page/component/Playlist/Playlist";
-
 
 interface Genre {
   Id: string;

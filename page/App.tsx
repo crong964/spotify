@@ -1,7 +1,7 @@
 import React, { Suspense } from "react";
 import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
-import rootHome from "./Route/home/RootRedux";
+import rootHome from "./Redux/RootRedux";
 
 import {
   BrowserRouter,
@@ -76,47 +76,59 @@ root.render(
       client={queryClient}
     >
       <Provider store={rootHome}>
-        <Suspense fallback={<div>Loading...</div>}>
-          <Routes>
-            <Route path="/" element={<Index />}>
-              <Route index element={<HomePage />} />
-              <Route path="genre" element={<Suspense children={<Outlet />} />}>
-                <Route path=":id" element={<IdGenre />} />
-                <Route index element={<Genre />} />
-              </Route>
-              <Route path="playlist/:id" element={<PlaylistPage />} />
-              <Route path="mix/:id" element={<MixPage />} />
-              <Route path="songlist/" element={<SongListPage />} />
-              <Route path="likedsongs" element={<LikedSongListPage />} />
-              <Route path="artist/:id" element={<SingleArtistPage />} />
-              <Route path="search/:query" element={<SearchPage />} />
-              <Route path="section" element={<ArtistsListPage />} />
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <Suspense>
+                <Index />
+              </Suspense>
+            }
+          >
+            <Route index element={<HomePage />} />
+            <Route path="genre" element={<Suspense children={<Outlet />} />}>
+              <Route path=":id" element={<IdGenre />} />
+              <Route index element={<Genre />} />
+            </Route>
+            <Route path="playlist/:id" element={<PlaylistPage />} />
+            <Route path="mix/:id" element={<MixPage />} />
+            <Route path="songlist/" element={<SongListPage />} />
+            <Route path="likedsongs" element={<LikedSongListPage />} />
+            <Route path="artist/:id" element={<SingleArtistPage />} />
+            <Route path="search/:query" element={<SearchPage />} />
+            <Route path="section" element={<ArtistsListPage />} />
 
+            <Route
+              path="PlayListSectionPage"
+              element={<PlayListSectionPage />}
+            />
+            <Route path="mobile">
+              <Route path="playlist" element={<></>} />
+              <Route path="chatbox" element={<></>} />
+              <Route path="singlebox/:idbox" element={<></>} />
+              <Route path="library" element={<PlaylistLike />} />
               <Route
-                path="PlayListSectionPage"
-                element={<PlayListSectionPage />}
+                path="ArtistsListPage"
+                element={<ArtistsListPageMobile />}
               />
-              <Route path="mobile">
-                <Route path="playlist" element={<></>} />
-                <Route path="chatbox" element={<></>} />
-                <Route path="singlebox/:idbox" element={<></>} />
-                <Route path="library" element={<PlaylistLike />} />
-                <Route
-                  path="ArtistsListPage"
-                  element={<ArtistsListPageMobile />}
-                />
-              </Route>
             </Route>
-            <Route path="auth" element={<CenterShare />}>
-              <Route index element={<SignIn />} />
-              <Route path="CreateAccount" element={<CreateAccount />} />
-              <Route path="Signup" element={<Signup />} />
-              <Route path="Forgot" element={<Forgot />} />
-              <Route path="ChangePassword" element={<ChangePassword />} />
-            </Route>
-            <Route path="*" element={<Navigate replace to="" />} />
-          </Routes>
-        </Suspense>
+          </Route>
+          <Route
+            path="auth"
+            element={
+              <Suspense>
+                <CenterShare />
+              </Suspense>
+            }
+          >
+            <Route index element={<SignIn />} />
+            <Route path="CreateAccount" element={<CreateAccount />} />
+            <Route path="Signup" element={<Signup />} />
+            <Route path="Forgot" element={<Forgot />} />
+            <Route path="ChangePassword" element={<ChangePassword />} />
+          </Route>
+          <Route path="*" element={<Navigate replace to="" />} />
+        </Routes>
       </Provider>
     </PersistQueryClientProvider>
   </BrowserRouter>

@@ -21,6 +21,7 @@ export default function RecommendedSong(p: iRecommendedSong) {
   useEffect(() => {
     if (nameSong == "") {
       SetSongName("");
+      SetSongSearch([]);
       return;
     }
 
@@ -35,7 +36,7 @@ export default function RecommendedSong(p: iRecommendedSong) {
           SetSongSearch(v.songs);
         }
       );
-    }, 1000);
+    }, 300);
     return () => {
       clearTimeout(time);
     };
@@ -68,9 +69,6 @@ export default function RecommendedSong(p: iRecommendedSong) {
       return undefined;
     },
     onSuccess: (res, song) => {
-      queryClient.invalidateQueries({
-        queryKey: [SINGLE_PLAYLIST_QUERY, p.idPlaylist],
-      });
       p.onclick(song);
       SetSongs(
         songs.filter((vs) => {

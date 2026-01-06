@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import PlayButtom from "./PlayButtom";
 import { useDispatch, useSelector } from "react-redux";
-import { NaviPage, RootHome } from "@/page/Route/home/RootRedux";
+import { RootHome } from "@/page/Redux/RootRedux";
 interface artist {
   pathImage: string;
   ChanalName: string;
   artist: string;
   id: string;
-  type: string; 
+  type: string;
 }
 interface Artists {
   d: artist[];
@@ -63,9 +63,6 @@ export default function Artist(params: artist) {
     >
       <div className="relative">
         <img
-          onClick={() => {
-            dispatch(NaviPage({ page: "artist", param: params.id }));
-          }}
           src={params.pathImage}
           className="size-[150px] sm:size-full rounded-full"
           alt=""

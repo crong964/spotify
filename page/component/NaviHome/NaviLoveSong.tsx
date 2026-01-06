@@ -1,12 +1,9 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { NaviPage, NaviRight, RootHome } from "@/page/Route/home/RootRedux";
+
 import Navi from "./Navi";
 import { Link } from "react-router-dom";
 
 export default function NaviLoveSong() {
-  const dispatch = useDispatch();
-  const mobiletype = useSelector((state: RootHome) => state.mobile.type);
   return (
     <Link to={"/likedsongs"}>
       <Navi

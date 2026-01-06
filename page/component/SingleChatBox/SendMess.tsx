@@ -1,9 +1,9 @@
 import { post } from "@/page/config/req";
-import { SetMess } from "@/page/Route/home/RootRedux";
 import React from "react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { SendMessData } from "./interface";
+import { SetMess } from "@/page/Redux/HomeRedux";
 
 
 export function SendMess(data: SendMessData) {

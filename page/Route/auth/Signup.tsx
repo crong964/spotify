@@ -3,10 +3,10 @@ import { useState } from "react";
 import { SignUpGitHubButtom, SignUpGoogleButtom } from "./SignButtom";
 import { post } from "@/page/config/req";
 import { useDispatch, useSelector } from "react-redux";
-import { Infor, Page } from "./RootAuth";
+import { Infor, Page } from "../../Redux/AuthRedux";
 import { Eye, EyeSlashIcon, LogoIcon } from "@/icon/Icon";
 import { Link } from "react-router-dom";
-import { RootHome } from "@/page/Route/home/RootRedux";
+import { RootHome } from "@/page/Redux/RootRedux";
 
 type User = {
   Password: string;

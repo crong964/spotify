@@ -1,13 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  NaviPage,
-  NaviRight,
-  RootHome,
-  SetPosition,
-} from "@/page/Route/home/RootRedux";
+import { RootHome } from "@/page/Redux/RootRedux";
 
-import { get, post } from "@/page/config/req";
+import { get } from "@/page/config/req";
 
 const PlayButtom = React.lazy(() => import("@/page/component/PlayButtom"));
 
@@ -16,11 +11,11 @@ import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { GenreInHome } from "@/page/Route/IndexHome2";
 import { Infor } from "./interface";
 import { Avatar, Ring } from "@/page/component/Header";
-import { IsLogin } from "@/page/Route/auth/RootAuth";
+import { IsLogin } from "@/page/Redux/AuthRedux";
+import { NaviPage, NaviRight } from "@/page/Redux/HomeRedux";
 
 export default function Header() {
   const curName = useSelector((state: RootHome) => state.rootHome.curName);
-  const [search, setSearch] = useState("");
   const topbarcontent = useSelector(
     (state: RootHome) => state.rootHome.topbarcontent
   );
@@ -178,26 +173,18 @@ export default function Header() {
 }
 
 function Forward() {
-  const stack = useSelector((state: RootHome) => state.rootHome.stack);
-  const position = useSelector((state: RootHome) => state.rootHome.position);
-  const dispatch = useDispatch();
   return (
     <button
       title="forward"
       className={`${
-        position < stack.length - 1
-          ? "bg-[#2A2A2A]"
-          : "bg-black cursor-not-allowed"
+        history.state.idx < history.length - 2
+          ? "bg-black cursor-pointer"
+          : "bg-[#454444] cursor-not-allowed"
       } rounded-full size-[28px] hidden sm:flex justify-center items-center`}
       onClick={() => {
-        if (stack.length == 0) {
-          return;
+        if (history.state.idx < history.length) {
+          history.forward();
         }
-        if (position >= stack.length - 1) {
-          return;
-        }
-        history.forward();
-        dispatch(SetPosition(1));
       }}
     >
       <ForwardIcon className="fill-white size-4"></ForwardIcon>
@@ -206,19 +193,17 @@ function Forward() {
 }
 
 function Back() {
-  const position = useSelector((state: RootHome) => state.rootHome.position);
-  const dispatch = useDispatch();
   return (
     <button
       onClick={() => {
-        if (position <= 0) {
-          return;
+        if (history.state.idx > 0) {
+          history.back();
         }
-        dispatch(SetPosition(-1));
-        history.back();
       }}
       className={`${
-        position > 0 ? "bg-[#2A2A2A]" : "bg-black cursor-not-allowed"
+        history.state.idx > 0
+          ? " bg-black cursor-pointer "
+          : " bg-[#454444] cursor-not-allowed "
       } rounded-full size-[28px] hidden sm:flex justify-center items-center `}
     >
       <BackIcon className="fill-white size-4"></BackIcon>

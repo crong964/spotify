@@ -4,8 +4,8 @@ import ImagePath from "@/page/config/img";
 import { get2, post2 } from "@/page/config/req";
 import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RootHome } from "@/page/Route/home/RootRedux";
-import { SetAutoPlay, SetSongs } from "@/page/component/Audio/AudioRedux";
+import { RootHome } from "@/page/Redux/RootRedux";
+import { SetAutoPlay, SetSongs } from "@/page/Redux/AudioRedux";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   CACHE_5_DAY,

@@ -7,7 +7,7 @@
     "start": "node ./dist/server.js",
     "fe": "npx webpack watch --mode development",
     "be": "npx tsc --project tsconfig.web.json -w",
-    "build": "concurrently \" npx webpack watch --mode production \" \" nodemon ./dist/server.js \" ",
+    "build": "npx webpack watch --mode production ",
     "start:dev": "concurrently \" npx webpack watch --mode development \" \" npx tsc --project tsconfig.web.json -w \" \" nodemon ./dist/server.js \" "
   },
   "author": "",

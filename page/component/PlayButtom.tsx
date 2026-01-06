@@ -1,9 +1,10 @@
 import React from "react";
-import { Playing, RootHome, SetPlaying } from "@/page/Route/home/RootRedux";
+import {  RootHome } from "@/page/Redux/RootRedux";
 import { useDispatch, useSelector } from "react-redux";
 import { get, post } from "@/page/config/req";
-import { SetSongs, SetStop } from "@/page/component/Audio/AudioRedux";
+import { SetSongs, SetStop } from "@/page/Redux/AudioRedux";
 import { PausePlaylistIcon, PlayPlaylistIcon } from "@/icon/Icon";
+import { Playing, SetPlaying } from "@/page/Redux/HomeRedux";
 
 export default function PlayButtom({ id, page }: Playing) {
   const playing = useSelector((state: RootHome) => state.rootHome.playing);
@@ -58,7 +59,7 @@ export default function PlayButtom({ id, page }: Playing) {
         e.stopPropagation();
         PlayingPlaylist();
       }}
-      className="cursor-pointer rounded-full shadowPlayButton p-2 hover:bg-[#1ED760] bg-[#1FDC62] flex justify-center items-center"
+      className="cursor-pointer rounded-full shadow-play-button p-2 hover:bg-[#1ED760] bg-[#1FDC62] flex justify-center items-center"
     >
       {stopAudio || playing.id != id ? (
         <PausePlaylistIcon className="size-8  fill-black" />

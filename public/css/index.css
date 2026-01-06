@@ -115,17 +115,17 @@
   }
 }
 
-.appearBottomToTop {
-  animation: appearTop 2s;
+.appear-bottom-to-top {
+  animation: appearTop 500ms;
 }
 
-.disppearTopToBottom {
-  animation: disppearTop 2s;
+.disppear-top-to-bottom {
+  animation: disppearTop 500ms;
 }
 
-.shadowPlayButton {
+.shadow-play-button {
   box-shadow: 0 8px 8px rgba(0, 0, 0, 0.3);
 }
-.shadowPlaylist {
+.shadow-playlist {
   box-shadow: 0 8px 8px rgba(0, 0, 0, 0.3);
 }

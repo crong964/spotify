@@ -2,7 +2,7 @@ import React, { useState } from "react";
 const PlayButtom = React.lazy(() => import("@/page/component/PlayButtom"));
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { RootHome } from "@/page/Route/home/RootRedux";
+import { RootHome } from "@/page/Redux/RootRedux";
 import { Avatar } from "@/page/component/avatar";
 import { iPlayList } from "./interface";
 

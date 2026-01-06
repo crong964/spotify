@@ -3,8 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { singleMess } from "../Mess/SingleMess";
 import { boxChat } from "./interface";
-import { RootHome, SetMess } from "@/page/Route/home/RootRedux";
+import { RootHome } from "@/page/Redux/RootRedux";
 import { post } from "@/page/config/req";
+import { SetMess } from "@/page/Redux/HomeRedux";
 
 interface BoxInfor {
     idbox: string;

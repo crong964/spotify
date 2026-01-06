@@ -1,8 +1,8 @@
 import React from "react";
-import { RootHome } from "@/page/Route/home//RootRedux";
+import { RootHome } from "@/page/Redux/RootRedux";
 import { useDispatch, useSelector } from "react-redux";
 import { NoRepeat, RepeatPlaylistIcon, RepeatSongIcon } from "@/icon/Icon";
-import { SetModPlay } from "@/page/component/Audio/AudioRedux";
+import { SetModPlay } from "@/page/Redux/AudioRedux";
 
 export default function ModPlay() {
   const modplay = useSelector((state: RootHome) => state.audioroot.modplay);

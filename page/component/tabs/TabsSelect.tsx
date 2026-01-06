@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import { iTab } from "./interface";
 import { Tab } from ".";
 

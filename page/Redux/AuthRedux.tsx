@@ -24,7 +24,7 @@ var initialState: initialState = {
   pathImage: "",
   Name: "",
   Sign: "",
-  login: { idUser: "", IsLogin: true },
+  login: { idUser: "", IsLogin: false },
 };
 
 export const authRedux = createSlice({
@@ -53,3 +53,5 @@ export const authRedux = createSlice({
 
 // Action creators are generated for each case reducer function
 export const { Page, Infor, IsLogin } = authRedux.actions;
+
+export default authRedux;

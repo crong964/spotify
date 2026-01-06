@@ -1,14 +1,9 @@
-import React, { useEffect } from "react";
+import React, { Suspense, useEffect, useRef } from "react";
 const Foot = React.lazy(() => import("@/page/component/Foot"));
 import { useDispatch, useSelector } from "react-redux";
 const Header = React.lazy(() => import("@/page/component/Header/Header"));
 import "./IndexHome2.css";
-import {
-  RootHome,
-  SetDeviceType,
-  SetMess,
-  ShowTopbarContent,
-} from "./home/RootRedux";
+import { RootHome } from "@/page/Redux/RootRedux";
 
 import { socket } from "@/page/socket/Socket";
 import { Link, Outlet, useLocation } from "react-router-dom";
@@ -19,8 +14,15 @@ import ChatBox from "@/page/component/boxchat/SingleBox";
 import { NaviHomeMobile2 } from "@/page/component/NaviHome/NaviHome";
 import { ChatBoxMobliePage } from "./mobile/chatbox/ChatBoxMobliePage";
 import { SingleBoxChatPage } from "./mobile/SingleBox/SingleBoxChatPage";
-import NotificationF from "../component/pop/Notification";
+import NotificationF from "@/page/component/pop/Notification";
 import Left from "@/page/component/Left/Left";
+import { HeaderLoading, RightLoading } from "@/page/component/loading/";
+import {
+  SetDeviceType,
+  SetMess,
+  ShowTopbarContent,
+} from "@/page/Redux/HomeRedux";
+import { SetHeight } from "@/page/Redux/ScrollRedux";
 
 export default function Index() {
   const BoxList = useSelector((state: RootHome) => state.rootHome.BoxList);
@@ -61,16 +63,26 @@ export default function Index() {
   return (
     <div className="h-full w-full relative p-0 m-0 bg-[#272A39] overflow-hidden font-normal">
       <div
-        className={`${Right2 == "" ? "gridSpotify" : "gridSpotify2"} h-full`}
+        className={`${Right2 == "" ? "grid-spotify" : "grid-spotify2"} h-full`}
       >
         <Left />
-        <Header />
-        <Right />
-        <CenterShare />
+        <Suspense fallback={<HeaderLoading />}>
+          <Header />
+        </Suspense>
+        <Suspense fallback={<RightLoading />}>
+          <Right />
+        </Suspense>
+        <Suspense>
+          <CenterShare />
+        </Suspense>
 
         <div className="liquid-glass  sm:bg-black rounded-2xl f absolute sm:relative z-40 left-0 bottom-0 w-full px-0 py-0 sm:py-2 sm:px-2">
-          <PlayingBar />
-          <NaviHomeMobile2 />
+          <Suspense>
+            <PlayingBar />
+          </Suspense>
+          <Suspense>
+            <NaviHomeMobile2 />
+          </Suspense>
         </div>
       </div>
 
@@ -84,7 +96,8 @@ export default function Index() {
       {pathname.indexOf("mobile/playlist") >= 0 && <PlayingPlaylistMobile />}
       {pathname.indexOf("mobile/chatbox") >= 0 && <ChatBoxMobliePage />}
       {pathname.indexOf("mobile/singlebox") >= 0 && <SingleBoxChatPage />}
-      <NotificationF></NotificationF>
+
+      <NotificationF />
     </div>
   );
 }
@@ -103,15 +116,24 @@ export function GenreInHome() {
 }
 function CenterShare() {
   const dispatch = useDispatch();
-
+  const centerRef = useRef<HTMLDivElement>(null);
   const topbarcontent = useSelector(
     (state: RootHome) => state.rootHome.topbarcontent
   );
   const { pathname } = useLocation();
+  useEffect(() => {
+    if (!centerRef) {
+      return;
+    }
+    centerRef.current?.scrollTo(0, 0);
+  }, [pathname, centerRef]);
+
   return (
     <div
+      ref={centerRef}
       onScroll={(e) => {
         var h = e.currentTarget.scrollTop;
+        dispatch(SetHeight(h));
         if (h < 320) {
           dispatch(ShowTopbarContent(false));
           return;
@@ -135,7 +157,9 @@ function CenterShare() {
       <div className=" h-max relative ">
         <Outlet />
       </div>
-      <Foot />
+      <Suspense>
+        <Foot />
+      </Suspense>
     </div>
   );
 }

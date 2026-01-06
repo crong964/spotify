@@ -8,10 +8,10 @@ import React, {
 } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { NaviRight, PlaySong, RootHome } from "@/page/Route/home/RootRedux";
+import { RootHome } from "@/page/Redux/RootRedux";
 
 import { post } from "@/page/config/req";
-import { NextSong, SetPip, SetSongs, SetStop } from "./AudioRedux";
+import { NextSong, SetPip, SetSongs, SetStop } from "../../Redux/AudioRedux";
 import { GetVolum, VolumeAudio } from "@/page/socket/Socket";
 import {
   DiscussIcon,
@@ -24,6 +24,7 @@ import { Audio2, Volume } from ".";
 import { Pip } from "@/page/component/Pip/Index";
 import { Song } from "@/page/component/Song/Index";
 import { useNavigate } from "react-router-dom";
+import { NaviRight, PlaySong } from "@/page/Redux/HomeRedux";
 
 interface SongI {
   Id: string;

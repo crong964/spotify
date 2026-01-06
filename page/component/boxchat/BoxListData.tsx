@@ -1,10 +1,11 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { post } from "@/page/config/req";
 import { useDispatch, useSelector } from "react-redux";
-import { RootHome, SetBoxList, SetMess } from "@/page/Route/home/RootRedux";
+import { RootHome } from "@/page/Redux/RootRedux";
 import { BoxButton } from "./BoxButton";
 import { TypeMess } from "./TypeMess";
 import { boxdata, lastmess } from "./Interface";
+import { SetBoxList, SetMess } from "@/page/Redux/HomeRedux";
 
 export function useBoxList() {
   const [data, setData] = useState<boxdata[]>([]);

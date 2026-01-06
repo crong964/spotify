@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { Infor, Page } from "./RootAuth";
+import { Infor, Page } from "../../Redux/AuthRedux";
 import { post } from "@/page/config/req";
 
 import { Route, Routes } from "react-router-dom";

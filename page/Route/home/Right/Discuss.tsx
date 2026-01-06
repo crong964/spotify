@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
-import { RootHome, SetdeleteDiscuss, RemoveRight } from "@/page/Route/home/RootRedux";
+import { RootHome } from "@/page/Redux/RootRedux";
 import { useDispatch, useSelector } from "react-redux";
 import { post } from "@/page/config/req";
 import Time from "@/page/config/hepler";
 import { ParseJson } from "@/page/socket/Socket";
+import { RemoveRight, SetdeleteDiscuss } from "@/page/Redux/HomeRedux";
 
 interface MainDiscuss {
   Discuss_Id: string;

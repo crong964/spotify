@@ -2,11 +2,8 @@ import React, { useState } from "react";
 import { Modal, Pop } from "@/page/component/pop";
 import NotificationPage from "./NotificationList";
 import { useDispatch } from "react-redux";
-import {
-  SetNotificationPage,
-  SetNotificationPageIdSong,
-} from "@/page/Route/home/RootRedux";
 import CalcXY from "@/page/component/pop/CalcXY";
+import { SetNotificationPage, SetNotificationPageIdSong } from "@/page/Redux/HomeRedux";
 
 export default function Ring() {
   const dispatch = useDispatch();
@@ -55,5 +52,3 @@ export default function Ring() {
     </button>
   );
 }
-
-

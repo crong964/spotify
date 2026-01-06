@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
-import { SetSearchName } from "@/page/Route/home/RootRedux";
 import React from "react";
+import { SetSearchName } from "@/page/Redux/HomeRedux";
 
 export interface search {
   set(a: boolean): void;

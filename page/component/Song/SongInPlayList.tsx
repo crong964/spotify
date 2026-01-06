@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { SongInPlayList } from "./interface";
-import { RootHome } from "@/page/Route/home/RootRedux";
+import { RootHome } from "@/page/Redux/RootRedux";
 import { useDispatch, useSelector } from "react-redux";
 import React from "react";
 import { CheckCircleIcon, PlusCircleIcon, TrashIcon } from "@/icon/Icon";
@@ -9,7 +9,7 @@ import {
   SetAutoPlay,
   SetIdSelectedSong,
   SetSongs,
-} from "@/page/component/Audio/AudioRedux";
+} from "@/page/Redux/AudioRedux";
 import { post, post2 } from "@/page/config/req";
 import { Modal, Pop } from "@/page/component/pop";
 import { Avatar } from "@/page/component/avatar";
@@ -170,7 +170,7 @@ export default function SongInPlayList(song: SongInPlayList) {
       }}
       className={`${
         idSelectedSong == song.Id ? "bg-song-click" : "bg-song"
-      } grid grid-cols-7 text-[13px] sm:text-[14px] sm:p-2 py-2 cursor-pointer sm:space-x-2  text-white font-bold rounded-sm items-center`}
+      } h-[59px] grid grid-cols-7 text-[13px] sm:text-[14px] sm:p-2 py-2 cursor-pointer sm:space-x-2  text-white font-bold rounded-sm items-center`}
     >
       <div
         className="col-span-5 grid grid-cols-5"
