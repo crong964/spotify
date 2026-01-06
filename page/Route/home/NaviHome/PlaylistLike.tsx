@@ -9,7 +9,12 @@ import { iPlayList } from "@/page/component/Playlist/interface";
 import Modal from "@/page/component/pop/Modal";
 import { Avatar } from "@/page/component/avatar";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { CACHE_INFILITY, LIKE_PLAYLIST_QUERY } from "@/page/contant/quey_key";
+import {
+  CACHE_INFILITY,
+  LIKE_PLAYLIST_QUERY,
+  SINGLE_ARTISTS_QUERY,
+  SINGLE_PLAYLIST_QUERY,
+} from "@/page/contant/quey_key";
 import { queryClient } from "@/page/App";
 import { SetPlaylistRedux } from "@/page/Redux/HomeRedux";
 import { RootHome } from "@/page/Redux/RootRedux";
@@ -95,43 +100,59 @@ interface iPlaylistLikeItem extends iPlayList {
   idU: string;
   User_id: string;
 }
-function PlaylistLikeItem(d: iPlaylistLikeItem) {
-  const [pop, SetPop] = useState(false);
+function PlaylistLikeItem({
+  ImagePath,
+  PlayListName,
+  Type,
+  User_id,
+  id,
+  idU,
+}: iPlaylistLikeItem) {
+  const [pop, setPop] = useState(false);
   const mobiletype = useSelector(
     (state: RootHome) => state.rootHome.devicetype
   );
-  const [de, SetDe] = useState(false);
+  const [de, setDe] = useState(false);
   const [sh, SetSh] = useState(false);
   const [xy, XY] = useState({ x: 0, y: 0 });
   const [top, SetTop] = useState(0);
 
   const { mutate: deletePlaylist } = useMutation({
     mutationFn: async () => {
-      const data = await post2("/playlist/delete", { idplaylist: d.id });
+      const data = await post2("/playlist/delete", { idplaylist: id });
       return data;
     },
     onSuccess: (result) => {
       if (result && !result.err) {
         alert("xóa thành công");
-        SetDe(true);
-        queryClient.invalidateQueries({
-          queryKey: [LIKE_PLAYLIST_QUERY],
+        setDe(true);
+        queryClient.setQueryData([SINGLE_PLAYLIST_QUERY, id], (data: any) => {
+          return { ...data, like: false };
         });
       }
     },
   });
   const { mutate: cancelFollow } = useMutation({
     mutationFn: async () => {
-      const data = await post2("/likePlaylist/delete", { idPlaylist: d.id });
+      const data = await post2("/likePlaylist/delete", { idPlaylist: id });
       return data;
     },
     onSuccess: (result) => {
       if (result && !result.err) {
         alert("hủy thành công");
-        SetDe(true);
+        setDe(true);
         queryClient.invalidateQueries({
           queryKey: [LIKE_PLAYLIST_QUERY],
         });
+        if (Type == "artist") {
+          queryClient.setQueryData([SINGLE_ARTISTS_QUERY, id], (data: any) => {
+            return { ...data, like: false };
+          });
+        } else {
+          queryClient.setQueryData([SINGLE_PLAYLIST_QUERY, id], (data: any) => {
+            return { ...data, like: false };
+          });
+        }
       }
     },
   });
@@ -145,34 +166,34 @@ function PlaylistLikeItem(d: iPlaylistLikeItem) {
           }
           XY({ x: ev.pageX, y: ev.pageY });
           SetSh(true);
-          SetPop(false);
+          setPop(false);
         }}
-        key={d.id}
+        key={id}
         onMouseMove={(ev) => {
           if (sh) {
-            SetPop(false);
+            setPop(false);
             return;
           }
 
-          SetPop(true);
+          setPop(true);
           let top = ev.currentTarget.getBoundingClientRect().top;
           SetTop(Math.floor(top));
         }}
         onMouseLeave={(ev) => {
-          SetPop(false);
+          setPop(false);
         }}
-        className={`play${d.id}` + " w-full  "}
+        className={`play${id}` + " w-full  "}
       >
         <Link
-          to={`/${d.Type == "artist" ? d.Type : "playlist"}/${d.id}`}
+          to={`/${Type == "artist" ? Type : "playlist"}/${id}`}
           className="py-3 sm:py-2 space-x-3 sm:space-x-0  h-min-[60px] flex sm:justify-center items-center"
         >
-          {d.ImagePath != "" ? (
+          {ImagePath != "" ? (
             <div className="basis-14 sm:basis-12">
               <Avatar
-                src={d.ImagePath}
+                src={ImagePath}
                 className={`${
-                  d.Type == "artist" ? " rounded-full" : " rounded-lg"
+                  Type == "artist" ? " rounded-full" : " rounded-lg"
                 }`.concat(" size-14 sm:size-12 ")}
               />
             </div>
@@ -180,21 +201,21 @@ function PlaylistLikeItem(d: iPlaylistLikeItem) {
             <MusicNoteBeamedIcon className="size-10" />
           )}
           <div className=" sm:hidden flex-1 flex-col text-[14px]">
-            <div className="text-left">{d.PlayListName}</div>
+            <div className="text-left">{PlayListName}</div>
             <div className="text-left">
-              {d.Type == "artist" ? "Nghệ sĩ" : "Danh sách phát"}
+              {Type == "artist" ? "Nghệ sĩ" : "Danh sách phát"}
             </div>
           </div>
         </Link>
 
         <>
           {pop && mobiletype == "pc" ? (
-            <Pop top={top} left={80} key={d.id}>
+            <Pop top={top} left={80} key={id}>
               <div className="absolute  bg-[#434242] p-2 rounded-lg min-w-max">
-                <div className="text-base text-white ">{d.PlayListName}</div>
+                <div className="text-base text-white ">{PlayListName}</div>
                 <div className="text-sm text-gray-400">
-                  {d.Type == "artist" ? "Nghệ sĩ" : "Danh sách phát"}
-                  {d.idU == d.User_id ? "_Danh sách của bạn" : ""}
+                  {Type == "artist" ? "Nghệ sĩ" : "Danh sách phát"}
+                  {idU == User_id ? "_Danh sách của bạn" : ""}
                 </div>
               </div>
             </Pop>
@@ -208,7 +229,7 @@ function PlaylistLikeItem(d: iPlaylistLikeItem) {
               }}
               top={mobiletype == "mobile" ? 0 : xy.y}
               left={mobiletype == "mobile" ? 0 : xy.x}
-              key={d.id}
+              key={id}
             >
               <div
                 onClick={() => {
@@ -221,12 +242,12 @@ function PlaylistLikeItem(d: iPlaylistLikeItem) {
               >
                 <div className=" bg-[#434242] p-1  sm:text-[14px] w-screen sm:w-auto min-h-[300px]  sm:min-h-0 rounded-md">
                   <div className="grid grid-cols-7 space-x-3 sm:hidden  border-b-[#1A1A1A] border-b-2 py-2">
-                    {d.ImagePath != "" ? (
+                    {ImagePath != "" ? (
                       <div className="col-span-1">
                         <Avatar
-                          src={d.ImagePath}
+                          src={ImagePath}
                           className={`${
-                            d.Type == "artist" ? " rounded-full" : " rounded-lg"
+                            Type == "artist" ? " rounded-full" : " rounded-lg"
                           }`.concat(" size-14 sm:size-12 ")}
                         ></Avatar>
                       </div>
@@ -234,13 +255,13 @@ function PlaylistLikeItem(d: iPlaylistLikeItem) {
                       <MusicNoteBeamedIcon className="size-10" />
                     )}
                     <div className=" sm:hidden col-span-6  flex-col text-[14px] ">
-                      <div className="text-left">{d.PlayListName}</div>
+                      <div className="text-left">{PlayListName}</div>
                       <div className="text-left">
-                        {d.Type == "artist" ? "Nghệ sĩ" : "Danh sách phát"}
+                        {Type == "artist" ? "Nghệ sĩ" : "Danh sách phát"}
                       </div>
                     </div>
                   </div>
-                  {d.idU != d.User_id ? (
+                  {idU != User_id ? (
                     <>
                       <button
                         onClick={() => {

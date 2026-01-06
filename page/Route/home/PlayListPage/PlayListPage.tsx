@@ -33,7 +33,6 @@ import { ButtonRandomPlay } from "@/page/component/Audio";
 import ColorImage from "@/page/config/corlorImage";
 import ImagePath from "@/page/config/img";
 import { queryClient } from "@/page/App";
-import { Loading } from "@/page/component/loading";
 import PlaylistLoading from "@/page/component/loading/PlaylistLoading";
 import { SetCurName, SetPlaylist } from "@/page/Redux/HomeRedux";
 
@@ -80,13 +79,13 @@ export default function PlaylistPage() {
   const dispatch = useDispatch();
   const { id } = useParams();
   const [songs, setSongS] = useState<SongInPlayList[]>([]);
-  const [idU, SetIdU] = useState("");
+  const [idU, setIdU] = useState("");
   const isLogin = useSelector(
     (state: RootHome) => state.rootauth.login.IsLogin
   );
   const playlist = useSelector((state: RootHome) => state.rootHome.playlist);
   const [like, setLike] = useState(false);
-  const [tabs, SetTabs] = useState("");
+  const [tabs, setTabs] = useState("");
   const [sh, sH] = useState(false);
   const [edit, setEdit] = useState(false);
   const [bg, setBg] = useState("black");
@@ -138,9 +137,13 @@ export default function PlaylistPage() {
     },
     onSuccess: (result) => {
       if (result) {
-        setLike(!like);
+        setLike(true);
         queryClient.invalidateQueries({
           queryKey: [LIKE_PLAYLIST_QUERY],
+        });
+        queryClient.setQueryData([SINGLE_PLAYLIST_QUERY, id], {
+          ...data,
+          like: true,
         });
       }
     },
@@ -153,9 +156,13 @@ export default function PlaylistPage() {
     },
     onSuccess: (result) => {
       if (result) {
-        setLike(!like);
+        setLike(false);
         queryClient.invalidateQueries({
           queryKey: [LIKE_PLAYLIST_QUERY],
+        });
+        queryClient.setQueryData([SINGLE_PLAYLIST_QUERY, id], {
+          ...data,
+          like: false,
         });
       }
     },
@@ -168,6 +175,7 @@ export default function PlaylistPage() {
 
   useEffect(() => {
     setIsLoading(true);
+    setLike(data?.like);
     if (!reset) {
       setIsLoading(false);
       return;
@@ -184,8 +192,8 @@ export default function PlaylistPage() {
         playlist.Songs = data.songs.length;
         setSongS(data.songs);
         setLike(data.like);
-        SetIdU(data.idU);
-        SetTabs(data.tabs);
+        setIdU(data.idU);
+        setTabs(data.tabs);
         dispatch(SetCurName(playlist.PlayListName));
         dispatch(SetPlaylist(playlist));
       });
@@ -284,7 +292,7 @@ export default function PlaylistPage() {
               <PlayButtom id={id + ""} page="playlist" />
             </div>
             <ButtonRandomPlay className="size-8" />
-            {isLogin && idU != playlist.User_id ? (
+            {isLogin && idU != playlist.User_id && (
               <>
                 {like ? (
                   <button
@@ -304,8 +312,6 @@ export default function PlaylistPage() {
                   </button>
                 )}
               </>
-            ) : (
-              <></>
             )}
 
             <button className="cursor-pointer">
@@ -328,7 +334,7 @@ export default function PlaylistPage() {
           </div>
         </div>
       </div>
-      
+
       <SongList data={songs} headerHeight={headerHeight} type="playlist" />
 
       <div className="px-4">

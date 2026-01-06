@@ -4,7 +4,7 @@ import { RootHome } from "@/page/Redux/RootRedux";
 import { artist } from "../PlayListPage/PlayListPage";
 import { SongList } from "@/page/component/Song/Index";
 import { useParams } from "react-router-dom";
-import { get, get2, post, post2 } from "@/page/config/req";
+import { get2, post2 } from "@/page/config/req";
 import React from "react";
 import PlayButtom from "@/page/component/PlayButtom";
 import TypeFriend from "@/page/component/friend/TypeFriend";
@@ -22,17 +22,18 @@ import {
 import { ButtonRandomPlay } from "@/page/component/Audio";
 import ColorImage from "@/page/config/corlorImage";
 import { queryClient } from "@/page/App";
-import { Loading } from "@/page/component/loading";
 import PlaylistLoading from "@/page/component/loading/PlaylistLoading";
 import { SetCurName } from "@/page/Redux/HomeRedux";
 
 export default function ArtistPage() {
-  const [lsartist, SetLsAtist] = useState<iPlayList[]>([]);
-  const [artist, SetaAtist] = useState<artist>();
-  const [isfriend, SetIsfriend] = useState<"-1" | "0" | "1" | "2">();
-  const [songs, SetSongS] = useState<SongInPlayList[]>([]);
-  const [like, SetLike] = useState(false);
-
+  const [lsartist, setLsAtist] = useState<iPlayList[]>([]);
+  const [artist, setaAtist] = useState<artist>();
+  const [isfriend, setIsfriend] = useState<"-1" | "0" | "1" | "2">();
+  const [songs, setSongs] = useState<SongInPlayList[]>([]);
+  const [like, setLike] = useState(false);
+  const [reset, setReset] = useState(true);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const [headerHeight, setHeaderHeight] = useState(420);
   const [bg, setBg] = useState("black");
   const dispatch = useDispatch();
   const { id } = useParams();
@@ -41,22 +42,17 @@ export default function ArtistPage() {
     (state: RootHome) => state.rootauth.login.IsLogin
   );
 
-  const { data: fetchArtistData } = useQuery<
-    | {
-        isfriend: "-1" | "0" | "1" | "2";
-        songs: SongInPlayList[];
-        artist: artist;
-        lsplaylistartist: iPlayList[];
-        like: boolean;
-      }
-    | undefined
-  >({
+  const { data: fetchArtistData } = useQuery<{
+    isfriend: "-1" | "0" | "1" | "2";
+    songs: SongInPlayList[];
+    artist: artist;
+    lsplaylistartist: iPlayList[];
+    like: boolean;
+  }>({
     queryKey: [SINGLE_ARTISTS_QUERY, id],
     queryFn: async () => {
       let v = await get2(`/user/artistpage/${id}`);
       if (!v || v.err) {
-        let f: any = {};
-
         return v || {};
       }
       return {
@@ -71,6 +67,11 @@ export default function ArtistPage() {
   });
 
   useEffect(() => {
+    setReset(true);
+    return () => {};
+  }, [id]);
+
+  useEffect(() => {
     let g;
     if (!fetchArtistData || !fetchArtistData.artist) {
       return;
@@ -78,12 +79,12 @@ export default function ArtistPage() {
     let v = fetchArtistData;
 
     g = setTimeout(() => {
-      SetIsfriend(v.isfriend);
-      SetaAtist(v.artist);
-      SetSongS(v.songs);
-      SetLsAtist(v.lsplaylistartist);
+      setIsfriend(v.isfriend);
+      setaAtist(v.artist);
+      setSongs(v.songs);
+      setLsAtist(v.lsplaylistartist);
       dispatch(SetCurName(v.artist.ChanalName || ""));
-      SetLike(v.like);
+      setLike(v.like);
     }, 300);
 
     return () => clearTimeout(g);
@@ -109,9 +110,13 @@ export default function ArtistPage() {
     },
     onSuccess: (result) => {
       if (result) {
-        SetLike(!like);
+        setLike(true);
         queryClient.invalidateQueries({
           queryKey: [LIKE_PLAYLIST_QUERY],
+        });
+        queryClient.setQueryData([SINGLE_ARTISTS_QUERY, id], {
+          ...fetchArtistData,
+          like: true,
         });
       }
     },
@@ -124,15 +129,18 @@ export default function ArtistPage() {
     },
     onSuccess: (result) => {
       if (result) {
-        SetLike(!like);
+        setLike(false);
         queryClient.invalidateQueries({
           queryKey: [LIKE_PLAYLIST_QUERY],
+        });
+        queryClient.setQueryData([SINGLE_ARTISTS_QUERY, id], {
+          ...fetchArtistData,
+          like: false,
         });
       }
     },
   });
-  const headerRef = useRef<HTMLDivElement>(null);
-  const [headerHeight, setHeaderHeight] = useState(420);
+
   useEffect(() => {
     let f = setInterval(() => {
       setHeaderHeight(headerRef.current?.clientHeight || 420);
@@ -145,6 +153,7 @@ export default function ArtistPage() {
   if (songs.length <= 0) {
     return <PlaylistLoading></PlaylistLoading>;
   }
+
   return (
     <div style={style} className="relative ">
       <div ref={headerRef}>

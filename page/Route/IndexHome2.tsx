@@ -66,7 +66,7 @@ export default function Index() {
         className={`${Right2 == "" ? "grid-spotify" : "grid-spotify2"} h-full`}
       >
         <Left />
-        <Suspense fallback={<HeaderLoading></HeaderLoading>}>
+        <Suspense fallback={<HeaderLoading />}>
           <Header />
         </Suspense>
         <Suspense fallback={<RightLoading />}>
@@ -97,7 +97,7 @@ export default function Index() {
       {pathname.indexOf("mobile/chatbox") >= 0 && <ChatBoxMobliePage />}
       {pathname.indexOf("mobile/singlebox") >= 0 && <SingleBoxChatPage />}
 
-      <NotificationF></NotificationF>
+      <NotificationF />
     </div>
   );
 }
