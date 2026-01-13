@@ -2,7 +2,13 @@ import { Avatar } from "@/page/component/avatar";
 import { SongInPlayList } from "@/page/component/Song/interface";
 import ImagePath from "@/page/config/img";
 import { get2, post2 } from "@/page/config/req";
-import React, { useCallback, useEffect, useState } from "react";
+import React, {
+  ReactNode,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootHome } from "@/page/Redux/RootRedux";
 import { SetAutoPlay, SetSongs } from "@/page/Redux/AudioRedux";
@@ -16,9 +22,9 @@ import { CheckCircleIcon, PlusCircleIcon } from "@/icon/Icon";
 import ProtectRoute from "@/page/component/ProtectRoute/ProtectRoute";
 
 import { queryClient } from "@/page/App";
-import { TabsInput } from "@/page/component/tabs";
 import TabsSelect from "@/page/component/tabs/TabsSelect";
 import { iTab } from "@/page/component/tabs/interface";
+import { setScrollBottom } from "@/page/Redux/ScrollRedux";
 const ArtistLink = React.lazy(() => import("@/page/component/ArtistLink"));
 
 export default function SongListPage() {
@@ -26,11 +32,23 @@ export default function SongListPage() {
   const lsSong = useSelector((state: RootHome) => state.audioroot.lsSong);
   const mark = useSelector((state: RootHome) => state.audioroot.mark);
   const stop = useSelector((state: RootHome) => state.audioroot.stop);
+  const devicetype = useSelector(
+    (state: RootHome) => state.rootHome.devicetype
+  );
   const [songs, setSongs] = useState<SongInPlayList[]>([]);
   const [last_id, setLastId] = useState("");
-  const [hiddenLoadButton, setHiddenLoadingButton] = useState(false);
+
   const isLogin = useSelector(
     (state: RootHome) => state.rootauth.login.IsLogin
+  );
+  const maxScrollHeight = useSelector(
+    (state: RootHome) => state.scrollRedux.maxHeight
+  );
+  const scrollTop = useSelector(
+    (state: RootHome) => state.scrollRedux.scrollTop
+  );
+  const scrollBottom = useSelector(
+    (state: RootHome) => state.scrollRedux.scrollBottom
   );
   const dispatch = useDispatch();
 
@@ -109,87 +127,116 @@ export default function SongListPage() {
     if (!data) {
       return;
     }
-
     if (data.length <= 0) {
-      setHiddenLoadingButton(true);
       return;
     }
     if (data[data.length - 1]?.Id == songs[songs.length - 1]?.Id) {
       return;
     }
-
-    if (data.length < 30) {
-      setHiddenLoadingButton(true);
-    } else {
-      setHiddenLoadingButton(false);
-    }
     setSongs([...songs, ...data]);
     return () => {};
   }, [data, songs]);
+
+  useEffect(() => {
+    if (songs.length <= 0) {
+      return;
+    }
+
+    if (scrollBottom < 200) {
+      setLastId(songs[songs.length - 1]?.Id);
+      dispatch(setScrollBottom(300));
+    }
+  }, [scrollBottom, songs]);
+
+  const itemH = useMemo(() => {
+    if (devicetype == "pc") {
+      return 80;
+    }
+    return 140;
+  }, [devicetype]);
+
+  const songshtml: ReactNode[] = [];
+
+  const rm = useMemo(() => {
+    if (scrollTop < 100) {
+      return 0;
+    }
+    return Math.round((scrollTop - 100) / itemH) || 0;
+  }, [itemH, scrollTop]);
+
+  for (
+    let i = rm * 4;
+    i < songs.length && i < (rm + maxScrollHeight / itemH) * 4;
+
+  ) {
+    let songshtml2: ReactNode[] = [];
+    for (let j = 0; j + i < songs.length && j < 4; j++) {
+      let song = songs[i + j];
+
+      let playing =
+        (lsSong[mark] && lsSong[mark].Id == song.Id && !stop) || false;
+      songshtml2.push(
+        <div
+          data-play={playing}
+          key={song.Id}
+          onClick={() => onGetSongPlay(song.Id)}
+          className="data-[play=true]:bg-green-400 data-[play=false]:bg-[#1A1A1A] hover:scale-105 active:scale-95 duration-150 flex items-center space-x-1 sm:space-x-2 cursor-pointer rounded-xl "
+        >
+          <Avatar
+            className="size-[60px] rounded-xl"
+            src={ImagePath(song.SongImage)}
+          />
+
+          <div className=" flex-1 text-sm   line-clamp-2">
+            <p className="font-bold line-clamp-1 text-white">{song.SongName}</p>
+            <ArtistLink idArtist={song.user_id} nameArtist={song.Singer} />
+          </div>
+          <div className="pr-4">
+            <div
+              data-login={isLogin}
+              className="data-[login=true]:block data-[login=false]:hidden"
+              onClick={(e) => {
+                e.stopPropagation();
+                mutate(song);
+              }}
+            >
+              {song.liked ? (
+                <CheckCircleIcon className="fill-[#1DD25E] size-4 mx-2"></CheckCircleIcon>
+              ) : (
+                <PlusCircleIcon className="fill-white size-4 mx-2"></PlusCircleIcon>
+              )}
+            </div>
+          </div>
+        </div>
+      );
+    }
+    i += 4;
+    songshtml.push(
+      <div className="grid grid-cols-2  lg:grid-cols-4 gap-3 lg:gap-3 lg:px-3 pb-3">
+        {songshtml2}
+      </div>
+    );
+  }
 
   return (
     <ProtectRoute>
       <section>
         <div className="text-[24px] font-bold text-white">Tất cả bài hát</div>
-        <div className="mb-5">
+        <div className="mb-5 overflow-x-scroll  w-screen">
           <TabsSelect tabs={tabs || []} onChange={handleTabs} value={tab} />
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-1 sm:gap-4 sm:px-3">
-          {songs.map((song) => {
-            const playing = lsSong[mark] && lsSong[mark].Id == song.Id && !stop;
-            return (
-              <div
-                data-play={playing}
-                key={song.Id}
-                onClick={() => {
-                  onGetSongPlay(song.Id);
-                }}
-                className="data-[play=true]:bg-green-400 data-[play=false]:bg-[#1A1A1A] hover:scale-105 active:scale-95 duration-150 flex items-center space-x-1 sm:space-x-2 cursor-pointer rounded-xl "
-              >
-                <Avatar
-                  className="size-[60px] rounded-xl"
-                  src={ImagePath(song.SongImage)}
-                />
-
-                <div className=" flex-1 text-sm   line-clamp-2">
-                  <p className="font-bold line-clamp-1 text-white">
-                    {song.SongName}
-                  </p>
-                  <ArtistLink
-                    idArtist={song.user_id}
-                    nameArtist={song.Singer}
-                  />
-                </div>
-                <div className="pr-4">
-                  <div
-                    data-login={isLogin}
-                    className="data-[login=true]:block data-[login=false]:hidden"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      mutate(song);
-                    }}
-                  >
-                    {song.liked ? (
-                      <CheckCircleIcon className="fill-[#1DD25E] size-4 mx-2"></CheckCircleIcon>
-                    ) : (
-                      <PlusCircleIcon className="fill-white size-4 mx-2"></PlusCircleIcon>
-                    )}
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-        <div className="text-center mt-10">
-          {!hiddenLoadButton && (
-            <button
-              className="bg-[#1A1A1A] px-3 py-2 rounded-xl hover:scale-105 active:scale-95 duration-150"
-              onClick={() => setLastId(songs[songs.length - 1]?.Id)}
+        <div style={{ height: (songs.length / 4) * itemH }}></div>
+        {songshtml.map((v, i) => {
+          return (
+            <div
+              key={i + rm}
+              style={{ top: (i + rm) * itemH + 100 }}
+              className="absolute left-0 w-full"
             >
-              Tải thêm {isPending ? "..." : ""}
-            </button>
-          )}
-        </div>
+              {v}
+            </div>
+          );
+        })}
       </section>
     </ProtectRoute>
   );

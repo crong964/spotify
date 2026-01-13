@@ -13,9 +13,13 @@ export default function ProtectRoute({
   let navigate = useNavigate();
 
   useEffect(() => {
+    if (isLogin == undefined) {
+      return;
+    }
     if (!isLogin) {
       return navigate("/auth");
     }
+
     return () => {};
   }, [isLogin]);
   return <>{children}</>;

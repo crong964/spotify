@@ -11,6 +11,8 @@ import { useQuery } from "@tanstack/react-query";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 export default function LikedSongListPage() {
   const [isLoading, setIsLoading] = useState(true);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const [headerHeight, setHeaderHeight] = useState(420);
   const { data: songs } = useQuery<SongInPlayList[]>({
     queryKey: [LOVE_SONG_QUERY],
     queryFn: async () => {
@@ -38,8 +40,6 @@ export default function LikedSongListPage() {
     return time;
   }, [songs]);
 
-  const headerRef = useRef<HTMLDivElement>(null);
-  const [headerHeight, setHeaderHeight] = useState(420);
   useEffect(() => {
     let f = setInterval(() => {
       setHeaderHeight(headerRef.current?.clientHeight || 420);
@@ -50,7 +50,7 @@ export default function LikedSongListPage() {
   }, []);
 
   if (!songs || isLoading) {
-    return <Loading></Loading>;
+    return <Loading />;
   }
   return (
     <div className="relative">
@@ -99,7 +99,6 @@ export default function LikedSongListPage() {
           </div>
         </div>
       </div>
-
       <SongList data={songs} type="likeplaylist" headerHeight={headerHeight} />
     </div>
   );

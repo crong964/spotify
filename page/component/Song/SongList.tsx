@@ -6,7 +6,12 @@ import { useSelector } from "react-redux";
 import { RootHome } from "@/page/Redux/RootRedux";
 
 export default function SongList({ data, type, headerHeight = 0 }: SongList) {
-  const scrollHeight = useSelector((root: RootHome) => root.scrollRedux.height);
+  const scrollHeight = useSelector(
+    (root: RootHome) => root.scrollRedux.scrollTop
+  );
+  const maxSrollHeight = useSelector(
+    (root: RootHome) => root.scrollRedux.maxHeight
+  );
   const itemHeight = useMemo(() => {
     return 59;
   }, []);
@@ -24,7 +29,7 @@ export default function SongList({ data, type, headerHeight = 0 }: SongList) {
         <>
           {data
             .filter((_, i) => {
-              return i >= rm && i <= rm + 11;
+              return i >= rm && i <= rm + maxSrollHeight / itemHeight;
             })
             .map((song, i) => {
               stt += 1;

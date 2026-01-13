@@ -190,7 +190,7 @@ const homeRedux = createSlice({
     SetMess: (state, action: PayloadAction<mess>) => {
       state.mess = action.payload;
     },
-    SetDeviceType: (state, action: PayloadAction<"pc" | "mobile">) => {
+    setDeviceType: (state, action: PayloadAction<"pc" | "mobile">) => {
       state.devicetype = action.payload;
     },
     SetCurName: (state, action: PayloadAction<string>) => {
@@ -230,7 +230,7 @@ export const {
   SetSearchName,
   SetMess,
   RemoveRight,
-  SetDeviceType,
+  setDeviceType,
   SetPlaying,
   SetPlaylistRedux,
   SetNotification,

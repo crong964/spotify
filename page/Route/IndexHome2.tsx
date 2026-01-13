@@ -18,11 +18,15 @@ import NotificationF from "@/page/component/pop/Notification";
 import Left from "@/page/component/Left/Left";
 import { HeaderLoading, RightLoading } from "@/page/component/loading/";
 import {
-  SetDeviceType,
+  setDeviceType,
   SetMess,
   ShowTopbarContent,
 } from "@/page/Redux/HomeRedux";
-import { SetHeight } from "@/page/Redux/ScrollRedux";
+import {
+  setHeight,
+  setMaxheight,
+  setScrollBottom,
+} from "@/page/Redux/ScrollRedux";
 
 export default function Index() {
   const BoxList = useSelector((state: RootHome) => state.rootHome.BoxList);
@@ -30,16 +34,16 @@ export default function Index() {
   const { pathname } = useLocation();
   const screem = async () => {
     window.addEventListener("resize", () => {
-      if (window.innerWidth > 900) {
-        dispatch(SetDeviceType("pc"));
+      if (window.innerWidth > 1200) {
+        dispatch(setDeviceType("pc"));
       } else {
-        dispatch(SetDeviceType("mobile"));
+        dispatch(setDeviceType("mobile"));
       }
     });
-    if (window.innerWidth > 900) {
-      dispatch(SetDeviceType("pc"));
+    if (window.innerWidth > 1200) {
+      dispatch(setDeviceType("pc"));
     } else {
-      dispatch(SetDeviceType("mobile"));
+      dispatch(setDeviceType("mobile"));
     }
     try {
       let wakelock = await navigator.wakeLock.request("screen");
@@ -125,15 +129,32 @@ function CenterShare() {
     if (!centerRef) {
       return;
     }
+    const current = centerRef.current;
     centerRef.current?.scrollTo(0, 0);
+
+    if (current) {
+      dispatch(setMaxheight(current.clientHeight));
+      dispatch(setScrollBottom(0));
+    }
   }, [pathname, centerRef]);
 
   return (
     <div
-      ref={centerRef}
       onScroll={(e) => {
-        var h = e.currentTarget.scrollTop;
-        dispatch(SetHeight(h));
+        if (centerRef.current == null) {
+          return;
+        }
+
+        let {
+          scrollTop: h,
+          clientHeight: mH,
+          scrollHeight: sh,
+        } = centerRef.current;
+      
+        dispatch(setMaxheight(mH));
+        dispatch(setHeight(h));
+        dispatch(setScrollBottom(sh - h - mH));
+
         if (h < 320) {
           dispatch(ShowTopbarContent(false));
           return;
@@ -147,11 +168,12 @@ function CenterShare() {
           dispatch(ShowTopbarContent(true));
         }
       }}
+      ref={centerRef}
       className=" h-full m overflow-y-scroll relative bg-black sm:rounded-2xl "
     >
       {pathname == "/" && (
         <div className="hidden sm:inline-block sticky top-0 left-0 z-10 w-full bg-black">
-          <GenreInHome></GenreInHome>
+          <GenreInHome />
         </div>
       )}
       <div className=" h-max relative ">

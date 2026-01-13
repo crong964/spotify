@@ -18,6 +18,9 @@ export default function ArtistLink({ idArtist, nameArtist }: tArtistLink) {
         if (indexArtist == ids.length - 1) {
           return (
             <Link
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
               className="sm:hover:text-white"
               to={devicetype == "pc" ? `/artist/${artist_id}` : "#"}
             >

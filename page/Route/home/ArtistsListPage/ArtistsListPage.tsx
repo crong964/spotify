@@ -12,7 +12,7 @@ import { Loading } from "@/page/component/loading";
 
 export default function ArtistsListPage() {
   const [playlists, setPlayLists] = useState<iPlayList[]>([]);
-  const [page, SetPage] = useState(0);
+  const [page, setPage] = useState(0);
   const [count, setCount] = useState(0);
 
   const fetchPlaylistArtist = (
@@ -51,20 +51,22 @@ export default function ArtistsListPage() {
     setCount(data.count);
   }, [data, playlists]);
 
-  let children = playlists.map((v) => {
-    return (
-      <PlayList
-        className="cursor-pointer size-[120px] sm:size-[180px]"
-        Type={v.Type}
-        Genre_ID={v.Genre_ID}
-        ImagePath={v.ImagePath}
-        PlayListName={v.PlayListName}
-        id={v.id}
-        key={v.id}
-      />
-    );
-  });
-  
+  let children = playlists.map(
+    ({ Genre_ID, ImagePath, PlayListName, Type, id }) => {
+      return (
+        <PlayList
+          className="cursor-pointer size-[120px] sm:size-[180px]"
+          Type={Type}
+          Genre_ID={Genre_ID}
+          ImagePath={ImagePath}
+          PlayListName={PlayListName}
+          id={id}
+          key={id}
+        />
+      );
+    }
+  );
+
   if (playlists.length <= 0) {
     return <Loading />;
   }
@@ -77,7 +79,7 @@ export default function ArtistsListPage() {
         {children}
         {playlists.length < count && (
           <div
-            onClick={() => SetPage((s) => s + 1)}
+            onClick={() => setPage((s) => s + 1)}
             className="bg-[#B3B3B3]  cursor-pointer text-white sm:hover:text-black sm:hover:bg-[#3BE477] flex size-[120px] sm:size-[180px] rounded-full justify-center items-center"
           >
             <div>Thêm ca sĩ</div>

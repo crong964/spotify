@@ -35,7 +35,7 @@ export default function TabsSelect({ onChange, value, tabs }: iTabsSelect) {
   }
   return (
     <>
-      <div className="flex flex-wrap gap-4">
+      <div className="flex flex-wrap gap-4 w-max">
         {tabs.map((tab) => {
           return (
             <Tab

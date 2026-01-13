@@ -9,7 +9,7 @@ export interface initialState {
   login: Login;
 }
 interface Login {
-  IsLogin: boolean;
+  IsLogin?: boolean;
   idUser: string;
 }
 interface Infor {
@@ -24,7 +24,7 @@ var initialState: initialState = {
   pathImage: "",
   Name: "",
   Sign: "",
-  login: { idUser: "", IsLogin: false },
+  login: { idUser: "" },
 };
 
 export const authRedux = createSlice({
